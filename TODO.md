@@ -75,6 +75,14 @@
   - [x] Toggle suppression tailles inutiles (Codex, 2026-03-27)
   - [x] Afficher espace disque économisé (info) (Codex, 2026-03-27)
 
+## Phase 6B — Mise en forme minimale
+- [x] `nav`, `header`, `main`, `section`, `article`, `p`, `ul`, `footer` : HTML sémantique minimal et DOM sans wrappers superflus (Codex, 2026-03-27)
+- [x] Responsive sans breakpoints : flexbox, `clamp()`, dimensionnement intrinsèque et conventions CSS modernes (Codex, 2026-03-27)
+- [x] Mise en forme sobre : typographie, espacements, bordures et surfaces via tokens du thème (Codex, 2026-03-27)
+- [x] Blocs Gutenberg : rendu visuel minimaliste prêt à être édité sans surcharge (Codex, 2026-03-27)
+- [x] Référence de structure : s’inspirer de `html_responsive_images.html` et `wordpress_responsive_images.php` pour le preload hero, les images responsives et la hiérarchie de layout (Codex, 2026-03-27)
+- [x] Validation visuelle : interface éditable immédiatement, lisible sur mobile et desktop, sans complexifier l’architecture du thème (Codex, 2026-03-27)
+
 ## Phase 7 — Tests et finalisation
 - [ ] Lighthouse : perf ≥ 95, a11y ≥ 95, SEO ≥ 95, best practices ≥ 95
 - [ ] Theme Check plugin (conformité WordPress.org)
@@ -92,4 +100,5 @@
 - [x] Désactivation des scripts et styles emoji WordPress côté front dans `functions.php` (Codex, 2026-03-27)
 - [x] Phase 5 — SEO autonome + champs éditables terminée (Codex, 2026-03-27)
 - [x] Phase 6 — Optimisation images terminée (Codex, 2026-03-27)
+- [x] Phase 6B — Mise en forme minimale appliquée (Codex, 2026-03-27)
 - [x] `screenshot.png` 1200×900 ajouté au thème (Codex, 2026-03-27)

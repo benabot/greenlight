@@ -88,7 +88,7 @@
 			"palette": [
 				{
 					"slug": "text",
-					"color": "#1a1a1a",
+					"color": "#111111",
 					"name": "Text"
 				},
 				{
@@ -103,17 +103,17 @@
 				},
 				{
 					"slug": "surface-alt",
-					"color": "#e8e8e8",
+					"color": "#e5e5e5",
 					"name": "Surface Alt"
 				},
 				{
 					"slug": "primary",
-					"color": "#2563eb",
+					"color": "#111111",
 					"name": "Primary"
 				},
 				{
 					"slug": "border",
-					"color": "#e5e7eb",
+					"color": "#d0d0d0",
 					"name": "Border"
 				}
 			]

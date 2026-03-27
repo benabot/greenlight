@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"Stop\",\"additionalContext\":\"Before finishing: check if any decisions, context changes, or non-obvious discoveries from this session belong in .omc/MEMORY.md. If yes, update it now.\"}}'",
+            "command": "echo '{\"continue\":true,\"systemMessage\":\"Before finishing: check if any decisions, context changes, or non-obvious discoveries from this session belong in .omc/MEMORY.md. If yes, update it now.\"}'",
             "statusMessage": "Checking project memory..."
           }
         ]

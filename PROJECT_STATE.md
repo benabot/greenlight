@@ -94,6 +94,31 @@ Auto-enregistrés via headers PHP (WP 6.0+), catégorie `greenlight` enregistré
 | `inc/images.php` | `greenlight/images` | Tailles `greenlight-hero`, `greenlight-card`, `greenlight-thumb`, suppression des tailles core inutiles, génération WebP, preload hero, attributs responsive images (Codex, 2026-03-27) |
 | `inc/images-settings.php` | `greenlight/images-settings` | Page de réglages Images sous Apparence > Greenlight avec toggle WebP, qualité, suppression tailles et infos espace économisé (Codex, 2026-03-27) |
 
+### Phase 6B — Cibles visuelles
+
+| Fichier | Contenu |
+|---------|---------|
+| `header.php` | Header monochrome avec site-brand, tagline optionnelle et navigation principale alignée en flexbox (Codex, 2026-03-27) |
+| `footer.php` | Footer minimal avec copyright centré et fin de flux claire (Codex, 2026-03-27) |
+| `index.php` | Home / blog index avec intro, liste d’articles en UL et pagination sobre (Codex, 2026-03-27) |
+| `archive.php` | Archives avec intro éditoriale, liste d’articles en UL et hiérarchie discrète (Codex, 2026-03-27) |
+| `single.php` | Article unique en noir et blanc avec meta ligne, contenu encadré et navigation d’article (Codex, 2026-03-27) |
+| `page.php` | Page standard minimaliste avec contenu aéré et pagination de blocs (Codex, 2026-03-27) |
+| `style.css` | Layout monochrome, flexbox, espacements fluides, navigation discrète et styles Gutenberg sobres (Codex, 2026-03-27) |
+| `theme.json` | Palette noir et blanc, tokens de surface/bordure et couleurs de boutons/lien alignées sur le minimalisme (Codex, 2026-03-27) |
+
+### Phase 6B — Mise en forme minimale
+
+Objectif : proposer une interface visuelle minimaliste, éditable immédiatement, avec le minimum de HTML et un responsive géré par flexbox, `clamp()` et conventions CSS modernes.
+
+| Domaine | Cible |
+|---------|-------|
+| Structure HTML | `nav`, `header`, `main`, `section`, `article`, `p`, `ul`, `footer` uniquement quand nécessaire, sans wrappers superflus |
+| Responsive | Flexbox, dimensionnement intrinsèque, `clamp()`, aucun breakpoint de mise en page |
+| Style | Hiérarchie légère, surfaces sobres, espacements fluides, typographie lisible |
+| Gutenberg | Blocs prêts à être édités sans surcharge visuelle ni complexité structurelle |
+| Références | S’inspirer de `html_responsive_images.html` et `wordpress_responsive_images.php` pour le preload hero et les images responsives |
+
 ---
 
 ## Design system actif (theme.json v3)

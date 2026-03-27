@@ -11,12 +11,21 @@ if ( have_posts() ) :
 	while ( have_posts() ) :
 		the_post();
 		?>
-		<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-			<header>
+		<article id="post-<?php the_ID(); ?>" <?php post_class( 'entry entry--page' ); ?>>
+			<header class="entry-header">
 				<h1><?php the_title(); ?></h1>
 			</header>
-			<?php the_content(); ?>
-			<?php wp_link_pages(); ?>
+			<section class="entry-content">
+				<?php the_content(); ?>
+			</section>
+			<?php
+			wp_link_pages(
+				array(
+					'before' => '<nav class="page-links" aria-label="' . esc_attr__( 'Pages de la page', 'greenlight' ) . '">',
+					'after'  => '</nav>',
+				)
+			);
+			?>
 		</article>
 		<?php
 
