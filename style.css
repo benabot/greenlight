@@ -1,0 +1,92 @@
+/*
+Theme Name: Greenlight
+Theme URI: https://github.com/benoitabot/greenlight
+Author: Benoît Abot
+Author URI: https://benoitabot.fr
+Description: Thème WordPress hybride avancé, éco-conçu. Templates PHP + theme.json v3 pour intégration Gutenberg. Zéro jQuery, quasi-zéro JS, responsive via HTML/CSS uniquement. SEO intégré autonome.
+Version: 1.0.0
+Requires at least: 6.4
+Tested up to: 6.7
+Requires PHP: 8.0
+License: GPL-2.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: greenlight
+Tags: block-styles, editor-style, full-site-editing, wide-blocks, accessibility-ready
+*/
+
+/* === Josh Comeau CSS Reset === */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+* {
+	margin: 0;
+}
+
+body {
+	line-height: 1.5;
+	-webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+	display: block;
+	max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+	font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	overflow-wrap: break-word;
+}
+
+/* === Global styles (only what theme.json cannot handle) === */
+
+.skip-link {
+	position: absolute;
+	top: -100%;
+	left: 0;
+	z-index: 999;
+	padding: 0.5rem 1rem;
+	background: var(--wp--preset--color--primary);
+	color: var(--wp--preset--color--background);
+	text-decoration: none;
+}
+
+.skip-link:focus {
+	top: 0;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+:focus-visible {
+	outline: 2px solid var(--wp--preset--color--primary);
+	outline-offset: 2px;
+}
