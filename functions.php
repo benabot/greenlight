@@ -39,6 +39,7 @@ function greenlight_setup() {
 
 	// Add support for editor styles.
 	add_theme_support( 'editor-styles' );
+	add_editor_style( 'style.css' );
 
 	// Add support for block styles.
 	add_theme_support( 'wp-block-styles' );
@@ -83,6 +84,55 @@ function greenlight_disable_emojis() {
 	remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
 }
 add_action( 'init', 'greenlight_disable_emojis' );
+
+/**
+ * Returns a short editorial lead for archive-like listings.
+ *
+ * @param string $context Archive context.
+ * @return string
+ */
+function greenlight_get_archive_lead_text( $context = 'archive' ) {
+	if ( 'home' === $context ) {
+		$posts_page_id = (int) get_option( 'page_for_posts' );
+
+		if ( $posts_page_id > 0 ) {
+			$page_excerpt = trim( (string) get_post_field( 'post_excerpt', $posts_page_id ) );
+
+			if ( '' !== $page_excerpt ) {
+				return wp_strip_all_tags( $page_excerpt );
+			}
+		}
+
+		return __( 'Les derniers articles publiés, présentés sans superflu pour une lecture rapide.', 'greenlight' );
+	}
+
+	if ( is_category() || is_tag() || is_tax() ) {
+		$term      = get_queried_object();
+		$term_name = ( $term && ! is_wp_error( $term ) && ! empty( $term->name ) ) ? wp_strip_all_tags( $term->name ) : wp_strip_all_tags( get_the_archive_title() );
+
+		return sprintf(
+			__( 'Une sélection d’articles autour de %s, pensée pour aller droit à l’essentiel.', 'greenlight' ),
+			$term_name
+		);
+	}
+
+	if ( is_date() ) {
+		return __( 'Les articles archivés par date, du plus récent au plus ancien, pour remonter le fil du site.', 'greenlight' );
+	}
+
+	if ( is_author() ) {
+		$author = get_queried_object();
+
+		if ( $author && ! is_wp_error( $author ) && ! empty( $author->display_name ) ) {
+			return sprintf(
+				__( 'Les articles signés par %s, réunis dans une lecture continue.', 'greenlight' ),
+				wp_strip_all_tags( $author->display_name )
+			);
+		}
+	}
+
+	return __( 'Une archive sobre pour parcourir les contenus récents et retrouver l’essentiel en quelques secondes.', 'greenlight' );
+}
 
 /**
  * Enqueue block styles conditionally — loaded only when the block is present on the page.

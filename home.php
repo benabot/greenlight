@@ -1,6 +1,6 @@
 <?php
 /**
- * The archive template.
+ * The posts index template.
  *
  * @package Greenlight
  */
@@ -9,26 +9,23 @@ get_header();
 
 global $wp_query;
 
-$archive_count = (int) $wp_query->found_posts;
-$archive_title = get_the_archive_title();
-$archive_lead  = greenlight_get_archive_lead_text();
-$archive_desc  = get_the_archive_description();
+$posts_page_id    = (int) get_option( 'page_for_posts' );
+$home_title       = $posts_page_id ? get_the_title( $posts_page_id ) : get_bloginfo( 'name' );
+$home_lead        = greenlight_get_archive_lead_text( 'home' );
+$home_count       = (int) $wp_query->found_posts;
 ?>
 
-<section class="archive-intro" aria-labelledby="archive-heading">
+<section class="archive-intro" aria-labelledby="home-heading">
 	<header class="page-header">
-		<p class="eyebrow"><?php esc_html_e( 'Archives', 'greenlight' ); ?></p>
-		<h1 id="archive-heading"><?php echo wp_kses_post( $archive_title ); ?></h1>
-		<p class="archive-lead"><?php echo esc_html( $archive_lead ); ?></p>
-		<?php if ( $archive_desc ) : ?>
-			<p class="archive-note"><?php echo wp_kses_post( $archive_desc ); ?></p>
-		<?php endif; ?>
+		<p class="eyebrow"><?php esc_html_e( 'Actualités', 'greenlight' ); ?></p>
+		<h1 id="home-heading"><?php echo esc_html( $home_title ); ?></h1>
+		<p class="archive-lead"><?php echo esc_html( $home_lead ); ?></p>
 	</header>
 	<p class="archive-count">
 		<?php
 		printf(
-			esc_html( _n( '%s article', '%s articles', $archive_count, 'greenlight' ) ),
-			esc_html( number_format_i18n( $archive_count ) )
+			esc_html( _n( '%s article', '%s articles', $home_count, 'greenlight' ) ),
+			esc_html( number_format_i18n( $home_count ) )
 		);
 		?>
 	</p>
@@ -37,7 +34,7 @@ $archive_desc  = get_the_archive_description();
 <?php if ( have_posts() ) : ?>
 	<?php
 	the_post();
-	$archive_first_categories = get_the_category_list( ', ' );
+	$home_first_categories = get_the_category_list( ', ' );
 	?>
 	<article id="post-<?php the_ID(); ?>" <?php post_class( 'entry entry--featured' ); ?>>
 		<?php if ( has_post_thumbnail() ) : ?>
@@ -50,8 +47,8 @@ $archive_desc  = get_the_archive_description();
 		<header class="entry-header">
 			<p class="entry-meta">
 				<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time>
-				<?php if ( $archive_first_categories ) : ?>
-					<span class="entry-taxonomy"><?php echo wp_kses_post( $archive_first_categories ); ?></span>
+				<?php if ( $home_first_categories ) : ?>
+					<span class="entry-taxonomy"><?php echo wp_kses_post( $home_first_categories ); ?></span>
 				<?php endif; ?>
 			</p>
 			<h2 class="entry-title">
@@ -65,7 +62,7 @@ $archive_desc  = get_the_archive_description();
 	</article>
 
 	<?php if ( have_posts() ) : ?>
-	<ul class="post-list" aria-label="<?php esc_attr_e( 'Articles de l’archive', 'greenlight' ); ?>">
+	<ul class="post-list" aria-label="<?php esc_attr_e( 'Articles récents', 'greenlight' ); ?>">
 		<?php while ( have_posts() ) : the_post(); ?>
 			<li class="post-item">
 				<article id="post-<?php the_ID(); ?>" <?php post_class( 'entry entry--teaser' ); ?>>
@@ -88,9 +85,8 @@ $archive_desc  = get_the_archive_description();
 	<?php endif; ?>
 
 	<?php the_posts_pagination(); ?>
-
 <?php else : ?>
 	<p><?php esc_html_e( 'Aucun contenu trouvé.', 'greenlight' ); ?></p>
 <?php endif; ?>
 
-<?php get_footer();
+<?php get_footer(); ?>

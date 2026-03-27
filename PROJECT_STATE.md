@@ -27,7 +27,7 @@
 |---------|---------|
 | `style.css` | Header WP complet + reset Josh Comeau + skip-link, sr-only, focus-visible |
 | `theme.json` | Design system v3 : 5 font sizes fluid (clamp), 5 spacing fluid, 6 couleurs, layout contentSize/wideSize, styles éléments (h1-h6, button, link) |
-| `functions.php` | `greenlight_setup()` (add_theme_support), `greenlight_enqueue()` (style.css + deregister jQuery), `greenlight_disable_emojis()` (suppression des assets emoji WordPress côté front), `greenlight_block_styles()` (wp_enqueue_block_style), `greenlight_pattern_categories()` (Codex, 2026-03-27) |
+| `functions.php` | `greenlight_setup()` (add_theme_support, editor-styles + `add_editor_style('style.css')`), `greenlight_enqueue()` (style.css + deregister jQuery), `greenlight_disable_emojis()` (suppression des assets emoji WordPress côté front), `greenlight_block_styles()` (wp_enqueue_block_style), `greenlight_pattern_categories()` (Codex, 2026-03-27) |
 | `header.php` | DOCTYPE, charset, viewport, wp_head(), skip link, `<header>` + `<nav aria-label>` (wp_nav_menu sans container), `<main id="main-content">` |
 | `footer.php` | `</main>`, `<footer>` avec copyright dynamique (gmdate + bloginfo), wp_footer() |
 | `index.php` | Loop fallback : `<article>` sémantique, the_title/the_excerpt, the_posts_pagination() |
@@ -118,6 +118,15 @@ Objectif : proposer une interface visuelle minimaliste, éditable immédiatement
 | Style | Hiérarchie légère, surfaces sobres, espacements fluides, typographie lisible |
 | Gutenberg | Blocs prêts à être édités sans surcharge visuelle ni complexité structurelle |
 | Références | S’inspirer de `html_responsive_images.html` et `wordpress_responsive_images.php` pour le preload hero et les images responsives |
+
+### Phase 6B — Raffinement éditorial
+
+| Fichier | Contenu |
+|---------|---------|
+| `functions.php` | Helper `greenlight_get_archive_lead_text()` pour une accroche éditoriale contextuelle sur home, archives de taxonomie, archives de date et archives auteur (Codex, 2026-03-27) |
+| `archive.php` | Intro avec lead éditorial, note secondaire, premier article mis en avant, miniature optionnelle et liste allégée pour une lecture plus aérienne (Codex, 2026-03-27) |
+| `home.php` | Vraie page des articles WordPress calée sur le même traitement éditorial que les archives (Codex, 2026-03-27) |
+| `style.css` | Ajustements de hiérarchie, d’espacement et de surface pour un rendu monochrome plus premium et plus respirant (Codex, 2026-03-27) |
 
 ---
 

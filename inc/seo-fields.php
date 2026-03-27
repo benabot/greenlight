@@ -26,9 +26,18 @@ function greenlight_get_seo_post_types() {
 /**
  * Checks whether the current user can edit SEO meta.
  *
+ * @param mixed  $allowed Whether meta is currently allowed.
+ * @param string $meta_key Meta key.
+ * @param int    $post_id Post ID.
  * @return bool
  */
-function greenlight_can_edit_seo_meta() {
+function greenlight_can_edit_seo_meta( $allowed = null, $meta_key = '', $post_id = 0 ) {
+	$post_id = absint( $post_id );
+
+	if ( $post_id > 0 ) {
+		return current_user_can( 'edit_post', $post_id );
+	}
+
 	return current_user_can( 'edit_posts' );
 }
 
