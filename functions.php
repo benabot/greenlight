@@ -135,6 +135,180 @@ function greenlight_get_archive_lead_text( $context = 'archive' ) {
 }
 
 /**
+ * Returns the slug of the page assigned as the posts index, if any.
+ *
+ * @return string
+ */
+function greenlight_get_posts_page_slug() {
+	$posts_page_id = (int) get_option( 'page_for_posts' );
+
+	if ( $posts_page_id <= 0 ) {
+		return '';
+	}
+
+	$posts_page_slug = (string) get_post_field( 'post_name', $posts_page_id );
+
+	return sanitize_title( $posts_page_slug );
+}
+
+/**
+ * Returns whether the current request targets the articles index route.
+ *
+ * @return bool
+ */
+function greenlight_is_articles_index_request() {
+	if ( is_admin() || empty( $_SERVER['REQUEST_URI'] ) ) {
+		return false;
+	}
+
+	$request_path = wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH );
+
+	if ( ! is_string( $request_path ) || '' === $request_path ) {
+		return false;
+	}
+
+	$articles_path = wp_parse_url( home_url( '/articles/' ), PHP_URL_PATH );
+	$articles_path = is_string( $articles_path ) ? untrailingslashit( $articles_path ) : '/articles';
+	$request_path  = untrailingslashit( $request_path );
+
+	return $request_path === $articles_path || 0 === strpos( $request_path, $articles_path . '/page/' );
+}
+
+/**
+ * Registers a stable `/articles/` route for the blog index.
+ *
+ * @return void
+ */
+function greenlight_register_articles_index_rewrite_rules() {
+	add_rewrite_rule( '^articles/?$', 'index.php?greenlight_articles_index=1', 'top' );
+	add_rewrite_rule( '^articles/page/([0-9]+)/?$', 'index.php?greenlight_articles_index=1&paged=$matches[1]', 'top' );
+}
+add_action( 'init', 'greenlight_register_articles_index_rewrite_rules' );
+
+/**
+ * Exposes the custom blog index query var.
+ *
+ * @param string[] $vars Registered query vars.
+ * @return string[]
+ */
+function greenlight_register_articles_index_query_var( $vars ) {
+	$vars[] = 'greenlight_articles_index';
+
+	return $vars;
+}
+add_filter( 'query_vars', 'greenlight_register_articles_index_query_var' );
+
+/**
+ * Forces the blog query when `/articles/` is requested.
+ *
+ * @param WP_Query $query Current query object.
+ * @return void
+ */
+function greenlight_pre_get_articles_index_query( $query ) {
+	if ( is_admin() || ! $query->is_main_query() ) {
+		return;
+	}
+
+	if ( ! $query->get( 'greenlight_articles_index' ) && ! greenlight_is_articles_index_request() ) {
+		return;
+	}
+
+	$query->set( 'post_type', 'post' );
+	$query->set( 'ignore_sticky_posts', true );
+	$query->is_home = true;
+	$query->is_page = false;
+	$query->is_singular = false;
+	$query->is_archive = true;
+	$query->is_post_type_archive = false;
+	$query->is_404 = false;
+}
+add_action( 'pre_get_posts', 'greenlight_pre_get_articles_index_query' );
+
+/**
+ * Loads the posts index template for the custom `/articles/` route.
+ *
+ * @param string $template Template path.
+ * @return string
+ */
+function greenlight_template_include_articles_index( $template ) {
+	if ( get_query_var( 'greenlight_articles_index' ) || greenlight_is_articles_index_request() ) {
+		$articles_template = get_theme_file_path( 'home.php' );
+
+		if ( file_exists( $articles_template ) ) {
+			return $articles_template;
+		}
+	}
+
+	return $template;
+}
+add_filter( 'template_include', 'greenlight_template_include_articles_index' );
+
+/**
+ * Flush rewrite rules once so the articles index route resolves immediately.
+ *
+ * @return void
+ */
+function greenlight_maybe_flush_articles_rewrites() {
+	$version = (int) get_option( 'greenlight_articles_route_version', 0 );
+
+	if ( 1 === $version ) {
+		return;
+	}
+
+	greenlight_register_articles_index_rewrite_rules();
+	flush_rewrite_rules( false );
+	update_option( 'greenlight_articles_route_version', 1, false );
+}
+add_action( 'init', 'greenlight_maybe_flush_articles_rewrites', 20 );
+
+/**
+ * Routes the posts page slug to the blog index so it does not 404.
+ *
+ * @param array $query_vars Parsed request vars.
+ * @return array
+ */
+function greenlight_route_posts_page_request( $query_vars ) {
+	if ( is_admin() ) {
+		return $query_vars;
+	}
+
+	$posts_page_slug = greenlight_get_posts_page_slug();
+
+	if ( '' === $posts_page_slug ) {
+		return $query_vars;
+	}
+
+	$current_page_slug = '';
+
+	if ( isset( $query_vars['pagename'] ) ) {
+		$current_page_slug = sanitize_title( (string) $query_vars['pagename'] );
+	} elseif ( isset( $query_vars['name'] ) ) {
+		$current_page_slug = sanitize_title( (string) $query_vars['name'] );
+	}
+
+	if ( $current_page_slug !== $posts_page_slug ) {
+		return $query_vars;
+	}
+
+	$paged = isset( $query_vars['paged'] ) ? absint( $query_vars['paged'] ) : 0;
+
+	unset(
+		$query_vars['pagename'],
+		$query_vars['name'],
+		$query_vars['page_id'],
+	$query_vars['p'],
+		$query_vars['error']
+	);
+
+	if ( $paged > 1 ) {
+		$query_vars['paged'] = $paged;
+	}
+
+	return $query_vars;
+}
+add_filter( 'request', 'greenlight_route_posts_page_request' );
+
+/**
  * Enqueue block styles conditionally — loaded only when the block is present on the page.
  */
 function greenlight_block_styles() {
