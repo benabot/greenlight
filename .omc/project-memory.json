@@ -1,0 +1,203 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1774627915512,
+  "projectRoot": "/Users/benoitabot/Sites/greenlight/greenlight",
+  "techStack": {
+    "languages": [],
+    "frameworks": [],
+    "packageManager": null,
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {},
+  "hotPaths": [
+    {
+      "path": "TODO.md",
+      "accessCount": 7,
+      "lastAccessed": 1774629160254,
+      "type": "file"
+    },
+    {
+      "path": "functions.php",
+      "accessCount": 4,
+      "lastAccessed": 1774629146967,
+      "type": "file"
+    },
+    {
+      "path": "style.css",
+      "accessCount": 1,
+      "lastAccessed": 1774628086324,
+      "type": "file"
+    },
+    {
+      "path": "theme.json",
+      "accessCount": 1,
+      "lastAccessed": 1774628098022,
+      "type": "file"
+    },
+    {
+      "path": "header.php",
+      "accessCount": 1,
+      "lastAccessed": 1774628108478,
+      "type": "file"
+    },
+    {
+      "path": "footer.php",
+      "accessCount": 1,
+      "lastAccessed": 1774628111808,
+      "type": "file"
+    },
+    {
+      "path": "index.php",
+      "accessCount": 1,
+      "lastAccessed": 1774628116126,
+      "type": "file"
+    },
+    {
+      "path": "front-page.php",
+      "accessCount": 1,
+      "lastAccessed": 1774628313552,
+      "type": "file"
+    },
+    {
+      "path": "single.php",
+      "accessCount": 1,
+      "lastAccessed": 1774628318764,
+      "type": "file"
+    },
+    {
+      "path": "page.php",
+      "accessCount": 1,
+      "lastAccessed": 1774628320442,
+      "type": "file"
+    },
+    {
+      "path": "archive.php",
+      "accessCount": 1,
+      "lastAccessed": 1774628324536,
+      "type": "file"
+    },
+    {
+      "path": "search.php",
+      "accessCount": 1,
+      "lastAccessed": 1774628328606,
+      "type": "file"
+    },
+    {
+      "path": "404.php",
+      "accessCount": 1,
+      "lastAccessed": 1774628330262,
+      "type": "file"
+    },
+    {
+      "path": "comments.php",
+      "accessCount": 1,
+      "lastAccessed": 1774628334564,
+      "type": "file"
+    },
+    {
+      "path": "assets/css/blocks/navigation.css",
+      "accessCount": 1,
+      "lastAccessed": 1774628577055,
+      "type": "file"
+    },
+    {
+      "path": "assets/css/blocks/image.css",
+      "accessCount": 1,
+      "lastAccessed": 1774628578698,
+      "type": "file"
+    },
+    {
+      "path": "assets/css/blocks/heading.css",
+      "accessCount": 1,
+      "lastAccessed": 1774628579483,
+      "type": "file"
+    },
+    {
+      "path": "assets/css/blocks/paragraph.css",
+      "accessCount": 1,
+      "lastAccessed": 1774628581087,
+      "type": "file"
+    },
+    {
+      "path": "assets/css/blocks/separator.css",
+      "accessCount": 1,
+      "lastAccessed": 1774628582596,
+      "type": "file"
+    },
+    {
+      "path": "assets/css/blocks/button.css",
+      "accessCount": 1,
+      "lastAccessed": 1774628584925,
+      "type": "file"
+    },
+    {
+      "path": "assets/css/blocks/group.css",
+      "accessCount": 1,
+      "lastAccessed": 1774628586518,
+      "type": "file"
+    },
+    {
+      "path": "assets/css/blocks/query.css",
+      "accessCount": 1,
+      "lastAccessed": 1774628592134,
+      "type": "file"
+    },
+    {
+      "path": "patterns/hero.php",
+      "accessCount": 1,
+      "lastAccessed": 1774629109442,
+      "type": "file"
+    },
+    {
+      "path": "patterns/cards.php",
+      "accessCount": 1,
+      "lastAccessed": 1774629122756,
+      "type": "file"
+    },
+    {
+      "path": "patterns/contact.php",
+      "accessCount": 1,
+      "lastAccessed": 1774629129597,
+      "type": "file"
+    },
+    {
+      "path": "patterns/header.php",
+      "accessCount": 1,
+      "lastAccessed": 1774629134241,
+      "type": "file"
+    },
+    {
+      "path": "patterns/footer.php",
+      "accessCount": 1,
+      "lastAccessed": 1774629138602,
+      "type": "file"
+    },
+    {
+      "path": "PROJECT_STATE.md",
+      "accessCount": 1,
+      "lastAccessed": 1774629315522,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

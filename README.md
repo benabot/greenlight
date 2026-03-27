@@ -1,0 +1,179 @@
+# Greenlight
+
+Greenlight est un theme WordPress hybride, sobre et ecoresponsable, pense pour rester tres leger, accessible et maintenable.
+
+Le theme s inscrit dans une logique GreenIT: DOM leger, peu de code, peu de poids, peu de scripts, responsive simple a maintenir, et front-end original sans complexite inutile.
+
+## Objectif
+
+Le theme vise un socle technique simple et durable:
+
+- zero jQuery;
+- zero dependance front externe;
+- JavaScript front quasi nul;
+- compatibilite Gutenberg via `theme.json` v3 et patterns natifs;
+- responsive par HTML semantique, CSS moderne, flexbox ou grid selon le besoin, et valeurs fluides;
+- SEO natif sans plugin externe;
+- optimisation d images native;
+- code PHP propre, securise et traduisible.
+
+## Contraintes absolues
+
+1. Ne jamais ajouter de jQuery.
+2. Ne jamais introduire de dependance front externe.
+3. Ne jamais ajouter de JavaScript front sans necessite stricte.
+4. Garder un DOM minimal, sans wrappers inutiles.
+5. Prioriser `theme.json` avant le CSS custom.
+6. Garder le CSS au strict necessaire.
+7. Eviter les breakpoints tant que `clamp()`, `min()`, `max()`, flexbox ou grid suffisent.
+8. Maintenir l accessibilite comme exigence de base.
+9. Produire un theme compatible avec les standards WordPress actuels.
+10. Tout echapper, tout sanitiser, tout internationaliser.
+
+## Architecture cible
+
+```text
+greenlight/
+├── style.css
+├── theme.json
+├── functions.php
+├── index.php
+├── front-page.php
+├── single.php
+├── page.php
+├── archive.php
+├── search.php
+├── 404.php
+├── header.php
+├── footer.php
+├── comments.php
+├── screenshot.png
+├── inc/
+│   ├── seo.php
+│   ├── seo-fields.php
+│   ├── seo-json-ld.php
+│   ├── seo-sitemap.php
+│   ├── seo-settings.php
+│   ├── images.php
+│   └── images-settings.php
+├── patterns/
+│   ├── hero.php
+│   ├── cards.php
+│   ├── contact.php
+│   ├── header.php
+│   └── footer.php
+├── assets/
+│   ├── css/
+│   │   └── blocks/
+│   └── js/
+│       └── seo-sidebar.js
+└── TODO.md
+```
+
+## Standards de developpement
+
+### WordPress et PHP
+
+- Utiliser les API natives avant tout code custom.
+- Respecter les WordPress Coding Standards.
+- Prefixer les fonctions projet avec `greenlight_`.
+- Proteger les traitements admin avec nonce et controle de droits.
+- Echaper les sorties avec le bon `esc_*()` selon le contexte.
+- Sanitizer les entrees avec les fonctions WordPress adaptees.
+- Garder les responsabilites separees par fichier dans `inc/`.
+
+### HTML et accessibilite
+
+- Utiliser les balises semantiques natives.
+- Conserver un seul `main` par page.
+- Garder une hierarchie de titres coherente.
+- Fournir un skip link.
+- Rendre le focus visible.
+- Utiliser `aria-*` seulement quand cela apporte une information utile.
+
+### CSS
+
+- Mettre le design system dans `theme.json` autant que possible.
+- Garder `style.css` pour le reset et les regles globales strictement utiles.
+- Favoriser flexbox ou grid quand ils simplifient vraiment la mise en page, avec des tailles fluides.
+- Eviter les selecteurs profonds et les conventions de nommage lourdes.
+- Charger les styles de blocs de maniere conditionnelle quand c est pertinent.
+
+### JavaScript
+
+- Aucun JS front par defaut.
+- JS autorise uniquement si la valeur fonctionnelle est claire.
+- Cote editeur, reutiliser les packages WordPress deja fournis.
+
+## Fonctionnalites attendues
+
+### Socle du theme
+
+- activation immediate sans erreur PHP;
+- `title-tag`, `post-thumbnails`, `html5`, `editor-styles`, `wp-block-styles`, `align-wide`, `responsive-embeds`;
+- deregistration de jQuery cote front;
+- templates legers et markup semantique minimal.
+
+### Gutenberg
+
+- `theme.json` v3 complet;
+- styles globaux pilotant couleurs, typo, espacement et layout;
+- patterns natifs modifiables;
+- compatibilite avec l edition de contenu sans verrouiller la mise en page.
+
+### SEO natif
+
+- title SEO, meta description, noindex, image OG;
+- canonical;
+- Open Graph;
+- Twitter Card;
+- JSON-LD;
+- sitemap XML;
+- page de reglages SEO dans l admin.
+
+### Images
+
+- tailles d images utiles seulement;
+- suppression des tailles inutiles;
+- WebP si le serveur le permet;
+- strategie lazy/eager coherente;
+- preload de l image hero si necessaire.
+
+## Eco-conception GreenIT
+
+- DOM leger et structure minimale.
+- Theme le plus leger possible.
+- Front-end original mais facilement customisable.
+- Responsive pense pour limiter les ruptures de layout.
+- Breakpoints utilises seulement si la mise en page le demande vraiment.
+- Chaque ajout doit justifier son cout en poids, complexite et maintenabilite.
+
+## Workflow de developpement
+
+1. Verifier si WordPress fournit deja la fonctionnalite attendue.
+2. Stabiliser le modele de markup avant d ajouter du CSS.
+3. Definir ou ajuster `theme.json` avant le CSS custom.
+4. Garder les templates PHP courts et previsibles.
+5. Isoler le SEO et les images dans `inc/`.
+6. Ajouter les patterns seulement quand ils apportent une vraie reutilisation.
+7. Tester la sortie finale et simplifier ce qui peut l etre.
+
+## Validation minimale
+
+- theme activable sans erreur;
+- aucun jQuery charge sur le front;
+- front utilisable sans JavaScript;
+- HTML semantique et lisible;
+- navigation clavier correcte;
+- champs SEO propres et securises;
+- images chargees selon la bonne strategie;
+- compatibilite Gutenberg conservee;
+- code PHP et sorties maintenables.
+
+## Rappel de conduite
+
+Avant chaque ajout, se poser trois questions:
+
+1. WordPress sait-il deja faire cela nativement ?
+2. Le navigateur peut-il le faire sans JavaScript ?
+3. Peut-on le faire plus simple ?

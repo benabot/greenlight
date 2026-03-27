@@ -1,0 +1,191 @@
+# ============================================================================
+# Greenlight — .gitignore
+# WordPress theme repository developed with Claude Code and Codex
+# Scope: a theme repo, not a full WordPress install
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# OS / editor noise
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.code-workspace
+
+# ---------------------------------------------------------------------------
+# Logs / temp / debug
+# ---------------------------------------------------------------------------
+*.log
+logs/
+tmp/
+temp/
+.cache/
+eslintcache
+.stylelintcache
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---------------------------------------------------------------------------
+# Environment / secrets
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+auth.json
+secrets/
+*.sql
+*.sqlite
+*.sqlite3
+
+# ---------------------------------------------------------------------------
+# Dependency directories
+# Keep lock files versioned, ignore installed packages
+# ---------------------------------------------------------------------------
+node_modules/
+vendor/
+
+# ---------------------------------------------------------------------------
+# Build artifacts
+# Adjust if your final distributed CSS/JS is generated and must be committed
+# ---------------------------------------------------------------------------
+dist/
+build/
+coverage/
+.nyc_output/
+*.map
+
+# ---------------------------------------------------------------------------
+# Archives / exports
+# ---------------------------------------------------------------------------
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# ---------------------------------------------------------------------------
+# WordPress runtime files that should never live in a theme repo
+# ---------------------------------------------------------------------------
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
+wp-content/upgrade/
+wp-content/backup*
+wp-content/advanced-cache.php
+wp-content/object-cache.php
+debug.log
+error_log
+
+# ---------------------------------------------------------------------------
+# Theme runtime / generated assets
+# Ignore only generated or local files, never source files
+# ---------------------------------------------------------------------------
+assets/cache/
+assets/build/
+assets/dist/
+public/build/
+
+# Optional image optimization output directories
+# Uncomment if your workflow generates derivative files locally
+# assets/img/generated/
+# assets/images/generated/
+
+# ---------------------------------------------------------------------------
+# Test / QA outputs
+# ---------------------------------------------------------------------------
+playwright-report/
+test-results/
+tests/_output/
+.phpunit.result.cache
+
+# ---------------------------------------------------------------------------
+# Composer / PHP tooling local files
+# ---------------------------------------------------------------------------
+.php-cs-fixer.cache
+.phpunit.cache/
+phpstan.neon.local
+psalm.xml
+psalm-baseline.xml
+infection.log
+
+# ---------------------------------------------------------------------------
+# Local-only WordPress / Docker / DevOps overrides
+# Commit examples, ignore machine-specific overrides
+# ---------------------------------------------------------------------------
+docker-compose.override.yml
+compose.override.yml
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ---------------------------------------------------------------------------
+# Claude Code / Codex / AI tooling
+# Keep project instructions in git, ignore local state and secrets
+# ---------------------------------------------------------------------------
+
+# Claude Code
+.claude/local/
+.claude/cache/
+.claude/tmp/
+.claude/logs/
+.claude/*.local.md
+.claude/settings.local.json
+.claude/secrets/
+.claude/sessions/
+
+# Codex
+.codex/
+.codex/tmp/
+.codex/cache/
+.codex/logs/
+.codex/sessions/
+.codex/settings.local.json
+.codex/secrets/
+
+# Generic agent scratchpads
+.ai/
+.ai-cache/
+.prompts/tmp/
+.prompt-cache/
+
+# ---------------------------------------------------------------------------
+# Preserve shared project guidance
+# These should stay committed when present
+# ---------------------------------------------------------------------------
+!.claude/
+!.claude/commands/
+!.claude/skills/
+!.claude/*.md
+!CLAUDE.md
+!README.md
+!SKILLS.md
+!AGENTS.md
+
+# ---------------------------------------------------------------------------
+# Media and design source exceptions
+# Keep source design files out only if you explicitly decide so
+# Uncomment if needed
+# ---------------------------------------------------------------------------
+# *.psd
+# *.ai
+# *.sketch
+# *.fig
+
+# ---------------------------------------------------------------------------
+# Mac / Linux metadata inside theme assets
+# ---------------------------------------------------------------------------
+**/.DS_Store
