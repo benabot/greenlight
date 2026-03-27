@@ -95,6 +95,11 @@
 - [ ] README.md (installation, configuration, utilisation)
 - [ ] CHANGELOG.md
 
+## Environnement local ✓
+- [x] Diagnostic 404 généralisé : serveur nginx MAMP sans `try_files` WordPress (2026-03-28)
+- [x] Configuration nginx `/Applications/MAMP/conf/nginx/nginx.conf` : bloc `/greenlight/` avec `try_files` + `index` (2026-03-28)
+- [x] Symlink thème MAMP → repo git : `/themes/greenlight` → `/Users/benoitabot/Sites/greenlight/greenlight` (2026-03-28)
+
 ## Fait
 - [x] Planification du projet Greenlight (2025-03-27)
 - [x] Désactivation des scripts et styles emoji WordPress côté front dans `functions.php` (Codex, 2026-03-27)

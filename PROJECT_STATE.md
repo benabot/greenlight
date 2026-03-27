@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — Greenlight
 
-> État du projet au 27 mars 2026. Référence rapide pour reprendre le travail en contexte.
+> État du projet au 28 mars 2026. Référence rapide pour reprendre le travail en contexte.
 
 ---
 
@@ -190,6 +190,14 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 | **7 — Tests** | Lighthouse, PHPCS, W3C, VoiceOver, responsive 320→1920px |
 
 ---
+
+## Environnement local (2026-03-28)
+
+- **WordPress** : MAMP sur `localhost:8888/greenlight/` → `/Applications/MAMP/htdocs/greenlight/`
+- **Serveur** : nginx 1.27.2 (pas Apache — `.htaccess` inutile)
+- **Config nginx** : `/Applications/MAMP/conf/nginx/nginx.conf` — bloc `/greenlight/` ajouté avec `try_files $uri $uri/ /greenlight/index.php?$args`
+- **Thème** : symlink `/Applications/MAMP/htdocs/greenlight/wp-content/themes/greenlight` → `/Users/benoitabot/Sites/greenlight/greenlight`
+- **Source de vérité** : toujours `/Users/benoitabot/Sites/greenlight/greenlight`
 
 ## Commandes utiles
 
