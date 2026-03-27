@@ -21,14 +21,14 @@
 - [x] `comments.php` : commentaires accessibles
 - [x] Vérifier : aucun `<div>` non nécessaire, tout est balises sémantiques
 
-## Phase 3 — CSS éco-conçu
-- [ ] `style.css` : reset Josh Comeau + styles globaux minimaux (uniquement ce que theme.json ne gère pas)
-- [ ] `assets/css/blocks/` : styles par bloc (core/image, core/group, core/columns, etc.)
-- [ ] Enqueue conditionnel via `wp_enqueue_block_style()` dans functions.php
-- [ ] Layout responsive : flexbox + clamp() uniquement, zéro @media pour le layout
-- [ ] Focus visible sur tous les interactifs
-- [ ] `.sr-only`, `.skip-link`
-- [ ] Audit : compter les lignes de CSS total, objectif < 200 lignes hors reset
+## Phase 3 — CSS éco-conçu ✓
+- [x] `style.css` : reset Josh Comeau + styles globaux minimaux (uniquement ce que theme.json ne gère pas)
+- [x] `assets/css/blocks/` : styles par bloc (navigation, image, heading, paragraph, separator, button, group, query)
+- [x] Enqueue conditionnel via `wp_enqueue_block_style()` dans functions.php
+- [x] Layout responsive : flexbox + clamp() uniquement, zéro @media pour le layout
+- [x] Focus visible sur tous les interactifs
+- [x] `.sr-only`, `.skip-link`
+- [x] Audit : 155 lignes blocks + ~97 lignes fonctionnelles dans style.css — objectif < 200 ✓
 
 ## Phase 4 — Patterns Gutenberg
 - [ ] `patterns/hero.php` : image 16:9 + titre + texte + CTA — modifiable dans l'éditeur

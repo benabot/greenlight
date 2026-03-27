@@ -61,3 +61,29 @@ function greenlight_enqueue() {
 	wp_deregister_script( 'jquery' );
 }
 add_action( 'wp_enqueue_scripts', 'greenlight_enqueue' );
+
+/**
+ * Enqueue block styles conditionally — loaded only when the block is present on the page.
+ */
+function greenlight_block_styles() {
+	$blocks = array(
+		'core/navigation' => 'navigation',
+		'core/image'      => 'image',
+		'core/heading'    => 'heading',
+		'core/paragraph'  => 'paragraph',
+		'core/separator'  => 'separator',
+		'core/button'     => 'button',
+		'core/group'      => 'group',
+		'core/query'      => 'query',
+	);
+
+	foreach ( $blocks as $block => $file ) {
+		wp_enqueue_block_style( $block, array(
+			'handle' => 'greenlight-block-' . $file,
+			'src'    => get_theme_file_uri( 'assets/css/blocks/' . $file . '.css' ),
+			'path'   => get_theme_file_path( 'assets/css/blocks/' . $file . '.css' ),
+			'ver'    => filemtime( get_theme_file_path( 'assets/css/blocks/' . $file . '.css' ) ),
+		) );
+	}
+}
+add_action( 'init', 'greenlight_block_styles' );

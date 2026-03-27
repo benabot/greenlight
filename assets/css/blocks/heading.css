@@ -1,0 +1,8 @@
+/* Block: core/heading */
+
+.wp-block-heading {
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	line-height: 1.15;
+	font-feature-settings: 'kern' 1, 'liga' 1;
+}

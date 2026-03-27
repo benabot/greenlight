@@ -1,0 +1,13 @@
+/* Block: core/group */
+
+.wp-block-group.is-style-surface {
+	background: var(--wp--preset--color--surface);
+	padding: var(--wp--preset--spacing--md);
+}
+
+.wp-block-group.is-style-card {
+	background: var(--wp--preset--color--background);
+	border: 1px solid var(--wp--preset--color--border);
+	border-left: 3px solid var(--wp--preset--color--primary);
+	padding: var(--wp--preset--spacing--md);
+}

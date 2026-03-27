@@ -1,0 +1,21 @@
+/* Block: core/button */
+
+.wp-block-button__link {
+	border-radius: 0;
+	padding: var(--wp--preset--spacing--xs) var(--wp--preset--spacing--sm);
+	font-size: var(--wp--preset--font-size--small);
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	transition: background 0.15s ease, color 0.15s ease;
+}
+
+.wp-block-button.is-style-outline .wp-block-button__link {
+	background: transparent;
+	border: 1px solid var(--wp--preset--color--primary);
+	color: var(--wp--preset--color--primary);
+}
+
+.wp-block-button.is-style-outline .wp-block-button__link:hover {
+	background: var(--wp--preset--color--primary);
+	color: var(--wp--preset--color--background);
+}
