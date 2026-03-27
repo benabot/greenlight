@@ -30,14 +30,14 @@
 - [x] `.sr-only`, `.skip-link`
 - [x] Audit : 155 lignes blocks + ~97 lignes fonctionnelles dans style.css — objectif < 200 ✓
 
-## Phase 4 — Patterns Gutenberg
-- [ ] `patterns/hero.php` : image 16:9 + titre + texte + CTA — modifiable dans l'éditeur
-- [ ] `patterns/cards.php` : grille flexbox responsive — modifiable
-- [ ] `patterns/contact.php` : section formulaire
-- [ ] `patterns/header.php` : titre site + nav
-- [ ] `patterns/footer.php` : copyright + liens
-- [ ] Catégorie "Greenlight" dans l'inserter de patterns
-- [ ] Vérifier : tous les patterns sont modifiables à 100% dans Gutenberg
+## Phase 4 — Patterns Gutenberg ✓
+- [x] `patterns/hero.php` : titre xx-large + description + deux CTA (primary + outline)
+- [x] `patterns/cards.php` : grille 3 colonnes core/columns avec style "card" (border-left primary)
+- [x] `patterns/contact.php` : section contact avec formulaire HTML natif + nonce
+- [x] `patterns/header.php` : core/site-title + core/navigation (flex, space-between)
+- [x] `patterns/footer.php` : copyright dynamique + core/navigation secondaire
+- [x] Catégorie "Greenlight" enregistrée via register_block_pattern_category()
+- [x] Patterns auto-enregistrés via headers PHP (WP 6.0+), 100% modifiables dans Gutenberg
 
 ## Phase 5 — SEO autonome + champs éditables
 - [ ] `inc/seo.php` : meta tags via wp_head (title, description, robots)

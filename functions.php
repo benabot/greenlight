@@ -87,3 +87,14 @@ function greenlight_block_styles() {
 	}
 }
 add_action( 'init', 'greenlight_block_styles' );
+
+/**
+ * Register the Greenlight pattern category.
+ */
+function greenlight_pattern_categories() {
+	register_block_pattern_category( 'greenlight', array(
+		'label'       => __( 'Greenlight', 'greenlight' ),
+		'description' => __( 'Patterns du thème Greenlight.', 'greenlight' ),
+	) );
+}
+add_action( 'init', 'greenlight_pattern_categories' );
