@@ -8,7 +8,7 @@
 - [x] `index.php` : template fallback minimal (DOM léger)
 - [x] `header.php` : skip link + `<header>` + `<nav aria-label>` + wp_head() — zéro div wrapper
 - [x] `footer.php` : `<footer>` + wp_footer() — zéro div wrapper
-- [ ] `screenshot.png` 1200×900
+- [x] `screenshot.png` 1200×900 (Codex, 2026-03-27)
 - [ ] Valider : thème activable, Gutenberg charge theme.json, zéro jQuery côté front
 
 ## Phase 2 — Templates PHP (DOM minimal) ✓
@@ -40,48 +40,40 @@
 - [x] Patterns auto-enregistrés via headers PHP (WP 6.0+), 100% modifiables dans Gutenberg
 
 ## Phase 5 — SEO autonome + champs éditables
-- [ ] `inc/seo.php` : meta tags via wp_head (title, description, robots)
-- [ ] `inc/seo.php` : Open Graph (og:title, og:description, og:image, og:url, og:type)
-- [ ] `inc/seo.php` : Twitter Card (summary_large_image)
-- [ ] `inc/seo.php` : Canonical URL (archives, pagination, taxonomies)
-- [ ] `inc/seo-fields.php` : register_post_meta() pour les 4 champs SEO (show_in_rest: true)
-- [ ] `inc/seo-fields.php` : Meta box PHP natif (add_meta_box, save_post, nonce)
-- [ ] `assets/js/seo-sidebar.js` : Sidebar Gutenberg (PluginDocumentSettingPanel)
-  - [ ] Champ titre SEO (input text)
-  - [ ] Champ meta description (textarea avec compteur caractères)
-  - [ ] Champ image OG (MediaUpload)
-  - [ ] Toggle noindex (ToggleControl)
-  - [ ] Enqueue uniquement dans l'éditeur (enqueue_block_editor_assets)
-- [ ] `inc/seo-json-ld.php` : Schema.org via wp_footer
-  - [ ] WebSite (front-page)
-  - [ ] Article (single)
-  - [ ] BreadcrumbList (toutes les pages)
-- [ ] `inc/seo-sitemap.php` : sitemap XML natif
-  - [ ] Route /sitemap.xml + /sitemap-posts.xml + /sitemap-pages.xml
-  - [ ] Exclure noindex, brouillons, privés
-  - [ ] Cache transient (régénéré à chaque publish/update)
-- [ ] `inc/seo-settings.php` : page Apparence > Greenlight > SEO
-  - [ ] Titre du site pour les SERPs
-  - [ ] Description globale
-  - [ ] Séparateur titre
-  - [ ] Toggle sitemap
-  - [ ] Toggle noindex archives auteur / tags
-- [ ] Meta robots : noindex archives auteur, résultats recherche, pages de tags (configurable)
+- [x] `inc/seo.php` : meta tags via wp_head (title, description, robots) + Open Graph + Twitter Card + canonical URL (Codex, 2026-03-27)
+- [x] `inc/seo-fields.php` : register_post_meta() pour les 4 champs SEO, meta box PHP natif et enregistrement de la sidebar Gutenberg (Codex, 2026-03-27)
+  - [x] Champ titre SEO (input text) (Codex, 2026-03-27)
+  - [x] Champ meta description (textarea avec compteur caractères) (Codex, 2026-03-27)
+  - [x] Champ image OG (MediaUpload) (Codex, 2026-03-27)
+  - [x] Toggle noindex (ToggleControl) (Codex, 2026-03-27)
+  - [x] Enqueue uniquement dans l'éditeur (enqueue_block_editor_assets) (Codex, 2026-03-27)
+- [x] `inc/seo-json-ld.php` : Schema.org via wp_footer (WebSite, Article, BreadcrumbList) (Codex, 2026-03-27)
+- [x] `inc/seo-sitemap.php` : sitemap XML natif avec routes /sitemap.xml, /sitemap-posts.xml et /sitemap-pages.xml (Codex, 2026-03-27)
+  - [x] Exclure noindex, brouillons, privés (Codex, 2026-03-27)
+  - [x] Cache transient régénéré à chaque publish/update (Codex, 2026-03-27)
+- [x] `inc/seo-settings.php` : page Apparence > Greenlight > SEO (Codex, 2026-03-27)
+  - [x] Titre du site pour les SERPs (Codex, 2026-03-27)
+  - [x] Description globale (Codex, 2026-03-27)
+  - [x] Séparateur titre (Codex, 2026-03-27)
+  - [x] Toggle sitemap (Codex, 2026-03-27)
+  - [x] Toggle noindex archives auteur / tags (Codex, 2026-03-27)
+- [x] `assets/js/seo-sidebar.js` : Sidebar Gutenberg (PluginDocumentSettingPanel) (Codex, 2026-03-27)
+- [x] Meta robots : noindex archives auteur, résultats recherche, pages de tags (Codex, 2026-03-27)
 
 ## Phase 6 — Optimisation images
-- [ ] `inc/images.php` : tailles custom (greenlight-hero, greenlight-card, greenlight-thumb)
-- [ ] `inc/images.php` : remove_image_size() pour medium_large, 1536x1536, 2048x2048
-- [ ] `inc/images.php` : conversion WebP à l'upload (wp_handle_upload hook)
-  - [ ] Détecter support GD/Imagick
-  - [ ] Fallback gracieux si pas de support
-  - [ ] Conserver l'original + générer le WebP
-- [ ] `inc/images.php` : filtre wp_get_attachment_image_attributes pour lazy/eager automatique
-- [ ] `inc/images.php` : preload hero image dans wp_head
-- [ ] `inc/images-settings.php` : page Apparence > Greenlight > Images
-  - [ ] Toggle conversion WebP
-  - [ ] Qualité WebP (slider 1-100)
-  - [ ] Toggle suppression tailles inutiles
-  - [ ] Afficher espace disque économisé (info)
+- [x] `inc/images.php` : tailles custom (greenlight-hero, greenlight-card, greenlight-thumb) (Codex, 2026-03-27)
+- [x] `inc/images.php` : remove_image_size() pour medium_large, 1536x1536, 2048x2048 (Codex, 2026-03-27)
+- [x] `inc/images.php` : conversion WebP à l'upload (wp_handle_upload hook) (Codex, 2026-03-27)
+  - [x] Détecter support GD/Imagick (Codex, 2026-03-27)
+  - [x] Fallback gracieux si pas de support (Codex, 2026-03-27)
+  - [x] Conserver l'original + générer le WebP (Codex, 2026-03-27)
+- [x] `inc/images.php` : filtre wp_get_attachment_image_attributes pour lazy/eager automatique (Codex, 2026-03-27)
+- [x] `inc/images.php` : preload hero image dans wp_head (Codex, 2026-03-27)
+- [x] `inc/images-settings.php` : page Apparence > Greenlight > Images (Codex, 2026-03-27)
+  - [x] Toggle conversion WebP (Codex, 2026-03-27)
+  - [x] Qualité WebP (slider 1-100) (Codex, 2026-03-27)
+  - [x] Toggle suppression tailles inutiles (Codex, 2026-03-27)
+  - [x] Afficher espace disque économisé (info) (Codex, 2026-03-27)
 
 ## Phase 7 — Tests et finalisation
 - [ ] Lighthouse : perf ≥ 95, a11y ≥ 95, SEO ≥ 95, best practices ≥ 95
@@ -97,3 +89,7 @@
 
 ## Fait
 - [x] Planification du projet Greenlight (2025-03-27)
+- [x] Désactivation des scripts et styles emoji WordPress côté front dans `functions.php` (Codex, 2026-03-27)
+- [x] Phase 5 — SEO autonome + champs éditables terminée (Codex, 2026-03-27)
+- [x] Phase 6 — Optimisation images terminée (Codex, 2026-03-27)
+- [x] `screenshot.png` 1200×900 ajouté au thème (Codex, 2026-03-27)

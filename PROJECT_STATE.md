@@ -27,10 +27,11 @@
 |---------|---------|
 | `style.css` | Header WP complet + reset Josh Comeau + skip-link, sr-only, focus-visible |
 | `theme.json` | Design system v3 : 5 font sizes fluid (clamp), 5 spacing fluid, 6 couleurs, layout contentSize/wideSize, styles éléments (h1-h6, button, link) |
-| `functions.php` | `greenlight_setup()` (add_theme_support), `greenlight_enqueue()` (style.css + deregister jQuery), `greenlight_block_styles()` (wp_enqueue_block_style), `greenlight_pattern_categories()` |
+| `functions.php` | `greenlight_setup()` (add_theme_support), `greenlight_enqueue()` (style.css + deregister jQuery), `greenlight_disable_emojis()` (suppression des assets emoji WordPress côté front), `greenlight_block_styles()` (wp_enqueue_block_style), `greenlight_pattern_categories()` (Codex, 2026-03-27) |
 | `header.php` | DOCTYPE, charset, viewport, wp_head(), skip link, `<header>` + `<nav aria-label>` (wp_nav_menu sans container), `<main id="main-content">` |
 | `footer.php` | `</main>`, `<footer>` avec copyright dynamique (gmdate + bloginfo), wp_footer() |
 | `index.php` | Loop fallback : `<article>` sémantique, the_title/the_excerpt, the_posts_pagination() |
+| `screenshot.png` | Capture 1200×900 du thème Greenlight (Codex, 2026-03-27) |
 
 ### Phase 2 — Templates PHP
 
@@ -74,6 +75,24 @@ Auto-enregistrés via headers PHP (WP 6.0+), catégorie `greenlight` enregistré
 | `patterns/contact.php` | `greenlight/contact` | Group wide bg surface + h2 centré + formulaire HTML natif (admin-post.php + nonce WP) |
 | `patterns/header.php` | `greenlight/header` | Group full flex space-between : core/site-title bold -0.02em + core/navigation |
 | `patterns/footer.php` | `greenlight/footer` | Group full flex bg surface : copyright dynamique + core/navigation secondaire |
+
+### Phase 5 — SEO autonome
+
+| Fichier | Slug | Description |
+|---------|------|-------------|
+| `inc/seo.php` | `greenlight/seo` | Meta tags, Open Graph, Twitter Card, canonical, robots, title separator (Codex, 2026-03-27) |
+| `inc/seo-fields.php` | `greenlight/seo-fields` | Meta box native, `register_post_meta()`, sidebar Gutenberg (Codex, 2026-03-27) |
+| `inc/seo-json-ld.php` | `greenlight/seo-json-ld` | JSON-LD `WebSite`, `Article`, `BreadcrumbList` (Codex, 2026-03-27) |
+| `inc/seo-sitemap.php` | `greenlight/seo-sitemap` | Rewrite rules, sitemap XML, cache transient, noindex filtering (Codex, 2026-03-27) |
+| `inc/seo-settings.php` | `greenlight/seo-settings` | Page de réglages SEO sous Apparence > Greenlight (Codex, 2026-03-27) |
+| `assets/js/seo-sidebar.js` | `greenlight/seo-sidebar` | Panel Gutenberg `PluginDocumentSettingPanel` pour les métadonnées SEO (Codex, 2026-03-27) |
+
+### Phase 6 — Optimisation images
+
+| Fichier | Slug | Description |
+|---------|------|-------------|
+| `inc/images.php` | `greenlight/images` | Tailles `greenlight-hero`, `greenlight-card`, `greenlight-thumb`, suppression des tailles core inutiles, génération WebP, preload hero, attributs responsive images (Codex, 2026-03-27) |
+| `inc/images-settings.php` | `greenlight/images-settings` | Page de réglages Images sous Apparence > Greenlight avec toggle WebP, qualité, suppression tailles et infos espace économisé (Codex, 2026-03-27) |
 
 ---
 
@@ -120,12 +139,13 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 
 - [x] Zéro jQuery (`wp_deregister_script('jquery')` côté front)
 - [x] Zéro dépendance externe (CDN, polyfill, librairie)
-- [x] Quasi-zéro JS front (seul `seo-sidebar.js` prévu en Phase 5)
+- [x] Quasi-zéro JS front (seul `seo-sidebar.js` côté éditeur)
 - [x] DOM minimal — zéro `<div>` wrapper non sémantique
 - [x] CSS minimal — design system dans theme.json, styles blocs conditionnels
 - [x] Responsive sans `@media` — flexbox + clamp() uniquement
 - [x] i18n — toutes chaînes dans `__()` / `_e()` / `esc_html_e()` avec text domain `greenlight`
 - [x] Sécurité — `esc_*()` sur toute sortie PHP
+- [x] Emoji WordPress désactivés côté front via `greenlight_disable_emojis()` (Codex, 2026-03-27)
 
 ---
 
@@ -133,8 +153,6 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 
 | Phase | Tâches principales |
 |-------|--------------------|
-| **5 — SEO autonome** | `inc/seo.php` (meta, OG, canonical), `inc/seo-fields.php` (meta box + register_meta), `inc/seo-json-ld.php` (Schema.org), `inc/seo-sitemap.php`, `inc/seo-settings.php`, `assets/js/seo-sidebar.js` (Gutenberg panel) |
-| **6 — Images** | `inc/images.php` (tailles custom, WebP, lazy/eager), `inc/images-settings.php` |
 | **7 — Tests** | Lighthouse, PHPCS, W3C, VoiceOver, responsive 320→1920px |
 
 ---

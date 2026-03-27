@@ -5,6 +5,14 @@
  * @package Greenlight
  */
 
+require_once get_theme_file_path( 'inc/seo.php' );
+require_once get_theme_file_path( 'inc/seo-fields.php' );
+require_once get_theme_file_path( 'inc/seo-json-ld.php' );
+require_once get_theme_file_path( 'inc/seo-sitemap.php' );
+require_once get_theme_file_path( 'inc/seo-settings.php' );
+require_once get_theme_file_path( 'inc/images.php' );
+require_once get_theme_file_path( 'inc/images-settings.php' );
+
 /**
  * Sets up theme defaults and registers support for various WordPress features.
  */
@@ -61,6 +69,20 @@ function greenlight_enqueue() {
 	wp_deregister_script( 'jquery' );
 }
 add_action( 'wp_enqueue_scripts', 'greenlight_enqueue' );
+
+/**
+ * Disable WordPress emoji assets and filters on the front end.
+ */
+function greenlight_disable_emojis() {
+	remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+	remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+	remove_action( 'wp_print_styles', 'print_emoji_styles' );
+	remove_action( 'admin_print_styles', 'print_emoji_styles' );
+	remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+	remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+	remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+}
+add_action( 'init', 'greenlight_disable_emojis' );
 
 /**
  * Enqueue block styles conditionally — loaded only when the block is present on the page.
