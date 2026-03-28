@@ -83,6 +83,123 @@
 - [x] Référence de structure : s’inspirer de `html_responsive_images.html` et `wordpress_responsive_images.php` pour le preload hero, les images responsives et la hiérarchie de layout (Codex, 2026-03-27)
 - [x] Validation visuelle : interface éditable immédiatement, lisible sur mobile et desktop, sans complexifier l’architecture du thème (Codex, 2026-03-27)
 
+## Phase 6C — UI, Admin unifiée & Éco-optimisation
+
+> Branche : `feat/ui-improvement` depuis `dev`
+> Référence visuelle : maquettes EcoEditorial (page.png, single.png, index.png, archives.png)
+> Contrainte permanente : zéro jQuery, zéro dépendance externe, DOM minimal, CSS minimal
+
+### Volet A — Redesign visuel éditorial
+
+Objectif : aligner le rendu front sur l'esthétique "Organic Minimalism" des maquettes EcoEditorial — palette off-white/vert, typographie serrée, asymétrie, whitespace généreux, zéro bordure traditionnelle.
+
+- [ ] **Palette DESIGN.md** : mettre à jour `theme.json` — background `#faf9f4`, surface `#f4f4ee`, surface-alt `#ffffff`, text `#2f342d`, primary `#4c6547`, primary-dim `#41593c`, border `#afb3aa` (opacity 15%), tertiary `#e5f4c9`
+- [ ] **Header** : `header.php` — site-title à gauche, nav centrée, CTA Subscribe à droite (flex, `justify-content: space-between`, pas de div wrapper)
+- [ ] **Hero (front-page)** : `front-page.php` + pattern `hero.php` — titre surdimensionné (xx-large, letter-spacing -0.03em) aligné gauche, paragraphe descriptif aligné droite (asymétrie volontaire), Carbon Badge pill en haut
+- [ ] **Carbon Badge** : composant PHP `greenlight_carbon_badge()` — calcul simplifié (DOM count + poids estimé page) affiché en pill `tertiary-container`, surcharge manuelle possible via option admin
+- [ ] **Index/home** : `home.php` + `index.php` — premier article en layout 50/50 (image + texte via flex), articles suivants en alternance image gauche/droite, section newsletter CTA en bas (surface background)
+- [ ] **Single** : `single.php` — catégorie en pill + CO2 badge, titre large (xx-large), meta auteur + date en flex space-between, image hero pleine largeur, contenu 65ch, blockquote avec bordure gauche primary + italique, tags en pills, section newsletter en bas
+- [ ] **Archive** : `archive.php` — titre éditorial large, lead text, grille asymétrique (premier article large, suivants en 2 colonnes flex), pagination stylisée
+- [ ] **Footer** : `footer.php` — copyright + liens secondaires (flex wrap) + mention "Low Emission Mode" à droite, surface background
+- [ ] **Surfaces & profondeur** : CSS — pas de bordures 1px, différenciation par chromatic shifts (surfaces), ombres "Whisper Shadow" (`0 20px 40px rgba(47, 52, 45, 0.04)`) uniquement sur éléments flottants
+- [ ] **Boutons** : `assets/css/blocks/button.css` — primary `#4c6547` avec gradient satin 135deg vers `#41593c`, border-radius `md`, secondary en `secondary_container`, tertiary text-only underline
+- [ ] **Labels catégories** : uppercase, letter-spacing +0.05em, font-size `small`, couleur `on_surface_variant`
+- [ ] **Patterns mis à jour** : `hero.php`, `cards.php`, `contact.php`, `header.php`, `footer.php` — alignés sur la nouvelle palette et la direction esthétique
+- [ ] **`screenshot.png`** : nouvelle capture 1200×900 reflétant le redesign
+
+### Volet B — Interface admin unifiée "Greenlight"
+
+Objectif : regrouper tous les réglages du thème dans une page admin top-level unique avec onglets, tout en gardant temporairement les anciennes sous-pages.
+
+- [ ] **`inc/admin.php`** : `add_menu_page( 'Greenlight', 'Greenlight', 'manage_options', 'greenlight', ... )` — page principale avec navigation par onglets CSS-only (pas de JS admin supplémentaire)
+- [ ] **Icône menu** : SVG inline Dashicons-compatible (feuille verte ou éco-icône) encodée en base64 dans `add_menu_page`
+- [ ] **Onglet SEO** : reprend le contenu de `inc/seo-settings.php` existant, formulaire identique, même `option_group`
+- [ ] **Onglet Images** : reprend le contenu de `inc/images-settings.php` existant, formulaire identique, même `option_group`
+- [ ] **Onglet Performance** :
+  - [ ] Toggle minification CSS (active/désactive le chargement des `.min.css` ou le fallback PHP)
+  - [ ] Toggle minification JS (idem pour `.min.js`)
+  - [ ] Toggle page cache HTML (active/désactive le cache statique)
+  - [ ] Bouton "Purger le cache" (supprime les fichiers cache HTML + transients)
+  - [ ] Durée de vie du cache (select : 1h, 6h, 12h, 24h, 1 semaine)
+  - [ ] Affichage : nombre de pages cachées, taille totale du cache
+- [ ] **Onglet Apparence** :
+  - [ ] Sélecteurs de couleur pour : header bg, footer bg, primary, surface, text (via `wp_color_picker` côté admin uniquement)
+  - [ ] Toggle Carbon Badge (on/off + valeur manuelle optionnelle)
+  - [ ] Toggle section newsletter CTA (on/off dans footer/single)
+  - [ ] Choix layout archive : grille asymétrique / liste simple (radio)
+  - [ ] Choix style hero : asymétrique (titre gauche + texte droite) / centré (select)
+- [ ] **Onglet SVG** :
+  - [ ] Toggle autoriser l'upload SVG (actif/inactif)
+  - [ ] Info sécurité : mention DOMDocument sanitization
+- [ ] **Compatibilité** : les anciennes pages Apparence > Greenlight > SEO et Apparence > Greenlight > Images restent fonctionnelles temporairement (même options WP, pas de duplication de données)
+- [ ] **Sécurité admin** : nonce sur chaque formulaire, `current_user_can('manage_options')`, `sanitize_*()` sur chaque input
+- [ ] **i18n** : toutes les chaînes admin dans `__()` / `esc_html_e()` avec text domain `greenlight`
+
+### Volet C — Éco-optimisation (objectif EcoIndex A)
+
+Objectif : passer de EcoIndex B à A. Améliorer la compression, le cache, la minification et réduire les requêtes.
+
+- [ ] **Minification CLI** : script `bin/minify.sh` — minifie `style.css` → `style.min.css`, chaque `assets/css/blocks/*.css` → `*.min.css`, `assets/js/seo-sidebar.js` → `seo-sidebar.min.js` (sed/awk ou PHP CLI, pas de dépendance npm)
+- [ ] **Minification fallback PHP** : `inc/minify.php` — si le `.min` n'existe pas, minification à la volée via `str_replace` (suppression commentaires, whitespace, newlines) + cache transient du résultat
+- [ ] **Enqueue conditionnel** : `functions.php` — charger `.min.css`/`.min.js` si le fichier existe ET que l'option minification est active, sinon fallback sur le fichier source
+- [ ] **Page cache HTML** : `inc/cache.php`
+  - [ ] `ob_start()` dans `template_redirect`, écriture du buffer dans `wp-content/cache/greenlight/` en `.html`
+  - [ ] Servir le `.html` depuis `advanced-cache.php` ou early hook si le fichier existe et n'est pas expiré
+  - [ ] Exclure : admin, preview, POST requests, utilisateurs connectés, pages avec query string
+  - [ ] Purge auto sur `save_post`, `publish_post`, `edit_post`, `delete_post`, `switch_theme`
+  - [ ] Bouton purge manuelle dans l'onglet Performance
+  - [ ] Durée de vie configurable (option admin)
+- [ ] **Headers HTTP** : `inc/cache.php` — hook `send_headers` pour `Cache-Control`, `Expires`, `ETag` sur les assets statiques (CSS, JS, images, fonts)
+- [ ] **Compression** : documenter la config nginx recommandée pour gzip/brotli dans `README.md` (le thème ne gère pas la compression lui-même, c'est au serveur)
+- [ ] **Upload SVG** : `inc/svg.php`
+  - [ ] `greenlight_allow_svg_upload()` : filtre `upload_mimes` pour ajouter `image/svg+xml`
+  - [ ] `greenlight_sanitize_svg()` : hook `wp_handle_upload_prefilter`, sanitisation via `DOMDocument` (suppression scripts, événements JS, xlink malveillants)
+  - [ ] Conditionné au toggle SVG dans l'admin
+- [ ] **Nettoyage WP** : `functions.php` — supprimer `wp_generator`, RSD link, wlwmanifest, shortlink, feed links inutiles, REST API link du head (via `remove_action` sur `wp_head`)
+- [ ] **Audit DOM** : vérifier que chaque template type reste sous 80 éléments DOM — documenter le comptage dans `PROJECT_STATE.md`
+- [ ] **Inline Gutenberg** : compromis accepté — les global-styles inline restent, pas de dequeue agressif (préserver la compatibilité éditeur)
+- [ ] **Documentation nginx** : bloc recommandé dans `README.md` pour gzip, cache static assets, headers security, et `try_files` WordPress
+
+### Fichiers créés ou modifiés (Phase 6C)
+
+| Fichier | Volet | Action |
+|---------|-------|--------|
+| `theme.json` | A | Palette DESIGN.md, couleurs mises à jour |
+| `style.css` | A | Styles surfaces, ombres, boutons, labels |
+| `header.php` | A | Layout flex 3 zones |
+| `footer.php` | A | Layout flex copyright + nav + low emission |
+| `front-page.php` | A | Hero asymétrique + Carbon Badge |
+| `home.php` | A | Layout alternance + newsletter CTA |
+| `single.php` | A | Pills catégorie, meta flex, blockquote |
+| `archive.php` | A | Grille asymétrique, pagination |
+| `patterns/*.php` | A | Alignement nouvelle palette |
+| `assets/css/blocks/*.css` | A | Boutons, surfaces, labels |
+| `inc/admin.php` | B | Page admin principale + onglets |
+| `inc/svg.php` | C | Upload SVG + sanitisation DOMDocument |
+| `inc/minify.php` | C | Fallback minification PHP |
+| `inc/cache.php` | C | Page cache HTML + headers HTTP |
+| `bin/minify.sh` | C | Script CLI minification |
+| `functions.php` | A+B+C | Includes, enqueue conditionnel, nettoyage head |
+| `screenshot.png` | A | Nouvelle capture |
+| `README.md` | C | Config nginx recommandée |
+
+### Ordre d'implémentation recommandé
+
+1. **Volet A** d'abord (redesign visuel) — le plus visible, base pour le screenshot et les tests
+2. **Volet B** ensuite (admin unifiée) — regroupe les réglages, ajoute les toggles performance/SVG
+3. **Volet C** en dernier (éco-optimisation) — minification, cache, SVG, nettoyage — dépend des toggles du volet B
+
+### Commandes git
+
+```bash
+git checkout dev
+git checkout -b feat/ui-improvement
+# Travailler volet par volet, commit par volet
+git add -A && git commit -m "Phase 6C/A: Redesign visuel éditorial — palette DESIGN.md, templates, patterns"
+git add -A && git commit -m "Phase 6C/B: Interface admin unifiée Greenlight — onglets, réglages"
+git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cache, SVG, nettoyage head"
+```
+
 ## Phase 7 — Tests et finalisation
 - [ ] Lighthouse : perf ≥ 95, a11y ≥ 95, SEO ≥ 95, best practices ≥ 95
 - [ ] Theme Check plugin (conformité WordPress.org)

@@ -187,7 +187,56 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 
 | Phase | Tâches principales |
 |-------|--------------------|
+| **6C/A — Redesign visuel** | Palette DESIGN.md dans theme.json, templates front alignés sur esthétique EcoEditorial, patterns, Carbon Badge, surfaces, boutons |
+| **6C/B — Admin unifiée** | Page top-level Greenlight avec onglets (SEO, Images, Performance, Apparence, SVG), migration progressive |
+| **6C/C — Éco-optimisation** | Minification CLI + fallback PHP, page cache HTML, headers HTTP, upload SVG, nettoyage wp_head, audit DOM |
 | **7 — Tests** | Lighthouse, PHPCS, W3C, VoiceOver, responsive 320→1920px |
+
+---
+
+## Phase 6C — Décisions techniques (2026-03-28)
+
+### Minification
+- **Approche** : CLI (`bin/minify.sh`) génère les `.min.css`/`.min.js` en dev + fallback PHP (`inc/minify.php`) à la volée si `.min` absent
+- **Raison** : pas de build npm, pas de dépendance externe, CLI rapide en dev, fallback sécurise la prod
+
+### Cache
+- **Périmètre** : headers HTTP (`Cache-Control`, `Expires`, `ETag`) + page cache HTML statique (`wp-content/cache/greenlight/`)
+- **Purge** : automatique sur `save_post`/`publish_post`/`delete_post`/`switch_theme` + bouton manuel dans l'admin Greenlight
+- **Exclusions** : admin, preview, POST, utilisateurs connectés, query strings
+- **Durée** : configurable (1h à 1 semaine)
+
+### Inline Gutenberg
+- **Stratégie** : compromis — les `global-styles` inline et block-supports restent en place, pas de dequeue agressif
+- **Raison** : préserver la compatibilité éditeur Gutenberg, optimiser tout le reste
+
+### Admin
+- **Structure** : page top-level "Greenlight" avec onglets CSS-only (SEO, Images, Performance, Apparence, SVG)
+- **Migration** : anciennes sous-pages Apparence > Greenlight > SEO/Images gardées temporairement (même options WP)
+- **Pas de JS admin** supplémentaire (sauf `wp_color_picker` pour les sélecteurs de couleur)
+
+### SVG
+- **Sanitisation** : `DOMDocument` PHP natif — suppression scripts, événements JS, xlink malveillants
+- **Activation** : conditionnée au toggle dans l'onglet SVG de l'admin
+
+### Carbon Badge
+- **Calcul** : simplifié — comptage DOM (`DOMDocument` ou `substr_count`) + estimation poids page
+- **Affichage** : pill `tertiary-container` (#e5f4c9), texte `on_tertiary_container` (#505d3c)
+- **Surcharge** : valeur manuelle possible via option admin (onglet Apparence)
+
+### Direction esthétique Phase 6C/A
+- **Palette** : off-white `#faf9f4`, vert `#4c6547`, surfaces `#f4f4ee`, texte `#2f342d`
+- **Règle "No-Line"** : pas de bordures 1px pour le sectioning, chromatic shifts uniquement
+- **Ombres** : "Whisper Shadow" `0 20px 40px rgba(47, 52, 45, 0.04)` — couleur dérivée de on_surface, pas de noir pur
+- **Boutons** : gradient satin 135deg primary → primary-dim, border-radius md
+- **Labels** : uppercase, letter-spacing +0.05em, font-size small
+- **Asymétrie** : hero titre gauche / description droite, articles en alternance
+
+### Branche git
+```bash
+git checkout dev
+git checkout -b feat/ui-improvement
+```
 
 ---
 
