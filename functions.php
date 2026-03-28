@@ -13,6 +13,9 @@ require_once get_theme_file_path( 'inc/seo-settings.php' );
 require_once get_theme_file_path( 'inc/images.php' );
 require_once get_theme_file_path( 'inc/images-settings.php' );
 require_once get_theme_file_path( 'inc/admin.php' );
+require_once get_theme_file_path( 'inc/minify.php' );
+require_once get_theme_file_path( 'inc/cache.php' );
+require_once get_theme_file_path( 'inc/svg.php' );
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
@@ -60,12 +63,18 @@ add_action( 'after_setup_theme', 'greenlight_setup' );
  * Enqueue theme styles and deregister jQuery on the front end.
  */
 function greenlight_enqueue() {
-	// Enqueue main stylesheet with cache busting.
+	$perf    = get_option( 'greenlight_performance_options', array() );
+	$use_min = ! empty( $perf['enable_css_min'] );
+
+	$style_file = ( $use_min && file_exists( get_stylesheet_directory() . '/style.min.css' ) )
+		? 'style.min.css'
+		: 'style.css';
+
 	wp_enqueue_style(
 		'greenlight-style',
-		get_stylesheet_uri(),
+		get_stylesheet_directory_uri() . '/' . $style_file,
 		array(),
-		filemtime( get_stylesheet_directory() . '/style.css' )
+		filemtime( get_stylesheet_directory() . '/' . $style_file )
 	);
 
 	// Remove jQuery on the front end — zero JS policy.
@@ -86,6 +95,21 @@ function greenlight_disable_emojis() {
 	remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
 }
 add_action( 'init', 'greenlight_disable_emojis' );
+
+/**
+ * Supprime les balises inutiles dans <head> pour alléger le DOM et le poids de la page.
+ */
+function greenlight_clean_wp_head() {
+	remove_action( 'wp_head', 'wp_generator' );
+	remove_action( 'wp_head', 'rsd_link' );
+	remove_action( 'wp_head', 'wlwmanifest_link' );
+	remove_action( 'wp_head', 'wp_shortlink_wp_head', 10 );
+	remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10 );
+	remove_action( 'wp_head', 'rest_output_link_wp_head', 10 );
+	remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
+	remove_action( 'wp_head', 'feed_links_extra', 3 );
+}
+add_action( 'init', 'greenlight_clean_wp_head' );
 
 /**
  * Returns a short editorial lead for archive-like listings.
@@ -314,6 +338,9 @@ add_filter( 'request', 'greenlight_route_posts_page_request' );
  * Enqueue block styles conditionally — loaded only when the block is present on the page.
  */
 function greenlight_block_styles() {
+	$perf    = get_option( 'greenlight_performance_options', array() );
+	$use_min = ! empty( $perf['enable_css_min'] );
+
 	$blocks = array(
 		'core/navigation' => 'navigation',
 		'core/image'      => 'image',
@@ -326,11 +353,15 @@ function greenlight_block_styles() {
 	);
 
 	foreach ( $blocks as $block => $file ) {
+		$min_path = get_theme_file_path( 'assets/css/blocks/' . $file . '.min.css' );
+		$src_file = ( $use_min && file_exists( $min_path ) ) ? $file . '.min.css' : $file . '.css';
+		$abs_path = get_theme_file_path( 'assets/css/blocks/' . $src_file );
+
 		wp_enqueue_block_style( $block, array(
 			'handle' => 'greenlight-block-' . $file,
-			'src'    => get_theme_file_uri( 'assets/css/blocks/' . $file . '.css' ),
-			'path'   => get_theme_file_path( 'assets/css/blocks/' . $file . '.css' ),
-			'ver'    => filemtime( get_theme_file_path( 'assets/css/blocks/' . $file . '.css' ) ),
+			'src'    => get_theme_file_uri( 'assets/css/blocks/' . $src_file ),
+			'path'   => $abs_path,
+			'ver'    => filemtime( $abs_path ),
 		) );
 	}
 }
