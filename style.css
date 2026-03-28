@@ -765,7 +765,8 @@ body > main {
 	gap: var(--wp--preset--spacing--sm) var(--wp--preset--spacing--md);
 	padding-block: var(--wp--preset--spacing--md);
 	padding-inline: var(--wp--preset--spacing--md);
-	background: var(--wp--preset--color--surface);
+	/* Admin colour override via --greenlight-footer-bg, falls back to surface */
+	background: var(--greenlight-footer-bg, var(--wp--preset--color--surface));
 	width: 100%;
 }
 

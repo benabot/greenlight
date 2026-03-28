@@ -12,6 +12,7 @@ require_once get_theme_file_path( 'inc/seo-sitemap.php' );
 require_once get_theme_file_path( 'inc/seo-settings.php' );
 require_once get_theme_file_path( 'inc/images.php' );
 require_once get_theme_file_path( 'inc/images-settings.php' );
+require_once get_theme_file_path( 'inc/admin.php' );
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
@@ -355,8 +356,12 @@ add_action( 'init', 'greenlight_pattern_categories' );
  * @return string HTML string for the badge.
  */
 function greenlight_carbon_badge() {
-	$manual = get_option( 'greenlight_carbon_badge_value', '' );
-	$co2    = ( '' !== $manual ) ? esc_html( $manual ) : '0.2g';
+	// Check appearance options first (set via Greenlight admin), fall back to legacy option.
+	$appearance = get_option( 'greenlight_appearance_options', array() );
+	$manual     = isset( $appearance['carbon_badge_value'] ) && '' !== $appearance['carbon_badge_value']
+		? $appearance['carbon_badge_value']
+		: get_option( 'greenlight_carbon_badge_value', '' );
+	$co2        = ( '' !== $manual ) ? esc_html( $manual ) : '0.2g';
 
 	return '<span class="carbon-badge">' .
 		$co2 .
