@@ -258,8 +258,9 @@ git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cac
 - [ ] PHPCS WordPress Coding Standards
   - [x] Nettoyage ciblé sur `inc/admin.php` et `inc/seo-fields.php` (Codex, 2026-03-28)
   - [x] PHPCS global du thème sans erreurs ni warnings (Codex, 2026-03-28)
-- [ ] Validation W3C HTML (validator.w3.org)
-- [ ] Test VoiceOver macOS
+- [x] Validation W3C HTML sans erreur sur home et archive; seuls des avertissements informatifs restent sur les slashes des void elements (Codex, 2026-03-28)
+- [x] Vérification accessibilité proxy VoiceOver via Playwright: landmarks, skip link, focus clavier, arbre a11y cohérents (Codex, 2026-03-28)
+- [ ] Test VoiceOver macOS natif
 - [ ] Test responsive 320px → 1920px (pas de breakpoint cassé)
 - [ ] Test sans JavaScript (tout fonctionne côté front)
 - [ ] Compter : lignes de CSS, lignes de JS, taille totale du thème

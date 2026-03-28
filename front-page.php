@@ -39,9 +39,9 @@ if ( have_posts() ) :
 		<?php
 		if ( '' !== trim( (string) get_post_field( 'post_content', get_the_ID() ) ) ) :
 			?>
-			<section class="page-content">
+			<div class="page-content">
 				<?php the_content(); ?>
-			</section>
+			</div>
 			<?php
 		endif;
 	endwhile;

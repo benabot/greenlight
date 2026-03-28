@@ -203,7 +203,9 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 - [x] Lighthouse validé: perf 100, a11y 95, SEO 100, best practices 100
 - [x] Vérifications responsive 320px → 1920px et front sans JS validées dans Playwright
 - [x] Theme Check exécuté dans l’admin; warnings WordPress.org attendus sur des fonctions assumées du thème
-- [ ] W3C HTML et VoiceOver à exécuter
+- [x] W3C HTML validé sans erreur sur home et archive; seuls des avertissements informatifs sur les slashes des void elements persistent
+- [x] Vérification accessibilité proxy VoiceOver via Playwright: landmarks, skip link et focus clavier cohérents
+- [ ] Test VoiceOver macOS natif à exécuter
 
 ---
 

@@ -103,6 +103,23 @@ function greenlight_remove_core_image_sizes() {
 add_action( 'init', 'greenlight_remove_core_image_sizes', 20 );
 
 /**
+ * Disables WordPress auto sizes image markup on the front end.
+ *
+ * This keeps the rendered HTML/CSS validator-clean while leaving responsive
+ * image srcset support intact.
+ *
+ * @return void
+ */
+function greenlight_disable_wp_img_auto_sizes() {
+	if ( is_admin() ) {
+		return;
+	}
+
+	add_filter( 'wp_img_tag_add_auto_sizes', '__return_false' );
+}
+add_action( 'after_setup_theme', 'greenlight_disable_wp_img_auto_sizes' );
+
+/**
  * Returns whether WebP generation is available and enabled.
  *
  * @return bool
