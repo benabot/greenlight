@@ -47,9 +47,10 @@ function greenlight_setup() {
 	// Add support for wide alignment.
 	add_theme_support( 'align-wide' );
 
-	// Register primary navigation menu.
+	// Register navigation menus.
 	register_nav_menus( array(
 		'primary' => __( 'Primary Navigation', 'greenlight' ),
+		'footer'  => __( 'Footer Navigation', 'greenlight' ),
 	) );
 }
 add_action( 'after_setup_theme', 'greenlight_setup' );
@@ -344,3 +345,22 @@ function greenlight_pattern_categories() {
 	) );
 }
 add_action( 'init', 'greenlight_pattern_categories' );
+
+/**
+ * Returns the Carbon Badge HTML pill.
+ *
+ * Displays an eco-metric chip with estimated CO2 per page view.
+ * A manual override is possible via the `greenlight_carbon_badge_value` option.
+ *
+ * @return string HTML string for the badge.
+ */
+function greenlight_carbon_badge() {
+	$manual = get_option( 'greenlight_carbon_badge_value', '' );
+	$co2    = ( '' !== $manual ) ? esc_html( $manual ) : '0.2g';
+
+	return '<span class="carbon-badge">' .
+		$co2 .
+		' <abbr title="' . esc_attr__( 'dioxyde de carbone', 'greenlight' ) . '">CO₂</abbr>' .
+		esc_html__( '/vue', 'greenlight' ) .
+		'</span>';
+}

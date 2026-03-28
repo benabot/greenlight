@@ -88,33 +88,53 @@
 			"palette": [
 				{
 					"slug": "text",
-					"color": "#111111",
+					"color": "#2f342d",
 					"name": "Text"
 				},
 				{
 					"slug": "background",
-					"color": "#ffffff",
+					"color": "#faf9f4",
 					"name": "Background"
 				},
 				{
 					"slug": "surface",
-					"color": "#f5f5f5",
+					"color": "#f4f4ee",
 					"name": "Surface"
 				},
 				{
 					"slug": "surface-alt",
-					"color": "#e5e5e5",
+					"color": "#ffffff",
 					"name": "Surface Alt"
 				},
 				{
 					"slug": "primary",
-					"color": "#111111",
+					"color": "#4c6547",
 					"name": "Primary"
 				},
 				{
+					"slug": "primary-dim",
+					"color": "#41593c",
+					"name": "Primary Dim"
+				},
+				{
 					"slug": "border",
-					"color": "#d0d0d0",
+					"color": "#afb3aa",
 					"name": "Border"
+				},
+				{
+					"slug": "tertiary",
+					"color": "#e5f4c9",
+					"name": "Tertiary"
+				},
+				{
+					"slug": "on-tertiary",
+					"color": "#505d3c",
+					"name": "On Tertiary"
+				},
+				{
+					"slug": "on-surface-variant",
+					"color": "#5c6058",
+					"name": "On Surface Variant"
 				}
 			]
 		},
@@ -202,15 +222,15 @@
 			"button": {
 				"color": {
 					"background": "var(--wp--preset--color--primary)",
-					"text": "var(--wp--preset--color--background)"
+					"text": "var(--wp--preset--color--surface-alt)"
 				},
 				"typography": {
 					"fontSize": "var(--wp--preset--font-size--medium)"
 				},
 				":hover": {
 					"color": {
-						"background": "var(--wp--preset--color--text)",
-						"text": "var(--wp--preset--color--background)"
+						"background": "var(--wp--preset--color--primary-dim)",
+						"text": "var(--wp--preset--color--surface-alt)"
 					}
 				}
 			}
