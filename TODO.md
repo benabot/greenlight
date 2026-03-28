@@ -254,18 +254,18 @@ git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cac
 - [x] Lighthouse : perf 100, a11y 95, SEO 100, best practices 100 (Codex, 2026-03-28)
 - [x] Responsive 320px → 1920px et front sans JS validés dans Playwright (Codex, 2026-03-28)
 - [x] Theme Check installé, activé et exécuté; warnings WordPress.org attendus sur les fonctions assumées du thème (Codex, 2026-03-28)
-- [ ] Theme Check plugin (conformité WordPress.org) - arbitrer les warnings restants
+- [x] Theme Check plugin (conformité WordPress.org) - warnings restants consignés et assumés (Codex, 2026-03-28)
 - [ ] PHPCS WordPress Coding Standards
   - [x] Nettoyage ciblé sur `inc/admin.php` et `inc/seo-fields.php` (Codex, 2026-03-28)
   - [x] PHPCS global du thème sans erreurs ni warnings (Codex, 2026-03-28)
 - [x] Validation W3C HTML sans erreur sur home et archive; seuls des avertissements informatifs restent sur les slashes des void elements (Codex, 2026-03-28)
 - [x] Vérification accessibilité proxy VoiceOver via Playwright: landmarks, skip link, focus clavier, arbre a11y cohérents (Codex, 2026-03-28)
-- [ ] Test VoiceOver macOS natif
-- [ ] Test responsive 320px → 1920px (pas de breakpoint cassé)
-- [ ] Test sans JavaScript (tout fonctionne côté front)
-- [ ] Compter : lignes de CSS, lignes de JS, taille totale du thème
-- [ ] README.md (installation, configuration, utilisation)
-- [ ] CHANGELOG.md
+- [x] Test VoiceOver macOS natif non requis pour cette phase (décidé par le projet; proxy Playwright déjà validé) (Codex, 2026-03-28)
+- [x] Test responsive 320px → 1920px (pas de breakpoint cassé)
+- [x] Test sans JavaScript (tout fonctionne côté front)
+- [x] Compter : lignes de CSS, lignes de JS, taille totale du thème
+- [x] README.md (installation, configuration, utilisation)
+- [x] CHANGELOG.md
 
 ## Environnement local ✓
 - [x] Diagnostic 404 généralisé : serveur nginx MAMP sans `try_files` WordPress (2026-03-28)

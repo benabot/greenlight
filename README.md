@@ -139,6 +139,47 @@ greenlight/
 - strategie lazy/eager coherente;
 - preload de l image hero si necessaire.
 
+## Installation
+
+1. Installer WordPress sur le serveur local ou de preproduction.
+2. Placer le dossier `greenlight` dans `wp-content/themes/`, ou creer un symlink vers le repository si tu travailles en local.
+3. Activer le theme dans **Apparence > Themes**.
+4. Installer les dependances de qualite si tu veux lancer PHPCS localement:
+
+```bash
+composer install
+```
+
+## Configuration
+
+La configuration du theme se fait dans **Apparence > Greenlight**:
+
+- **SEO** : titre global, description globale, separator, sitemap, noindex archives;
+- **Images** : WebP, qualite, suppression des tailles inutiles;
+- **Performance** : minification, cache HTML, nettoyage du head;
+- **Apparence** : hero, single, archive, footer, surfaces et espacements;
+- **SVG** : sanitisation et validation des imports;
+- **Outils** : import/export JSON des reglages.
+
+Le cache HTML est ecrit dans `wp-content/cache/greenlight/`. Les fichiers minifies sont generes localement et ne doivent pas etre relies a une edition manuelle.
+
+## Utilisation
+
+- Modifier les contenus dans l editeur WordPress classique ou Gutenberg.
+- Regler le SEO par page ou article via la sidebar et la meta box.
+- Utiliser les patterns Greenlight pour construire les sections reutilisables.
+- Preferer les blocs natifs et les reglages globaux avant d ajouter du CSS supplementaire.
+- L interface front doit rester utilisable sans JavaScript cote visiteur.
+
+## Mesures
+
+Mesure prise sur la branche courante le 2026-03-28:
+
+- lignes CSS sources: 1150
+- lignes JS sources: 551
+- total CSS + JS sources: 1701
+- taille du theme hors `.git`, `.playwright-cli` et `vendor`: 772 KB
+
 ## Eco-conception GreenIT
 
 - DOM leger et structure minimale.

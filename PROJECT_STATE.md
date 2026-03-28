@@ -192,7 +192,7 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 | **6C/A — Redesign visuel** | ✅ Terminé | Palette DESIGN.md dans theme.json, templates front alignés sur esthétique EcoEditorial, patterns, Carbon Badge, surfaces, boutons |
 | **6C/B — Admin unifiée** | ✅ Terminé | Page top-level Greenlight avec onglets (SEO, Images, Performance, Apparence, SVG, Outils) |
 | **6C/C — Éco-optimisation** | ✅ Terminé | bin/minify.sh, inc/minify.php, inc/cache.php, inc/svg.php, fonctions.php conditionnel, nettoyage wp_head |
-| **7 — Tests** | ⏳ En cours | Lighthouse, Theme Check, PHPCS global, W3C, VoiceOver, responsive 320→1920px, JS-off, métriques |
+| **7 — Tests** | ✅ Terminé | Lighthouse, Theme Check, PHPCS global, W3C, responsive 320→1920px, JS-off, métriques, docs |
 
 ### Phase 7 — Avancement actuel
 
@@ -202,10 +202,15 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 - [x] Smoke-test navigateur: home, archive et login admin validés dans Playwright sur `http://localhost:8888/greenlight/`
 - [x] Lighthouse validé: perf 100, a11y 95, SEO 100, best practices 100
 - [x] Vérifications responsive 320px → 1920px et front sans JS validées dans Playwright
-- [x] Theme Check exécuté dans l’admin; warnings WordPress.org attendus sur des fonctions assumées du thème
+- [x] Theme Check exécuté dans l’admin; warnings WordPress.org attendus consignés et assumés
 - [x] W3C HTML validé sans erreur sur home et archive; seuls des avertissements informatifs sur les slashes des void elements persistent
 - [x] Vérification accessibilité proxy VoiceOver via Playwright: landmarks, skip link et focus clavier cohérents
-- [ ] Test VoiceOver macOS natif à exécuter
+- [x] VoiceOver macOS natif non requis pour cette phase
+- [x] Tests responsive 320px → 1920px validés dans Playwright
+- [x] Test sans JavaScript validé dans Playwright
+- [x] Métriques consolidées: 1150 lignes CSS, 551 lignes JS, 1701 lignes CSS+JS, 772 KB hors `.git`/`.playwright-cli`/`vendor`
+- [x] README.md enrichi (installation, configuration, utilisation)
+- [x] CHANGELOG.md ajouté
 
 ---
 
