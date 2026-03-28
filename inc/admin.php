@@ -736,228 +736,293 @@ function greenlight_render_admin_page() {
  * @return void
  */
 function greenlight_render_admin_tab_seo() {
-	$options = greenlight_get_seo_options();
-	?>
-	<form method="post" action="options.php">
-		<?php settings_fields( 'greenlight_seo' ); ?>
-		<table class="form-table" role="presentation">
-			<tr>
-				<th scope="row">
-					<label for="gl-site-title"><?php esc_html_e( 'Titre du site pour les SERP', 'greenlight' ); ?></label>
-				</th>
-				<td>
-					<input id="gl-site-title" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[site_title]" type="text" class="regular-text" value="<?php echo esc_attr( $options['site_title'] ); ?>">
-				</td>
-			</tr>
-			<tr>
-				<th scope="row">
-					<label for="gl-site-desc"><?php esc_html_e( 'Description globale', 'greenlight' ); ?></label>
-				</th>
-				<td>
-					<textarea id="gl-site-desc" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[site_description]" class="large-text" rows="4"><?php echo esc_textarea( $options['site_description'] ); ?></textarea>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row">
-					<label for="gl-title-sep"><?php esc_html_e( 'Séparateur de titre', 'greenlight' ); ?></label>
-				</th>
-				<td>
-					<input id="gl-title-sep" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[title_separator]" type="text" class="small-text" value="<?php echo esc_attr( $options['title_separator'] ); ?>">
-				</td>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Sitemap XML', 'greenlight' ); ?></th>
-				<td>
-					<label for="gl-sitemap">
-						<input id="gl-sitemap" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[enable_sitemap]" type="checkbox" value="1" <?php checked( (int) $options['enable_sitemap'], 1 ); ?>>
-						<?php esc_html_e( 'Activer le sitemap natif.', 'greenlight' ); ?>
-					</label>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Archives auteur', 'greenlight' ); ?></th>
-				<td>
-					<label for="gl-noindex-author">
-						<input id="gl-noindex-author" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[noindex_author_archives]" type="checkbox" value="1" <?php checked( (int) $options['noindex_author_archives'], 1 ); ?>>
-						<?php esc_html_e( 'Noindexer les archives auteur.', 'greenlight' ); ?>
-					</label>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Archives de tags', 'greenlight' ); ?></th>
-				<td>
-					<label for="gl-noindex-tags">
-						<input id="gl-noindex-tags" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[noindex_tag_archives]" type="checkbox" value="1" <?php checked( (int) $options['noindex_tag_archives'], 1 ); ?>>
-						<?php esc_html_e( 'Noindexer les archives de tags.', 'greenlight' ); ?>
-					</label>
-				</td>
-			</tr>
-		<tr>
-				<th scope="row"><?php esc_html_e( 'Fil d\'Ariane', 'greenlight' ); ?></th>
-				<td>
-					<label for="gl-breadcrumbs">
-						<input id="gl-breadcrumbs" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[show_breadcrumbs]" type="checkbox" value="1" <?php checked( ! empty( $options['show_breadcrumbs'] ), true ); ?>>
-						<?php esc_html_e( 'Afficher le fil d\'Ariane sur les pages et articles.', 'greenlight' ); ?>
-					</label>
-				</td>
-			</tr>
-			</table>
-		<?php submit_button(); ?>
-	</form>
-
-	<!-- Robots.txt -->
-	<h2><?php esc_html_e( 'Robots.txt personnalisé', 'greenlight' ); ?></h2>
-	<form method="post" action="options.php">
-		<?php settings_fields( 'greenlight_seo' ); ?>
-		<?php
-		// Re-read to populate hidden fields correctly for partial save.
-		foreach ( $options as $key => $value ) {
-			if ( 'custom_robots_txt' === $key || 'show_breadcrumbs' === $key ) {
-				continue;
-			}
-			if ( is_numeric( $value ) ) {
-				if ( (int) $value ) {
-					echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_SEO_OPTION_KEY ) . '[' . esc_attr( $key ) . ']" value="1">';
-				}
-			} else {
-				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_SEO_OPTION_KEY ) . '[' . esc_attr( $key ) . ']" value="' . esc_attr( $value ) . '">';
-			}
-		}
-		if ( ! empty( $options['show_breadcrumbs'] ) ) {
-			echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_SEO_OPTION_KEY ) . '[show_breadcrumbs]" value="1">';
-		}
-		?>
-		<table class="form-table" role="presentation">
-			<tr>
-				<th scope="row">
-					<label for="gl-robots-txt"><?php esc_html_e( 'Contenu robots.txt', 'greenlight' ); ?></label>
-				</th>
-				<td>
-					<textarea id="gl-robots-txt" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[custom_robots_txt]" class="large-text code" rows="8"><?php echo esc_textarea( ! empty( $options['custom_robots_txt'] ) ? $options['custom_robots_txt'] : greenlight_get_default_robots_txt() ); ?></textarea>
-					<p class="description"><?php esc_html_e( 'Laisser vide pour utiliser le robots.txt par défaut de WordPress. Le contenu remplace intégralement la sortie.', 'greenlight' ); ?></p>
-				</td>
-			</tr>
-		</table>
-		<?php submit_button( __( 'Enregistrer le robots.txt', 'greenlight' ) ); ?>
-	</form>
-
-	<!-- Redirections 301/302 -->
-	<h2><?php esc_html_e( 'Redirections', 'greenlight' ); ?></h2>
-	<?php
-	// phpcs:disable WordPress.Security.NonceVerification.Recommended
-	if ( isset( $_GET['redirect_added'] ) ) {
-		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Redirection ajoutée.', 'greenlight' ) . '</p></div>';
-	}
-	if ( isset( $_GET['redirect_deleted'] ) ) {
-		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Redirection supprimée.', 'greenlight' ) . '</p></div>';
-	}
-	if ( isset( $_GET['redirects_imported'] ) ) {
-		/* translators: %d: number of imported redirects. */
-		$redirects_imported_message = esc_html__( '%d redirection(s) importée(s).', 'greenlight' );
-		printf(
-			'<div class="notice notice-success is-dismissible"><p>' . esc_html( $redirects_imported_message ) . '</p></div>',
-			absint( $_GET['redirects_imported'] )
-		);
-	}
-	// phpcs:enable
-
+	$options   = greenlight_get_seo_options();
 	$redirects = get_option( 'greenlight_redirects', array() );
+	$log_404   = get_option( 'greenlight_404_log', array() );
+
 	if ( ! is_array( $redirects ) ) {
 		$redirects = array();
 	}
-
-	if ( ! empty( $redirects ) ) :
-		?>
-	<table class="widefat striped" style="max-width:800px">
-		<thead>
-			<tr>
-				<th><?php esc_html_e( 'Source', 'greenlight' ); ?></th>
-				<th><?php esc_html_e( 'Destination', 'greenlight' ); ?></th>
-				<th><?php esc_html_e( 'Code', 'greenlight' ); ?></th>
-				<th><?php esc_html_e( 'Hits', 'greenlight' ); ?></th>
-				<th><?php esc_html_e( 'Action', 'greenlight' ); ?></th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php foreach ( $redirects as $index => $rule ) : ?>
-			<tr>
-				<td><code><?php echo esc_html( $rule['source'] ); ?></code></td>
-				<td><?php echo esc_html( $rule['destination'] ); ?></td>
-				<td><?php echo esc_html( $rule['code'] ); ?></td>
-				<td><?php echo esc_html( isset( $rule['hits'] ) ? $rule['hits'] : 0 ); ?></td>
-				<td>
-					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline">
-						<input type="hidden" name="action" value="greenlight_delete_redirect">
-						<input type="hidden" name="redirect_index" value="<?php echo esc_attr( $index ); ?>">
-						<?php wp_nonce_field( 'greenlight_delete_redirect' ); ?>
-						<button type="submit" class="button button-link-delete button-small"><?php esc_html_e( 'Supprimer', 'greenlight' ); ?></button>
-					</form>
-				</td>
-			</tr>
-			<?php endforeach; ?>
-		</tbody>
-	</table>
-	<?php endif; ?>
-
-	<h3><?php esc_html_e( 'Ajouter une redirection', 'greenlight' ); ?></h3>
-	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-		<input type="hidden" name="action" value="greenlight_add_redirect">
-		<?php wp_nonce_field( 'greenlight_add_redirect' ); ?>
-		<table class="form-table" role="presentation">
-			<tr>
-				<th scope="row"><label for="gl-redirect-source"><?php esc_html_e( 'URL source', 'greenlight' ); ?></label></th>
-				<td><input id="gl-redirect-source" name="redirect_source" type="text" class="regular-text" placeholder="/ancienne-page"></td>
-			</tr>
-			<tr>
-				<th scope="row"><label for="gl-redirect-dest"><?php esc_html_e( 'URL destination', 'greenlight' ); ?></label></th>
-				<td><input id="gl-redirect-dest" name="redirect_destination" type="text" class="regular-text" placeholder="https://example.com/nouvelle-page"></td>
-			</tr>
-			<tr>
-				<th scope="row"><label for="gl-redirect-code"><?php esc_html_e( 'Code HTTP', 'greenlight' ); ?></label></th>
-				<td>
-					<select id="gl-redirect-code" name="redirect_code">
-						<option value="301"><?php esc_html_e( '301 — Permanent', 'greenlight' ); ?></option>
-						<option value="302"><?php esc_html_e( '302 — Temporaire', 'greenlight' ); ?></option>
-					</select>
-				</td>
-			</tr>
-		</table>
-		<?php submit_button( __( 'Ajouter', 'greenlight' ), 'secondary' ); ?>
-	</form>
-
-	<h3><?php esc_html_e( 'Importer des redirections (CSV)', 'greenlight' ); ?></h3>
-	<p class="description"><?php esc_html_e( 'Format : source,destination,code (une ligne par redirection).', 'greenlight' ); ?></p>
-	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data">
-		<input type="hidden" name="action" value="greenlight_import_redirects">
-		<?php wp_nonce_field( 'greenlight_import_redirects' ); ?>
-		<input type="file" name="redirects_csv" accept=".csv">
-		<?php submit_button( __( 'Importer', 'greenlight' ), 'secondary' ); ?>
-	</form>
-
-	<!-- Log 404 -->
-	<h2><?php esc_html_e( 'Log des erreurs 404', 'greenlight' ); ?></h2>
-	<?php
-	$log_404 = get_option( 'greenlight_404_log', array() );
 	if ( ! is_array( $log_404 ) ) {
 		$log_404 = array();
 	}
-
-	if ( empty( $log_404 ) ) {
-		echo '<p>' . esc_html__( 'Aucune erreur 404 enregistrée.', 'greenlight' ) . '</p>';
-	} else {
-		echo '<table class="widefat striped" style="max-width:800px"><thead><tr>';
-		echo '<th>' . esc_html__( 'URL', 'greenlight' ) . '</th>';
-		echo '<th>' . esc_html__( 'Date', 'greenlight' ) . '</th>';
-		echo '</tr></thead><tbody>';
-		foreach ( array_slice( $log_404, 0, 50 ) as $entry ) {
-			echo '<tr>';
-			echo '<td><code>' . esc_html( $entry['url'] ) . '</code></td>';
-			echo '<td>' . esc_html( $entry['time'] ) . '</td>';
-			echo '</tr>';
-		}
-		echo '</tbody></table>';
-	}
 	?>
+	<div class="greenlight-admin-tab-panel__intro">
+		<div>
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'SEO', 'greenlight' ); ?></p>
+			<h2><?php esc_html_e( 'Indexation et contrôle éditorial', 'greenlight' ); ?></h2>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Réglez les métadonnées, robots.txt et redirections dans une surface unique capable de remplacer plusieurs extensions.', 'greenlight' ); ?></p>
+		</div>
+	</div>
+
+	<div class="greenlight-admin-tab-panel__shell greenlight-admin-tab-panel__shell--seo">
+		<div class="greenlight-admin-tab-panel__column">
+			<section class="greenlight-admin-tab-panel__card">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Réglages essentiels', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Métadonnées globales', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Pilotez le titre, la description et les options d’indexation principales.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<form method="post" action="options.php">
+					<?php settings_fields( 'greenlight_seo' ); ?>
+					<table class="form-table" role="presentation">
+						<tr>
+							<th scope="row">
+								<label for="gl-site-title"><?php esc_html_e( 'Titre du site pour les SERP', 'greenlight' ); ?></label>
+							</th>
+							<td>
+								<input id="gl-site-title" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[site_title]" type="text" class="regular-text" value="<?php echo esc_attr( $options['site_title'] ); ?>">
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<label for="gl-site-desc"><?php esc_html_e( 'Description globale', 'greenlight' ); ?></label>
+							</th>
+							<td>
+								<textarea id="gl-site-desc" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[site_description]" class="large-text" rows="4"><?php echo esc_textarea( $options['site_description'] ); ?></textarea>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<label for="gl-title-sep"><?php esc_html_e( 'Séparateur de titre', 'greenlight' ); ?></label>
+							</th>
+							<td>
+								<input id="gl-title-sep" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[title_separator]" type="text" class="small-text" value="<?php echo esc_attr( $options['title_separator'] ); ?>">
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Sitemap XML', 'greenlight' ); ?></th>
+							<td>
+								<label for="gl-sitemap">
+									<input id="gl-sitemap" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[enable_sitemap]" type="checkbox" value="1" <?php checked( (int) $options['enable_sitemap'], 1 ); ?>>
+									<?php esc_html_e( 'Activer le sitemap natif.', 'greenlight' ); ?>
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Archives auteur', 'greenlight' ); ?></th>
+							<td>
+								<label for="gl-noindex-author">
+									<input id="gl-noindex-author" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[noindex_author_archives]" type="checkbox" value="1" <?php checked( (int) $options['noindex_author_archives'], 1 ); ?>>
+									<?php esc_html_e( 'Noindexer les archives auteur.', 'greenlight' ); ?>
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Archives de tags', 'greenlight' ); ?></th>
+							<td>
+								<label for="gl-noindex-tags">
+									<input id="gl-noindex-tags" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[noindex_tag_archives]" type="checkbox" value="1" <?php checked( (int) $options['noindex_tag_archives'], 1 ); ?>>
+									<?php esc_html_e( 'Noindexer les archives de tags.', 'greenlight' ); ?>
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Fil d\'Ariane', 'greenlight' ); ?></th>
+							<td>
+								<label for="gl-breadcrumbs">
+									<input id="gl-breadcrumbs" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[show_breadcrumbs]" type="checkbox" value="1" <?php checked( ! empty( $options['show_breadcrumbs'] ), true ); ?>>
+									<?php esc_html_e( 'Afficher le fil d\'Ariane sur les pages et articles.', 'greenlight' ); ?>
+								</label>
+							</td>
+						</tr>
+					</table>
+					<?php submit_button( __( 'Enregistrer les réglages SEO', 'greenlight' ) ); ?>
+				</form>
+			</section>
+
+			<section class="greenlight-admin-tab-panel__card">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Robots.txt', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Fichier personnalisé', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Le contenu remplace la sortie par défaut de WordPress.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<form method="post" action="options.php">
+					<?php settings_fields( 'greenlight_seo' ); ?>
+					<?php
+					foreach ( $options as $key => $value ) {
+						if ( 'custom_robots_txt' === $key || 'show_breadcrumbs' === $key ) {
+							continue;
+						}
+						if ( is_numeric( $value ) ) {
+							if ( (int) $value ) {
+								echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_SEO_OPTION_KEY ) . '[' . esc_attr( $key ) . ']" value="1">';
+							}
+						} else {
+							echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_SEO_OPTION_KEY ) . '[' . esc_attr( $key ) . ']" value="' . esc_attr( $value ) . '">';
+						}
+					}
+					if ( ! empty( $options['show_breadcrumbs'] ) ) {
+						echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_SEO_OPTION_KEY ) . '[show_breadcrumbs]" value="1">';
+					}
+					?>
+					<table class="form-table" role="presentation">
+						<tr>
+							<th scope="row">
+								<label for="gl-robots-txt"><?php esc_html_e( 'Contenu robots.txt', 'greenlight' ); ?></label>
+							</th>
+							<td>
+								<textarea id="gl-robots-txt" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[custom_robots_txt]" class="large-text code" rows="8"><?php echo esc_textarea( ! empty( $options['custom_robots_txt'] ) ? $options['custom_robots_txt'] : greenlight_get_default_robots_txt() ); ?></textarea>
+								<p class="description"><?php esc_html_e( 'Laisser vide pour utiliser le robots.txt par défaut de WordPress.', 'greenlight' ); ?></p>
+							</td>
+						</tr>
+					</table>
+					<?php submit_button( __( 'Enregistrer le robots.txt', 'greenlight' ) ); ?>
+				</form>
+			</section>
+
+			<section class="greenlight-admin-tab-panel__card">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Redirections', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Règles 301 et 302', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Gardez les changements d’URL visibles et rapides à maintenir.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<?php
+				// phpcs:disable WordPress.Security.NonceVerification.Recommended
+				if ( isset( $_GET['redirect_added'] ) ) {
+					echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Redirection ajoutée.', 'greenlight' ) . '</p></div>';
+				}
+				if ( isset( $_GET['redirect_deleted'] ) ) {
+					echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Redirection supprimée.', 'greenlight' ) . '</p></div>';
+				}
+				if ( isset( $_GET['redirects_imported'] ) ) {
+					/* translators: %d: number of imported redirects. */
+					$redirects_imported_message = esc_html__( '%d redirection(s) importée(s).', 'greenlight' );
+					printf(
+						'<div class="notice notice-success is-dismissible"><p>' . esc_html( $redirects_imported_message ) . '</p></div>',
+						absint( $_GET['redirects_imported'] )
+					);
+				}
+				// phpcs:enable
+
+				if ( ! empty( $redirects ) ) :
+					?>
+					<table class="widefat striped">
+						<thead>
+							<tr>
+								<th><?php esc_html_e( 'Source', 'greenlight' ); ?></th>
+								<th><?php esc_html_e( 'Destination', 'greenlight' ); ?></th>
+								<th><?php esc_html_e( 'Code', 'greenlight' ); ?></th>
+								<th><?php esc_html_e( 'Hits', 'greenlight' ); ?></th>
+								<th><?php esc_html_e( 'Action', 'greenlight' ); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ( $redirects as $index => $rule ) : ?>
+								<tr>
+									<td><code><?php echo esc_html( $rule['source'] ); ?></code></td>
+									<td><?php echo esc_html( $rule['destination'] ); ?></td>
+									<td><?php echo esc_html( $rule['code'] ); ?></td>
+									<td><?php echo esc_html( isset( $rule['hits'] ) ? $rule['hits'] : 0 ); ?></td>
+									<td>
+										<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+											<input type="hidden" name="action" value="greenlight_delete_redirect">
+											<input type="hidden" name="redirect_index" value="<?php echo esc_attr( $index ); ?>">
+											<?php wp_nonce_field( 'greenlight_delete_redirect' ); ?>
+											<button type="submit" class="button button-link-delete button-small"><?php esc_html_e( 'Supprimer', 'greenlight' ); ?></button>
+										</form>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				<?php else : ?>
+					<p class="description"><?php esc_html_e( 'Aucune redirection enregistrée.', 'greenlight' ); ?></p>
+				<?php endif; ?>
+
+				<h4><?php esc_html_e( 'Ajouter une redirection', 'greenlight' ); ?></h4>
+				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+					<input type="hidden" name="action" value="greenlight_add_redirect">
+					<?php wp_nonce_field( 'greenlight_add_redirect' ); ?>
+					<table class="form-table" role="presentation">
+						<tr>
+							<th scope="row"><label for="gl-redirect-source"><?php esc_html_e( 'URL source', 'greenlight' ); ?></label></th>
+							<td><input id="gl-redirect-source" name="redirect_source" type="text" class="regular-text" placeholder="/ancienne-page"></td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="gl-redirect-dest"><?php esc_html_e( 'URL destination', 'greenlight' ); ?></label></th>
+							<td><input id="gl-redirect-dest" name="redirect_destination" type="text" class="regular-text" placeholder="https://example.com/nouvelle-page"></td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="gl-redirect-code"><?php esc_html_e( 'Code HTTP', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-redirect-code" name="redirect_code">
+									<option value="301"><?php esc_html_e( '301 — Permanent', 'greenlight' ); ?></option>
+									<option value="302"><?php esc_html_e( '302 — Temporaire', 'greenlight' ); ?></option>
+								</select>
+							</td>
+						</tr>
+					</table>
+					<?php submit_button( __( 'Ajouter', 'greenlight' ), 'secondary' ); ?>
+				</form>
+
+				<h4><?php esc_html_e( 'Importer des redirections (CSV)', 'greenlight' ); ?></h4>
+				<p class="description"><?php esc_html_e( 'Format : source,destination,code (une ligne par redirection).', 'greenlight' ); ?></p>
+				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data">
+					<input type="hidden" name="action" value="greenlight_import_redirects">
+					<?php wp_nonce_field( 'greenlight_import_redirects' ); ?>
+					<input type="file" name="redirects_csv" accept=".csv">
+					<?php submit_button( __( 'Importer', 'greenlight' ), 'secondary' ); ?>
+				</form>
+			</section>
+		</div>
+
+		<aside class="greenlight-admin-tab-panel__column">
+			<section class="greenlight-admin-tab-panel__card greenlight-admin-tab-panel__card--soft">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Signal SEO', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'État de l’indexation', 'greenlight' ); ?></h3>
+					</div>
+				</div>
+				<ul class="greenlight-admin-tab-panel__list">
+					<?php /* translators: 1: sitemap status. */ ?>
+					<li><?php echo esc_html( sprintf( __( 'Sitemap XML : %s', 'greenlight' ), ! empty( $options['enable_sitemap'] ) ? __( 'actif', 'greenlight' ) : __( 'désactivé', 'greenlight' ) ) ); ?></li>
+					<?php /* translators: 1: breadcrumb status. */ ?>
+					<li><?php echo esc_html( sprintf( __( 'Fil d’Ariane : %s', 'greenlight' ), ! empty( $options['show_breadcrumbs'] ) ? __( 'actif', 'greenlight' ) : __( 'désactivé', 'greenlight' ) ) ); ?></li>
+					<?php /* translators: 1: redirect count. */ ?>
+					<li><?php echo esc_html( sprintf( __( 'Redirections : %d', 'greenlight' ), count( $redirects ) ) ); ?></li>
+					<?php /* translators: 1: 404 log count. */ ?>
+					<li><?php echo esc_html( sprintf( __( '404 récents : %d', 'greenlight' ), count( $log_404 ) ) ); ?></li>
+				</ul>
+			</section>
+
+			<section class="greenlight-admin-tab-panel__card greenlight-admin-tab-panel__card--soft">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Logs 404', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Erreurs récentes', 'greenlight' ); ?></h3>
+					</div>
+				</div>
+				<?php if ( empty( $log_404 ) ) : ?>
+					<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Aucune erreur 404 enregistrée.', 'greenlight' ); ?></p>
+				<?php else : ?>
+					<table class="widefat striped">
+						<thead>
+							<tr>
+								<th><?php esc_html_e( 'URL', 'greenlight' ); ?></th>
+								<th><?php esc_html_e( 'Date', 'greenlight' ); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ( array_slice( $log_404, 0, 50 ) as $entry ) : ?>
+								<tr>
+									<td><code><?php echo esc_html( $entry['url'] ); ?></code></td>
+									<td><?php echo esc_html( $entry['time'] ); ?></td>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				<?php endif; ?>
+			</section>
+		</aside>
+	</div>
 	<?php
 }
 
@@ -1208,7 +1273,25 @@ function greenlight_render_admin_tab_performance() {
 	}
 	// phpcs:enable
 	?>
-	<form method="post" action="options.php">
+	<div class="greenlight-admin-tab-panel__intro">
+		<div>
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Performance', 'greenlight' ); ?></p>
+			<h2><?php esc_html_e( 'Cache, minification et maintenance', 'greenlight' ); ?></h2>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Consolidez la vitesse, le cache et le nettoyage dans un seul outil d’éco-optimisation.', 'greenlight' ); ?></p>
+		</div>
+	</div>
+
+	<div class="greenlight-admin-tab-panel__shell greenlight-admin-tab-panel__shell--performance">
+		<div class="greenlight-admin-tab-panel__column">
+			<section class="greenlight-admin-tab-panel__card">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Optimisation de base', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Minification et cache HTML', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Activez les optimisations à la source avant de diffuser les fichiers générés.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<form method="post" action="options.php">
 		<?php settings_fields( 'greenlight_performance' ); ?>
 		<table class="form-table" role="presentation">
 			<tr>
@@ -1261,7 +1344,7 @@ function greenlight_render_admin_tab_performance() {
 			</tr>
 		</table>
 		<?php submit_button(); ?>
-	</form>
+				</form>
 
 	<h2><?php esc_html_e( 'Statut de la minification', 'greenlight' ); ?></h2>
 	<?php
@@ -1290,6 +1373,17 @@ function greenlight_render_admin_tab_performance() {
 		<?php wp_nonce_field( 'greenlight_regen_min' ); ?>
 		<button type="submit" class="button button-secondary"><?php esc_html_e( 'Supprimer les fichiers minifiés (régénération au prochain chargement)', 'greenlight' ); ?></button>
 	</form>
+
+			</section>
+		</div>
+		<aside class="greenlight-admin-tab-panel__column">
+			<section class="greenlight-admin-tab-panel__card greenlight-admin-tab-panel__card--soft">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Cache HTML', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'État actuel', 'greenlight' ); ?></h3>
+					</div>
+				</div>
 
 	<h2><?php esc_html_e( 'Statut du cache HTML', 'greenlight' ); ?></h2>
 	<p>
@@ -1327,6 +1421,10 @@ function greenlight_render_admin_tab_performance() {
 		) . '</p>';
 	}
 	?>
+
+			</section>
+
+			<section class="greenlight-admin-tab-panel__card">
 
 	<!-- Critical CSS -->
 	<h2><?php esc_html_e( 'Critical CSS', 'greenlight' ); ?></h2>
@@ -1558,6 +1656,9 @@ function greenlight_render_admin_tab_performance() {
 		</table>
 		<?php submit_button( __( 'Enregistrer', 'greenlight' ), 'secondary' ); ?>
 	</form>
+			</section>
+		</aside>
+	</div>
 	<?php
 }
 

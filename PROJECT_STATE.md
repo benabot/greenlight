@@ -219,7 +219,7 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 - [x] Navigation admin numérotée et stylée pour remplacer les `nav-tab` natives
 - [x] Mini design system admin ajouté dans `assets/css/admin-ui.css`
 - [x] Aucune logique métier modifiée dans les handlers existants
-- [ ] Refonte des onglets `SEO` et `Performance`
+- [x] Refonte des onglets `SEO` et `Performance`
 - [ ] Extension du shell aux onglets `Images`, `Apparence`, `SVG`, `Outils`
 
 ---

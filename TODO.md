@@ -286,8 +286,8 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 - [x] Refaire le shell global de la page Greenlight : header, baseline, métriques synthétiques, largeur utile, surfaces
 - [x] Remplacer les `nav-tab` WordPress par une navigation premium custom, en conservant le routing `?tab=...`
 - [x] Créer un mini design system admin réutilisable : cartes, badges d'état, lignes de réglages, tables, aside, CTA
-- [ ] Refondre l'onglet `SEO` en cockpit éditorial premium, sans changer ses formulaires ni ses handlers
-- [ ] Refondre l'onglet `Performance` en cockpit technique premium, sans changer ses formulaires ni ses handlers
+- [x] Refondre l'onglet `SEO` en cockpit éditorial premium, sans changer ses formulaires ni ses handlers
+- [x] Refondre l'onglet `Performance` en cockpit technique premium, sans changer ses formulaires ni ses handlers
 - [ ] Préserver intégralement les actions existantes : robots.txt, redirections, cache, cleanup, heartbeat, fichiers générés
 
 ### Phase 8B — Apparence, Images, SVG, Outils
