@@ -292,8 +292,10 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 
 ### Phase 8B — Apparence, Images, SVG, Outils
 
-- [ ] Étendre le shell premium aux onglets `Images`, `Apparence`, `SVG`, `Outils`
-- [ ] Refaire l'onglet `Apparence` avec une meilleure intégration de la prévisualisation iframe
+- [x] Étendre le shell premium aux onglets `Images` et `Apparence`
+- [ ] Étendre le shell premium aux onglets `SVG`, `Outils`
+- [x] Refaire l'onglet `Apparence` avec une meilleure intégration de la prévisualisation iframe
+- [x] Refaire l'onglet `Images` avec une mise en avant des stats de stockage et du bulk
 - [ ] Uniformiser les tableaux, formulaires secondaires et zones d'actions sensibles
 - [ ] Vérifier le responsive admin sur laptop et écrans étroits
 
@@ -303,7 +305,7 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 - [ ] Aucune régression sur les formulaires `options.php`, `admin-post.php` et `admin-ajax.php`
 - [ ] Aucun changement du rendu front
 - [ ] PHPCS et `php -l` sur les fichiers PHP modifiés
-- [ ] Smoke test navigateur sur `SEO`, `Performance`, `Apparence`
+- [ ] Smoke test navigateur sur `SEO`, `Performance`, `Images`, `Apparence`
 
 ## Environnement local ✓
 - [x] Diagnostic 404 généralisé : serveur nginx MAMP sans `try_files` WordPress (2026-03-28)

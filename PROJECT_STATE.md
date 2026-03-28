@@ -189,7 +189,7 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 
 | Phase | Statut | Tâches principales |
 |-------|--------|--------------------|
-| **8 — Admin UI premium** | 🟡 En cours | Shell premium, navigation numérotée, mini design system admin, refonte progressive des onglets SEO / Performance / Apparence / Images / SVG / Outils |
+| **8 — Admin UI premium** | 🟡 En cours | Shell premium, navigation numérotée, mini design system admin, refonte progressive des onglets SEO / Performance / Images / Apparence / SVG / Outils |
 | **6C/A — Redesign visuel** | ✅ Terminé | Palette DESIGN.md dans theme.json, templates front alignés sur esthétique EcoEditorial, patterns, Carbon Badge, surfaces, boutons |
 | **6C/B — Admin unifiée** | ✅ Terminé | Page top-level Greenlight avec onglets (SEO, Images, Performance, Apparence, SVG, Outils) |
 | **6C/C — Éco-optimisation** | ✅ Terminé | bin/minify.sh, inc/minify.php, inc/cache.php, inc/svg.php, fonctions.php conditionnel, nettoyage wp_head |
@@ -220,7 +220,8 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 - [x] Mini design system admin ajouté dans `assets/css/admin-ui.css`
 - [x] Aucune logique métier modifiée dans les handlers existants
 - [x] Refonte des onglets `SEO` et `Performance`
-- [ ] Extension du shell aux onglets `Images`, `Apparence`, `SVG`, `Outils`
+- [x] Extension du shell aux onglets `Images` et `Apparence`
+- [ ] Extension du shell aux onglets `SVG`, `Outils`
 
 ---
 
