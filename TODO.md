@@ -253,8 +253,8 @@ git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cac
 - [x] Smoke-test navigateur: home, archive et login admin OK dans Playwright sur `http://localhost:8888/greenlight/` (Codex, 2026-03-28)
 - [x] Lighthouse : perf 100, a11y 95, SEO 100, best practices 100 (Codex, 2026-03-28)
 - [x] Responsive 320px → 1920px et front sans JS validés dans Playwright (Codex, 2026-03-28)
-- [ ] Confirmer la présence de l’extension Theme Check dans l’admin
-- [ ] Theme Check plugin (conformité WordPress.org)
+- [x] Theme Check installé, activé et exécuté; warnings WordPress.org attendus sur les fonctions assumées du thème (Codex, 2026-03-28)
+- [ ] Theme Check plugin (conformité WordPress.org) - arbitrer les warnings restants
 - [ ] PHPCS WordPress Coding Standards
   - [x] Nettoyage ciblé sur `inc/admin.php` et `inc/seo-fields.php` (Codex, 2026-03-28)
   - [x] PHPCS global du thème sans erreurs ni warnings (Codex, 2026-03-28)

@@ -202,7 +202,7 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 - [x] Smoke-test navigateur: home, archive et login admin validés dans Playwright sur `http://localhost:8888/greenlight/`
 - [x] Lighthouse validé: perf 100, a11y 95, SEO 100, best practices 100
 - [x] Vérifications responsive 320px → 1920px et front sans JS validées dans Playwright
-- [ ] Theme Check plugin à confirmer dans l’admin
+- [x] Theme Check exécuté dans l’admin; warnings WordPress.org attendus sur des fonctions assumées du thème
 - [ ] W3C HTML et VoiceOver à exécuter
 
 ---
