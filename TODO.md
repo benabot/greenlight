@@ -249,6 +249,7 @@ git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cac
 - [x] **Statistiques détaillées** : dashboard images (poids total, économie, top 10 plus lourdes), colonne médiathèque (poids original vs optimisé), filtre "non optimisées" (`inc/images-settings.php`)
 
 ## Phase 7 — Tests et finalisation
+- [x] Runtime admin: corriger le fatal `get_current_screen()` sur `heartbeat_settings` afin de supprimer le 502 sur `wp-admin/` (Codex, 2026-03-28)
 - [ ] Lighthouse : perf ≥ 95, a11y ≥ 95, SEO ≥ 95, best practices ≥ 95
 - [ ] Theme Check plugin (conformité WordPress.org)
 - [ ] PHPCS WordPress Coding Standards
