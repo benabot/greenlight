@@ -114,6 +114,7 @@ wp-content/cache/greenlight/*.html
 playwright-report/
 test-results/
 tests/_output/
+.playwright-cli/
 .phpunit.result.cache
 
 # ---------------------------------------------------------------------------
