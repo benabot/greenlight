@@ -6,7 +6,7 @@
 
 ## Branche active
 
-`feat/theme-files-creation`
+`feat/ui-improvement`
 
 ## Commits réalisés
 
@@ -16,6 +16,8 @@
 | `928e025` | Phase 2 | Templates PHP — DOM sémantique minimal, zéro div, aria-labelledby |
 | `c1ba006` | Phase 3 | CSS éco-conçu — block styles conditionnels, Green Precision aesthetic |
 | `43801df` | Phase 4 | Patterns Gutenberg — hero, cards, contact, header, footer + catégorie Greenlight |
+| `44bde7b` | Phase 7 | Fix breadcrumbs and Composer tooling |
+| `a36e799` | Phase 7 | PHPCS cleanup for admin and SEO fields |
 
 ---
 
@@ -190,7 +192,13 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 | **6C/A — Redesign visuel** | ✅ Terminé | Palette DESIGN.md dans theme.json, templates front alignés sur esthétique EcoEditorial, patterns, Carbon Badge, surfaces, boutons |
 | **6C/B — Admin unifiée** | ✅ Terminé | Page top-level Greenlight avec onglets (SEO, Images, Performance, Apparence, SVG, Outils) |
 | **6C/C — Éco-optimisation** | ✅ Terminé | bin/minify.sh, inc/minify.php, inc/cache.php, inc/svg.php, fonctions.php conditionnel, nettoyage wp_head |
-| **7 — Tests** | ⏳ À faire | Lighthouse, PHPCS, W3C, VoiceOver, responsive 320→1920px |
+| **7 — Tests** | ⏳ En cours | Lighthouse, Theme Check, PHPCS global, W3C, VoiceOver, responsive 320→1920px, JS-off, métriques |
+
+### Phase 7 — Avancement actuel
+
+- [x] PHPCS ciblé validé sur `inc/admin.php` et `inc/seo-fields.php`
+- [ ] PHPCS global du thème à terminer
+- [ ] Lighthouse, Theme Check, W3C, VoiceOver et vérifications responsive/JS-off à exécuter
 
 ---
 
