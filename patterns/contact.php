@@ -6,7 +6,10 @@
  * Keywords: contact, formulaire, message
  * Block Types: core/group
  * Description: Section contact avec titre et formulaire HTML natif.
+ *
+ * @package Greenlight
  */
+
 ?>
 <!-- wp:group {"align":"wide","style":{"spacing":{"padding":{"top":"var:preset|spacing|lg","bottom":"var:preset|spacing|lg"}}},"backgroundColor":"surface","layout":{"type":"constrained"}} -->
 <div class="wp-block-group alignwide has-surface-background-color has-background" style="padding-top:var(--wp--preset--spacing--lg);padding-bottom:var(--wp--preset--spacing--lg)">

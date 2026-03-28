@@ -43,7 +43,10 @@ function greenlight_seo_analysis_score( $post_id ) {
 	$post = get_post( $post_id );
 
 	if ( ! $post ) {
-		return array( 'score' => 0, 'details' => array() );
+		return array(
+			'score'   => 0,
+			'details' => array(),
+		);
 	}
 
 	$focus_kw = strtolower( trim( (string) get_post_meta( $post_id, '_greenlight_seo_focus_kw', true ) ) );
@@ -56,10 +59,16 @@ function greenlight_seo_analysis_score( $post_id ) {
 	// 1. Focus keyword defined (10 pts).
 	$max += 10;
 	if ( '' !== $focus_kw ) {
-		$points += 10;
-		$details[] = array( 'pass' => true, 'label' => __( 'Mot-clé principal défini', 'greenlight' ) );
+		$points   += 10;
+		$details[] = array(
+			'pass'  => true,
+			'label' => __( 'Mot-clé principal défini', 'greenlight' ),
+		);
 	} else {
-		$details[] = array( 'pass' => false, 'label' => __( 'Mot-clé principal non défini', 'greenlight' ) );
+		$details[] = array(
+			'pass'  => false,
+			'label' => __( 'Mot-clé principal non défini', 'greenlight' ),
+		);
 
 		return array(
 			'score'   => 0,
@@ -70,23 +79,29 @@ function greenlight_seo_analysis_score( $post_id ) {
 	// 2. Keyword in title (15 pts).
 	$max += 15;
 	if ( false !== strpos( $title, $focus_kw ) ) {
-		$points += 15;
-		$details[] = array( 'pass' => true, 'label' => __( 'Mot-clé présent dans le titre', 'greenlight' ) );
+		$points   += 15;
+		$details[] = array(
+			'pass'  => true,
+			'label' => __( 'Mot-clé présent dans le titre', 'greenlight' ),
+		);
 	} else {
-		$details[] = array( 'pass' => false, 'label' => __( 'Mot-clé absent du titre', 'greenlight' ) );
+		$details[] = array(
+			'pass'  => false,
+			'label' => __( 'Mot-clé absent du titre', 'greenlight' ),
+		);
 	}
 
 	// 3. Keyword density (15 pts).
-	$max      += 15;
-	$words     = str_word_count( strtolower( $content ) );
-	$kw_count  = 0;
+	$max     += 15;
+	$words    = str_word_count( strtolower( $content ) );
+	$kw_count = 0;
 
 	if ( $words > 0 ) {
 		$kw_count = substr_count( strtolower( $content ), $focus_kw );
 		$density  = ( $kw_count / $words ) * 100;
 
 		if ( $density >= 0.5 && $density <= 3.0 ) {
-			$points += 15;
+			$points   += 15;
 			$details[] = array(
 				'pass'  => true,
 				/* translators: %s: keyword density percentage */
@@ -100,12 +115,15 @@ function greenlight_seo_analysis_score( $post_id ) {
 			);
 		}
 	} else {
-		$details[] = array( 'pass' => false, 'label' => __( 'Contenu vide', 'greenlight' ) );
+		$details[] = array(
+			'pass'  => false,
+			'label' => __( 'Contenu vide', 'greenlight' ),
+		);
 	}
 
 	// 4. Keyword in first paragraph (10 pts).
-	$max += 10;
-	$blocks = parse_blocks( $post->post_content );
+	$max       += 10;
+	$blocks     = parse_blocks( $post->post_content );
 	$first_para = '';
 	foreach ( $blocks as $block ) {
 		if ( 'core/paragraph' === $block['blockName'] && ! empty( $block['innerHTML'] ) ) {
@@ -118,27 +136,42 @@ function greenlight_seo_analysis_score( $post_id ) {
 		$first_para = strtolower( trim( $paragraphs[0] ?? '' ) );
 	}
 	if ( '' !== $first_para && false !== strpos( $first_para, $focus_kw ) ) {
-		$points += 10;
-		$details[] = array( 'pass' => true, 'label' => __( 'Mot-clé présent dans le premier paragraphe', 'greenlight' ) );
+		$points   += 10;
+		$details[] = array(
+			'pass'  => true,
+			'label' => __( 'Mot-clé présent dans le premier paragraphe', 'greenlight' ),
+		);
 	} else {
-		$details[] = array( 'pass' => false, 'label' => __( 'Mot-clé absent du premier paragraphe', 'greenlight' ) );
+		$details[] = array(
+			'pass'  => false,
+			'label' => __( 'Mot-clé absent du premier paragraphe', 'greenlight' ),
+		);
 	}
 
 	// 5. Keyword in first H2 (10 pts).
 	$max += 10;
 	if ( preg_match( '/<h2[^>]*>(.*?)<\/h2>/si', $post->post_content, $h2_match ) ) {
 		if ( false !== strpos( strtolower( wp_strip_all_tags( $h2_match[1] ) ), $focus_kw ) ) {
-			$points += 10;
-			$details[] = array( 'pass' => true, 'label' => __( 'Mot-clé présent dans le premier H2', 'greenlight' ) );
+			$points   += 10;
+			$details[] = array(
+				'pass'  => true,
+				'label' => __( 'Mot-clé présent dans le premier H2', 'greenlight' ),
+			);
 		} else {
-			$details[] = array( 'pass' => false, 'label' => __( 'Mot-clé absent du premier H2', 'greenlight' ) );
+			$details[] = array(
+				'pass'  => false,
+				'label' => __( 'Mot-clé absent du premier H2', 'greenlight' ),
+			);
 		}
 	} else {
-		$details[] = array( 'pass' => false, 'label' => __( 'Aucun H2 trouvé', 'greenlight' ) );
+		$details[] = array(
+			'pass'  => false,
+			'label' => __( 'Aucun H2 trouvé', 'greenlight' ),
+		);
 	}
 
 	// 6. Keyword in image alt (10 pts).
-	$max += 10;
+	$max      += 10;
 	$alt_found = false;
 	if ( preg_match_all( '/alt=["\']([^"\']*?)["\']/i', $post->post_content, $alt_matches ) ) {
 		foreach ( $alt_matches[1] as $alt ) {
@@ -149,14 +182,20 @@ function greenlight_seo_analysis_score( $post_id ) {
 		}
 	}
 	if ( $alt_found ) {
-		$points += 10;
-		$details[] = array( 'pass' => true, 'label' => __( 'Mot-clé présent dans le texte alt d\'une image', 'greenlight' ) );
+		$points   += 10;
+		$details[] = array(
+			'pass'  => true,
+			'label' => __( 'Mot-clé présent dans le texte alt d\'une image', 'greenlight' ),
+		);
 	} else {
-		$details[] = array( 'pass' => false, 'label' => __( 'Mot-clé absent des textes alt', 'greenlight' ) );
+		$details[] = array(
+			'pass'  => false,
+			'label' => __( 'Mot-clé absent des textes alt', 'greenlight' ),
+		);
 	}
 
 	// 7. Internal links (10 pts).
-	$max += 10;
+	$max     += 10;
 	$home_url = home_url();
 	if ( preg_match_all( '/<a\s[^>]*href=["\']([^"\']+)["\']/i', $post->post_content, $link_matches ) ) {
 		$has_internal = false;
@@ -167,13 +206,22 @@ function greenlight_seo_analysis_score( $post_id ) {
 			}
 		}
 		if ( $has_internal ) {
-			$points += 10;
-			$details[] = array( 'pass' => true, 'label' => __( 'Liens internes détectés', 'greenlight' ) );
+			$points   += 10;
+			$details[] = array(
+				'pass'  => true,
+				'label' => __( 'Liens internes détectés', 'greenlight' ),
+			);
 		} else {
-			$details[] = array( 'pass' => false, 'label' => __( 'Aucun lien interne', 'greenlight' ) );
+			$details[] = array(
+				'pass'  => false,
+				'label' => __( 'Aucun lien interne', 'greenlight' ),
+			);
 		}
 	} else {
-		$details[] = array( 'pass' => false, 'label' => __( 'Aucun lien dans le contenu', 'greenlight' ) );
+		$details[] = array(
+			'pass'  => false,
+			'label' => __( 'Aucun lien dans le contenu', 'greenlight' ),
+		);
 	}
 
 	// 8. External links (5 pts).
@@ -187,17 +235,23 @@ function greenlight_seo_analysis_score( $post_id ) {
 			}
 		}
 		if ( $has_external ) {
-			$points += 5;
-			$details[] = array( 'pass' => true, 'label' => __( 'Liens externes détectés', 'greenlight' ) );
+			$points   += 5;
+			$details[] = array(
+				'pass'  => true,
+				'label' => __( 'Liens externes détectés', 'greenlight' ),
+			);
 		} else {
-			$details[] = array( 'pass' => false, 'label' => __( 'Aucun lien externe', 'greenlight' ) );
+			$details[] = array(
+				'pass'  => false,
+				'label' => __( 'Aucun lien externe', 'greenlight' ),
+			);
 		}
 	}
 
 	// 9. Content length > 300 words (15 pts).
 	$max += 15;
 	if ( $words >= 300 ) {
-		$points += 15;
+		$points   += 15;
 		$details[] = array(
 			'pass'  => true,
 			/* translators: %d: word count */
@@ -231,7 +285,11 @@ function greenlight_seo_readability_score( $post_id ) {
 	$post = get_post( $post_id );
 
 	if ( ! $post ) {
-		return array( 'score' => 0, 'avg_sentence_length' => 0, 'long_sentences_pct' => 0 );
+		return array(
+			'score'               => 0,
+			'avg_sentence_length' => 0,
+			'long_sentences_pct'  => 0,
+		);
 	}
 
 	$content = wp_strip_all_tags( $post->post_content );
@@ -243,7 +301,11 @@ function greenlight_seo_readability_score( $post_id ) {
 
 	$sentence_count = count( $sentences );
 	if ( $sentence_count < 1 ) {
-		return array( 'score' => 0, 'avg_sentence_length' => 0, 'long_sentences_pct' => 0 );
+		return array(
+			'score'               => 0,
+			'avg_sentence_length' => 0,
+			'long_sentences_pct'  => 0,
+		);
 	}
 
 	$total_words     = 0;
@@ -256,7 +318,7 @@ function greenlight_seo_readability_score( $post_id ) {
 		$total_words      += $word_count;
 
 		if ( $word_count > 20 ) {
-			$long_sentences++;
+			++$long_sentences;
 		}
 
 		foreach ( $words_in_sentence as $word ) {
@@ -265,7 +327,11 @@ function greenlight_seo_readability_score( $post_id ) {
 	}
 
 	if ( $total_words < 1 ) {
-		return array( 'score' => 0, 'avg_sentence_length' => 0, 'long_sentences_pct' => 0 );
+		return array(
+			'score'               => 0,
+			'avg_sentence_length' => 0,
+			'long_sentences_pct'  => 0,
+		);
 	}
 
 	$avg_sentence_length = $total_words / $sentence_count;
@@ -277,9 +343,9 @@ function greenlight_seo_readability_score( $post_id ) {
 	$score     = (int) max( 0, min( 100, round( $raw_score ) ) );
 
 	return array(
-		'score'              => $score,
+		'score'               => $score,
 		'avg_sentence_length' => round( $avg_sentence_length, 1 ),
-		'long_sentences_pct' => round( $long_pct, 1 ),
+		'long_sentences_pct'  => round( $long_pct, 1 ),
 	);
 }
 
@@ -344,12 +410,16 @@ function greenlight_enqueue_seo_analysis() {
 	$analysis    = greenlight_seo_analysis_score( $post_id );
 	$readability = greenlight_seo_readability_score( $post_id );
 
-	wp_localize_script( 'greenlight-seo-analysis', 'greenlightSeoAnalysis', array(
-		'postId'      => $post_id,
-		'analysis'    => $analysis,
-		'readability' => $readability,
-		'restNonce'   => wp_create_nonce( 'wp_rest' ),
-	) );
+	wp_localize_script(
+		'greenlight-seo-analysis',
+		'greenlightSeoAnalysis',
+		array(
+			'postId'      => $post_id,
+			'analysis'    => $analysis,
+			'readability' => $readability,
+			'restNonce'   => wp_create_nonce( 'wp_rest' ),
+		)
+	);
 }
 add_action( 'enqueue_block_editor_assets', 'greenlight_enqueue_seo_analysis' );
 
@@ -392,11 +462,13 @@ function greenlight_render_seo_score_column( $column, $post_id ) {
 	printf(
 		'<span style="display:inline-block;width:12px;height:12px;border-radius:50%%;background:%s;vertical-align:middle" title="%s"></span> %d',
 		esc_attr( $color ),
-		esc_attr( sprintf(
+		esc_attr(
+			sprintf(
 			/* translators: %d: SEO score */
-			__( 'Score SEO : %d/100', 'greenlight' ),
-			$score
-		) ),
+				__( 'Score SEO : %d/100', 'greenlight' ),
+				$score
+			)
+		),
 		(int) $score
 	);
 }

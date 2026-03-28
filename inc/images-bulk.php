@@ -29,39 +29,43 @@ function greenlight_bulk_optimize() {
 	}
 
 	// Count total unoptimized images.
-	$total_query = new WP_Query( array(
-		'post_type'      => 'attachment',
-		'post_status'    => 'inherit',
-		'post_mime_type' => 'image',
-		'posts_per_page' => -1,
-		'fields'         => 'ids',
-		'no_found_rows'  => false,
-		'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+	$total_query = new WP_Query(
+		array(
+			'post_type'      => 'attachment',
+			'post_status'    => 'inherit',
+			'post_mime_type' => 'image',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => false,
+			'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			array(
 				'key'     => '_greenlight_webp_done',
 				'compare' => 'NOT EXISTS',
 			),
-		),
-	) );
+			),
+		)
+	);
 
 	$total = $total_query->found_posts;
 
 	// Get batch.
-	$attachments = get_posts( array(
-		'post_type'      => 'attachment',
-		'post_status'    => 'inherit',
-		'post_mime_type' => 'image',
-		'posts_per_page' => $batch_size,
-		'offset'         => $offset,
-		'fields'         => 'ids',
-		'no_found_rows'  => true,
-		'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+	$attachments = get_posts(
+		array(
+			'post_type'      => 'attachment',
+			'post_status'    => 'inherit',
+			'post_mime_type' => 'image',
+			'posts_per_page' => $batch_size,
+			'offset'         => $offset,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+			'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			array(
 				'key'     => '_greenlight_webp_done',
 				'compare' => 'NOT EXISTS',
 			),
-		),
-	) );
+			),
+		)
+	);
 
 	$processed = 0;
 
@@ -70,7 +74,7 @@ function greenlight_bulk_optimize() {
 
 		if ( empty( $file_path ) || ! file_exists( $file_path ) ) {
 			update_post_meta( $attachment_id, '_greenlight_webp_done', 1 );
-			$processed++;
+			++$processed;
 			continue;
 		}
 
@@ -78,7 +82,7 @@ function greenlight_bulk_optimize() {
 
 		if ( empty( $source_type['type'] ) || 0 !== strpos( $source_type['type'], 'image/' ) || 'image/webp' === $source_type['type'] || 'image/avif' === $source_type['type'] ) {
 			update_post_meta( $attachment_id, '_greenlight_webp_done', 1 );
-			$processed++;
+			++$processed;
 			continue;
 		}
 
@@ -128,17 +132,19 @@ function greenlight_bulk_optimize() {
 			update_post_meta( $attachment_id, '_greenlight_optimized_size', $optimized_size );
 		}
 
-		$processed++;
+		++$processed;
 	}
 
 	$done = empty( $attachments ) || count( $attachments ) < $batch_size;
 
-	wp_send_json_success( array(
-		'processed' => $processed,
-		'total'     => $total,
-		'offset'    => $offset + $processed,
-		'done'      => $done,
-	) );
+	wp_send_json_success(
+		array(
+			'processed' => $processed,
+			'total'     => $total,
+			'offset'    => $offset + $processed,
+			'done'      => $done,
+		)
+	);
 }
 add_action( 'wp_ajax_greenlight_bulk_optimize', 'greenlight_bulk_optimize' );
 
@@ -189,7 +195,7 @@ function greenlight_get_bulk_stats() {
 	);
 
 	$savings = 0;
-	$rows = $wpdb->get_results(
+	$rows    = $wpdb->get_results(
 		$wpdb->prepare(
 			"SELECT pm1.meta_value AS original_size, pm2.meta_value AS optimized_size
 			FROM {$wpdb->postmeta} pm1

@@ -25,13 +25,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string CSS minifié.
  */
 function greenlight_minify_css_string( $css ) {
-	// Supprime les commentaires block /* ... */
+	// Supprime les commentaires block /* ... */.
 	$css = preg_replace( '/\/\*[\s\S]*?\*\//', '', $css );
-	// Collapse whitespace / sauts de ligne
+	// Collapse whitespace / sauts de ligne.
 	$css = preg_replace( '/\s+/', ' ', $css );
-	// Supprime les espaces autour des caractères structurels
+	// Supprime les espaces autour des caractères structurels.
 	$css = preg_replace( '/\s*([:;,{}()])\s*/', '$1', $css );
-	// Raccourcit le ;}  en }
+	// Raccourcit le ;} en }.
 	$css = preg_replace( '/;}/', '}', $css );
 
 	return trim( $css );
@@ -45,11 +45,11 @@ function greenlight_minify_css_string( $css ) {
  * @return string JS minifié.
  */
 function greenlight_minify_js_string( $js ) {
-	// Supprime les commentaires single-line (hors URL ex. https://)
+	// Supprime les commentaires single-line (hors URL ex. https://).
 	$js = preg_replace( '/(?<!:)\/\/[^\n]*/', '', $js );
-	// Supprime les commentaires block
+	// Supprime les commentaires block.
 	$js = preg_replace( '/\/\*[\s\S]*?\*\//', '', $js );
-	// Collapse whitespace
+	// Collapse whitespace.
 	$js = preg_replace( '/\s+/', ' ', $js );
 
 	return trim( $js );
@@ -127,12 +127,14 @@ function greenlight_clear_min_files() {
 		wp_delete_file( $min_style );
 	}
 
-	$block_mins = glob( $theme_dir . '/assets/css/blocks/*.min.css' ) ?: array();
+	$block_mins = glob( $theme_dir . '/assets/css/blocks/*.min.css' );
+	$block_mins = is_array( $block_mins ) ? $block_mins : array();
 	foreach ( $block_mins as $f ) {
 		wp_delete_file( $f );
 	}
 
-	$js_mins = glob( $theme_dir . '/assets/js/*.min.js' ) ?: array();
+	$js_mins = glob( $theme_dir . '/assets/js/*.min.js' );
+	$js_mins = is_array( $js_mins ) ? $js_mins : array();
 	foreach ( $js_mins as $f ) {
 		wp_delete_file( $f );
 	}

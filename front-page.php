@@ -7,7 +7,7 @@
 
 get_header();
 
-$_gl_app       = array_merge(
+$_gl_app        = array_merge(
 	function_exists( 'greenlight_get_appearance_defaults' ) ? greenlight_get_appearance_defaults() : array(),
 	(array) get_option( 'greenlight_appearance_options', array() )
 );

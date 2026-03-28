@@ -25,7 +25,7 @@ function greenlight_cleanup_revisions() {
 
 	foreach ( $revisions as $revision_id ) {
 		if ( wp_delete_post_revision( $revision_id ) ) {
-			$count++;
+			++$count;
 		}
 	}
 
@@ -48,7 +48,7 @@ function greenlight_cleanup_autodraft() {
 
 	foreach ( $autodrafts as $post_id ) {
 		if ( wp_delete_post( $post_id, true ) ) {
-			$count++;
+			++$count;
 		}
 	}
 
@@ -71,7 +71,7 @@ function greenlight_cleanup_trash() {
 
 	foreach ( $trashed as $post_id ) {
 		if ( wp_delete_post( $post_id, true ) ) {
-			$count++;
+			++$count;
 		}
 	}
 
@@ -94,7 +94,7 @@ function greenlight_cleanup_spam_comments() {
 
 	foreach ( $spam as $comment_id ) {
 		if ( wp_delete_comment( $comment_id, true ) ) {
-			$count++;
+			++$count;
 		}
 	}
 
@@ -140,7 +140,7 @@ function greenlight_optimize_tables() {
 	foreach ( $tables as $table ) {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$wpdb->query( "OPTIMIZE TABLE `{$table}`" );
-		$count++;
+		++$count;
 	}
 
 	return $count;

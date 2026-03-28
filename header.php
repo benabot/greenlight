@@ -16,7 +16,7 @@
 <?php wp_body_open(); ?>
 <a href="#main-content" class="skip-link"><?php esc_html_e( 'Aller au contenu principal', 'greenlight' ); ?></a>
 <?php
-$_gl_app_h      = array_merge(
+$_gl_app_h        = array_merge(
 	function_exists( 'greenlight_get_appearance_defaults' ) ? greenlight_get_appearance_defaults() : array(),
 	(array) get_option( 'greenlight_appearance_options', array() )
 );
@@ -29,12 +29,14 @@ $_gl_show_tagline = ! empty( $_gl_app_h['show_tagline'] );
 	<?php endif; ?>
 	<nav class="site-nav" aria-label="<?php esc_attr_e( 'Navigation principale', 'greenlight' ); ?>">
 		<?php
-		wp_nav_menu( array(
-			'theme_location' => 'primary',
-			'container'      => false,
-			'items_wrap'     => '<ul>%3$s</ul>',
-			'fallback_cb'    => false,
-		) );
+		wp_nav_menu(
+			array(
+				'theme_location' => 'primary',
+				'container'      => false,
+				'items_wrap'     => '<ul>%3$s</ul>',
+				'fallback_cb'    => false,
+			)
+		);
 		?>
 	</nav>
 	<a href="#newsletter" class="cta-subscribe"><?php esc_html_e( 'Subscribe', 'greenlight' ); ?></a>

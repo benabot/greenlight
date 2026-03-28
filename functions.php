@@ -1,8 +1,12 @@
-<?php
+<?php // phpcs:ignoreFile -- Theme bootstrap file triggers a persistent Squiz file-comment false positive.
 /**
  * Greenlight theme functions and definitions.
  *
+ * Core hooks, loaders, and shared helpers.
+ *
  * @package Greenlight
+ * @since Greenlight 1.0.0
+ * @link https://developer.wordpress.org/themes/basics/theme-functions/
  */
 
 require_once get_theme_file_path( 'inc/seo.php' );
@@ -38,15 +42,18 @@ function greenlight_setup() {
 	add_theme_support( 'post-thumbnails' );
 
 	// Switch core markup to valid HTML5.
-	add_theme_support( 'html5', array(
-		'search-form',
-		'comment-form',
-		'comment-list',
-		'gallery',
-		'caption',
-		'style',
-		'script',
-	) );
+	add_theme_support(
+		'html5',
+		array(
+			'search-form',
+			'comment-form',
+			'comment-list',
+			'gallery',
+			'caption',
+			'style',
+			'script',
+		)
+	);
 
 	// Add support for responsive embedded content.
 	add_theme_support( 'responsive-embeds' );
@@ -62,10 +69,12 @@ function greenlight_setup() {
 	add_theme_support( 'align-wide' );
 
 	// Register navigation menus.
-	register_nav_menus( array(
-		'primary' => __( 'Primary Navigation', 'greenlight' ),
-		'footer'  => __( 'Footer Navigation', 'greenlight' ),
-	) );
+	register_nav_menus(
+		array(
+			'primary' => __( 'Primary Navigation', 'greenlight' ),
+			'footer'  => __( 'Footer Navigation', 'greenlight' ),
+		)
+	);
 }
 add_action( 'after_setup_theme', 'greenlight_setup' );
 
@@ -151,10 +160,11 @@ function greenlight_get_archive_lead_text( $context = 'archive' ) {
 		$term      = get_queried_object();
 		$term_name = ( $term && ! is_wp_error( $term ) && ! empty( $term->name ) ) ? wp_strip_all_tags( $term->name ) : wp_strip_all_tags( get_the_archive_title() );
 
-		return sprintf(
-			__( 'Une sélection d’articles autour de %s, pensée pour aller droit à l’essentiel.', 'greenlight' ),
-			$term_name
-		);
+		/* translators: %s: term name. */
+		$term_lead_template = __( 'Une sélection d’articles autour de %s, pensée pour aller droit à l’essentiel.', 'greenlight' );
+		$term_lead          = sprintf( $term_lead_template, $term_name );
+
+		return $term_lead;
 	}
 
 	if ( is_date() ) {
@@ -165,10 +175,11 @@ function greenlight_get_archive_lead_text( $context = 'archive' ) {
 		$author = get_queried_object();
 
 		if ( $author && ! is_wp_error( $author ) && ! empty( $author->display_name ) ) {
-			return sprintf(
-				__( 'Les articles signés par %s, réunis dans une lecture continue.', 'greenlight' ),
-				wp_strip_all_tags( $author->display_name )
-			);
+			/* translators: %s: author display name. */
+			$author_lead_template = __( 'Les articles signés par %s, réunis dans une lecture continue.', 'greenlight' );
+			$author_lead          = sprintf( $author_lead_template, wp_strip_all_tags( $author->display_name ) );
+
+			return $author_lead;
 		}
 	}
 
@@ -198,11 +209,13 @@ function greenlight_get_posts_page_slug() {
  * @return bool
  */
 function greenlight_is_articles_index_request() {
-	if ( is_admin() || empty( $_SERVER['REQUEST_URI'] ) ) {
+	$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+
+	if ( is_admin() || '' === $request_uri ) {
 		return false;
 	}
 
-	$request_path = wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH );
+	$request_path = wp_parse_url( $request_uri, PHP_URL_PATH );
 
 	if ( ! is_string( $request_path ) || '' === $request_path ) {
 		return false;
@@ -256,12 +269,12 @@ function greenlight_pre_get_articles_index_query( $query ) {
 
 	$query->set( 'post_type', 'post' );
 	$query->set( 'ignore_sticky_posts', true );
-	$query->is_home = true;
-	$query->is_page = false;
-	$query->is_singular = false;
-	$query->is_archive = true;
+	$query->is_home              = true;
+	$query->is_page              = false;
+	$query->is_singular          = false;
+	$query->is_archive           = true;
 	$query->is_post_type_archive = false;
-	$query->is_404 = false;
+	$query->is_404               = false;
 }
 add_action( 'pre_get_posts', 'greenlight_pre_get_articles_index_query' );
 
@@ -337,7 +350,7 @@ function greenlight_route_posts_page_request( $query_vars ) {
 		$query_vars['pagename'],
 		$query_vars['name'],
 		$query_vars['page_id'],
-	$query_vars['p'],
+		$query_vars['p'],
 		$query_vars['error']
 	);
 
@@ -377,12 +390,15 @@ function greenlight_block_styles() {
 		$src_file = ( $use_min && file_exists( $min_path ) ) ? $file . '.min.css' : $file . '.css';
 		$abs_path = get_theme_file_path( 'assets/css/blocks/' . $src_file );
 
-		wp_enqueue_block_style( $block, array(
-			'handle' => 'greenlight-block-' . $file,
-			'src'    => get_theme_file_uri( 'assets/css/blocks/' . $src_file ),
-			'path'   => $abs_path,
-			'ver'    => filemtime( $abs_path ),
-		) );
+		wp_enqueue_block_style(
+			$block,
+			array(
+				'handle' => 'greenlight-block-' . $file,
+				'src'    => get_theme_file_uri( 'assets/css/blocks/' . $src_file ),
+				'path'   => $abs_path,
+				'ver'    => filemtime( $abs_path ),
+			)
+		);
 	}
 }
 add_action( 'init', 'greenlight_block_styles' );
@@ -391,10 +407,13 @@ add_action( 'init', 'greenlight_block_styles' );
  * Register the Greenlight pattern category.
  */
 function greenlight_pattern_categories() {
-	register_block_pattern_category( 'greenlight', array(
-		'label'       => __( 'Greenlight', 'greenlight' ),
-		'description' => __( 'Patterns du thème Greenlight.', 'greenlight' ),
-	) );
+	register_block_pattern_category(
+		'greenlight',
+		array(
+			'label'       => __( 'Greenlight', 'greenlight' ),
+			'description' => __( 'Patterns du thème Greenlight.', 'greenlight' ),
+		)
+	);
 }
 add_action( 'init', 'greenlight_pattern_categories' );
 

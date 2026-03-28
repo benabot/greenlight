@@ -98,8 +98,10 @@ function greenlight_sanitize_svg_string( $svg ) {
 		return false;
 	}
 
-	$dom                     = new DOMDocument();
-	$dom->formatOutput       = false;
+	$dom = new DOMDocument();
+	// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMDocument API uses camelCase properties.
+	$dom->formatOutput = false;
+	// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMDocument API uses camelCase properties.
 	$dom->preserveWhiteSpace = false;
 
 	libxml_use_internal_errors( true );
@@ -114,6 +116,7 @@ function greenlight_sanitize_svg_string( $svg ) {
 
 	// Supprime tous les éléments <script>.
 	foreach ( $xpath->query( '//script' ) as $node ) {
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMNode API uses camelCase properties.
 		$node->parentNode->removeChild( $node );
 	}
 
@@ -128,13 +131,13 @@ function greenlight_sanitize_svg_string( $svg ) {
 		foreach ( $element->attributes as $attr ) {
 			$name = strtolower( $attr->name );
 
-			// Attributs événementiels (onclick, onload, onmouseover…)
+			// Attributs événementiels (onclick, onload, onmouseover...).
 			if ( 0 === strpos( $name, 'on' ) ) {
 				$to_remove[] = $attr->name;
 				continue;
 			}
 
-			// href / xlink:href pointant vers du JavaScript
+			// href / xlink:href pointant vers du JavaScript.
 			if ( in_array( $name, array( 'href', 'xlink:href' ), true ) ) {
 				$value = strtolower( trim( $attr->value ) );
 				if ( 0 === strpos( $value, 'javascript:' ) ) {
@@ -154,9 +157,14 @@ function greenlight_sanitize_svg_string( $svg ) {
 			continue;
 		}
 
-		$href = $node->getAttribute( 'href' ) ?: $node->getAttributeNS( 'http://www.w3.org/1999/xlink', 'href' );
+		$href = $node->getAttribute( 'href' );
+
+		if ( '' === $href ) {
+			$href = $node->getAttributeNS( 'http://www.w3.org/1999/xlink', 'href' );
+		}
 
 		if ( '' !== $href && ( '#' !== $href[0] ) ) {
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMNode API uses camelCase properties.
 			$node->parentNode->removeChild( $node );
 		}
 	}
@@ -171,10 +179,10 @@ function greenlight_sanitize_svg_string( $svg ) {
  * les fichiers SVG peuvent être détectés comme 'text/plain'.
  * Ce filtre rétablit le bon type.
  *
- * @param array       $data     Données du fichier vérifié.
- * @param string      $file     Chemin vers le fichier.
- * @param string      $filename Nom du fichier.
- * @param array       $mimes    MIME types autorisés.
+ * @param array  $data     Données du fichier vérifié.
+ * @param string $file     Chemin vers le fichier.
+ * @param string $filename Nom du fichier.
+ * @param array  $mimes    MIME types autorisés.
  * @return array
  */
 function greenlight_fix_svg_mime_check( $data, $file, $filename, $mimes ) {

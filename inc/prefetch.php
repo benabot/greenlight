@@ -19,9 +19,9 @@ function greenlight_output_prefetch() {
 	$domains = isset( $perf['prefetch_domains'] ) ? trim( $perf['prefetch_domains'] ) : '';
 
 	// Merge manual domains with auto-detected ones.
-	$manual    = array_filter( array_map( 'trim', explode( "\n", $domains ) ) );
-	$detected  = get_transient( 'greenlight_detected_domains' );
-	$all       = array_unique( array_merge( $manual, is_array( $detected ) ? $detected : array() ) );
+	$manual   = array_filter( array_map( 'trim', explode( "\n", $domains ) ) );
+	$detected = get_transient( 'greenlight_detected_domains' );
+	$all      = array_unique( array_merge( $manual, is_array( $detected ) ? $detected : array() ) );
 
 	foreach ( $all as $domain ) {
 		$domain = esc_url( $domain );
@@ -44,13 +44,15 @@ add_action( 'wp_head', 'greenlight_output_prefetch', 2 );
  * @return void
  */
 function greenlight_detect_external_domains() {
-	$posts = get_posts( array(
-		'post_type'      => 'post',
-		'post_status'    => 'publish',
-		'posts_per_page' => 50,
-		'no_found_rows'  => true,
-		'fields'         => 'ids',
-	) );
+	$posts = get_posts(
+		array(
+			'post_type'      => 'post',
+			'post_status'    => 'publish',
+			'posts_per_page' => 50,
+			'no_found_rows'  => true,
+			'fields'         => 'ids',
+		)
+	);
 
 	$home_host = wp_parse_url( home_url(), PHP_URL_HOST );
 	$domains   = array();

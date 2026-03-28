@@ -273,7 +273,7 @@ function greenlight_get_seo_image_id() {
 		return 0;
 	}
 
-	$post_id = get_queried_object_id();
+	$post_id  = get_queried_object_id();
 	$image_id = greenlight_get_seo_post_meta_values( $post_id )['image_id'];
 
 	if ( $image_id ) {

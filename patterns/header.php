@@ -7,7 +7,10 @@
  * Block Types: core/template-part/header
  * Description: En-tête avec titre du site et navigation principale.
  * Template Types: header
+ *
+ * @package Greenlight
  */
+
 ?>
 <!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|sm","bottom":"var:preset|spacing|sm","left":"var:preset|spacing|sm","right":"var:preset|spacing|sm"}}},"backgroundColor":"background","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
 <div class="wp-block-group alignfull has-background-background-color has-background" style="padding-top:var(--wp--preset--spacing--sm);padding-bottom:var(--wp--preset--spacing--sm);padding-left:var(--wp--preset--spacing--sm);padding-right:var(--wp--preset--spacing--sm)">

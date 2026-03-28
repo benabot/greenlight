@@ -275,22 +275,22 @@ function greenlight_filter_attachment_image_attributes( $attr, $attachment, $siz
 	$attr['decoding'] = 'async';
 
 	if ( $is_hero ) {
-		$attr['loading']      = 'eager';
+		$attr['loading']       = 'eager';
 		$attr['fetchpriority'] = 'high';
 
 		return $attr;
 	}
 
-	$attr['loading']      = 'lazy';
+	$attr['loading']       = 'lazy';
 	$attr['fetchpriority'] = 'low';
 
 	return $attr;
 }
 add_filter( 'wp_get_attachment_image_attributes', 'greenlight_filter_attachment_image_attributes', 10, 3 );
 
-/* =========================================================
- * AVIF support
- * ======================================================= */
+/**
+ * AVIF support.
+ */
 
 /**
  * Returns whether AVIF generation is available and enabled.
@@ -383,9 +383,9 @@ function greenlight_generate_avif_on_upload( $upload ) {
 }
 add_filter( 'wp_handle_upload', 'greenlight_generate_avif_on_upload', 21 );
 
-/* =========================================================
- * Resize originals on upload
- * ======================================================= */
+/**
+ * Resize originals on upload.
+ */
 
 /**
  * Resizes uploaded images that exceed the maximum width.

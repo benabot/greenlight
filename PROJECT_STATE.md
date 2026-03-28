@@ -197,7 +197,7 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 ### Phase 7 — Avancement actuel
 
 - [x] PHPCS ciblé validé sur `inc/admin.php` et `inc/seo-fields.php`
-- [ ] PHPCS global du thème à terminer
+- [x] PHPCS global du thème sans erreurs, warnings résiduels documentés
 - [ ] Lighthouse, Theme Check, W3C, VoiceOver et vérifications responsive/JS-off à exécuter
 
 ---

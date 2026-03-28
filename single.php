@@ -7,7 +7,7 @@
 
 get_header();
 
-$_gl_app  = array_merge(
+$_gl_app             = array_merge(
 	function_exists( 'greenlight_get_appearance_defaults' ) ? greenlight_get_appearance_defaults() : array(),
 	(array) get_option( 'greenlight_appearance_options', array() )
 );
@@ -49,7 +49,16 @@ if ( have_posts() ) :
 
 			<?php if ( has_post_thumbnail() ) : ?>
 				<figure class="entry-hero-media">
-					<?php the_post_thumbnail( 'greenlight-hero', array( 'loading' => 'eager', 'decoding' => 'async', 'fetchpriority' => 'high' ) ); ?>
+					<?php
+					the_post_thumbnail(
+						'greenlight-hero',
+						array(
+							'loading'       => 'eager',
+							'decoding'      => 'async',
+							'fetchpriority' => 'high',
+						)
+					);
+					?>
 					<?php if ( get_the_post_thumbnail_caption() ) : ?>
 						<figcaption><?php echo wp_kses_post( get_the_post_thumbnail_caption() ); ?></figcaption>
 					<?php endif; ?>
@@ -70,26 +79,30 @@ if ( have_posts() ) :
 				if ( $tags ) :
 					?>
 					<ul class="entry-tags" aria-label="<?php esc_attr_e( 'Tags', 'greenlight' ); ?>">
-						<?php foreach ( $tags as $tag ) : ?>
-							<li><a href="<?php echo esc_url( get_tag_link( $tag->term_id ) ); ?>" class="tag-pill"><?php echo esc_html( $tag->name ); ?></a></li>
+						<?php foreach ( $tags as $tag_item ) : ?>
+							<li><a href="<?php echo esc_url( get_tag_link( $tag_item->term_id ) ); ?>" class="tag-pill"><?php echo esc_html( $tag_item->name ); ?></a></li>
 						<?php endforeach; ?>
 					</ul>
 					<?php
 				endif;
 
-				wp_link_pages( array(
-					'before' => '<nav class="page-links" aria-label="' . esc_attr__( 'Pages de l\'article', 'greenlight' ) . '">',
-					'after'  => '</nav>',
-				) );
-				?>
+				wp_link_pages(
+					array(
+						'before' => '<nav class="page-links" aria-label="' . esc_attr__( 'Pages de l\'article', 'greenlight' ) . '">',
+						'after'  => '</nav>',
+					)
+				);
+		?>
 			</footer>
 		</article>
 
 		<?php
-		the_post_navigation( array(
-			'prev_text' => '← %title',
-			'next_text' => '%title →',
-		) );
+		the_post_navigation(
+			array(
+				'prev_text' => '← %title',
+				'next_text' => '%title →',
+			)
+		);
 		?>
 
 		<?php if ( $_gl_show_newsletter ) : ?>

@@ -26,8 +26,10 @@ $home_count       = (int) $wp_query->found_posts;
 	</header>
 	<p class="archive-count">
 		<?php
+		/* translators: %s: number of articles. */
+		$home_count_label = _n( '%s article', '%s articles', $home_count, 'greenlight' );
 		printf(
-			esc_html( _n( '%s article', '%s articles', $home_count, 'greenlight' ) ),
+			esc_html( $home_count_label ),
 			esc_html( number_format_i18n( $home_count ) )
 		);
 		?>
@@ -36,7 +38,10 @@ $home_count       = (int) $wp_query->found_posts;
 
 <?php if ( have_posts() ) : ?>
 	<ul class="post-list" aria-label="<?php esc_attr_e( 'Articles récents', 'greenlight' ); ?>">
-		<?php while ( have_posts() ) : the_post(); ?>
+		<?php
+		while ( have_posts() ) :
+			the_post();
+			?>
 			<li class="post-item">
 				<article id="post-<?php the_ID(); ?>" <?php post_class( 'entry entry--teaser' ); ?>>
 					<header class="entry-header">

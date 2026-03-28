@@ -7,7 +7,10 @@
  * Block Types: core/template-part/footer
  * Description: Pied de page éditorial avec copyright, liens secondaires et badge Low Emission.
  * Template Types: footer
+ *
+ * @package Greenlight
  */
+
 ?>
 <!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|md","bottom":"var:preset|spacing|md","left":"var:preset|spacing|md","right":"var:preset|spacing|md"}}},"backgroundColor":"surface","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
 <div class="wp-block-group alignfull has-surface-background-color has-background" style="padding-top:var(--wp--preset--spacing--md);padding-bottom:var(--wp--preset--spacing--md);padding-left:var(--wp--preset--spacing--md);padding-right:var(--wp--preset--spacing--md)">

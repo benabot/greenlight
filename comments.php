@@ -26,11 +26,13 @@ if ( post_password_required() ) {
 
 		<ol>
 			<?php
-			wp_list_comments( array(
-				'style'      => 'ol',
-				'short_ping' => true,
-				'avatar_size' => 40,
-			) );
+			wp_list_comments(
+				array(
+					'style'       => 'ol',
+					'short_ping'  => true,
+					'avatar_size' => 40,
+				)
+			);
 			?>
 		</ol>
 
@@ -39,10 +41,12 @@ if ( post_password_required() ) {
 	<?php endif; ?>
 
 	<?php
-	comment_form( array(
-		'title_reply_before' => '<h2 id="reply-title">',
-		'title_reply_after'  => '</h2>',
-	) );
+	comment_form(
+		array(
+			'title_reply_before' => '<h2 id="reply-title">',
+			'title_reply_after'  => '</h2>',
+		)
+	);
 	?>
 
 </section>

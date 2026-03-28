@@ -7,7 +7,7 @@
 
 get_header();
 
-$_gl_app       = array_merge(
+$_gl_app           = array_merge(
 	function_exists( 'greenlight_get_appearance_defaults' ) ? greenlight_get_appearance_defaults() : array(),
 	(array) get_option( 'greenlight_appearance_options', array() )
 );
@@ -33,13 +33,15 @@ $archive_desc  = get_the_archive_description();
 		<?php if ( $archive_desc ) : ?>
 			<p class="archive-note"><?php echo wp_kses_post( $archive_desc ); ?></p>
 		<?php endif; ?>
-		<p class="archive-count">
-			<?php
-			printf(
-				esc_html( _n( '%s article', '%s articles', $archive_count, 'greenlight' ) ),
-				esc_html( number_format_i18n( $archive_count ) )
-			);
-			?>
+	<p class="archive-count">
+		<?php
+		/* translators: %s: number of articles. */
+		$archive_count_label = _n( '%s article', '%s articles', $archive_count, 'greenlight' );
+		printf(
+			esc_html( $archive_count_label ),
+			esc_html( number_format_i18n( $archive_count ) )
+		);
+		?>
 		</p>
 	</div>
 </section>
@@ -54,7 +56,16 @@ $archive_desc  = get_the_archive_description();
 		<?php if ( $_gl_show_thumbs && has_post_thumbnail() ) : ?>
 			<figure class="entry-media">
 				<a class="entry-media-link" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
-					<?php the_post_thumbnail( 'greenlight-card', array( 'loading' => 'eager', 'decoding' => 'async', 'fetchpriority' => 'high' ) ); ?>
+					<?php
+					the_post_thumbnail(
+						'greenlight-card',
+						array(
+							'loading'       => 'eager',
+							'decoding'      => 'async',
+							'fetchpriority' => 'high',
+						)
+					);
+					?>
 				</a>
 			</figure>
 		<?php endif; ?>
@@ -79,7 +90,10 @@ $archive_desc  = get_the_archive_description();
 
 	<?php if ( have_posts() ) : ?>
 	<ul class="post-list post-list--grid" aria-label="<?php esc_attr_e( 'Articles de l\'archive', 'greenlight' ); ?>">
-		<?php while ( have_posts() ) : the_post(); ?>
+		<?php
+		while ( have_posts() ) :
+			the_post();
+			?>
 			<?php
 			$grid_cats = get_the_category();
 			$grid_cat  = $grid_cats ? $grid_cats[0] : null;
@@ -89,7 +103,15 @@ $archive_desc  = get_the_archive_description();
 					<?php if ( $_gl_show_thumbs && has_post_thumbnail() ) : ?>
 						<figure class="entry-media">
 							<a class="entry-media-link" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
-								<?php the_post_thumbnail( 'greenlight-card', array( 'loading' => 'lazy', 'decoding' => 'async' ) ); ?>
+								<?php
+								the_post_thumbnail(
+									'greenlight-card',
+									array(
+										'loading'  => 'lazy',
+										'decoding' => 'async',
+									)
+								);
+								?>
 							</a>
 						</figure>
 					<?php endif; ?>
@@ -118,11 +140,13 @@ $archive_desc  = get_the_archive_description();
 
 	<nav class="pagination" aria-label="<?php esc_attr_e( 'Pagination', 'greenlight' ); ?>">
 		<?php
-		the_posts_pagination( array(
-			'prev_text'          => '&larr; ' . esc_html__( 'PRÉCÉDENT', 'greenlight' ),
-			'next_text'          => esc_html__( 'SUIVANT', 'greenlight' ) . ' &rarr;',
-			'screen_reader_text' => esc_html__( 'Navigation entre les pages', 'greenlight' ),
-		) );
+		the_posts_pagination(
+			array(
+				'prev_text'          => '&larr; ' . esc_html__( 'PRÉCÉDENT', 'greenlight' ),
+				'next_text'          => esc_html__( 'SUIVANT', 'greenlight' ) . ' &rarr;',
+				'screen_reader_text' => esc_html__( 'Navigation entre les pages', 'greenlight' ),
+			)
+		);
 		?>
 	</nav>
 
@@ -130,4 +154,5 @@ $archive_desc  = get_the_archive_description();
 	<p><?php esc_html_e( 'Aucun contenu trouvé.', 'greenlight' ); ?></p>
 <?php endif; ?>
 
-<?php get_footer();
+<?php
+get_footer();

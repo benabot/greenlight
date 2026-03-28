@@ -14,4 +14,5 @@ get_header();
 	<?php get_search_form(); ?>
 </section>
 
-<?php get_footer();
+<?php
+get_footer();

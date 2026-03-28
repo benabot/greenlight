@@ -25,7 +25,7 @@ function greenlight_handle_redirects() {
 		return;
 	}
 
-	$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
+	$request_uri  = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 	$request_path = wp_parse_url( $request_uri, PHP_URL_PATH );
 
 	if ( ! is_string( $request_path ) || '' === $request_path ) {
@@ -85,11 +85,14 @@ function greenlight_log_404() {
 	}
 
 	// Add entry at the beginning.
-	array_unshift( $log, array(
-		'url'  => $request_uri,
-		'time' => current_time( 'mysql' ),
-		'ip'   => isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '',
-	) );
+	array_unshift(
+		$log,
+		array(
+			'url'  => $request_uri,
+			'time' => current_time( 'mysql' ),
+			'ip'   => isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '',
+		)
+	);
 
 	// Keep only last 50 entries.
 	$log = array_slice( $log, 0, 50 );
@@ -205,7 +208,7 @@ function greenlight_handle_import_redirects() {
 		$redirects = array();
 	}
 
-	$lines   = explode( "\n", $csv_content );
+	$lines    = explode( "\n", $csv_content );
 	$imported = 0;
 
 	foreach ( $lines as $line ) {
@@ -241,7 +244,7 @@ function greenlight_handle_import_redirects() {
 			'created_at'  => current_time( 'mysql' ),
 		);
 
-		$imported++;
+		++$imported;
 	}
 
 	update_option( 'greenlight_redirects', $redirects, false );

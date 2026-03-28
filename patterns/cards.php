@@ -6,7 +6,10 @@
  * Keywords: cartes, grille, articles, liste
  * Block Types: core/columns
  * Description: Grille de trois cartes responsive en flexbox.
+ *
+ * @package Greenlight
  */
+
 ?>
 <!-- wp:group {"align":"wide","style":{"spacing":{"padding":{"top":"var:preset|spacing|lg","bottom":"var:preset|spacing|lg"}}},"layout":{"type":"constrained"}} -->
 <div class="wp-block-group alignwide" style="padding-top:var(--wp--preset--spacing--lg);padding-bottom:var(--wp--preset--spacing--lg)">

@@ -253,7 +253,7 @@ git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cac
 - [ ] Theme Check plugin (conformité WordPress.org)
 - [ ] PHPCS WordPress Coding Standards
   - [x] Nettoyage ciblé sur `inc/admin.php` et `inc/seo-fields.php` (Codex, 2026-03-28)
-  - [ ] PHPCS global du thème
+  - [x] PHPCS global du thème sans erreurs, warnings résiduels assumés
 - [ ] Validation W3C HTML (validator.w3.org)
 - [ ] Test VoiceOver macOS
 - [ ] Test responsive 320px → 1920px (pas de breakpoint cassé)

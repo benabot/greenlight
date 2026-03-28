@@ -27,12 +27,14 @@ $_gl_copy     = isset( $_gl_app['custom_copyright'] ) ? trim( $_gl_app['custom_c
 	<?php if ( $_gl_foot_nav ) : ?>
 	<nav class="footer-nav" aria-label="<?php esc_attr_e( 'Navigation secondaire', 'greenlight' ); ?>">
 		<?php
-		wp_nav_menu( array(
-			'theme_location' => 'footer',
-			'container'      => false,
-			'items_wrap'     => '<ul>%3$s</ul>',
-			'fallback_cb'    => false,
-		) );
+		wp_nav_menu(
+			array(
+				'theme_location' => 'footer',
+				'container'      => false,
+				'items_wrap'     => '<ul>%3$s</ul>',
+				'fallback_cb'    => false,
+			)
+		);
 		?>
 	</nav>
 	<?php endif; ?>

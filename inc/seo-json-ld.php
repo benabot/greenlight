@@ -114,11 +114,11 @@ function greenlight_output_json_ld() {
 
 	if ( is_front_page() ) {
 		$website = array(
-			'@type'       => 'WebSite',
-			'@id'         => trailingslashit( home_url( '/' ) ) . '#website',
-			'url'         => home_url( '/' ),
-			'name'        => greenlight_get_seo_site_title(),
-			'description' => greenlight_get_seo_site_description(),
+			'@type'           => 'WebSite',
+			'@id'             => trailingslashit( home_url( '/' ) ) . '#website',
+			'url'             => home_url( '/' ),
+			'name'            => greenlight_get_seo_site_title(),
+			'description'     => greenlight_get_seo_site_description(),
 			'potentialAction' => array(
 				'@type'       => 'SearchAction',
 				'target'      => home_url( '/?s={search_term_string}' ),

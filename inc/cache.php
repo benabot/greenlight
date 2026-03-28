@@ -27,9 +27,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'GREENLIGHT_CACHE_DIR', WP_CONTENT_DIR . '/cache/greenlight/' );
 
-/* =========================================================
- * Helpers
- * ======================================================= */
+/**
+ * Helpers.
+ */
 
 /**
  * Retourne true si la mise en cache de page est activée et la requête est cacheable.
@@ -49,7 +49,7 @@ function greenlight_cache_is_cacheable() {
 		return false;
 	}
 
-	// Exclure les requêtes avec query string (pagination Gutenberg, previews…)
+	// Exclure les requêtes avec query string (pagination Gutenberg, previews...).
 	if ( ! empty( $_GET ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return false;
 	}
@@ -77,9 +77,7 @@ function greenlight_cache_is_cacheable() {
  * @return string
  */
 function greenlight_cache_file_path() {
-	$request_uri = isset( $_SERVER['REQUEST_URI'] )
-		? wp_unslash( $_SERVER['REQUEST_URI'] )
-		: '/';
+	$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '/';
 
 	$slug = md5( home_url( $request_uri ) );
 
@@ -99,9 +97,9 @@ function greenlight_cache_lifetime() {
 	return in_array( $lifetime, $allowed, true ) ? $lifetime : 3600;
 }
 
-/* =========================================================
- * Mise en cache
- * ======================================================= */
+/**
+ * Mise en cache.
+ */
 
 /**
  * Démarre la capture du buffer de sortie pour la mise en cache.
@@ -163,9 +161,9 @@ function greenlight_cache_write( $html ) {
 	return $html;
 }
 
-/* =========================================================
- * Purge
- * ======================================================= */
+/**
+ * Purge.
+ */
 
 /**
  * Supprime tous les fichiers HTML du répertoire cache.
@@ -198,13 +196,13 @@ function greenlight_purge_page_cache() {
 function greenlight_purge_cache_on_content_change() {
 	greenlight_purge_page_cache();
 }
-add_action( 'save_post',   'greenlight_purge_cache_on_content_change' );
+add_action( 'save_post', 'greenlight_purge_cache_on_content_change' );
 add_action( 'delete_post', 'greenlight_purge_cache_on_content_change' );
 add_action( 'switch_theme', 'greenlight_purge_page_cache' );
 
-/* =========================================================
- * Headers HTTP
- * ======================================================= */
+/**
+ * Headers HTTP.
+ */
 
 /**
  * Envoie des headers de cache navigateur pour les pages front-end.

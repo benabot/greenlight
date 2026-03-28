@@ -78,10 +78,10 @@ function greenlight_get_image_storage_report() {
 		)
 	);
 
-	$count      = 0;
-	$original   = 0;
-	$webp       = 0;
-	$saved      = 0;
+	$count    = 0;
+	$original = 0;
+	$webp     = 0;
+	$saved    = 0;
 
 	foreach ( $attachments as $attachment_id ) {
 		$file_path = get_attached_file( $attachment_id );
@@ -103,7 +103,7 @@ function greenlight_get_image_storage_report() {
 			continue;
 		}
 
-		$count++;
+		++$count;
 		$original += $original_size;
 		$webp     += $webp_size;
 
@@ -126,8 +126,8 @@ function greenlight_get_image_storage_report() {
  * @return void
  */
 function greenlight_render_image_settings_page() {
-	$options = greenlight_get_images_options();
-	$report  = greenlight_get_image_storage_report();
+	$options        = greenlight_get_images_options();
+	$report         = greenlight_get_image_storage_report();
 	$webp_supported = greenlight_is_webp_conversion_enabled();
 	?>
 	<div class="wrap">

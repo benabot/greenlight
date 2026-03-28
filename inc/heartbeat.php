@@ -21,7 +21,7 @@ function greenlight_heartbeat_settings( $settings ) {
 	$context = 'front';
 
 	if ( is_admin() ) {
-		$screen = get_current_screen();
+		$screen  = get_current_screen();
 		$context = ( $screen && 'post' === $screen->base ) ? 'editor' : 'admin';
 	}
 

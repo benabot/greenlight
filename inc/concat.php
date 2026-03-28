@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return bool True on success.
  */
 function greenlight_generate_bundle() {
-	$theme_dir  = get_stylesheet_directory();
+	$theme_dir   = get_stylesheet_directory();
 	$bundle_path = $theme_dir . '/assets/css/greenlight-bundle.css';
 
 	$files = array( $theme_dir . '/style.css' );
@@ -43,7 +43,7 @@ function greenlight_generate_bundle() {
 		$content = file_get_contents( $file );
 
 		if ( false !== $content ) {
-			$css .= "/* " . basename( $file ) . " */\n" . $content . "\n\n";
+			$css .= '/* ' . basename( $file ) . " */\n" . $content . "\n\n";
 		}
 	}
 

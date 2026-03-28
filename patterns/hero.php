@@ -6,7 +6,10 @@
  * Keywords: hero, banner, titre, accueil
  * Block Types: core/group
  * Description: Section héro asymétrique avec Carbon Badge, titre surdimensionné et CTA.
+ *
+ * @package Greenlight
  */
+
 ?>
 <!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|xl","bottom":"var:preset|spacing|xl","left":"var:preset|spacing|sm","right":"var:preset|spacing|sm"}}},"backgroundColor":"background","layout":{"type":"flex","flexWrap":"wrap","verticalAlignment":"bottom","justifyContent":"space-between"}} -->
 <div class="wp-block-group alignfull has-background-background-color has-background" style="padding-top:var(--wp--preset--spacing--xl);padding-bottom:var(--wp--preset--spacing--xl);padding-left:var(--wp--preset--spacing--sm);padding-right:var(--wp--preset--spacing--sm)">
