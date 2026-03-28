@@ -184,8 +184,11 @@ function greenlight_save_seo_meta_box( $post_id ) {
 		return;
 	}
 
-	$title       = isset( $_POST['greenlight_seo_title'] ) ? greenlight_sanitize_seo_text( $_POST['greenlight_seo_title'] ) : '';
-	$description = isset( $_POST['greenlight_seo_description'] ) ? greenlight_sanitize_seo_textarea( $_POST['greenlight_seo_description'] ) : '';
+	$seo_title_raw       = isset( $_POST['greenlight_seo_title'] ) ? sanitize_text_field( wp_unslash( $_POST['greenlight_seo_title'] ) ) : '';
+	$seo_description_raw = isset( $_POST['greenlight_seo_description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['greenlight_seo_description'] ) ) : '';
+
+	$title       = greenlight_sanitize_seo_text( $seo_title_raw );
+	$description = greenlight_sanitize_seo_textarea( $seo_description_raw );
 	$image_id    = isset( $_POST['greenlight_seo_image'] ) ? absint( wp_unslash( $_POST['greenlight_seo_image'] ) ) : 0;
 	$noindex     = isset( $_POST['greenlight_seo_noindex'] ) ? 1 : 0;
 

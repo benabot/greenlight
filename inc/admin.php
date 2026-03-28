@@ -9,13 +9,13 @@
  * @package Greenlight
  */
 
-define( 'GREENLIGHT_PERF_OPTION_KEY',       'greenlight_performance_options' );
+define( 'GREENLIGHT_PERF_OPTION_KEY', 'greenlight_performance_options' );
 define( 'GREENLIGHT_APPEARANCE_OPTION_KEY', 'greenlight_appearance_options' );
-define( 'GREENLIGHT_SVG_OPTION_KEY',        'greenlight_svg_options' );
+define( 'GREENLIGHT_SVG_OPTION_KEY', 'greenlight_svg_options' );
 
-/* =========================================================
- * Menu registration
- * ======================================================= */
+/**
+ * Menu registration.
+ */
 
 /**
  * Registers the top-level Greenlight admin menu.
@@ -28,6 +28,7 @@ function greenlight_add_admin_menu() {
 	$svg .= '<path fill="#a7aaad" d="M10 2c-1.8 3.2-1.2 6 0 8-2-1.2-5-1-6.5 1.5';
 	$svg .= ' 2.2 4.5 5.5 6.5 9.5 5.5-1-2.2-.8-4.5 0-6.5-1.2 1-2.8 1.5-4.5 1';
 	$svg .= ' 1.8-2 3.5-5.5 1.5-9.5z"/></svg>';
+	// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- Benign SVG icon data URI for the admin menu.
 	$icon = 'data:image/svg+xml;base64,' . base64_encode( $svg );
 
 	add_menu_page(
@@ -42,9 +43,9 @@ function greenlight_add_admin_menu() {
 }
 add_action( 'admin_menu', 'greenlight_add_admin_menu' );
 
-/* =========================================================
- * Enqueue color picker (Appearance tab only)
- * ======================================================= */
+/**
+ * Enqueue color picker (Appearance tab only).
+ */
 
 /**
  * Enqueues wp-color-picker on the Greenlight admin page.
@@ -85,9 +86,9 @@ function greenlight_admin_enqueue( $hook_suffix ) {
 }
 add_action( 'admin_enqueue_scripts', 'greenlight_admin_enqueue' );
 
-/* =========================================================
- * Performance settings
- * ======================================================= */
+/**
+ * Performance settings.
+ */
 
 /**
  * Returns default performance options.
@@ -124,9 +125,9 @@ function greenlight_sanitize_performance_settings( $input ) {
 	$lifetime          = isset( $input['cache_lifetime'] ) ? (int) $input['cache_lifetime'] : $defaults['cache_lifetime'];
 
 	$allowed_heartbeat = array( 'default', 'reduce', 'disable' );
-	$hb_front  = isset( $input['heartbeat_front'] ) ? sanitize_key( $input['heartbeat_front'] ) : 'default';
-	$hb_admin  = isset( $input['heartbeat_admin'] ) ? sanitize_key( $input['heartbeat_admin'] ) : 'default';
-	$hb_editor = isset( $input['heartbeat_editor'] ) ? sanitize_key( $input['heartbeat_editor'] ) : 'default';
+	$hb_front          = isset( $input['heartbeat_front'] ) ? sanitize_key( $input['heartbeat_front'] ) : 'default';
+	$hb_admin          = isset( $input['heartbeat_admin'] ) ? sanitize_key( $input['heartbeat_admin'] ) : 'default';
+	$hb_editor         = isset( $input['heartbeat_editor'] ) ? sanitize_key( $input['heartbeat_editor'] ) : 'default';
 
 	return array(
 		'enable_css_min'      => isset( $input['enable_css_min'] ) ? 1 : 0,
@@ -149,17 +150,21 @@ function greenlight_sanitize_performance_settings( $input ) {
  * @return void
  */
 function greenlight_register_performance_settings() {
-	register_setting( 'greenlight_performance', GREENLIGHT_PERF_OPTION_KEY, array(
-		'type'              => 'array',
-		'sanitize_callback' => 'greenlight_sanitize_performance_settings',
-		'default'           => greenlight_get_performance_defaults(),
-	) );
+	register_setting(
+		'greenlight_performance',
+		GREENLIGHT_PERF_OPTION_KEY,
+		array(
+			'type'              => 'array',
+			'sanitize_callback' => 'greenlight_sanitize_performance_settings',
+			'default'           => greenlight_get_performance_defaults(),
+		)
+	);
 }
 add_action( 'admin_init', 'greenlight_register_performance_settings' );
 
-/* =========================================================
- * Appearance settings
- * ======================================================= */
+/**
+ * Appearance settings.
+ */
 
 /**
  * Returns default appearance options.
@@ -168,11 +173,11 @@ add_action( 'admin_init', 'greenlight_register_performance_settings' );
  */
 function greenlight_get_appearance_defaults() {
 	return array(
-		// Global
+		// Global.
 		'carbon_badge_enabled'     => 1,
 		'carbon_badge_value'       => '',
 		'newsletter_enabled'       => 1,
-		// Couleurs
+		// Couleurs.
 		'color_primary'            => '',
 		'color_surface'            => '',
 		'color_text'               => '',
@@ -180,23 +185,23 @@ function greenlight_get_appearance_defaults() {
 		'color_tertiary'           => '',
 		'color_border'             => '',
 		'color_on_surface_variant' => '',
-		// Header
+		// Header.
 		'color_header_bg'          => '',
 		'show_tagline'             => 0,
-		// Hero
+		// Hero.
 		'hero_style'               => 'asymmetric',
 		'show_hero_badge'          => 1,
 		'hero_text'                => '',
-		// Single
+		// Single.
 		'show_date'                => 1,
 		'show_author'              => 1,
 		'show_tags'                => 1,
 		'show_newsletter_single'   => 1,
-		// Archive
+		// Archive.
 		'archive_layout'           => 'asymmetric',
 		'show_excerpts_archive'    => 1,
 		'show_thumbnails_archive'  => 1,
-		// Footer
+		// Footer.
 		'color_footer_bg'          => '',
 		'show_low_emission'        => 1,
 		'custom_copyright'         => '',
@@ -222,15 +227,21 @@ function greenlight_sanitize_appearance_settings( $input ) {
 	update_option( 'greenlight_carbon_badge_value', $badge_value );
 
 	$sanitize_color = static function ( $val ) {
-		return ! empty( $val ) ? ( sanitize_hex_color( $val ) ?: '' ) : '';
+		if ( empty( $val ) ) {
+			return '';
+		}
+
+		$color = sanitize_hex_color( $val );
+
+		return $color ? $color : '';
 	};
 
 	return array(
-		// Global
+		// Global.
 		'carbon_badge_enabled'     => isset( $input['carbon_badge_enabled'] ) ? 1 : 0,
 		'carbon_badge_value'       => $badge_value,
 		'newsletter_enabled'       => isset( $input['newsletter_enabled'] ) ? 1 : 0,
-		// Couleurs
+		// Couleurs.
 		'color_primary'            => $sanitize_color( $input['color_primary'] ?? '' ),
 		'color_surface'            => $sanitize_color( $input['color_surface'] ?? '' ),
 		'color_text'               => $sanitize_color( $input['color_text'] ?? '' ),
@@ -238,27 +249,27 @@ function greenlight_sanitize_appearance_settings( $input ) {
 		'color_tertiary'           => $sanitize_color( $input['color_tertiary'] ?? '' ),
 		'color_border'             => $sanitize_color( $input['color_border'] ?? '' ),
 		'color_on_surface_variant' => $sanitize_color( $input['color_on_surface_variant'] ?? '' ),
-		// Header
+		// Header.
 		'color_header_bg'          => $sanitize_color( $input['color_header_bg'] ?? '' ),
 		'show_tagline'             => isset( $input['show_tagline'] ) ? 1 : 0,
-		// Hero
+		// Hero.
 		'hero_style'               => in_array( $input['hero_style'] ?? '', array( 'asymmetric', 'centered' ), true )
 			? sanitize_key( $input['hero_style'] )
 			: $defaults['hero_style'],
 		'show_hero_badge'          => isset( $input['show_hero_badge'] ) ? 1 : 0,
 		'hero_text'                => isset( $input['hero_text'] ) ? sanitize_textarea_field( $input['hero_text'] ) : '',
-		// Single
+		// Single.
 		'show_date'                => isset( $input['show_date'] ) ? 1 : 0,
 		'show_author'              => isset( $input['show_author'] ) ? 1 : 0,
 		'show_tags'                => isset( $input['show_tags'] ) ? 1 : 0,
 		'show_newsletter_single'   => isset( $input['show_newsletter_single'] ) ? 1 : 0,
-		// Archive
+		// Archive.
 		'archive_layout'           => in_array( $input['archive_layout'] ?? '', array( 'asymmetric', 'list' ), true )
 			? sanitize_key( $input['archive_layout'] )
 			: $defaults['archive_layout'],
 		'show_excerpts_archive'    => isset( $input['show_excerpts_archive'] ) ? 1 : 0,
 		'show_thumbnails_archive'  => isset( $input['show_thumbnails_archive'] ) ? 1 : 0,
-		// Footer
+		// Footer.
 		'color_footer_bg'          => $sanitize_color( $input['color_footer_bg'] ?? '' ),
 		'show_low_emission'        => isset( $input['show_low_emission'] ) ? 1 : 0,
 		'custom_copyright'         => isset( $input['custom_copyright'] ) ? sanitize_text_field( $input['custom_copyright'] ) : '',
@@ -272,17 +283,21 @@ function greenlight_sanitize_appearance_settings( $input ) {
  * @return void
  */
 function greenlight_register_appearance_settings() {
-	register_setting( 'greenlight_appearance', GREENLIGHT_APPEARANCE_OPTION_KEY, array(
-		'type'              => 'array',
-		'sanitize_callback' => 'greenlight_sanitize_appearance_settings',
-		'default'           => greenlight_get_appearance_defaults(),
-	) );
+	register_setting(
+		'greenlight_appearance',
+		GREENLIGHT_APPEARANCE_OPTION_KEY,
+		array(
+			'type'              => 'array',
+			'sanitize_callback' => 'greenlight_sanitize_appearance_settings',
+			'default'           => greenlight_get_appearance_defaults(),
+		)
+	);
 }
 add_action( 'admin_init', 'greenlight_register_appearance_settings' );
 
-/* =========================================================
- * SVG settings
- * ======================================================= */
+/**
+ * SVG settings.
+ */
 
 /**
  * Sanitizes SVG settings.
@@ -301,17 +316,21 @@ function greenlight_sanitize_svg_settings( $input ) {
  * @return void
  */
 function greenlight_register_svg_settings() {
-	register_setting( 'greenlight_svg', GREENLIGHT_SVG_OPTION_KEY, array(
-		'type'              => 'array',
-		'sanitize_callback' => 'greenlight_sanitize_svg_settings',
-		'default'           => array( 'enable_svg' => 0 ),
-	) );
+	register_setting(
+		'greenlight_svg',
+		GREENLIGHT_SVG_OPTION_KEY,
+		array(
+			'type'              => 'array',
+			'sanitize_callback' => 'greenlight_sanitize_svg_settings',
+			'default'           => array( 'enable_svg' => 0 ),
+		)
+	);
 }
 add_action( 'admin_init', 'greenlight_register_svg_settings' );
 
-/* =========================================================
- * Custom colour output on the front end
- * ======================================================= */
+/**
+ * Custom colour output on the front end.
+ */
 
 /**
  * Outputs CSS variable overrides when custom colours are configured.
@@ -353,9 +372,9 @@ function greenlight_output_custom_colors() {
 }
 add_action( 'wp_head', 'greenlight_output_custom_colors', 999 );
 
-/* =========================================================
- * Cache helpers
- * ======================================================= */
+/**
+ * Cache helpers.
+ */
 
 /**
  * Returns basic stats for the HTML page cache directory.
@@ -377,7 +396,10 @@ function greenlight_get_cache_stats() {
 		}
 	}
 
-	return array( 'count' => $count, 'size' => $size );
+	return array(
+		'count' => $count,
+		'size'  => $size,
+	);
 }
 
 /**
@@ -397,7 +419,10 @@ function greenlight_handle_purge_cache() {
 	} else {
 		$cache_dir = WP_CONTENT_DIR . '/cache/greenlight/';
 		if ( is_dir( $cache_dir ) ) {
-			$files = glob( $cache_dir . '*.html' ) ?: array();
+			$files = glob( $cache_dir . '*.html' );
+			if ( ! is_array( $files ) ) {
+				$files = array();
+			}
 			array_map( 'unlink', $files );
 		}
 	}
@@ -407,9 +432,9 @@ function greenlight_handle_purge_cache() {
 }
 add_action( 'admin_post_greenlight_purge_cache', 'greenlight_handle_purge_cache' );
 
-/* =========================================================
- * Main page render
- * ======================================================= */
+/**
+ * Main page render.
+ */
 
 /**
  * Renders the main Greenlight admin page with tab navigation.
@@ -442,7 +467,7 @@ function greenlight_render_admin_page() {
 		<h2 class="nav-tab-wrapper">
 			<?php foreach ( $tabs as $slug => $label ) : ?>
 				<a href="<?php echo esc_url( admin_url( 'admin.php?page=greenlight&tab=' . $slug ) ); ?>"
-				   class="nav-tab<?php echo $slug === $current_tab ? ' nav-tab-active' : ''; ?>">
+					class="nav-tab<?php echo $slug === $current_tab ? ' nav-tab-active' : ''; ?>">
 					<?php echo esc_html( $label ); ?>
 				</a>
 			<?php endforeach; ?>
@@ -476,9 +501,9 @@ function greenlight_render_admin_page() {
 	<?php
 }
 
-/* =========================================================
- * Tab renders
- * ======================================================= */
+/**
+ * Tab renders.
+ */
 
 /**
  * Renders the SEO tab — same option_group as inc/seo-settings.php.
@@ -602,7 +627,12 @@ function greenlight_render_admin_tab_seo() {
 		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Redirection supprimée.', 'greenlight' ) . '</p></div>';
 	}
 	if ( isset( $_GET['redirects_imported'] ) ) {
-		printf( '<div class="notice notice-success is-dismissible"><p>' . esc_html__( '%d redirection(s) importée(s).', 'greenlight' ) . '</p></div>', absint( $_GET['redirects_imported'] ) );
+		/* translators: %d: number of imported redirects. */
+		$redirects_imported_message = esc_html__( '%d redirection(s) importée(s).', 'greenlight' );
+		printf(
+			'<div class="notice notice-success is-dismissible"><p>' . esc_html( $redirects_imported_message ) . '</p></div>',
+			absint( $_GET['redirects_imported'] )
+		);
 	}
 	// phpcs:enable
 
@@ -612,7 +642,7 @@ function greenlight_render_admin_tab_seo() {
 	}
 
 	if ( ! empty( $redirects ) ) :
-	?>
+		?>
 	<table class="widefat striped" style="max-width:800px">
 		<thead>
 			<tr>
@@ -843,8 +873,12 @@ function greenlight_render_admin_tab_images() {
 	<!-- Bulk optimization -->
 	<h2><?php esc_html_e( 'Optimisation en masse', 'greenlight' ); ?></h2>
 	<?php
-	$bulk_stats = function_exists( 'greenlight_get_bulk_stats' ) ? greenlight_get_bulk_stats() : array( 'total' => 0, 'optimized' => 0, 'savings' => 0 );
-	$pct = $bulk_stats['total'] > 0 ? round( ( $bulk_stats['optimized'] / $bulk_stats['total'] ) * 100 ) : 0;
+	$bulk_stats = function_exists( 'greenlight_get_bulk_stats' ) ? greenlight_get_bulk_stats() : array(
+		'total'     => 0,
+		'optimized' => 0,
+		'savings'   => 0,
+	);
+	$pct        = $bulk_stats['total'] > 0 ? round( ( $bulk_stats['optimized'] / $bulk_stats['total'] ) * 100 ) : 0;
 	?>
 	<p>
 		<?php
@@ -935,9 +969,9 @@ function greenlight_render_admin_tab_images() {
  * @return void
  */
 function greenlight_render_admin_tab_performance() {
-	$options    = get_option( GREENLIGHT_PERF_OPTION_KEY, greenlight_get_performance_defaults() );
-	$stats      = greenlight_get_cache_stats();
-	$theme_dir  = get_stylesheet_directory();
+	$options   = get_option( GREENLIGHT_PERF_OPTION_KEY, greenlight_get_performance_defaults() );
+	$stats     = greenlight_get_cache_stats();
+	$theme_dir = get_stylesheet_directory();
 
 	// Notifications GET.
 	// phpcs:disable WordPress.Security.NonceVerification.Recommended
@@ -1006,9 +1040,9 @@ function greenlight_render_admin_tab_performance() {
 
 	<h2><?php esc_html_e( 'Statut de la minification', 'greenlight' ); ?></h2>
 	<?php
-	$min_files = array(
-		'style.min.css'                          => $theme_dir . '/style.min.css',
-		'assets/js/seo-sidebar.min.js'           => $theme_dir . '/assets/js/seo-sidebar.min.js',
+	$min_files     = array(
+		'style.min.css'                => $theme_dir . '/style.min.css',
+		'assets/js/seo-sidebar.min.js' => $theme_dir . '/assets/js/seo-sidebar.min.js',
 	);
 	$block_min_dir = $theme_dir . '/assets/css/blocks/';
 	foreach ( array( 'navigation', 'image', 'heading', 'paragraph', 'separator', 'button', 'group', 'query' ) as $b ) {
@@ -1058,11 +1092,14 @@ function greenlight_render_admin_tab_performance() {
 	} elseif ( stripos( $server_software, 'apache' ) !== false ) {
 		echo '<p>' . esc_html__( 'Serveur Apache détecté — ajoutez mod_deflate et mod_expires dans votre .htaccess.', 'greenlight' ) . '</p>';
 	} else {
-		echo '<p>' . esc_html( sprintf(
-			/* translators: %s: server software string */
-			__( 'Serveur : %s', 'greenlight' ),
-			$server_software ?: __( 'inconnu', 'greenlight' )
-		) ) . '</p>';
+		/* translators: %s: server software string */
+		$server_software_message = __( 'Serveur : %s', 'greenlight' );
+		echo '<p>' . esc_html(
+			sprintf(
+				$server_software_message,
+				'' !== $server_software ? $server_software : __( 'inconnu', 'greenlight' )
+			)
+		) . '</p>';
 	}
 	?>
 
@@ -1239,8 +1276,10 @@ function greenlight_render_admin_tab_performance() {
 	<?php
 	// phpcs:disable WordPress.Security.NonceVerification.Recommended
 	if ( isset( $_GET['cleanup'] ) && isset( $_GET['cleaned'] ) ) {
+		/* translators: 1: cleanup task slug 2: number of cleaned items. */
+		$cleanup_message = esc_html__( 'Nettoyage "%1$s" terminé : %2$d élément(s) traité(s).', 'greenlight' );
 		printf(
-			'<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Nettoyage "%1$s" terminé : %2$d élément(s) traité(s).', 'greenlight' ) . '</p></div>',
+			'<div class="notice notice-success is-dismissible"><p>' . esc_html( $cleanup_message ) . '</p></div>',
 			esc_html( sanitize_key( $_GET['cleanup'] ) ),
 			absint( $_GET['cleaned'] )
 		);
@@ -1482,9 +1521,9 @@ function greenlight_render_admin_tab_appearance() {
 
 	<h2><?php esc_html_e( 'Prévisualisation', 'greenlight' ); ?></h2>
 	<iframe id="greenlight-preview-frame"
-	        src="<?php echo esc_url( home_url( '/' ) ); ?>"
-	        title="<?php esc_attr_e( 'Prévisualisation du site', 'greenlight' ); ?>"
-	        style="width:100%;height:500px;border:1px solid #dcdcde;border-radius:4px;margin-top:.5rem"></iframe>
+			src="<?php echo esc_url( home_url( '/' ) ); ?>"
+			title="<?php esc_attr_e( 'Prévisualisation du site', 'greenlight' ); ?>"
+			style="width:100%;height:500px;border:1px solid #dcdcde;border-radius:4px;margin-top:.5rem"></iframe>
 	<?php
 }
 
@@ -1517,9 +1556,9 @@ function greenlight_render_admin_tab_svg() {
 	<?php
 }
 
-/* =========================================================
- * Onglet Outils — Import / Export
- * ======================================================= */
+/**
+ * Onglet Outils — Import / Export.
+ */
 
 /**
  * Affiche l'onglet Outils (Import/Export JSON).
