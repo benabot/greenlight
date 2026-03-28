@@ -9,6 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/* phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching */
+
 /**
  * Deletes old post revisions.
  *
@@ -222,3 +224,5 @@ function greenlight_clear_db_cleanup_cron() {
 	wp_clear_scheduled_hook( 'greenlight_db_cleanup_cron' );
 }
 add_action( 'switch_theme', 'greenlight_clear_db_cleanup_cron' );
+
+/* phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching */

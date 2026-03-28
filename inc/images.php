@@ -261,10 +261,12 @@ add_action( 'wp_head', 'greenlight_preload_hero_image', 2 );
  *
  * @param array<string, string> $attr Image attributes.
  * @param WP_Post               $attachment Attachment object.
- * @param string|array          $size Requested size.
+ * @param string|array          $_size Requested size.
  * @return array<string, string>
  */
-function greenlight_filter_attachment_image_attributes( $attr, $attachment, $size ) {
+function greenlight_filter_attachment_image_attributes( $attr, $attachment, $_size ) {
+	unset( $_size );
+
 	if ( is_admin() || ! $attachment instanceof WP_Post ) {
 		return $attr;
 	}

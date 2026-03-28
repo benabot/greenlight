@@ -9,6 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/* phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching */
+
 /**
  * AJAX handler for bulk image optimization.
  *
@@ -221,3 +223,5 @@ function greenlight_get_bulk_stats() {
 		'savings'   => $savings,
 	);
 }
+
+/* phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching */

@@ -98,11 +98,11 @@ function greenlight_sanitize_svg_string( $svg ) {
 		return false;
 	}
 
+	/* phpcs:disable Generic.Formatting.MultipleStatementAlignment */
 	$dom = new DOMDocument();
-	// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMDocument API uses camelCase properties.
-	$dom->formatOutput = false;
-	// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMDocument API uses camelCase properties.
-	$dom->preserveWhiteSpace = false;
+	$dom->formatOutput = false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMDocument API uses camelCase properties.
+	$dom->preserveWhiteSpace = false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMDocument API uses camelCase properties.
+	/* phpcs:enable Generic.Formatting.MultipleStatementAlignment */
 
 	libxml_use_internal_errors( true );
 	$loaded = $dom->loadXML( $svg, LIBXML_NONET );
@@ -116,8 +116,7 @@ function greenlight_sanitize_svg_string( $svg ) {
 
 	// Supprime tous les éléments <script>.
 	foreach ( $xpath->query( '//script' ) as $node ) {
-		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMNode API uses camelCase properties.
-		$node->parentNode->removeChild( $node );
+		$node->parentNode->removeChild( $node ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMNode API uses camelCase properties.
 	}
 
 	// Supprime les attributs d'événements JS (on*) et href/xlink:href vers javascript:.
@@ -164,8 +163,7 @@ function greenlight_sanitize_svg_string( $svg ) {
 		}
 
 		if ( '' !== $href && ( '#' !== $href[0] ) ) {
-			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMNode API uses camelCase properties.
-			$node->parentNode->removeChild( $node );
+			$node->parentNode->removeChild( $node ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMNode API uses camelCase properties.
 		}
 	}
 
@@ -182,10 +180,12 @@ function greenlight_sanitize_svg_string( $svg ) {
  * @param array  $data     Données du fichier vérifié.
  * @param string $file     Chemin vers le fichier.
  * @param string $filename Nom du fichier.
- * @param array  $mimes    MIME types autorisés.
+ * @param array  $_mimes   MIME types autorisés.
  * @return array
  */
-function greenlight_fix_svg_mime_check( $data, $file, $filename, $mimes ) {
+function greenlight_fix_svg_mime_check( $data, $file, $filename, $_mimes ) {
+	unset( $_mimes );
+
 	if ( ! greenlight_svg_enabled() ) {
 		return $data;
 	}

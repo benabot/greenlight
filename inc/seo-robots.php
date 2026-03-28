@@ -24,10 +24,12 @@ function greenlight_get_default_robots_txt() {
  * Filters the robots.txt output with custom content if defined.
  *
  * @param string $output  Default robots.txt output.
- * @param bool   $is_public Whether the site is public.
+ * @param bool   $_is_public Whether the site is public.
  * @return string
  */
-function greenlight_custom_robots_txt( $output, $is_public ) {
+function greenlight_custom_robots_txt( $output, $_is_public ) {
+	unset( $_is_public );
+
 	$seo_options = greenlight_get_seo_options();
 
 	if ( ! empty( $seo_options['custom_robots_txt'] ) ) {
