@@ -175,9 +175,9 @@ Objectif : passer de EcoIndex B à A. Améliorer la compression, le cache, la mi
   - [x] Conditionné au toggle SVG dans l'admin
 - [x] **Nettoyage WP** : `functions.php` — supprimer `wp_generator`, RSD link, wlwmanifest, shortlink, feed links inutiles, REST API link du head (via `remove_action` sur `wp_head`)
 - [x] **Audit DOM** : vérifier que chaque template type reste sous 80 éléments DOM — documenter le comptage dans `PROJECT_STATE.md`
-- [ ] **Inline Gutenberg** : compromis accepté — les global-styles inline restent, pas de dequeue agressif (préserver la compatibilité éditeur)
-- [ ] **Documentation nginx** : bloc recommandé dans `README.md` pour gzip, cache static assets, headers security, et `try_files` WordPress
-- [ ] **Documentation Apache** : fichier `.htaccess` exemple dans `README.md` pour mod_deflate, mod_expires, mod_headers, et mod_rewrite WordPress
+- [x] **Inline Gutenberg** : compromis accepté — les global-styles inline restent, pas de dequeue agressif (préserver la compatibilité éditeur)
+- [x] **Documentation nginx** : bloc recommandé dans `README.md` pour gzip, cache static assets, headers security, et `try_files` WordPress
+- [x] **Documentation Apache** : fichier `.htaccess` exemple dans `README.md` pour mod_deflate, mod_expires, mod_headers, et mod_rewrite WordPress
 
 ### Fichiers créés ou modifiés (Phase 6C)
 
