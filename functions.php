@@ -16,6 +16,16 @@ require_once get_theme_file_path( 'inc/admin.php' );
 require_once get_theme_file_path( 'inc/minify.php' );
 require_once get_theme_file_path( 'inc/cache.php' );
 require_once get_theme_file_path( 'inc/svg.php' );
+require_once get_theme_file_path( 'inc/seo-analysis.php' );
+require_once get_theme_file_path( 'inc/seo-redirects.php' );
+require_once get_theme_file_path( 'inc/seo-breadcrumbs.php' );
+require_once get_theme_file_path( 'inc/seo-robots.php' );
+require_once get_theme_file_path( 'inc/critical-css.php' );
+require_once get_theme_file_path( 'inc/prefetch.php' );
+require_once get_theme_file_path( 'inc/db-cleanup.php' );
+require_once get_theme_file_path( 'inc/heartbeat.php' );
+require_once get_theme_file_path( 'inc/concat.php' );
+require_once get_theme_file_path( 'inc/images-bulk.php' );
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.

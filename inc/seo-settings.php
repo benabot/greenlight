@@ -22,6 +22,8 @@ function greenlight_sanitize_seo_settings( $input ) {
 		'enable_sitemap'          => isset( $input['enable_sitemap'] ) ? 1 : 0,
 		'noindex_author_archives' => isset( $input['noindex_author_archives'] ) ? 1 : 0,
 		'noindex_tag_archives'    => isset( $input['noindex_tag_archives'] ) ? 1 : 0,
+		'show_breadcrumbs'        => isset( $input['show_breadcrumbs'] ) ? 1 : 0,
+		'custom_robots_txt'       => isset( $input['custom_robots_txt'] ) ? sanitize_textarea_field( $input['custom_robots_txt'] ) : $defaults['custom_robots_txt'],
 	);
 }
 

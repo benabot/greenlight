@@ -38,6 +38,8 @@ function greenlight_get_seo_defaults() {
 		'enable_sitemap'          => 1,
 		'noindex_author_archives' => 1,
 		'noindex_tag_archives'    => 1,
+		'show_breadcrumbs'        => 0,
+		'custom_robots_txt'       => '',
 	);
 }
 

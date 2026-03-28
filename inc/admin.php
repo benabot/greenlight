@@ -96,10 +96,17 @@ add_action( 'admin_enqueue_scripts', 'greenlight_admin_enqueue' );
  */
 function greenlight_get_performance_defaults() {
 	return array(
-		'enable_css_min'    => 0,
-		'enable_js_min'     => 0,
-		'enable_page_cache' => 0,
-		'cache_lifetime'    => 3600,
+		'enable_css_min'      => 0,
+		'enable_js_min'       => 0,
+		'enable_page_cache'   => 0,
+		'cache_lifetime'      => 3600,
+		'enable_critical_css' => 0,
+		'prefetch_domains'    => '',
+		'enable_concat'       => 0,
+		'heartbeat_front'     => 'default',
+		'heartbeat_admin'     => 'default',
+		'heartbeat_editor'    => 'default',
+		'enable_auto_cleanup' => 0,
 	);
 }
 
@@ -116,11 +123,23 @@ function greenlight_sanitize_performance_settings( $input ) {
 	$allowed_lifetimes = array( 3600, 21600, 43200, 86400, 604800 );
 	$lifetime          = isset( $input['cache_lifetime'] ) ? (int) $input['cache_lifetime'] : $defaults['cache_lifetime'];
 
+	$allowed_heartbeat = array( 'default', 'reduce', 'disable' );
+	$hb_front  = isset( $input['heartbeat_front'] ) ? sanitize_key( $input['heartbeat_front'] ) : 'default';
+	$hb_admin  = isset( $input['heartbeat_admin'] ) ? sanitize_key( $input['heartbeat_admin'] ) : 'default';
+	$hb_editor = isset( $input['heartbeat_editor'] ) ? sanitize_key( $input['heartbeat_editor'] ) : 'default';
+
 	return array(
-		'enable_css_min'    => isset( $input['enable_css_min'] ) ? 1 : 0,
-		'enable_js_min'     => isset( $input['enable_js_min'] ) ? 1 : 0,
-		'enable_page_cache' => isset( $input['enable_page_cache'] ) ? 1 : 0,
-		'cache_lifetime'    => in_array( $lifetime, $allowed_lifetimes, true ) ? $lifetime : $defaults['cache_lifetime'],
+		'enable_css_min'      => isset( $input['enable_css_min'] ) ? 1 : 0,
+		'enable_js_min'       => isset( $input['enable_js_min'] ) ? 1 : 0,
+		'enable_page_cache'   => isset( $input['enable_page_cache'] ) ? 1 : 0,
+		'cache_lifetime'      => in_array( $lifetime, $allowed_lifetimes, true ) ? $lifetime : $defaults['cache_lifetime'],
+		'enable_critical_css' => isset( $input['enable_critical_css'] ) ? 1 : 0,
+		'prefetch_domains'    => isset( $input['prefetch_domains'] ) ? sanitize_textarea_field( $input['prefetch_domains'] ) : '',
+		'enable_concat'       => isset( $input['enable_concat'] ) ? 1 : 0,
+		'heartbeat_front'     => in_array( $hb_front, $allowed_heartbeat, true ) ? $hb_front : 'default',
+		'heartbeat_admin'     => in_array( $hb_admin, $allowed_heartbeat, true ) ? $hb_admin : 'default',
+		'heartbeat_editor'    => in_array( $hb_editor, $allowed_heartbeat, true ) ? $hb_editor : 'default',
+		'enable_auto_cleanup' => isset( $input['enable_auto_cleanup'] ) ? 1 : 0,
 	);
 }
 
@@ -523,9 +542,167 @@ function greenlight_render_admin_tab_seo() {
 					</label>
 				</td>
 			</tr>
-		</table>
+		<tr>
+				<th scope="row"><?php esc_html_e( 'Fil d\'Ariane', 'greenlight' ); ?></th>
+				<td>
+					<label for="gl-breadcrumbs">
+						<input id="gl-breadcrumbs" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[show_breadcrumbs]" type="checkbox" value="1" <?php checked( ! empty( $options['show_breadcrumbs'] ), true ); ?>>
+						<?php esc_html_e( 'Afficher le fil d\'Ariane sur les pages et articles.', 'greenlight' ); ?>
+					</label>
+				</td>
+			</tr>
+			</table>
 		<?php submit_button(); ?>
 	</form>
+
+	<!-- Robots.txt -->
+	<h2><?php esc_html_e( 'Robots.txt personnalisé', 'greenlight' ); ?></h2>
+	<form method="post" action="options.php">
+		<?php settings_fields( 'greenlight_seo' ); ?>
+		<?php
+		// Re-read to populate hidden fields correctly for partial save.
+		foreach ( $options as $key => $value ) {
+			if ( 'custom_robots_txt' === $key || 'show_breadcrumbs' === $key ) {
+				continue;
+			}
+			if ( is_numeric( $value ) ) {
+				if ( (int) $value ) {
+					echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_SEO_OPTION_KEY ) . '[' . esc_attr( $key ) . ']" value="1">';
+				}
+			} else {
+				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_SEO_OPTION_KEY ) . '[' . esc_attr( $key ) . ']" value="' . esc_attr( $value ) . '">';
+			}
+		}
+		if ( ! empty( $options['show_breadcrumbs'] ) ) {
+			echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_SEO_OPTION_KEY ) . '[show_breadcrumbs]" value="1">';
+		}
+		?>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row">
+					<label for="gl-robots-txt"><?php esc_html_e( 'Contenu robots.txt', 'greenlight' ); ?></label>
+				</th>
+				<td>
+					<textarea id="gl-robots-txt" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[custom_robots_txt]" class="large-text code" rows="8"><?php echo esc_textarea( ! empty( $options['custom_robots_txt'] ) ? $options['custom_robots_txt'] : greenlight_get_default_robots_txt() ); ?></textarea>
+					<p class="description"><?php esc_html_e( 'Laisser vide pour utiliser le robots.txt par défaut de WordPress. Le contenu remplace intégralement la sortie.', 'greenlight' ); ?></p>
+				</td>
+			</tr>
+		</table>
+		<?php submit_button( __( 'Enregistrer le robots.txt', 'greenlight' ) ); ?>
+	</form>
+
+	<!-- Redirections 301/302 -->
+	<h2><?php esc_html_e( 'Redirections', 'greenlight' ); ?></h2>
+	<?php
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended
+	if ( isset( $_GET['redirect_added'] ) ) {
+		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Redirection ajoutée.', 'greenlight' ) . '</p></div>';
+	}
+	if ( isset( $_GET['redirect_deleted'] ) ) {
+		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Redirection supprimée.', 'greenlight' ) . '</p></div>';
+	}
+	if ( isset( $_GET['redirects_imported'] ) ) {
+		printf( '<div class="notice notice-success is-dismissible"><p>' . esc_html__( '%d redirection(s) importée(s).', 'greenlight' ) . '</p></div>', absint( $_GET['redirects_imported'] ) );
+	}
+	// phpcs:enable
+
+	$redirects = get_option( 'greenlight_redirects', array() );
+	if ( ! is_array( $redirects ) ) {
+		$redirects = array();
+	}
+
+	if ( ! empty( $redirects ) ) :
+	?>
+	<table class="widefat striped" style="max-width:800px">
+		<thead>
+			<tr>
+				<th><?php esc_html_e( 'Source', 'greenlight' ); ?></th>
+				<th><?php esc_html_e( 'Destination', 'greenlight' ); ?></th>
+				<th><?php esc_html_e( 'Code', 'greenlight' ); ?></th>
+				<th><?php esc_html_e( 'Hits', 'greenlight' ); ?></th>
+				<th><?php esc_html_e( 'Action', 'greenlight' ); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach ( $redirects as $index => $rule ) : ?>
+			<tr>
+				<td><code><?php echo esc_html( $rule['source'] ); ?></code></td>
+				<td><?php echo esc_html( $rule['destination'] ); ?></td>
+				<td><?php echo esc_html( $rule['code'] ); ?></td>
+				<td><?php echo esc_html( isset( $rule['hits'] ) ? $rule['hits'] : 0 ); ?></td>
+				<td>
+					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline">
+						<input type="hidden" name="action" value="greenlight_delete_redirect">
+						<input type="hidden" name="redirect_index" value="<?php echo esc_attr( $index ); ?>">
+						<?php wp_nonce_field( 'greenlight_delete_redirect' ); ?>
+						<button type="submit" class="button button-link-delete button-small"><?php esc_html_e( 'Supprimer', 'greenlight' ); ?></button>
+					</form>
+				</td>
+			</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+	<?php endif; ?>
+
+	<h3><?php esc_html_e( 'Ajouter une redirection', 'greenlight' ); ?></h3>
+	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+		<input type="hidden" name="action" value="greenlight_add_redirect">
+		<?php wp_nonce_field( 'greenlight_add_redirect' ); ?>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><label for="gl-redirect-source"><?php esc_html_e( 'URL source', 'greenlight' ); ?></label></th>
+				<td><input id="gl-redirect-source" name="redirect_source" type="text" class="regular-text" placeholder="/ancienne-page"></td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="gl-redirect-dest"><?php esc_html_e( 'URL destination', 'greenlight' ); ?></label></th>
+				<td><input id="gl-redirect-dest" name="redirect_destination" type="text" class="regular-text" placeholder="https://example.com/nouvelle-page"></td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="gl-redirect-code"><?php esc_html_e( 'Code HTTP', 'greenlight' ); ?></label></th>
+				<td>
+					<select id="gl-redirect-code" name="redirect_code">
+						<option value="301"><?php esc_html_e( '301 — Permanent', 'greenlight' ); ?></option>
+						<option value="302"><?php esc_html_e( '302 — Temporaire', 'greenlight' ); ?></option>
+					</select>
+				</td>
+			</tr>
+		</table>
+		<?php submit_button( __( 'Ajouter', 'greenlight' ), 'secondary' ); ?>
+	</form>
+
+	<h3><?php esc_html_e( 'Importer des redirections (CSV)', 'greenlight' ); ?></h3>
+	<p class="description"><?php esc_html_e( 'Format : source,destination,code (une ligne par redirection).', 'greenlight' ); ?></p>
+	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data">
+		<input type="hidden" name="action" value="greenlight_import_redirects">
+		<?php wp_nonce_field( 'greenlight_import_redirects' ); ?>
+		<input type="file" name="redirects_csv" accept=".csv">
+		<?php submit_button( __( 'Importer', 'greenlight' ), 'secondary' ); ?>
+	</form>
+
+	<!-- Log 404 -->
+	<h2><?php esc_html_e( 'Log des erreurs 404', 'greenlight' ); ?></h2>
+	<?php
+	$log_404 = get_option( 'greenlight_404_log', array() );
+	if ( ! is_array( $log_404 ) ) {
+		$log_404 = array();
+	}
+
+	if ( empty( $log_404 ) ) {
+		echo '<p>' . esc_html__( 'Aucune erreur 404 enregistrée.', 'greenlight' ) . '</p>';
+	} else {
+		echo '<table class="widefat striped" style="max-width:800px"><thead><tr>';
+		echo '<th>' . esc_html__( 'URL', 'greenlight' ) . '</th>';
+		echo '<th>' . esc_html__( 'Date', 'greenlight' ) . '</th>';
+		echo '</tr></thead><tbody>';
+		foreach ( array_slice( $log_404, 0, 50 ) as $entry ) {
+			echo '<tr>';
+			echo '<td><code>' . esc_html( $entry['url'] ) . '</code></td>';
+			echo '<td>' . esc_html( $entry['time'] ) . '</td>';
+			echo '</tr>';
+		}
+		echo '</tbody></table>';
+	}
+	?>
 	<?php
 }
 
@@ -597,6 +774,158 @@ function greenlight_render_admin_tab_images() {
 		);
 		?>
 	</p>
+
+	<!-- AVIF -->
+	<h2><?php esc_html_e( 'AVIF', 'greenlight' ); ?></h2>
+	<?php
+	$avif_available = function_exists( 'greenlight_is_avif_conversion_enabled' ) && greenlight_is_avif_conversion_enabled();
+	if ( ! $avif_available && ! empty( $options['enable_avif'] ) ) {
+		echo '<div class="notice notice-warning inline"><p>' . esc_html__( 'Le support AVIF n\'est pas disponible sur ce serveur (PHP 8.1+ avec GD imageavif ou Imagick requis).', 'greenlight' ) . '</p></div>';
+	}
+	?>
+	<form method="post" action="options.php">
+		<?php settings_fields( 'greenlight_images' ); ?>
+		<?php
+		// Preserve existing options as hidden fields.
+		foreach ( $options as $k => $v ) {
+			if ( in_array( $k, array( 'enable_avif', 'avif_quality', 'max_original_width', 'keep_original_copy' ), true ) ) {
+				continue;
+			}
+			if ( is_numeric( $v ) && (int) $v ) {
+				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_IMAGES_OPTION_KEY ) . '[' . esc_attr( $k ) . ']" value="' . esc_attr( $v ) . '">';
+			} elseif ( ! is_numeric( $v ) ) {
+				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_IMAGES_OPTION_KEY ) . '[' . esc_attr( $k ) . ']" value="' . esc_attr( $v ) . '">';
+			}
+		}
+		?>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Conversion AVIF', 'greenlight' ); ?></th>
+				<td>
+					<label for="gl-enable-avif">
+						<input id="gl-enable-avif" name="<?php echo esc_attr( GREENLIGHT_IMAGES_OPTION_KEY ); ?>[enable_avif]" type="checkbox" value="1" <?php checked( ! empty( $options['enable_avif'] ), true ); ?>>
+						<?php esc_html_e( 'Générer un fichier AVIF en plus du WebP à l\'upload.', 'greenlight' ); ?>
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">
+					<label for="gl-avif-quality"><?php esc_html_e( 'Qualité AVIF', 'greenlight' ); ?></label>
+				</th>
+				<td>
+					<input id="gl-avif-quality" name="<?php echo esc_attr( GREENLIGHT_IMAGES_OPTION_KEY ); ?>[avif_quality]" type="range" min="1" max="100" value="<?php echo esc_attr( isset( $options['avif_quality'] ) ? (int) $options['avif_quality'] : 70 ); ?>">
+					<span><?php echo esc_html( isset( $options['avif_quality'] ) ? (int) $options['avif_quality'] : 70 ); ?>/100</span>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">
+					<label for="gl-max-width"><?php esc_html_e( 'Largeur max. originaux', 'greenlight' ); ?></label>
+				</th>
+				<td>
+					<input id="gl-max-width" name="<?php echo esc_attr( GREENLIGHT_IMAGES_OPTION_KEY ); ?>[max_original_width]" type="number" min="800" max="10000" class="small-text" value="<?php echo esc_attr( isset( $options['max_original_width'] ) ? (int) $options['max_original_width'] : 2560 ); ?>">
+					<span>px</span>
+					<p class="description"><?php esc_html_e( 'Les images plus larges seront redimensionnées à l\'upload.', 'greenlight' ); ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Garder l\'original', 'greenlight' ); ?></th>
+				<td>
+					<label for="gl-keep-original">
+						<input id="gl-keep-original" name="<?php echo esc_attr( GREENLIGHT_IMAGES_OPTION_KEY ); ?>[keep_original_copy]" type="checkbox" value="1" <?php checked( ! empty( $options['keep_original_copy'] ), true ); ?>>
+						<?php esc_html_e( 'Conserver une copie de l\'original avant redimensionnement.', 'greenlight' ); ?>
+					</label>
+				</td>
+			</tr>
+		</table>
+		<?php submit_button( __( 'Enregistrer les options AVIF', 'greenlight' ) ); ?>
+	</form>
+
+	<!-- Bulk optimization -->
+	<h2><?php esc_html_e( 'Optimisation en masse', 'greenlight' ); ?></h2>
+	<?php
+	$bulk_stats = function_exists( 'greenlight_get_bulk_stats' ) ? greenlight_get_bulk_stats() : array( 'total' => 0, 'optimized' => 0, 'savings' => 0 );
+	$pct = $bulk_stats['total'] > 0 ? round( ( $bulk_stats['optimized'] / $bulk_stats['total'] ) * 100 ) : 0;
+	?>
+	<p>
+		<?php
+		printf(
+			/* translators: 1: optimized count 2: total count 3: percentage */
+			esc_html__( '%1$d / %2$d images optimisées (%3$d%%)', 'greenlight' ),
+			(int) $bulk_stats['optimized'],
+			(int) $bulk_stats['total'],
+			(int) $pct
+		);
+		if ( $bulk_stats['savings'] > 0 ) {
+			echo ' — ';
+			printf(
+				/* translators: %s: bytes saved */
+				esc_html__( 'Économie : %s', 'greenlight' ),
+				esc_html( size_format( $bulk_stats['savings'], 2 ) )
+			);
+		}
+		?>
+	</p>
+
+	<div id="greenlight-bulk-optimize">
+		<label for="gl-batch-size"><?php esc_html_e( 'Taille du lot :', 'greenlight' ); ?></label>
+		<select id="gl-batch-size">
+			<option value="5">5</option>
+			<option value="10" selected>10</option>
+			<option value="20">20</option>
+		</select>
+		<button type="button" id="gl-bulk-start" class="button button-primary"><?php esc_html_e( 'Démarrer l\'optimisation', 'greenlight' ); ?></button>
+		<div id="gl-bulk-progress" style="display:none;margin-top:1em">
+			<div style="background:#dcdcde;border-radius:4px;height:24px;max-width:400px">
+				<div id="gl-bulk-bar" style="background:#46b450;height:100%;border-radius:4px;width:0%;transition:width .3s"></div>
+			</div>
+			<p id="gl-bulk-status"></p>
+		</div>
+	</div>
+
+	<script>
+	( function() {
+		var startBtn  = document.getElementById( "gl-bulk-start" );
+		var batchSel  = document.getElementById( "gl-batch-size" );
+		var progress  = document.getElementById( "gl-bulk-progress" );
+		var bar       = document.getElementById( "gl-bulk-bar" );
+		var statusEl  = document.getElementById( "gl-bulk-status" );
+
+		if ( ! startBtn ) return;
+
+		startBtn.addEventListener( "click", function() {
+			startBtn.disabled = true;
+			progress.style.display = "block";
+			run( 0, parseInt( batchSel.value, 10 ) );
+		} );
+
+		function run( offset, batchSize ) {
+			var formData = new FormData();
+			formData.append( "action", "greenlight_bulk_optimize" );
+			formData.append( "nonce", "<?php echo esc_js( wp_create_nonce( 'greenlight_bulk_optimize' ) ); ?>" );
+			formData.append( "offset", offset );
+			formData.append( "batch_size", batchSize );
+
+			var xhr = new XMLHttpRequest();
+			xhr.open( "POST", "<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" );
+			xhr.onload = function() {
+				var resp;
+				try { resp = JSON.parse( xhr.responseText ); } catch( e ) { return; }
+				if ( ! resp.success ) { statusEl.textContent = "Erreur"; return; }
+				var d = resp.data;
+				var pct = d.total > 0 ? Math.round( ( d.offset / d.total ) * 100 ) : 100;
+				bar.style.width = pct + "%";
+				statusEl.textContent = d.offset + " / " + d.total;
+				if ( ! d.done ) {
+					run( d.offset, batchSize );
+				} else {
+					statusEl.textContent += " — <?php echo esc_js( __( 'Terminé', 'greenlight' ) ); ?>";
+					startBtn.disabled = false;
+				}
+			};
+			xhr.send( formData );
+		}
+	}() );
+	</script>
 	<?php
 }
 
@@ -736,6 +1065,235 @@ function greenlight_render_admin_tab_performance() {
 		) ) . '</p>';
 	}
 	?>
+
+	<!-- Critical CSS -->
+	<h2><?php esc_html_e( 'Critical CSS', 'greenlight' ); ?></h2>
+	<form method="post" action="options.php">
+		<?php settings_fields( 'greenlight_performance' ); ?>
+		<?php
+		foreach ( $options as $pk => $pv ) {
+			if ( in_array( $pk, array( 'enable_critical_css', 'prefetch_domains', 'enable_concat', 'heartbeat_front', 'heartbeat_admin', 'heartbeat_editor', 'enable_auto_cleanup' ), true ) ) {
+				continue;
+			}
+			if ( is_numeric( $pv ) && (int) $pv ) {
+				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
+			} elseif ( ! is_numeric( $pv ) ) {
+				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
+			}
+		}
+		// Preserve other new options.
+		foreach ( array( 'prefetch_domains', 'enable_concat', 'heartbeat_front', 'heartbeat_admin', 'heartbeat_editor', 'enable_auto_cleanup' ) as $hk ) {
+			if ( isset( $options[ $hk ] ) ) {
+				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $hk ) . ']" value="' . esc_attr( $options[ $hk ] ) . '">';
+			}
+		}
+		$critical_exists = file_exists( get_theme_file_path( 'assets/css/critical.css' ) );
+		?>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Critical CSS', 'greenlight' ); ?></th>
+				<td>
+					<label for="gl-critical-css">
+						<input id="gl-critical-css" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[enable_critical_css]" type="checkbox" value="1" <?php checked( ! empty( $options['enable_critical_css'] ), true ); ?>>
+						<?php esc_html_e( 'Inliner le CSS critique et différer le chargement du style principal.', 'greenlight' ); ?>
+					</label>
+					<?php if ( ! $critical_exists ) : ?>
+						<p class="description" style="color:#dc3232"><?php esc_html_e( 'Le fichier assets/css/critical.css est absent.', 'greenlight' ); ?></p>
+					<?php endif; ?>
+				</td>
+			</tr>
+		</table>
+		<?php submit_button( __( 'Enregistrer', 'greenlight' ), 'secondary' ); ?>
+	</form>
+
+	<!-- Prefetch -->
+	<h2><?php esc_html_e( 'DNS Prefetch & Preconnect', 'greenlight' ); ?></h2>
+	<form method="post" action="options.php">
+		<?php settings_fields( 'greenlight_performance' ); ?>
+		<?php
+		foreach ( $options as $pk => $pv ) {
+			if ( 'prefetch_domains' === $pk ) {
+				continue;
+			}
+			if ( is_numeric( $pv ) && (int) $pv ) {
+				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
+			} elseif ( ! is_numeric( $pv ) ) {
+				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
+			}
+		}
+		$detected = get_transient( 'greenlight_detected_domains' );
+		?>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row">
+					<label for="gl-prefetch"><?php esc_html_e( 'Domaines', 'greenlight' ); ?></label>
+				</th>
+				<td>
+					<textarea id="gl-prefetch" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[prefetch_domains]" class="large-text code" rows="4" placeholder="https://fonts.googleapis.com"><?php echo esc_textarea( isset( $options['prefetch_domains'] ) ? $options['prefetch_domains'] : '' ); ?></textarea>
+					<p class="description"><?php esc_html_e( 'Un domaine par ligne. Les domaines externes sont aussi auto-détectés chaque semaine.', 'greenlight' ); ?></p>
+					<?php if ( is_array( $detected ) && ! empty( $detected ) ) : ?>
+						<p class="description">
+							<?php esc_html_e( 'Domaines auto-détectés :', 'greenlight' ); ?>
+							<code><?php echo esc_html( implode( ', ', $detected ) ); ?></code>
+						</p>
+					<?php endif; ?>
+				</td>
+			</tr>
+		</table>
+		<?php submit_button( __( 'Enregistrer', 'greenlight' ), 'secondary' ); ?>
+	</form>
+
+	<!-- Concat CSS -->
+	<h2><?php esc_html_e( 'Concaténation CSS', 'greenlight' ); ?></h2>
+	<form method="post" action="options.php">
+		<?php settings_fields( 'greenlight_performance' ); ?>
+		<?php
+		foreach ( $options as $pk => $pv ) {
+			if ( 'enable_concat' === $pk ) {
+				continue;
+			}
+			if ( is_numeric( $pv ) && (int) $pv ) {
+				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
+			} elseif ( ! is_numeric( $pv ) ) {
+				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
+			}
+		}
+		$bundle_exists = file_exists( get_stylesheet_directory() . '/assets/css/greenlight-bundle.css' );
+		?>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Bundle CSS', 'greenlight' ); ?></th>
+				<td>
+					<label for="gl-concat">
+						<input id="gl-concat" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[enable_concat]" type="checkbox" value="1" <?php checked( ! empty( $options['enable_concat'] ), true ); ?>>
+						<?php esc_html_e( 'Concaténer style.css + blocs en un seul fichier.', 'greenlight' ); ?>
+					</label>
+					<?php if ( $bundle_exists ) : ?>
+						<p class="description"><?php esc_html_e( 'Bundle généré.', 'greenlight' ); ?> (<?php echo esc_html( size_format( (int) filesize( get_stylesheet_directory() . '/assets/css/greenlight-bundle.css' ), 1 ) ); ?>)</p>
+					<?php endif; ?>
+				</td>
+			</tr>
+		</table>
+		<?php submit_button( __( 'Enregistrer', 'greenlight' ), 'secondary' ); ?>
+	</form>
+
+	<!-- Heartbeat -->
+	<h2><?php esc_html_e( 'Heartbeat API', 'greenlight' ); ?></h2>
+	<form method="post" action="options.php">
+		<?php settings_fields( 'greenlight_performance' ); ?>
+		<?php
+		foreach ( $options as $pk => $pv ) {
+			if ( in_array( $pk, array( 'heartbeat_front', 'heartbeat_admin', 'heartbeat_editor' ), true ) ) {
+				continue;
+			}
+			if ( is_numeric( $pv ) && (int) $pv ) {
+				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
+			} elseif ( ! is_numeric( $pv ) ) {
+				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
+			}
+		}
+
+		$hb_choices = array(
+			'default' => __( 'Par défaut', 'greenlight' ),
+			'reduce'  => __( 'Réduire (120s)', 'greenlight' ),
+			'disable' => __( 'Désactiver', 'greenlight' ),
+		);
+		?>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><label for="gl-hb-front"><?php esc_html_e( 'Front-end', 'greenlight' ); ?></label></th>
+				<td>
+					<select id="gl-hb-front" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[heartbeat_front]">
+						<?php foreach ( $hb_choices as $val => $label ) : ?>
+							<option value="<?php echo esc_attr( $val ); ?>" <?php selected( isset( $options['heartbeat_front'] ) ? $options['heartbeat_front'] : 'default', $val ); ?>><?php echo esc_html( $label ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="gl-hb-admin"><?php esc_html_e( 'Administration', 'greenlight' ); ?></label></th>
+				<td>
+					<select id="gl-hb-admin" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[heartbeat_admin]">
+						<?php foreach ( $hb_choices as $val => $label ) : ?>
+							<option value="<?php echo esc_attr( $val ); ?>" <?php selected( isset( $options['heartbeat_admin'] ) ? $options['heartbeat_admin'] : 'default', $val ); ?>><?php echo esc_html( $label ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="gl-hb-editor"><?php esc_html_e( 'Éditeur de blocs', 'greenlight' ); ?></label></th>
+				<td>
+					<select id="gl-hb-editor" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[heartbeat_editor]">
+						<?php foreach ( $hb_choices as $val => $label ) : ?>
+							<option value="<?php echo esc_attr( $val ); ?>" <?php selected( isset( $options['heartbeat_editor'] ) ? $options['heartbeat_editor'] : 'default', $val ); ?>><?php echo esc_html( $label ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				</td>
+			</tr>
+		</table>
+		<?php submit_button( __( 'Enregistrer', 'greenlight' ), 'secondary' ); ?>
+	</form>
+
+	<!-- DB Cleanup -->
+	<h2><?php esc_html_e( 'Nettoyage de la base de données', 'greenlight' ); ?></h2>
+	<?php
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended
+	if ( isset( $_GET['cleanup'] ) && isset( $_GET['cleaned'] ) ) {
+		printf(
+			'<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Nettoyage "%1$s" terminé : %2$d élément(s) traité(s).', 'greenlight' ) . '</p></div>',
+			esc_html( sanitize_key( $_GET['cleanup'] ) ),
+			absint( $_GET['cleaned'] )
+		);
+	}
+	// phpcs:enable
+
+	$cleanup_tasks = array(
+		'revisions'  => __( 'Supprimer les révisions', 'greenlight' ),
+		'autodraft'  => __( 'Supprimer les brouillons auto', 'greenlight' ),
+		'trash'      => __( 'Vider la corbeille', 'greenlight' ),
+		'spam'       => __( 'Supprimer les commentaires spam', 'greenlight' ),
+		'transients' => __( 'Supprimer les transients expirés', 'greenlight' ),
+		'optimize'   => __( 'Optimiser les tables', 'greenlight' ),
+	);
+	?>
+	<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1em">
+		<?php foreach ( $cleanup_tasks as $task_key => $task_label ) : ?>
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline">
+				<input type="hidden" name="action" value="greenlight_db_cleanup">
+				<input type="hidden" name="cleanup_task" value="<?php echo esc_attr( $task_key ); ?>">
+				<?php wp_nonce_field( 'greenlight_db_cleanup' ); ?>
+				<button type="submit" class="button button-secondary"><?php echo esc_html( $task_label ); ?></button>
+			</form>
+		<?php endforeach; ?>
+	</div>
+
+	<form method="post" action="options.php">
+		<?php settings_fields( 'greenlight_performance' ); ?>
+		<?php
+		foreach ( $options as $pk => $pv ) {
+			if ( 'enable_auto_cleanup' === $pk ) {
+				continue;
+			}
+			if ( is_numeric( $pv ) && (int) $pv ) {
+				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
+			} elseif ( ! is_numeric( $pv ) ) {
+				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
+			}
+		}
+		?>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Nettoyage automatique', 'greenlight' ); ?></th>
+				<td>
+					<label for="gl-auto-cleanup">
+						<input id="gl-auto-cleanup" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[enable_auto_cleanup]" type="checkbox" value="1" <?php checked( ! empty( $options['enable_auto_cleanup'] ), true ); ?>>
+						<?php esc_html_e( 'Exécuter le nettoyage automatiquement chaque semaine (révisions, brouillons, corbeille, spam, transients).', 'greenlight' ); ?>
+					</label>
+				</td>
+			</tr>
+		</table>
+		<?php submit_button( __( 'Enregistrer', 'greenlight' ), 'secondary' ); ?>
+	</form>
 	<?php
 }
 

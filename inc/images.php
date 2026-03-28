@@ -19,6 +19,10 @@ function greenlight_get_images_defaults() {
 		'enable_webp_conversion' => 1,
 		'webp_quality'           => 82,
 		'remove_core_sizes'      => 1,
+		'enable_avif'            => 0,
+		'avif_quality'           => 70,
+		'max_original_width'     => 2560,
+		'keep_original_copy'     => 0,
 	);
 }
 
@@ -63,6 +67,10 @@ function greenlight_sanitize_image_settings( $input ) {
 		'enable_webp_conversion' => isset( $input['enable_webp_conversion'] ) ? 1 : 0,
 		'webp_quality'           => isset( $input['webp_quality'] ) ? min( 100, max( 1, absint( $input['webp_quality'] ) ) ) : $defaults['webp_quality'],
 		'remove_core_sizes'      => isset( $input['remove_core_sizes'] ) ? 1 : 0,
+		'enable_avif'            => isset( $input['enable_avif'] ) ? 1 : 0,
+		'avif_quality'           => isset( $input['avif_quality'] ) ? min( 100, max( 1, absint( $input['avif_quality'] ) ) ) : $defaults['avif_quality'],
+		'max_original_width'     => isset( $input['max_original_width'] ) ? max( 800, absint( $input['max_original_width'] ) ) : $defaults['max_original_width'],
+		'keep_original_copy'     => isset( $input['keep_original_copy'] ) ? 1 : 0,
 	);
 }
 
@@ -279,3 +287,152 @@ function greenlight_filter_attachment_image_attributes( $attr, $attachment, $siz
 	return $attr;
 }
 add_filter( 'wp_get_attachment_image_attributes', 'greenlight_filter_attachment_image_attributes', 10, 3 );
+
+/* =========================================================
+ * AVIF support
+ * ======================================================= */
+
+/**
+ * Returns whether AVIF generation is available and enabled.
+ *
+ * @return bool
+ */
+function greenlight_is_avif_conversion_enabled() {
+	$options = greenlight_get_images_options();
+
+	if ( empty( $options['enable_avif'] ) ) {
+		return false;
+	}
+
+	// Check PHP 8.1+ imageavif or Imagick AVIF support.
+	if ( function_exists( 'imageavif' ) ) {
+		return true;
+	}
+
+	if ( class_exists( 'Imagick' ) ) {
+		$imagick = new Imagick();
+		$formats = $imagick->queryFormats( 'AVIF' );
+
+		if ( ! empty( $formats ) ) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * Returns the AVIF quality to use.
+ *
+ * @return int
+ */
+function greenlight_get_avif_quality() {
+	return min( 100, max( 1, absint( greenlight_get_images_option( 'avif_quality' ) ) ) );
+}
+
+/**
+ * Returns the sidecar AVIF path for a source image.
+ *
+ * @param string $file_path Source file path.
+ * @return string
+ */
+function greenlight_get_avif_sidecar_path( $file_path ) {
+	$path_info = pathinfo( $file_path );
+
+	if ( empty( $path_info['dirname'] ) || empty( $path_info['filename'] ) ) {
+		return '';
+	}
+
+	return trailingslashit( $path_info['dirname'] ) . $path_info['filename'] . '.avif';
+}
+
+/**
+ * Generates an AVIF sidecar file during upload.
+ *
+ * @param array<string, string> $upload Upload data.
+ * @return array<string, string>
+ */
+function greenlight_generate_avif_on_upload( $upload ) {
+	if ( ! greenlight_is_avif_conversion_enabled() || empty( $upload['file'] ) ) {
+		return $upload;
+	}
+
+	$source_path = $upload['file'];
+	$source_type = wp_check_filetype( $source_path );
+
+	if ( empty( $source_type['type'] ) || 0 !== strpos( $source_type['type'], 'image/' ) || 'image/avif' === $source_type['type'] || 'image/webp' === $source_type['type'] ) {
+		return $upload;
+	}
+
+	$avif_path = greenlight_get_avif_sidecar_path( $source_path );
+
+	if ( '' === $avif_path ) {
+		return $upload;
+	}
+
+	$editor = wp_get_image_editor( $source_path );
+
+	if ( is_wp_error( $editor ) ) {
+		return $upload;
+	}
+
+	$editor->set_quality( greenlight_get_avif_quality() );
+	$editor->save( $avif_path, 'image/avif' );
+
+	return $upload;
+}
+add_filter( 'wp_handle_upload', 'greenlight_generate_avif_on_upload', 21 );
+
+/* =========================================================
+ * Resize originals on upload
+ * ======================================================= */
+
+/**
+ * Resizes uploaded images that exceed the maximum width.
+ *
+ * @param array<string, string> $upload Upload data.
+ * @return array<string, string>
+ */
+function greenlight_resize_original_on_upload( $upload ) {
+	if ( empty( $upload['file'] ) ) {
+		return $upload;
+	}
+
+	$source_type = wp_check_filetype( $upload['file'] );
+
+	if ( empty( $source_type['type'] ) || 0 !== strpos( $source_type['type'], 'image/' ) ) {
+		return $upload;
+	}
+
+	$options   = greenlight_get_images_options();
+	$max_width = isset( $options['max_original_width'] ) ? absint( $options['max_original_width'] ) : 2560;
+
+	if ( $max_width < 800 ) {
+		return $upload;
+	}
+
+	$editor = wp_get_image_editor( $upload['file'] );
+
+	if ( is_wp_error( $editor ) ) {
+		return $upload;
+	}
+
+	$size = $editor->get_size();
+
+	if ( empty( $size['width'] ) || $size['width'] <= $max_width ) {
+		return $upload;
+	}
+
+	// Keep original copy if option enabled.
+	if ( ! empty( $options['keep_original_copy'] ) ) {
+		$path_info = pathinfo( $upload['file'] );
+		$backup    = trailingslashit( $path_info['dirname'] ) . $path_info['filename'] . '_original.' . $path_info['extension'];
+		copy( $upload['file'], $backup );
+	}
+
+	$editor->resize( $max_width, null );
+	$editor->save( $upload['file'] );
+
+	return $upload;
+}
+add_filter( 'wp_handle_upload', 'greenlight_resize_original_on_upload', 5 );

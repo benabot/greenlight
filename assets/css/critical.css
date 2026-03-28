@@ -1,0 +1,78 @@
+/* Critical CSS — above-the-fold styles for Greenlight */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: var(--wp--preset--font-family--system, system-ui, -apple-system, sans-serif);
+	color: var(--wp--preset--color--text, #2f342d);
+	background-color: var(--wp--preset--color--background, #faf9f4);
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+}
+
+.skip-link {
+	position: absolute;
+	left: -9999px;
+	top: auto;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	z-index: 100;
+	padding: 0.5rem 1rem;
+	background: var(--wp--preset--color--primary, #4c6547);
+	color: #fff;
+}
+
+.skip-link:focus {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: auto;
+	height: auto;
+}
+
+.site-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	padding: var(--wp--preset--spacing--sm, 1rem) var(--wp--preset--spacing--md, 2rem);
+	max-width: min(95vw, 1400px);
+	margin-inline: auto;
+}
+
+.site-brand {
+	font-weight: 700;
+	font-size: clamp(1.2rem, 2vw, 1.5rem);
+	text-decoration: none;
+	color: inherit;
+}
+
+.site-nav {
+	display: flex;
+	gap: var(--wp--preset--spacing--sm, 1rem);
+}
+
+.page-hero {
+	padding: var(--wp--preset--spacing--lg, 4rem) var(--wp--preset--spacing--md, 2rem);
+	max-width: min(90vw, 1200px);
+	margin-inline: auto;
+}
+
+h1 {
+	font-size: clamp(2rem, 5vw, 3.5rem);
+	line-height: 1.1;
+	letter-spacing: -0.02em;
+	margin: 0 0 var(--wp--preset--spacing--sm, 1rem);
+}
+
+.hero-lead {
+	font-size: clamp(1rem, 2vw, 1.25rem);
+	max-width: 65ch;
+	color: var(--wp--preset--color--on-surface-variant, #5c6058);
+}
