@@ -189,6 +189,7 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 
 | Phase | Statut | Tâches principales |
 |-------|--------|--------------------|
+| **8 — Admin UI premium** | 🟡 En cours | Shell premium, navigation numérotée, mini design system admin, refonte progressive des onglets SEO / Performance / Apparence / Images / SVG / Outils |
 | **6C/A — Redesign visuel** | ✅ Terminé | Palette DESIGN.md dans theme.json, templates front alignés sur esthétique EcoEditorial, patterns, Carbon Badge, surfaces, boutons |
 | **6C/B — Admin unifiée** | ✅ Terminé | Page top-level Greenlight avec onglets (SEO, Images, Performance, Apparence, SVG, Outils) |
 | **6C/C — Éco-optimisation** | ✅ Terminé | bin/minify.sh, inc/minify.php, inc/cache.php, inc/svg.php, fonctions.php conditionnel, nettoyage wp_head |
@@ -211,6 +212,15 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 - [x] Métriques consolidées: 1150 lignes CSS, 551 lignes JS, 1701 lignes CSS+JS, 772 KB hors `.git`/`.playwright-cli`/`vendor`
 - [x] README.md enrichi (installation, configuration, utilisation)
 - [x] CHANGELOG.md ajouté
+
+### Phase 8 — Avancement actuel
+
+- [x] Shell admin premium posé sur `feat/admin-ui` : header, baseline, métriques, rail contextuel
+- [x] Navigation admin numérotée et stylée pour remplacer les `nav-tab` natives
+- [x] Mini design system admin ajouté dans `assets/css/admin-ui.css`
+- [x] Aucune logique métier modifiée dans les handlers existants
+- [ ] Refonte des onglets `SEO` et `Performance`
+- [ ] Extension du shell aux onglets `Images`, `Apparence`, `SVG`, `Outils`
 
 ---
 

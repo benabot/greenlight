@@ -267,6 +267,44 @@ git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cac
 - [x] README.md (installation, configuration, utilisation)
 - [x] CHANGELOG.md
 
+## Phase 8 — Admin UI premium
+
+> Branche de travail : `feat/admin-ui` depuis `dev`
+> Référence visuelle validée : `/Users/benoitabot/Downloads/stitch/screen.png`
+> Contraintes absolues : ne pas toucher au front, ne pas modifier la logique PHP/JS existante, ne pas ajouter de nouvelles features, uniquement restructurer et habiller l'interface admin Greenlight
+
+Objectif : transformer l'interface admin Greenlight en control center premium, plus proche d'une suite éditoriale haut de gamme que d'une page de réglages WordPress standard, tout en conservant strictement les fonctionnalités actuelles.
+
+### Direction validée
+
+- [x] Direction visuelle retenue : "éditeur premium" minéral, sobre, respirant, avec surfaces claires, hiérarchie forte, aside contextuel et cartes premium (Codex, 2026-03-28)
+- [x] Architecture validée : shell global Greenlight + navigation produit premium + layout `contenu principal + rail latéral` (Codex, 2026-03-28)
+- [x] Périmètre validé : refonte UI admin uniquement, aucune évolution fonctionnelle (Codex, 2026-03-28)
+
+### Phase 8A — Shell + SEO + Performance
+
+- [x] Refaire le shell global de la page Greenlight : header, baseline, métriques synthétiques, largeur utile, surfaces
+- [x] Remplacer les `nav-tab` WordPress par une navigation premium custom, en conservant le routing `?tab=...`
+- [x] Créer un mini design system admin réutilisable : cartes, badges d'état, lignes de réglages, tables, aside, CTA
+- [ ] Refondre l'onglet `SEO` en cockpit éditorial premium, sans changer ses formulaires ni ses handlers
+- [ ] Refondre l'onglet `Performance` en cockpit technique premium, sans changer ses formulaires ni ses handlers
+- [ ] Préserver intégralement les actions existantes : robots.txt, redirections, cache, cleanup, heartbeat, fichiers générés
+
+### Phase 8B — Apparence, Images, SVG, Outils
+
+- [ ] Étendre le shell premium aux onglets `Images`, `Apparence`, `SVG`, `Outils`
+- [ ] Refaire l'onglet `Apparence` avec une meilleure intégration de la prévisualisation iframe
+- [ ] Uniformiser les tableaux, formulaires secondaires et zones d'actions sensibles
+- [ ] Vérifier le responsive admin sur laptop et écrans étroits
+
+### Validation
+
+- [ ] Aucun changement de logique métier
+- [ ] Aucune régression sur les formulaires `options.php`, `admin-post.php` et `admin-ajax.php`
+- [ ] Aucun changement du rendu front
+- [ ] PHPCS et `php -l` sur les fichiers PHP modifiés
+- [ ] Smoke test navigateur sur `SEO`, `Performance`, `Apparence`
+
 ## Environnement local ✓
 - [x] Diagnostic 404 généralisé : serveur nginx MAMP sans `try_files` WordPress (2026-03-28)
 - [x] Configuration nginx `/Applications/MAMP/conf/nginx/nginx.conf` : bloc `/greenlight/` avec `try_files` + `index` (2026-03-28)
