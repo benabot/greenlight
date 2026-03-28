@@ -607,8 +607,8 @@ function greenlight_get_admin_shell_context( $current_tab ) {
 
 		return array(
 			'tab_label' => isset( $tabs[ $current_tab ] ) ? $tabs[ $current_tab ] : $tabs['seo'],
-			'headline'  => __( 'Suite éditoriale premium', 'greenlight' ),
-			'lead'      => __( 'Pilotez le SEO, la vitesse, les images et l’hygiène du site sans rompre le flux de travail.', 'greenlight' ),
+			'headline'  => __( 'Suite éditoriale', 'greenlight' ),
+			'lead'      => __( 'Pilotez le SEO, la vitesse, les images et l’hygiène du site dans un outil éco-conçu qui peut remplacer plusieurs extensions.', 'greenlight' ),
 			'note'      => $note,
 			'metrics'   => $metrics,
 		);
