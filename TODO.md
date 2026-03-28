@@ -250,6 +250,8 @@ git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cac
 
 ## Phase 7 — Tests et finalisation
 - [x] Runtime admin: corriger le fatal `get_current_screen()` sur `heartbeat_settings` afin de supprimer le 502 sur `wp-admin/` (Codex, 2026-03-28)
+- [x] Smoke-test navigateur: home, archive et login admin OK dans Playwright sur `http://localhost:8888/greenlight/` (Codex, 2026-03-28)
+- [ ] Confirmer la présence de l’extension Theme Check dans l’admin
 - [ ] Lighthouse : perf ≥ 95, a11y ≥ 95, SEO ≥ 95, best practices ≥ 95
 - [ ] Theme Check plugin (conformité WordPress.org)
 - [ ] PHPCS WordPress Coding Standards

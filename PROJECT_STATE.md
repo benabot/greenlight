@@ -199,6 +199,8 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 - [x] PHPCS ciblé validé sur `inc/admin.php` et `inc/seo-fields.php`
 - [x] PHPCS global du thème sans erreurs ni warnings
 - [x] Runtime admin corrigé: `inc/heartbeat.php` ne déclenche plus `get_current_screen()` hors contexte compatible, ce qui supprime le 502 sur `wp-admin/`
+- [x] Smoke-test navigateur: home, archive et login admin validés dans Playwright sur `http://localhost:8888/greenlight/`
+- [ ] Theme Check plugin à confirmer dans l’admin
 - [ ] Lighthouse, Theme Check, W3C, VoiceOver et vérifications responsive/JS-off à exécuter
 
 ---
