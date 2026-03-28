@@ -6,6 +6,10 @@
 
 **Greenlight** — thème WordPress hybride avancé, éco-conçu. Templates PHP + `theme.json` v3 pour intégration Gutenberg. Zéro jQuery, quasi-zéro JS, responsive via HTML/CSS uniquement. SEO intégré autonome avec champs éditables par page/post. Optimisation images intégrée. 100% customisable via Gutenberg + page de réglages.
 
+## Direction esthétique
+
+Le fichier `DESIGN.md` à la racine du projet définit la direction visuelle cible : "The Digital Lithograph" — Organic Minimalism, palette off-white/vert, typographie serrée, asymétrie volontaire, whitespace généreux, zéro bordure traditionnelle. S'en inspirer pour toute modification front (templates, CSS, patterns, theme.json). Les maquettes de référence sont dans `page.png`, `single.png`, `index.png`, `archives.png`.
+
 ## Architecture
 
 ```
@@ -17,6 +21,7 @@ greenlight/
 ├── front-page.php
 ├── single.php
 ├── page.php
+├── home.php
 ├── archive.php
 ├── search.php
 ├── 404.php
@@ -24,6 +29,7 @@ greenlight/
 ├── footer.php                 # wp_footer — DOM minimal
 ├── comments.php
 ├── screenshot.png             # 1200×900
+├── DESIGN.md                  # Direction esthétique — palette, typo, surfaces, composants
 ├── inc/
 │   ├── seo.php                # Meta, OG, canonical, robots — hook wp_head
 │   ├── seo-fields.php         # Meta box + sidebar Gutenberg (register_meta)
@@ -31,7 +37,11 @@ greenlight/
 │   ├── seo-sitemap.php        # Sitemap XML natif
 │   ├── seo-settings.php       # Page réglages admin SEO
 │   ├── images.php             # WebP, tailles custom, lazy/eager
-│   └── images-settings.php    # Page réglages admin images
+│   ├── images-settings.php    # Page réglages admin images
+│   ├── admin.php              # Page admin top-level Greenlight (onglets)
+│   ├── svg.php                # Upload SVG + sanitisation DOMDocument
+│   ├── minify.php             # Fallback minification PHP à la volée
+│   └── cache.php              # Page cache HTML + headers HTTP
 ├── patterns/
 │   ├── hero.php
 │   ├── cards.php
@@ -43,6 +53,8 @@ greenlight/
 │   │   └── blocks/            # Styles par bloc (enqueue conditionnel)
 │   └── js/
 │       └── seo-sidebar.js     # Sidebar Gutenberg SEO (seul JS du thème)
+├── bin/
+│   └── minify.sh              # Script CLI minification (dev)
 └── README.md
 ```
 
