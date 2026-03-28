@@ -183,22 +183,6 @@ add_filter( 'wp_handle_upload', 'greenlight_generate_webp_on_upload', 20 );
  * @return int
  */
 function greenlight_get_hero_image_attachment_id() {
-	if ( is_front_page() ) {
-		$front_page_id = (int) get_queried_object_id();
-
-		if ( $front_page_id > 0 ) {
-			return (int) get_post_thumbnail_id( $front_page_id );
-		}
-	}
-
-	if ( is_home() && 'page' === get_option( 'show_on_front' ) ) {
-		$posts_page_id = (int) get_option( 'page_for_posts' );
-
-		if ( $posts_page_id > 0 ) {
-			return (int) get_post_thumbnail_id( $posts_page_id );
-		}
-	}
-
 	if ( is_singular() ) {
 		return (int) get_post_thumbnail_id( get_queried_object_id() );
 	}
