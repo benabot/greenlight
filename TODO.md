@@ -93,19 +93,19 @@
 
 Objectif : aligner le rendu front sur l'esthétique "Organic Minimalism" des maquettes EcoEditorial — palette off-white/vert, typographie serrée, asymétrie, whitespace généreux, zéro bordure traditionnelle.
 
-- [ ] **Palette DESIGN.md** : mettre à jour `theme.json` — background `#faf9f4`, surface `#f4f4ee`, surface-alt `#ffffff`, text `#2f342d`, primary `#4c6547`, primary-dim `#41593c`, border `#afb3aa` (opacity 15%), tertiary `#e5f4c9`
-- [ ] **Header** : `header.php` — site-title à gauche, nav centrée, CTA Subscribe à droite (flex, `justify-content: space-between`, pas de div wrapper)
-- [ ] **Hero (front-page)** : `front-page.php` + pattern `hero.php` — titre surdimensionné (xx-large, letter-spacing -0.03em) aligné gauche, paragraphe descriptif aligné droite (asymétrie volontaire), Carbon Badge pill en haut
-- [ ] **Carbon Badge** : composant PHP `greenlight_carbon_badge()` — calcul simplifié (DOM count + poids estimé page) affiché en pill `tertiary-container`, surcharge manuelle possible via option admin
-- [ ] **Index/home** : `home.php` + `index.php` — premier article en layout 50/50 (image + texte via flex), articles suivants en alternance image gauche/droite, section newsletter CTA en bas (surface background)
-- [ ] **Single** : `single.php` — catégorie en pill + CO2 badge, titre large (xx-large), meta auteur + date en flex space-between, image hero pleine largeur, contenu 65ch, blockquote avec bordure gauche primary + italique, tags en pills, section newsletter en bas
-- [ ] **Archive** : `archive.php` — titre éditorial large, lead text, grille asymétrique (premier article large, suivants en 2 colonnes flex), pagination stylisée
-- [ ] **Footer** : `footer.php` — copyright + liens secondaires (flex wrap) + mention "Low Emission Mode" à droite, surface background
-- [ ] **Surfaces & profondeur** : CSS — pas de bordures 1px, différenciation par chromatic shifts (surfaces), ombres "Whisper Shadow" (`0 20px 40px rgba(47, 52, 45, 0.04)`) uniquement sur éléments flottants
-- [ ] **Boutons** : `assets/css/blocks/button.css` — primary `#4c6547` avec gradient satin 135deg vers `#41593c`, border-radius `md`, secondary en `secondary_container`, tertiary text-only underline
-- [ ] **Labels catégories** : uppercase, letter-spacing +0.05em, font-size `small`, couleur `on_surface_variant`
-- [ ] **Patterns mis à jour** : `hero.php`, `cards.php`, `contact.php`, `header.php`, `footer.php` — alignés sur la nouvelle palette et la direction esthétique
-- [ ] **`screenshot.png`** : nouvelle capture 1200×900 reflétant le redesign
+- [x] **Palette DESIGN.md** : mettre à jour `theme.json` — background `#faf9f4`, surface `#f4f4ee`, surface-alt `#ffffff`, text `#2f342d`, primary `#4c6547`, primary-dim `#41593c`, border `#afb3aa` (opacity 15%), tertiary `#e5f4c9`
+- [x] **Header** : `header.php` — site-title à gauche, nav centrée, CTA Subscribe à droite (flex, `justify-content: space-between`, pas de div wrapper)
+- [x] **Hero (front-page)** : `front-page.php` + pattern `hero.php` — titre surdimensionné (xx-large, letter-spacing -0.03em) aligné gauche, paragraphe descriptif aligné droite (asymétrie volontaire), Carbon Badge pill en haut
+- [x] **Carbon Badge** : composant PHP `greenlight_carbon_badge()` — calcul simplifié (DOM count + poids estimé page) affiché en pill `tertiary-container`, surcharge manuelle possible via option admin
+- [x] **Index/home** : `home.php` + `index.php` — premier article en layout 50/50 (image + texte via flex), articles suivants en alternance image gauche/droite, section newsletter CTA en bas (surface background)
+- [x] **Single** : `single.php` — catégorie en pill + CO2 badge, titre large (xx-large), meta auteur + date en flex space-between, image hero pleine largeur, contenu 65ch, blockquote avec bordure gauche primary + italique, tags en pills, section newsletter en bas
+- [x] **Archive** : `archive.php` — titre éditorial large, lead text, grille asymétrique (premier article large, suivants en 2 colonnes flex), pagination stylisée
+- [x] **Footer** : `footer.php` — copyright + liens secondaires (flex wrap) + mention "Low Emission Mode" à droite, surface background
+- [x] **Surfaces & profondeur** : CSS — pas de bordures 1px, différenciation par chromatic shifts (surfaces), ombres "Whisper Shadow" (`0 20px 40px rgba(47, 52, 45, 0.04)`) uniquement sur éléments flottants
+- [x] **Boutons** : `assets/css/blocks/button.css` — primary `#4c6547` avec gradient satin 135deg vers `#41593c`, border-radius `md`, secondary en `secondary_container`, tertiary text-only underline
+- [x] **Labels catégories** : uppercase, letter-spacing +0.05em, font-size `small`, couleur `on_surface_variant`
+- [x] **Patterns mis à jour** : `hero.php`, `cards.php`, `contact.php`, `header.php`, `footer.php` — alignés sur la nouvelle palette et la direction esthétique
+- [x] **`screenshot.png`** : nouvelle capture 1200×900 reflétant le redesign
 
 ### Volet B — Interface admin unifiée "Greenlight"
 
@@ -120,60 +120,60 @@ Objectif : regrouper tous les réglages du thème dans une page admin top-level 
   - [x] Toggle page cache HTML
   - [x] Bouton "Purger le cache" + durée de vie configurable
   - [x] Affichage : nombre de pages cachées, taille totale du cache
-- [ ] **Onglet Performance** (améliorations) :
-  - [ ] Statut minification : afficher si les `.min` existent sur disque + date de génération
-  - [ ] Bouton "Régénérer les fichiers minifiés"
-  - [ ] Info serveur : détecter nginx/Apache et afficher conseil contextuel
+- [x] **Onglet Performance** (améliorations) :
+  - [x] Statut minification : afficher si les `.min` existent sur disque + date de génération
+  - [x] Bouton "Régénérer les fichiers minifiés"
+  - [x] Info serveur : détecter nginx/Apache et afficher conseil contextuel
 - [x] **Onglet Apparence** (base) :
   - [x] Carbon Badge (toggle + valeur manuelle)
   - [x] Newsletter CTA (toggle)
   - [x] Layout archive (radio)
   - [x] Style hero (select)
   - [x] 5 sélecteurs de couleur (primary, surface, text, header bg, footer bg)
-- [ ] **Onglet Apparence** (options par template — sections `<details>`) :
-  - [ ] **Section Global** : couleurs étendues (background, tertiary, border, on-surface-variant)
-  - [ ] **Section Header** : fond header, toggle tagline, style navigation
-  - [ ] **Section Hero / Front page** : style hero, toggle Carbon Badge hero, texte hero personnalisé
-  - [ ] **Section Single** : toggle date, toggle auteur, toggle tags, toggle articles liés, toggle newsletter
-  - [ ] **Section Archive** : layout, toggle extraits, toggle miniatures, articles par page
-  - [ ] **Section Footer** : fond footer, toggle "Low Emission Mode", copyright personnalisé, toggle nav footer
-- [ ] **Prévisualisation live couleurs** : `assets/js/admin-preview.js` (~30 lignes vanilla JS) + iframe de prévisualisation dans l'onglet Apparence
+- [x] **Onglet Apparence** (options par template — sections `<details>`) :
+  - [x] **Section Global** : couleurs étendues (background, tertiary, border, on-surface-variant)
+  - [x] **Section Header** : fond header, toggle tagline, style navigation
+  - [x] **Section Hero / Front page** : style hero, toggle Carbon Badge hero, texte hero personnalisé
+  - [x] **Section Single** : toggle date, toggle auteur, toggle tags, toggle articles liés, toggle newsletter
+  - [x] **Section Archive** : layout, toggle extraits, toggle miniatures, articles par page
+  - [x] **Section Footer** : fond footer, toggle "Low Emission Mode", copyright personnalisé, toggle nav footer
+- [x] **Prévisualisation live couleurs** : `assets/js/admin-preview.js` (~30 lignes vanilla JS) + iframe de prévisualisation dans l'onglet Apparence
 - [x] **Onglet SVG** : toggle + info sanitisation DOMDocument
-- [ ] **Onglet Outils** (nouveau) :
-  - [ ] Export JSON : bouton → télécharge un `.json` avec toutes les options Greenlight
-  - [ ] Import JSON : input file + validation + sanitisation via les fonctions existantes
-  - [ ] Message de succès/erreur après import
+- [x] **Onglet Outils** (nouveau) :
+  - [x] Export JSON : bouton → télécharge un `.json` avec toutes les options Greenlight
+  - [x] Import JSON : input file + validation + sanitisation via les fonctions existantes
+  - [x] Message de succès/erreur après import
 - [x] **Compatibilité** : anciennes sous-pages Apparence gardées temporairement
 - [x] **Sécurité admin** : nonce, `current_user_can`, `sanitize_*()`
 - [x] **i18n** : text domain `greenlight`
-- [ ] **Templates lisent les options** : `single.php`, `archive.php`, `home.php`, `footer.php`, `header.php`, `front-page.php` conditionnent l'affichage selon les options admin
+- [x] **Templates lisent les options** : `single.php`, `archive.php`, `home.php`, `footer.php`, `header.php`, `front-page.php` conditionnent l'affichage selon les options admin
 
 ### Volet C — Éco-optimisation (objectif EcoIndex A)
 
 Objectif : passer de EcoIndex B à A. Améliorer la compression, le cache, la minification et réduire les requêtes.
 
-- [ ] **Minification CLI** : script `bin/minify.sh` — minifie `style.css` → `style.min.css`, chaque `assets/css/blocks/*.css` → `*.min.css`, `assets/js/seo-sidebar.js` → `seo-sidebar.min.js` (sed/awk ou PHP CLI, pas de dépendance npm)
-- [ ] **Minification fallback PHP** : `inc/minify.php` — si le `.min` n'existe pas, minification à la volée via `str_replace` (suppression commentaires, whitespace, newlines) + cache transient du résultat
-- [ ] **Enqueue conditionnel** : `functions.php` — charger `.min.css`/`.min.js` si le fichier existe ET que l'option minification est active, sinon fallback sur le fichier source
-- [ ] **Page cache HTML** : `inc/cache.php`
-  - [ ] `ob_start()` dans `template_redirect`, écriture du buffer dans `wp-content/cache/greenlight/` en `.html`
-  - [ ] Servir le `.html` depuis `advanced-cache.php` ou early hook si le fichier existe et n'est pas expiré
-  - [ ] Exclure : admin, preview, POST requests, utilisateurs connectés, pages avec query string
-  - [ ] Purge auto sur `save_post`, `publish_post`, `edit_post`, `delete_post`, `switch_theme`
-  - [ ] Bouton purge manuelle dans l'onglet Performance
-  - [ ] Durée de vie configurable (option admin)
-- [ ] **Headers HTTP** : `inc/cache.php` — hook `send_headers` pour `Cache-Control`, `Expires`, `ETag` sur les assets statiques (CSS, JS, images, fonts)
+- [x] **Minification CLI** : script `bin/minify.sh` — minifie `style.css` → `style.min.css`, chaque `assets/css/blocks/*.css` → `*.min.css`, `assets/js/seo-sidebar.js` → `seo-sidebar.min.js` (sed/awk ou PHP CLI, pas de dépendance npm)
+- [x] **Minification fallback PHP** : `inc/minify.php` — si le `.min` n'existe pas, minification à la volée via `str_replace` (suppression commentaires, whitespace, newlines) + cache transient du résultat
+- [x] **Enqueue conditionnel** : `functions.php` — charger `.min.css`/`.min.js` si le fichier existe ET que l'option minification est active, sinon fallback sur le fichier source
+- [x] **Page cache HTML** : `inc/cache.php`
+  - [x] `ob_start()` dans `template_redirect`, écriture du buffer dans `wp-content/cache/greenlight/` en `.html`
+  - [x] Servir le `.html` depuis `advanced-cache.php` ou early hook si le fichier existe et n'est pas expiré
+  - [x] Exclure : admin, preview, POST requests, utilisateurs connectés, pages avec query string
+  - [x] Purge auto sur `save_post`, `publish_post`, `edit_post`, `delete_post`, `switch_theme`
+  - [x] Bouton purge manuelle dans l'onglet Performance
+  - [x] Durée de vie configurable (option admin)
+- [x] **Headers HTTP** : `inc/cache.php` — hook `send_headers` pour `Cache-Control`, `Expires`, `ETag` sur les assets statiques (CSS, JS, images, fonts)
 - [ ] **Compatibilité serveur** : le thème doit fonctionner indifféremment sur nginx et Apache
-  - [ ] Cache HTML : logique PHP pure (`ob_start` / fichiers `.html`), pas de dépendance au serveur web
-  - [ ] Headers HTTP : envoyés via `header()` PHP, fonctionnent sur les deux serveurs
+  - [x] Cache HTML : logique PHP pure (`ob_start` / fichiers `.html`), pas de dépendance au serveur web
+  - [x] Headers HTTP : envoyés via `header()` PHP, fonctionnent sur les deux serveurs
   - [ ] Compression : documenter les deux configs recommandées dans `README.md` (nginx gzip/brotli + Apache mod_deflate/mod_headers via `.htaccess`)
   - [ ] Rewrites : sitemap et cache compatibles `try_files` (nginx) et `mod_rewrite` (Apache)
   - [ ] Fournir un `.htaccess` exemple pour Apache (cache static assets, compression, headers security) en plus du bloc nginx
-- [ ] **Upload SVG** : `inc/svg.php`
-  - [ ] `greenlight_allow_svg_upload()` : filtre `upload_mimes` pour ajouter `image/svg+xml`
-  - [ ] `greenlight_sanitize_svg()` : hook `wp_handle_upload_prefilter`, sanitisation via `DOMDocument` (suppression scripts, événements JS, xlink malveillants)
-  - [ ] Conditionné au toggle SVG dans l'admin
-- [ ] **Nettoyage WP** : `functions.php` — supprimer `wp_generator`, RSD link, wlwmanifest, shortlink, feed links inutiles, REST API link du head (via `remove_action` sur `wp_head`)
+- [x] **Upload SVG** : `inc/svg.php`
+  - [x] `greenlight_allow_svg_upload()` : filtre `upload_mimes` pour ajouter `image/svg+xml`
+  - [x] `greenlight_sanitize_svg()` : hook `wp_handle_upload_prefilter`, sanitisation via `DOMDocument` (suppression scripts, événements JS, xlink malveillants)
+  - [x] Conditionné au toggle SVG dans l'admin
+- [x] **Nettoyage WP** : `functions.php` — supprimer `wp_generator`, RSD link, wlwmanifest, shortlink, feed links inutiles, REST API link du head (via `remove_action` sur `wp_head`)
 - [ ] **Audit DOM** : vérifier que chaque template type reste sous 80 éléments DOM — documenter le comptage dans `PROJECT_STATE.md`
 - [ ] **Inline Gutenberg** : compromis accepté — les global-styles inline restent, pas de dequeue agressif (préserver la compatibilité éditeur)
 - [ ] **Documentation nginx** : bloc recommandé dans `README.md` pour gzip, cache static assets, headers security, et `try_files` WordPress
