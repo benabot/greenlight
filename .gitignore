@@ -97,6 +97,11 @@ assets/cache/
 assets/build/
 assets/dist/
 public/build/
+style.min.css
+assets/css/blocks/*.min.css
+assets/js/*.min.js
+wp-content/cache/greenlight/
+wp-content/cache/greenlight/*.html
 
 # Optional image optimization output directories
 # Uncomment if your workflow generates derivative files locally

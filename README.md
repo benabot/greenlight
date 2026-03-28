@@ -174,6 +174,8 @@ greenlight/
 
 Le theme fonctionne sur nginx et Apache sans configuration specifique — le cache HTML et les headers HTTP sont geres en PHP pur. Les blocs suivants sont optionnels mais ameliorent les performances de facon significative.
 
+Le cache HTML est ecrit dans `wp-content/cache/greenlight/`. Les fichiers minifies (`style.min.css`, `assets/css/blocks/*.min.css`, `assets/js/*.min.js`) sont generes localement via `bin/minify.sh` ou a la volee et ne sont pas destines a etre versionnes.
+
 ### nginx
 
 Ajouter dans le bloc `server {}` ou dans un fichier inclus :

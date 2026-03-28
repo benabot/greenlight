@@ -7,6 +7,13 @@
 
 get_header();
 
+$_gl_app           = array_merge(
+	function_exists( 'greenlight_get_appearance_defaults' ) ? greenlight_get_appearance_defaults() : array(),
+	(array) get_option( 'greenlight_appearance_options', array() )
+);
+$_gl_show_thumbs   = ! empty( $_gl_app['show_thumbnails_archive'] );
+$_gl_show_excerpts = ! empty( $_gl_app['show_excerpts_archive'] );
+
 global $wp_query;
 
 $posts_page_id = (int) get_option( 'page_for_posts' );
@@ -25,6 +32,7 @@ $home_count    = (int) $wp_query->found_posts;
 		<p class="archive-count">
 			<?php
 			printf(
+				/* translators: %s: number of posts in the blog index. */
 				esc_html( _n( '%s article', '%s articles', $home_count, 'greenlight' ) ),
 				esc_html( number_format_i18n( $home_count ) )
 			);
@@ -40,10 +48,19 @@ $home_count    = (int) $wp_query->found_posts;
 	$home_first_cat  = $home_first_cats ? $home_first_cats[0] : null;
 	?>
 	<article id="post-<?php the_ID(); ?>" <?php post_class( 'entry entry--featured' ); ?>>
-		<?php if ( has_post_thumbnail() ) : ?>
+		<?php if ( $_gl_show_thumbs && has_post_thumbnail() ) : ?>
 			<figure class="entry-media">
 				<a class="entry-media-link" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
-					<?php the_post_thumbnail( 'greenlight-card', array( 'loading' => 'eager', 'decoding' => 'async', 'fetchpriority' => 'high' ) ); ?>
+					<?php
+					the_post_thumbnail(
+						'greenlight-card',
+						array(
+							'loading'       => 'eager',
+							'decoding'      => 'async',
+							'fetchpriority' => 'high',
+						)
+					);
+					?>
 				</a>
 			</figure>
 		<?php endif; ?>
@@ -59,24 +76,37 @@ $home_count    = (int) $wp_query->found_posts;
 					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 				</h2>
 			</header>
-			<p class="entry-summary"><?php echo esc_html( wp_trim_words( get_the_excerpt(), 36, '…' ) ); ?></p>
+			<?php if ( $_gl_show_excerpts ) : ?>
+				<p class="entry-summary"><?php echo esc_html( wp_trim_words( get_the_excerpt(), 36, '…' ) ); ?></p>
+			<?php endif; ?>
 			<a href="<?php the_permalink(); ?>" class="entry-more"><?php esc_html_e( 'Read Manifesto →', 'greenlight' ); ?></a>
 		</div>
 	</article>
 
 	<?php if ( have_posts() ) : ?>
 	<ul class="post-list" aria-label="<?php esc_attr_e( 'Articles récents', 'greenlight' ); ?>">
-		<?php while ( have_posts() ) : the_post(); ?>
+		<?php
+		while ( have_posts() ) :
+			the_post();
+			?>
 			<?php
 			$teaser_cats = get_the_category();
 			$teaser_cat  = $teaser_cats ? $teaser_cats[0] : null;
 			?>
 			<li class="post-item">
 				<article id="post-<?php the_ID(); ?>" <?php post_class( 'entry entry--teaser' ); ?>>
-					<?php if ( has_post_thumbnail() ) : ?>
+					<?php if ( $_gl_show_thumbs && has_post_thumbnail() ) : ?>
 						<figure class="entry-media">
 							<a class="entry-media-link" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
-								<?php the_post_thumbnail( 'greenlight-card', array( 'loading' => 'lazy', 'decoding' => 'async' ) ); ?>
+								<?php
+								the_post_thumbnail(
+									'greenlight-card',
+									array(
+										'loading'  => 'lazy',
+										'decoding' => 'async',
+									)
+								);
+								?>
 							</a>
 						</figure>
 					<?php endif; ?>
@@ -92,7 +122,9 @@ $home_count    = (int) $wp_query->found_posts;
 								<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 							</h2>
 						</header>
-						<p class="entry-summary"><?php echo esc_html( wp_trim_words( get_the_excerpt(), 20, '…' ) ); ?></p>
+						<?php if ( $_gl_show_excerpts ) : ?>
+							<p class="entry-summary"><?php echo esc_html( wp_trim_words( get_the_excerpt(), 20, '…' ) ); ?></p>
+						<?php endif; ?>
 						<a href="<?php the_permalink(); ?>" class="entry-more"><?php esc_html_e( 'Read Manifesto →', 'greenlight' ); ?></a>
 					</div>
 				</article>
