@@ -213,19 +213,27 @@ Mesure prise sur la branche courante le 2026-03-28:
 
 ## Configuration serveur recommandee
 
-Le theme fonctionne sur nginx et Apache sans configuration specifique — le cache HTML et les headers HTTP sont geres en PHP pur. Les blocs suivants sont optionnels mais ameliorent les performances de facon significative.
+Le theme fonctionne sans configuration serveur specifique pour le HTML dynamique: le cache HTML et les headers de page sont geres en PHP pur. En revanche, les fichiers statiques (`style.css`, `.min.css`, `.js`, images, uploads) passent par le serveur web et ont besoin d'un bloc explicite pour obtenir `Cache-Control` / `Expires`.
 
 Le cache HTML est ecrit dans `wp-content/cache/greenlight/`. Les fichiers minifies (`style.min.css`, `assets/css/blocks/*.min.css`, `assets/js/*.min.js`) sont generes localement via `bin/minify.sh` ou a la volee et ne sont pas destines a etre versionnes.
 
 ### nginx
 
-Ajouter dans le bloc `server {}` ou dans un fichier inclus :
+Ajouter dans le bloc `server {}` ou dans un fichier inclus, sur l'instance qui sert `/greenlight/` :
 
 ```nginx
 # WordPress rewrite
 location /greenlight/ {
     try_files $uri $uri/ /greenlight/index.php?$args;
     index index.php;
+}
+
+# Greenlight static assets
+location ~* ^/greenlight/wp-content/(themes/greenlight|uploads)/.*\.(css|js|woff2?|ttf|otf|eot|svg|png|jpe?g|webp|avif|gif|ico)$ {
+    expires 1y;
+    add_header Cache-Control "public, max-age=31536000, immutable" always;
+    add_header Vary "Accept-Encoding" always;
+    access_log off;
 }
 
 # Compression
@@ -255,6 +263,35 @@ add_header X-Frame-Options "SAMEORIGIN" always;
 add_header X-Content-Type-Options "nosniff" always;
 add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+```
+
+### Apache (theme .htaccess)
+
+Placer ce fichier a la racine du theme Greenlight pour renforcer les assets statiques lorsque le site est servi par Apache.
+Pour les uploads, recopier le meme bloc dans `wp-content/uploads/.htaccess`.
+
+```apache
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType text/javascript "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/avif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.(css|js|woff2?|ttf|otf|eot|svg|png|jpe?g|webp|avif|gif|ico)$">
+        Header always set Cache-Control "public, max-age=31536000, immutable"
+        Header always append Vary Accept-Encoding
+    </FilesMatch>
+</IfModule>
 ```
 
 ### Apache (.htaccess)

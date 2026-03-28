@@ -221,7 +221,7 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 - [x] Aucune logique métier modifiée dans les handlers existants
 - [x] Refonte des onglets `SEO` et `Performance`
 - [x] Extension du shell aux onglets `Images` et `Apparence`
-- [ ] Extension du shell aux onglets `SVG`, `Outils`
+- [x] Extension du shell aux onglets `SVG`, `Outils`
 
 ---
 

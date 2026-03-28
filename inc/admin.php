@@ -1983,24 +1983,62 @@ function greenlight_render_admin_tab_appearance() {
 function greenlight_render_admin_tab_svg() {
 	$options = get_option( GREENLIGHT_SVG_OPTION_KEY, array( 'enable_svg' => 0 ) );
 	?>
-	<form method="post" action="options.php">
-		<?php settings_fields( 'greenlight_svg' ); ?>
-		<table class="form-table" role="presentation">
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Upload SVG', 'greenlight' ); ?></th>
-				<td>
-					<label for="gl-svg">
-						<input id="gl-svg" name="<?php echo esc_attr( GREENLIGHT_SVG_OPTION_KEY ); ?>[enable_svg]" type="checkbox" value="1" <?php checked( (int) $options['enable_svg'], 1 ); ?>>
-						<?php esc_html_e( 'Autoriser l\'upload de fichiers SVG.', 'greenlight' ); ?>
-					</label>
-					<p class="description">
-						<?php esc_html_e( 'Les SVG uploadés sont sanitisés via DOMDocument (suppression des scripts inline, des gestionnaires d\'événements JS et des xlink malveillants).', 'greenlight' ); ?>
-					</p>
-				</td>
-			</tr>
-		</table>
-		<?php submit_button(); ?>
-	</form>
+	<div class="greenlight-admin-tab-panel__intro">
+		<div>
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'SVG', 'greenlight' ); ?></p>
+			<h2><?php esc_html_e( 'Upload vectoriel sécurisé', 'greenlight' ); ?></h2>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Activez les SVG uniquement si le besoin est réel, puis laissez Greenlight les nettoyer avant l’enregistrement.', 'greenlight' ); ?></p>
+		</div>
+	</div>
+
+	<div class="greenlight-admin-tab-panel__shell greenlight-admin-tab-panel__shell--svg">
+		<div class="greenlight-admin-tab-panel__column">
+			<section class="greenlight-admin-tab-panel__card">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Contrôle', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Autoriser les uploads SVG', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Le thème valide le type MIME, puis nettoie les scripts et attributs dangereux avant sauvegarde.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<form method="post" action="options.php">
+					<?php settings_fields( 'greenlight_svg' ); ?>
+					<table class="form-table" role="presentation">
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Upload SVG', 'greenlight' ); ?></th>
+							<td>
+								<label for="gl-svg">
+									<input id="gl-svg" name="<?php echo esc_attr( GREENLIGHT_SVG_OPTION_KEY ); ?>[enable_svg]" type="checkbox" value="1" <?php checked( (int) $options['enable_svg'], 1 ); ?>>
+									<?php esc_html_e( 'Autoriser l\'upload de fichiers SVG.', 'greenlight' ); ?>
+								</label>
+								<p class="description">
+									<?php esc_html_e( 'Les SVG uploadés sont sanitisés via DOMDocument (suppression des scripts inline, des gestionnaires d\'événements JS et des xlink malveillants).', 'greenlight' ); ?>
+								</p>
+							</td>
+						</tr>
+					</table>
+					<?php submit_button(); ?>
+				</form>
+			</section>
+		</div>
+
+		<aside class="greenlight-admin-tab-panel__column">
+			<section class="greenlight-admin-tab-panel__card greenlight-admin-tab-panel__card--soft">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Sécurité', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Ce que fait la sanitisation', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Scripts, événements JavaScript et références externes sont supprimés pour réduire le risque d’injection.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<ul class="greenlight-admin-tab-panel__list">
+					<li><?php esc_html_e( 'Suppression des balises `<script>`.', 'greenlight' ); ?></li>
+					<li><?php esc_html_e( 'Retrait des attributs `on*` et des liens `javascript:`.', 'greenlight' ); ?></li>
+					<li><?php esc_html_e( 'Blocage des références `<use>` externes.', 'greenlight' ); ?></li>
+				</ul>
+			</section>
+		</aside>
+	</div>
 	<?php
 }
 
@@ -2025,29 +2063,70 @@ function greenlight_render_admin_tab_tools() {
 		echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__( 'Fichier JSON invalide ou non reconnu.', 'greenlight' ) . '</p></div>';
 	}
 	?>
-	<h2><?php esc_html_e( 'Exporter les réglages', 'greenlight' ); ?></h2>
-	<p><?php esc_html_e( 'Télécharge un fichier JSON avec tous les réglages Greenlight (SEO, Images, Performance, Apparence, SVG).', 'greenlight' ); ?></p>
-	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-		<input type="hidden" name="action" value="greenlight_export">
-		<?php wp_nonce_field( 'greenlight_export' ); ?>
-		<button type="submit" class="button button-primary"><?php esc_html_e( 'Exporter (JSON)', 'greenlight' ); ?></button>
-	</form>
+	<div class="greenlight-admin-tab-panel__intro">
+		<div>
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Outils', 'greenlight' ); ?></p>
+			<h2><?php esc_html_e( 'Import et export des réglages', 'greenlight' ); ?></h2>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Transportez la configuration Greenlight d’un site à l’autre sans exporter la logique métier ni les contenus.', 'greenlight' ); ?></p>
+		</div>
+	</div>
 
-	<hr>
+	<div class="greenlight-admin-tab-panel__shell greenlight-admin-tab-panel__shell--tools">
+		<div class="greenlight-admin-tab-panel__column">
+			<section class="greenlight-admin-tab-panel__card">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Export', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Sauvegarder la configuration', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Téléchargez un JSON avec les réglages SEO, Images, Performance, Apparence et SVG.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+					<input type="hidden" name="action" value="greenlight_export">
+					<?php wp_nonce_field( 'greenlight_export' ); ?>
+					<button type="submit" class="button button-primary"><?php esc_html_e( 'Exporter (JSON)', 'greenlight' ); ?></button>
+				</form>
+			</section>
 
-	<h2><?php esc_html_e( 'Importer des réglages', 'greenlight' ); ?></h2>
-	<p><?php esc_html_e( 'Sélectionne un fichier JSON exporté depuis ce thème. Les réglages actuels seront écrasés.', 'greenlight' ); ?></p>
-	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data">
-		<input type="hidden" name="action" value="greenlight_import">
-		<?php wp_nonce_field( 'greenlight_import' ); ?>
-		<table class="form-table" role="presentation">
-			<tr>
-				<th scope="row"><label for="gl-import-file"><?php esc_html_e( 'Fichier JSON', 'greenlight' ); ?></label></th>
-				<td><input id="gl-import-file" name="greenlight_import_file" type="file" accept=".json"></td>
-			</tr>
-		</table>
-		<?php submit_button( __( 'Importer', 'greenlight' ), 'secondary' ); ?>
-	</form>
+			<section class="greenlight-admin-tab-panel__card">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Import', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Restaurer une configuration', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Importez un fichier exporté par Greenlight pour répliquer les réglages sur un autre site.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data">
+					<input type="hidden" name="action" value="greenlight_import">
+					<?php wp_nonce_field( 'greenlight_import' ); ?>
+					<table class="form-table" role="presentation">
+						<tr>
+							<th scope="row"><label for="gl-import-file"><?php esc_html_e( 'Fichier JSON', 'greenlight' ); ?></label></th>
+							<td><input id="gl-import-file" name="greenlight_import_file" type="file" accept=".json"></td>
+						</tr>
+					</table>
+					<?php submit_button( __( 'Importer', 'greenlight' ), 'secondary' ); ?>
+				</form>
+			</section>
+		</div>
+
+		<aside class="greenlight-admin-tab-panel__column">
+			<section class="greenlight-admin-tab-panel__card greenlight-admin-tab-panel__card--soft">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Usage', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Flux recommandé', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Exportez avant une modification de structure, importez seulement des fichiers sûrs et versionnés.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<ul class="greenlight-admin-tab-panel__list">
+					<li><?php esc_html_e( 'Un export = un snapshot de configuration.', 'greenlight' ); ?></li>
+					<li><?php esc_html_e( 'L’import écrase les réglages actuels de la même manière que l’interface native.', 'greenlight' ); ?></li>
+					<li><?php esc_html_e( 'Les contenus, pages et médias ne sont pas touchés.', 'greenlight' ); ?></li>
+				</ul>
+			</section>
+		</aside>
+	</div>
 	<?php
 }
 

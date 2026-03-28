@@ -293,10 +293,10 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 ### Phase 8B — Apparence, Images, SVG, Outils
 
 - [x] Étendre le shell premium aux onglets `Images` et `Apparence`
-- [ ] Étendre le shell premium aux onglets `SVG`, `Outils`
+- [x] Étendre le shell premium aux onglets `SVG`, `Outils`
 - [x] Refaire l'onglet `Apparence` avec une meilleure intégration de la prévisualisation iframe
 - [x] Refaire l'onglet `Images` avec une mise en avant des stats de stockage et du bulk
-- [ ] Uniformiser les tableaux, formulaires secondaires et zones d'actions sensibles
+- [x] Uniformiser les tableaux, formulaires secondaires et zones d'actions sensibles
 - [ ] Vérifier le responsive admin sur laptop et écrans étroits
 
 ### Validation
