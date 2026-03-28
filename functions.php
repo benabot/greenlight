@@ -66,6 +66,11 @@ function greenlight_enqueue() {
 	$perf    = get_option( 'greenlight_performance_options', array() );
 	$use_min = ! empty( $perf['enable_css_min'] );
 
+	// Génération lazy du .min.css si absent.
+	if ( $use_min && function_exists( 'greenlight_ensure_min_file' ) ) {
+		greenlight_ensure_min_file( 'style.css', 'css' );
+	}
+
 	$style_file = ( $use_min && file_exists( get_stylesheet_directory() . '/style.min.css' ) )
 		? 'style.min.css'
 		: 'style.css';
@@ -353,6 +358,11 @@ function greenlight_block_styles() {
 	);
 
 	foreach ( $blocks as $block => $file ) {
+		// Génération lazy du .min.css si absent.
+		if ( $use_min && function_exists( 'greenlight_ensure_min_file' ) ) {
+			greenlight_ensure_min_file( 'assets/css/blocks/' . $file . '.css', 'css' );
+		}
+
 		$min_path = get_theme_file_path( 'assets/css/blocks/' . $file . '.min.css' );
 		$src_file = ( $use_min && file_exists( $min_path ) ) ? $file . '.min.css' : $file . '.css';
 		$abs_path = get_theme_file_path( 'assets/css/blocks/' . $src_file );

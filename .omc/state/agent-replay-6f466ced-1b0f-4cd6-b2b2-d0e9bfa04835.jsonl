@@ -1,0 +1,5 @@
+{"t":0,"agent":"system","event":"skill_activated","skill_name":"wordpress","skill_source":"user"}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"mgrep"}
+{"t":0,"agent":"a5edce5","agent_type":"unknown","event":"agent_stop","success":true}
+{"t":0,"agent":"a0435e6","agent_type":"unknown","event":"agent_stop","success":true}
+{"t":0,"agent":"system","event":"skill_activated","skill_name":"wordpress","skill_source":"user"}

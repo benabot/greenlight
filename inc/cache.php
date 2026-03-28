@@ -217,8 +217,18 @@ function greenlight_send_cache_headers() {
 	}
 
 	$lifetime = greenlight_cache_lifetime();
+	$expires  = gmdate( 'D, d M Y H:i:s', time() + $lifetime ) . ' GMT';
 
 	header( 'Cache-Control: public, max-age=' . $lifetime . ', stale-while-revalidate=60' );
+	header( 'Expires: ' . $expires );
 	header( 'Vary: Accept-Encoding' );
+
+	// ETag basé sur la dernière modification du contenu pour les articles.
+	if ( is_singular() ) {
+		$post = get_queried_object();
+		if ( $post instanceof WP_Post && ! empty( $post->post_modified_gmt ) ) {
+			header( 'ETag: "' . md5( $post->post_modified_gmt . $post->ID ) . '"' );
+		}
+	}
 }
 add_action( 'send_headers', 'greenlight_send_cache_headers' );

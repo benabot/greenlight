@@ -111,29 +111,42 @@ Objectif : aligner le rendu front sur l'esthétique "Organic Minimalism" des maq
 
 Objectif : regrouper tous les réglages du thème dans une page admin top-level unique avec onglets, tout en gardant temporairement les anciennes sous-pages.
 
-- [ ] **`inc/admin.php`** : `add_menu_page( 'Greenlight', 'Greenlight', 'manage_options', 'greenlight', ... )` — page principale avec navigation par onglets CSS-only (pas de JS admin supplémentaire)
-- [ ] **Icône menu** : SVG inline Dashicons-compatible (feuille verte ou éco-icône) encodée en base64 dans `add_menu_page`
-- [ ] **Onglet SEO** : reprend le contenu de `inc/seo-settings.php` existant, formulaire identique, même `option_group`
-- [ ] **Onglet Images** : reprend le contenu de `inc/images-settings.php` existant, formulaire identique, même `option_group`
-- [ ] **Onglet Performance** :
-  - [ ] Toggle minification CSS (active/désactive le chargement des `.min.css` ou le fallback PHP)
-  - [ ] Toggle minification JS (idem pour `.min.js`)
-  - [ ] Toggle page cache HTML (active/désactive le cache statique)
-  - [ ] Bouton "Purger le cache" (supprime les fichiers cache HTML + transients)
-  - [ ] Durée de vie du cache (select : 1h, 6h, 12h, 24h, 1 semaine)
-  - [ ] Affichage : nombre de pages cachées, taille totale du cache
-- [ ] **Onglet Apparence** :
-  - [ ] Sélecteurs de couleur pour : header bg, footer bg, primary, surface, text (via `wp_color_picker` côté admin uniquement)
-  - [ ] Toggle Carbon Badge (on/off + valeur manuelle optionnelle)
-  - [ ] Toggle section newsletter CTA (on/off dans footer/single)
-  - [ ] Choix layout archive : grille asymétrique / liste simple (radio)
-  - [ ] Choix style hero : asymétrique (titre gauche + texte droite) / centré (select)
-- [ ] **Onglet SVG** :
-  - [ ] Toggle autoriser l'upload SVG (actif/inactif)
-  - [ ] Info sécurité : mention DOMDocument sanitization
-- [ ] **Compatibilité** : les anciennes pages Apparence > Greenlight > SEO et Apparence > Greenlight > Images restent fonctionnelles temporairement (même options WP, pas de duplication de données)
-- [ ] **Sécurité admin** : nonce sur chaque formulaire, `current_user_can('manage_options')`, `sanitize_*()` sur chaque input
-- [ ] **i18n** : toutes les chaînes admin dans `__()` / `esc_html_e()` avec text domain `greenlight`
+- [x] **`inc/admin.php`** : `add_menu_page( 'Greenlight', 'Greenlight', 'manage_options', 'greenlight', ... )` — page principale avec navigation par onglets CSS-only
+- [x] **Icône menu** : SVG inline feuille verte encodée en base64
+- [x] **Onglet SEO** : reprend `inc/seo-settings.php`, même `option_group`
+- [x] **Onglet Images** : reprend `inc/images-settings.php`, même `option_group`
+- [x] **Onglet Performance** (base) :
+  - [x] Toggle minification CSS/JS
+  - [x] Toggle page cache HTML
+  - [x] Bouton "Purger le cache" + durée de vie configurable
+  - [x] Affichage : nombre de pages cachées, taille totale du cache
+- [ ] **Onglet Performance** (améliorations) :
+  - [ ] Statut minification : afficher si les `.min` existent sur disque + date de génération
+  - [ ] Bouton "Régénérer les fichiers minifiés"
+  - [ ] Info serveur : détecter nginx/Apache et afficher conseil contextuel
+- [x] **Onglet Apparence** (base) :
+  - [x] Carbon Badge (toggle + valeur manuelle)
+  - [x] Newsletter CTA (toggle)
+  - [x] Layout archive (radio)
+  - [x] Style hero (select)
+  - [x] 5 sélecteurs de couleur (primary, surface, text, header bg, footer bg)
+- [ ] **Onglet Apparence** (options par template — sections `<details>`) :
+  - [ ] **Section Global** : couleurs étendues (background, tertiary, border, on-surface-variant)
+  - [ ] **Section Header** : fond header, toggle tagline, style navigation
+  - [ ] **Section Hero / Front page** : style hero, toggle Carbon Badge hero, texte hero personnalisé
+  - [ ] **Section Single** : toggle date, toggle auteur, toggle tags, toggle articles liés, toggle newsletter
+  - [ ] **Section Archive** : layout, toggle extraits, toggle miniatures, articles par page
+  - [ ] **Section Footer** : fond footer, toggle "Low Emission Mode", copyright personnalisé, toggle nav footer
+- [ ] **Prévisualisation live couleurs** : `assets/js/admin-preview.js` (~30 lignes vanilla JS) + iframe de prévisualisation dans l'onglet Apparence
+- [x] **Onglet SVG** : toggle + info sanitisation DOMDocument
+- [ ] **Onglet Outils** (nouveau) :
+  - [ ] Export JSON : bouton → télécharge un `.json` avec toutes les options Greenlight
+  - [ ] Import JSON : input file + validation + sanitisation via les fonctions existantes
+  - [ ] Message de succès/erreur après import
+- [x] **Compatibilité** : anciennes sous-pages Apparence gardées temporairement
+- [x] **Sécurité admin** : nonce, `current_user_can`, `sanitize_*()`
+- [x] **i18n** : text domain `greenlight`
+- [ ] **Templates lisent les options** : `single.php`, `archive.php`, `home.php`, `footer.php`, `header.php`, `front-page.php` conditionnent l'affichage selon les options admin
 
 ### Volet C — Éco-optimisation (objectif EcoIndex A)
 
@@ -150,7 +163,12 @@ Objectif : passer de EcoIndex B à A. Améliorer la compression, le cache, la mi
   - [ ] Bouton purge manuelle dans l'onglet Performance
   - [ ] Durée de vie configurable (option admin)
 - [ ] **Headers HTTP** : `inc/cache.php` — hook `send_headers` pour `Cache-Control`, `Expires`, `ETag` sur les assets statiques (CSS, JS, images, fonts)
-- [ ] **Compression** : documenter la config nginx recommandée pour gzip/brotli dans `README.md` (le thème ne gère pas la compression lui-même, c'est au serveur)
+- [ ] **Compatibilité serveur** : le thème doit fonctionner indifféremment sur nginx et Apache
+  - [ ] Cache HTML : logique PHP pure (`ob_start` / fichiers `.html`), pas de dépendance au serveur web
+  - [ ] Headers HTTP : envoyés via `header()` PHP, fonctionnent sur les deux serveurs
+  - [ ] Compression : documenter les deux configs recommandées dans `README.md` (nginx gzip/brotli + Apache mod_deflate/mod_headers via `.htaccess`)
+  - [ ] Rewrites : sitemap et cache compatibles `try_files` (nginx) et `mod_rewrite` (Apache)
+  - [ ] Fournir un `.htaccess` exemple pour Apache (cache static assets, compression, headers security) en plus du bloc nginx
 - [ ] **Upload SVG** : `inc/svg.php`
   - [ ] `greenlight_allow_svg_upload()` : filtre `upload_mimes` pour ajouter `image/svg+xml`
   - [ ] `greenlight_sanitize_svg()` : hook `wp_handle_upload_prefilter`, sanitisation via `DOMDocument` (suppression scripts, événements JS, xlink malveillants)
@@ -159,6 +177,7 @@ Objectif : passer de EcoIndex B à A. Améliorer la compression, le cache, la mi
 - [ ] **Audit DOM** : vérifier que chaque template type reste sous 80 éléments DOM — documenter le comptage dans `PROJECT_STATE.md`
 - [ ] **Inline Gutenberg** : compromis accepté — les global-styles inline restent, pas de dequeue agressif (préserver la compatibilité éditeur)
 - [ ] **Documentation nginx** : bloc recommandé dans `README.md` pour gzip, cache static assets, headers security, et `try_files` WordPress
+- [ ] **Documentation Apache** : fichier `.htaccess` exemple dans `README.md` pour mod_deflate, mod_expires, mod_headers, et mod_rewrite WordPress
 
 ### Fichiers créés ou modifiés (Phase 6C)
 
@@ -199,6 +218,35 @@ git add -A && git commit -m "Phase 6C/A: Redesign visuel éditorial — palette 
 git add -A && git commit -m "Phase 6C/B: Interface admin unifiée Greenlight — onglets, réglages"
 git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cache, SVG, nettoyage head"
 ```
+
+## Phase 6D — Services premium intégrés (remplace Yoast + WP Rocket + Imagify)
+
+> Référence complète : `PHASE_6D.md`
+> Branche : `feat/ui-improvement` (suite)
+> Règle : admin riche en JS autorisé, front zéro impact supplémentaire
+
+### 6D-SEO — SEO avancé
+
+- [ ] **Analyse de contenu** : mot-clé principal, densité, présence dans titre/H2/alt/premier paragraphe, liens internes/externes, longueur contenu → score SEO (pastille rouge/orange/vert) dans sidebar Gutenberg + colonne admin articles (`inc/seo-analysis.php` + `assets/js/seo-analysis.js`)
+- [ ] **Score lisibilité Flesch** : formule Kandel-Moles (français), longueur phrases, phrases longues → pastille dans sidebar Gutenberg (`assets/js/seo-analysis.js`)
+- [ ] **Redirections 301** : manager dans l'admin, stockage en option WP, hook `template_redirect`, compteur hits, import CSV, log 404 (50 dernières) (`inc/seo-redirects.php`)
+- [ ] **Breadcrumbs PHP natifs** : `greenlight_breadcrumbs()` réutilisant `greenlight_get_breadcrumb_items()`, `<nav aria-label>` + `<ol>` + Schema.org, toggle admin, CSS ~10 lignes (`inc/seo-breadcrumbs.php`)
+- [ ] **Éditeur robots.txt** : textarea dans l'admin, filtre `robots_txt`, valeur par défaut pré-remplie, bouton restaurer (`inc/seo-robots.php`)
+
+### 6D-PERF — Performance avancée
+
+- [ ] **Critical CSS** : `assets/css/critical.css` (~50 lignes above-the-fold), inline dans `wp_head`, defer du CSS principal via `media="print" onload`, toggle admin (`inc/critical-css.php`)
+- [ ] **Prefetch DNS / Preconnect** : textarea domaines dans l'admin, injection `<link rel="dns-prefetch/preconnect">`, auto-détection domaines externes (`inc/prefetch.php`)
+- [ ] **Database cleanup** : supprimer révisions, brouillons auto, corbeille, spam, transients expirés, optimiser tables — boutons individuels + cron hebdomadaire (`inc/db-cleanup.php`)
+- [ ] **Heartbeat control** : admin/éditeur/front séparément — désactiver ou réduire l'intervalle (15s→120s) (`inc/heartbeat.php`)
+- [ ] **Concaténation CSS** : bundle unique `greenlight-bundle.css` généré lazy, réduit les requêtes HTTP de ~10 à 1-2, invalidation auto (`inc/concat.php`)
+
+### 6D-IMG — Images avancées
+
+- [ ] **AVIF** : détection support PHP 8.1+, toggle + qualité séparé, réécriture `<img>` → `<picture>` avec source AVIF/WebP/original (`inc/images.php`)
+- [ ] **Bulk optimisation** : scan médiathèque, traitement par batch AJAX (5/10/20 images), progress bar JS, WebP + AVIF en masse (`inc/images-bulk.php`)
+- [ ] **Redimensionner originaux** : seuil configurable (défaut 2560px), hook `wp_handle_upload`, option garder copie originale (`inc/images.php`)
+- [ ] **Statistiques détaillées** : dashboard images (poids total, économie, top 10 plus lourdes), colonne médiathèque (poids original vs optimisé), filtre "non optimisées" (`inc/images-settings.php`)
 
 ## Phase 7 — Tests et finalisation
 - [ ] Lighthouse : perf ≥ 95, a11y ≥ 95, SEO ≥ 95, best practices ≥ 95

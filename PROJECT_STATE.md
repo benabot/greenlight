@@ -185,12 +185,12 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 
 ## Phases restantes
 
-| Phase | Tâches principales |
-|-------|--------------------|
-| **6C/A — Redesign visuel** | Palette DESIGN.md dans theme.json, templates front alignés sur esthétique EcoEditorial, patterns, Carbon Badge, surfaces, boutons |
-| **6C/B — Admin unifiée** | Page top-level Greenlight avec onglets (SEO, Images, Performance, Apparence, SVG), migration progressive |
-| **6C/C — Éco-optimisation** | Minification CLI + fallback PHP, page cache HTML, headers HTTP, upload SVG, nettoyage wp_head, audit DOM |
-| **7 — Tests** | Lighthouse, PHPCS, W3C, VoiceOver, responsive 320→1920px |
+| Phase | Statut | Tâches principales |
+|-------|--------|--------------------|
+| **6C/A — Redesign visuel** | ✅ Terminé | Palette DESIGN.md dans theme.json, templates front alignés sur esthétique EcoEditorial, patterns, Carbon Badge, surfaces, boutons |
+| **6C/B — Admin unifiée** | ✅ Terminé | Page top-level Greenlight avec onglets (SEO, Images, Performance, Apparence, SVG, Outils) |
+| **6C/C — Éco-optimisation** | ✅ Terminé | bin/minify.sh, inc/minify.php, inc/cache.php, inc/svg.php, fonctions.php conditionnel, nettoyage wp_head |
+| **7 — Tests** | ⏳ À faire | Lighthouse, PHPCS, W3C, VoiceOver, responsive 320→1920px |
 
 ---
 
@@ -205,15 +205,19 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 - **Purge** : automatique sur `save_post`/`publish_post`/`delete_post`/`switch_theme` + bouton manuel dans l'admin Greenlight
 - **Exclusions** : admin, preview, POST, utilisateurs connectés, query strings
 - **Durée** : configurable (1h à 1 semaine)
+- **Compatibilité serveur** : logique 100% PHP (pas de dépendance nginx ou Apache). Headers envoyés via `header()` PHP. Documentation dans `README.md` avec config recommandée nginx (gzip/brotli, `try_files`) ET Apache (`.htaccess` avec `mod_deflate`, `mod_expires`, `mod_headers`)
 
 ### Inline Gutenberg
 - **Stratégie** : compromis — les `global-styles` inline et block-supports restent en place, pas de dequeue agressif
 - **Raison** : préserver la compatibilité éditeur Gutenberg, optimiser tout le reste
 
 ### Admin
-- **Structure** : page top-level "Greenlight" avec onglets CSS-only (SEO, Images, Performance, Apparence, SVG)
-- **Migration** : anciennes sous-pages Apparence > Greenlight > SEO/Images gardées temporairement (même options WP)
-- **Pas de JS admin** supplémentaire (sauf `wp_color_picker` pour les sélecteurs de couleur)
+- **Structure** : page top-level "Greenlight" avec 6 onglets CSS-only (SEO, Images, Performance, Apparence, SVG, Outils)
+- **Outils** : Import/Export JSON de tous les réglages (`greenlight_handle_export`, `greenlight_handle_import`)
+- **Apparence** : sections `<details>` sans JS — Global, Header, Hero, Single, Archive, Footer — ~30 options
+- **Performance** : tableau statut fichiers `.min`, détection serveur (nginx/Apache), bouton régénération
+- **Preview** : iframe live dans l'onglet Apparence, mis à jour par `assets/js/admin-preview.js` (vanilla JS, polling 600ms)
+- **JS admin** : `wp_color_picker` (jQuery, requis par WP) + `admin-preview.js` (vanilla, onglet Apparence uniquement)
 
 ### SVG
 - **Sanitisation** : `DOMDocument` PHP natif — suppression scripts, événements JS, xlink malveillants
@@ -237,6 +241,32 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 git checkout dev
 git checkout -b feat/ui-improvement
 ```
+
+### Phase 6C/C — Éco-optimisation (2026-03-28)
+
+| Fichier | Rôle |
+|---------|------|
+| `bin/minify.sh` | CLI PHP — génère `.min.css`/`.min.js` ; préserve le header WP `/* ... */` |
+| `inc/minify.php` | Fallback lazy-generation sur disque + transient 24h ; `greenlight_ensure_min_file()`, `greenlight_clear_min_files()` |
+| `inc/cache.php` | Page cache HTML statique (`wp-content/cache/greenlight/`), headers `Cache-Control + Expires + ETag`, purge auto |
+| `inc/svg.php` | Upload SVG conditionnel, sanitisation `DOMDocument` (scripts, `on*`, xlink externes), fix MIME check |
+| `assets/js/admin-preview.js` | Preview iframe vanilla JS — polling 600ms sur `.greenlight-color-picker` → inject CSS vars dans iframe |
+
+**Nouvelles options `greenlight_appearance_options`** (s'ajoutent à celles déjà existantes) :
+
+| Clé | Défaut | Onglet |
+|-----|--------|--------|
+| `color_background`, `color_tertiary`, `color_border`, `color_on_surface_variant` | `''` | Apparence > Global |
+| `show_tagline` | `0` | Apparence > Header |
+| `show_hero_badge`, `hero_text` | `1`, `''` | Apparence > Hero |
+| `show_date`, `show_author`, `show_tags`, `show_newsletter_single` | `1` | Apparence > Single |
+| `show_excerpts_archive`, `show_thumbnails_archive` | `1` | Apparence > Archive |
+| `show_low_emission`, `custom_copyright`, `show_footer_nav` | `1`, `''`, `1` | Apparence > Footer |
+
+**`greenlight_output_custom_colors()`** — nouvelles variables CSS injectées dans `wp_head` :
+`--wp--preset--color--background`, `--wp--preset--color--tertiary`, `--wp--preset--color--border`, `--wp--preset--color--on-surface-variant`
+
+**Nettoyage `<head>`** (`greenlight_clean_wp_head`) : suppression `wp_generator`, `rsd_link`, `wlwmanifest_link`, `wp_shortlink_wp_head`, `adjacent_posts_rel_link_wp_head`, `rest_output_link_wp_head`, `wp_oembed_add_discovery_links`, `feed_links_extra`
 
 ---
 

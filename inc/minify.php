@@ -111,3 +111,66 @@ function greenlight_clear_minify_transients() {
 }
 add_action( 'switch_theme', 'greenlight_clear_minify_transients' );
 add_action( 'upgrader_process_complete', 'greenlight_clear_minify_transients' );
+add_action( 'update_option_greenlight_performance_options', 'greenlight_clear_minify_transients' );
+
+/**
+ * Supprime les fichiers .min.css / .min.js générés sur le disque.
+ * Appelé lors d'un changement d'options performance ou de switch_theme.
+ *
+ * @return void
+ */
+function greenlight_clear_min_files() {
+	$theme_dir = get_stylesheet_directory();
+
+	$min_style = $theme_dir . '/style.min.css';
+	if ( file_exists( $min_style ) ) {
+		wp_delete_file( $min_style );
+	}
+
+	$block_mins = glob( $theme_dir . '/assets/css/blocks/*.min.css' ) ?: array();
+	foreach ( $block_mins as $f ) {
+		wp_delete_file( $f );
+	}
+
+	$js_mins = glob( $theme_dir . '/assets/js/*.min.js' ) ?: array();
+	foreach ( $js_mins as $f ) {
+		wp_delete_file( $f );
+	}
+}
+add_action( 'switch_theme', 'greenlight_clear_min_files' );
+add_action( 'update_option_greenlight_performance_options', 'greenlight_clear_min_files' );
+
+/**
+ * Génère le fichier .min sur disque si absent (lazy generation).
+ *
+ * Tente d'écrire le fichier dans le même répertoire que la source.
+ * Si le répertoire n'est pas accessible en écriture, le contenu minifié
+ * reste uniquement en transient (utilisable via wp_add_inline_style).
+ *
+ * @param string $relative_path Chemin relatif à la racine du thème (ex. 'style.css').
+ * @param string $type          'css' ou 'js'.
+ * @return bool True si le fichier .min existe ou a été créé.
+ */
+function greenlight_ensure_min_file( $relative_path, $type ) {
+	$src_path = get_theme_file_path( $relative_path );
+	$min_path = preg_replace( '/\.(css|js)$/', '.min.$1', $src_path );
+
+	if ( file_exists( $min_path ) ) {
+		return true;
+	}
+
+	$content = greenlight_get_minified_content( $relative_path, $type );
+
+	if ( false === $content ) {
+		return false;
+	}
+
+	if ( ! wp_is_writable( dirname( $min_path ) ) ) {
+		return false;
+	}
+
+	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+	file_put_contents( $min_path, $content, LOCK_EX );
+
+	return file_exists( $min_path );
+}

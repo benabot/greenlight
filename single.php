@@ -7,6 +7,15 @@
 
 get_header();
 
+$_gl_app  = array_merge(
+	function_exists( 'greenlight_get_appearance_defaults' ) ? greenlight_get_appearance_defaults() : array(),
+	(array) get_option( 'greenlight_appearance_options', array() )
+);
+$_gl_show_author     = ! empty( $_gl_app['show_author'] );
+$_gl_show_date       = ! empty( $_gl_app['show_date'] );
+$_gl_show_tags       = ! empty( $_gl_app['show_tags'] );
+$_gl_show_newsletter = ! empty( $_gl_app['show_newsletter_single'] );
+
 if ( have_posts() ) :
 	while ( have_posts() ) :
 		the_post();
@@ -23,13 +32,19 @@ if ( have_posts() ) :
 					<?php echo greenlight_carbon_badge(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				</p>
 				<h1><?php the_title(); ?></h1>
+				<?php if ( $_gl_show_author || $_gl_show_date ) : ?>
 				<p class="entry-meta">
+					<?php if ( $_gl_show_author ) : ?>
 					<a href="<?php echo esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ); ?>" class="entry-author"><?php echo esc_html( get_the_author() ); ?></a>
+					<?php endif; ?>
+					<?php if ( $_gl_show_date ) : ?>
 					<span class="entry-date">
 						<?php esc_html_e( 'PUBLISHED', 'greenlight' ); ?>
 						<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date( 'F j, Y' ) ); ?></time>
 					</span>
+					<?php endif; ?>
 				</p>
+				<?php endif; ?>
 			</header>
 
 			<?php if ( has_post_thumbnail() ) : ?>
@@ -51,7 +66,7 @@ if ( have_posts() ) :
 
 			<footer class="entry-footer">
 				<?php
-				$tags = get_the_tags();
+				$tags = $_gl_show_tags ? get_the_tags() : array();
 				if ( $tags ) :
 					?>
 					<ul class="entry-tags" aria-label="<?php esc_attr_e( 'Tags', 'greenlight' ); ?>">
@@ -77,6 +92,7 @@ if ( have_posts() ) :
 		) );
 		?>
 
+		<?php if ( $_gl_show_newsletter ) : ?>
 		<section id="newsletter" class="newsletter-cta newsletter-cta--centered" aria-labelledby="newsletter-single-heading">
 			<h2 id="newsletter-single-heading"><?php esc_html_e( 'Vous avez aimé cet article ?', 'greenlight' ); ?></h2>
 			<p><?php esc_html_e( 'Recevez les prochains directement dans votre boîte.', 'greenlight' ); ?></p>
@@ -88,6 +104,7 @@ if ( have_posts() ) :
 				<button type="submit"><?php esc_html_e( "S'abonner", 'greenlight' ); ?></button>
 			</form>
 		</section>
+		<?php endif; ?>
 
 		<?php
 		if ( comments_open() || get_comments_number() ) :

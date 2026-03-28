@@ -7,6 +7,13 @@
 
 get_header();
 
+$_gl_app       = array_merge(
+	function_exists( 'greenlight_get_appearance_defaults' ) ? greenlight_get_appearance_defaults() : array(),
+	(array) get_option( 'greenlight_appearance_options', array() )
+);
+$_gl_show_thumbs   = ! empty( $_gl_app['show_thumbnails_archive'] );
+$_gl_show_excerpts = ! empty( $_gl_app['show_excerpts_archive'] );
+
 global $wp_query;
 
 $archive_count = (int) $wp_query->found_posts;
@@ -44,7 +51,7 @@ $archive_desc  = get_the_archive_description();
 	$archive_first_cat  = $archive_first_cats ? $archive_first_cats[0] : null;
 	?>
 	<article id="post-<?php the_ID(); ?>" <?php post_class( 'entry entry--featured' ); ?>>
-		<?php if ( has_post_thumbnail() ) : ?>
+		<?php if ( $_gl_show_thumbs && has_post_thumbnail() ) : ?>
 			<figure class="entry-media">
 				<a class="entry-media-link" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
 					<?php the_post_thumbnail( 'greenlight-card', array( 'loading' => 'eager', 'decoding' => 'async', 'fetchpriority' => 'high' ) ); ?>
@@ -63,7 +70,9 @@ $archive_desc  = get_the_archive_description();
 					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 				</h2>
 			</header>
+			<?php if ( $_gl_show_excerpts ) : ?>
 			<p class="entry-summary"><?php echo esc_html( wp_trim_words( get_the_excerpt(), 36, '…' ) ); ?></p>
+			<?php endif; ?>
 			<a href="<?php the_permalink(); ?>" class="entry-more"><?php esc_html_e( 'Read Manifesto →', 'greenlight' ); ?></a>
 		</div>
 	</article>
@@ -77,7 +86,7 @@ $archive_desc  = get_the_archive_description();
 			?>
 			<li class="post-item">
 				<article id="post-<?php the_ID(); ?>" <?php post_class( 'entry entry--teaser' ); ?>>
-					<?php if ( has_post_thumbnail() ) : ?>
+					<?php if ( $_gl_show_thumbs && has_post_thumbnail() ) : ?>
 						<figure class="entry-media">
 							<a class="entry-media-link" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
 								<?php the_post_thumbnail( 'greenlight-card', array( 'loading' => 'lazy', 'decoding' => 'async' ) ); ?>
@@ -96,7 +105,9 @@ $archive_desc  = get_the_archive_description();
 								<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 							</h2>
 						</header>
+						<?php if ( $_gl_show_excerpts ) : ?>
 						<p class="entry-summary"><?php echo esc_html( wp_trim_words( get_the_excerpt(), 18, '…' ) ); ?></p>
+						<?php endif; ?>
 						<a href="<?php the_permalink(); ?>" class="entry-more"><?php esc_html_e( 'Lire l\'article', 'greenlight' ); ?></a>
 					</div>
 				</article>
