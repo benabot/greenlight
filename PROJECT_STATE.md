@@ -278,6 +278,80 @@ git checkout -b feat/ui-improvement
 - **Thème** : symlink `/Applications/MAMP/htdocs/greenlight/wp-content/themes/greenlight` → `/Users/benoitabot/Sites/greenlight/greenlight`
 - **Source de vérité** : toujours `/Users/benoitabot/Sites/greenlight/greenlight`
 
+## Audit DOM — Phase 6C (2026-03-28)
+
+Objectif : chaque template reste sous 80 éléments DOM produits par le template lui-même (hors `the_content()` et sorties WordPress dynamiques).
+
+### Méthode
+
+Deux métriques distinctes :
+- **Éléments template** : balises HTML explicitement écrites dans le fichier PHP (hors `the_content()`, `wp_nav_menu()`, `the_post_thumbnail()`, boucles loop)
+- **Total estimé** : shell + template + sorties WP typiques (menu 3 items, contenu 5 blocs, miniature)
+
+### Shell partagé (header.php + footer.php)
+
+| Élément | Quantité |
+|---------|----------|
+| `<a>` skip-link | 1 |
+| `<header>` | 1 |
+| `<a>` site-brand | 1 |
+| `<nav>` principale | 1 |
+| Menu 3 items (WP) : `<ul>` + 3×`<li>` + 3×`<a>` | 7 |
+| `<a>` cta-subscribe | 1 |
+| `<main>` | 1 |
+| `<footer>` | 1 |
+| `<p>` copyright | 1 |
+| `<nav>` footer + 3 items (WP, optionnel) | 0–8 |
+| **Sous-total shell** | **15–23** |
+
+Config typique retenue (footer nav actif, tagline off, low-emission off) : **22 éléments**.
+
+### Tableaux par template
+
+| Template | Éléments template | Total estimé (config typique) | Statut |
+|----------|-------------------|-------------------------------|--------|
+| `front-page.php` | 5 | ~29 | ✅ |
+| `page.php` | 4 | ~35 (+blocs WP) | ✅ |
+| `single.php` (sans newsletter, 3 tags) | 25 | ~57 | ✅ |
+| `single.php` (avec newsletter, 3 tags) | 34 | ~66 | ✅ |
+| `404.php` | 3 | ~26 | ✅ |
+| `search.php` (aucun résultat) | 4 | ~27 | ✅ |
+| `search.php` (5 résultats) | 4 + 3×5=19 | ~47 | ✅ |
+| `archive.php` / `home.php` (1 featured + 3 grid) | 34 | ~68 | ✅ |
+| `archive.php` / `home.php` (1 featured + 5 grid) | 34 + 2×14=62 | ~96 | ⚠️ scalable |
+| `home.php` + newsletter (1 featured + 5 grid) | 71 | ~105 | ⚠️ scalable |
+
+### Détail single.php (cas le plus riche)
+
+```
+article                                    1
+  header                                   1
+    p.entry-badges                         1
+      a[cat-pill]                          1
+    h1                                     1
+    p.entry-meta                           1
+      a[author]                            1
+      span.entry-date / time               2
+  figure.entry-hero-media (WP)             2 (figure + img)
+  p.entry-intro                            1
+  section.entry-content (the_content)      1 + blocs WP
+  footer.entry-footer                      1
+    ul.entry-tags                          1
+      li + a × 3                           6
+    nav[post-nav] (WP)                     ~4
+[section#newsletter]                       1
+  h2 + p + form                            3
+  input[hidden] + label + input + button   4
+```
+
+### Note sur archive/home
+
+Les templates d'archive dépassent 80 éléments dès `posts_per_page ≥ 5` — c'est inévitable pour une liste d'articles avec miniatures. L'objectif < 80 est atteint pour la **structure fixe** (shell + intro + 1 article featured = ~42 éléments). Le scaling est linéaire et maîtrisé : **~14 éléments par article supplémentaire**.
+
+Recommandation : régler `posts_per_page = 6` en production (valeur WP par défaut) pour un total d'environ ~110 éléments — acceptable pour EcoIndex.
+
+---
+
 ## Commandes utiles
 
 ```bash

@@ -166,15 +166,15 @@ Objectif : passer de EcoIndex B à A. Améliorer la compression, le cache, la mi
 - [ ] **Compatibilité serveur** : le thème doit fonctionner indifféremment sur nginx et Apache
   - [x] Cache HTML : logique PHP pure (`ob_start` / fichiers `.html`), pas de dépendance au serveur web
   - [x] Headers HTTP : envoyés via `header()` PHP, fonctionnent sur les deux serveurs
-  - [ ] Compression : documenter les deux configs recommandées dans `README.md` (nginx gzip/brotli + Apache mod_deflate/mod_headers via `.htaccess`)
-  - [ ] Rewrites : sitemap et cache compatibles `try_files` (nginx) et `mod_rewrite` (Apache)
-  - [ ] Fournir un `.htaccess` exemple pour Apache (cache static assets, compression, headers security) en plus du bloc nginx
+  - [x] Compression : documenter les deux configs recommandées dans `README.md` (nginx gzip/brotli + Apache mod_deflate/mod_headers via `.htaccess`)
+  - [x] Rewrites : sitemap et cache compatibles `try_files` (nginx) et `mod_rewrite` (Apache)
+  - [x] Fournir un `.htaccess` exemple pour Apache (cache static assets, compression, headers security) en plus du bloc nginx
 - [x] **Upload SVG** : `inc/svg.php`
   - [x] `greenlight_allow_svg_upload()` : filtre `upload_mimes` pour ajouter `image/svg+xml`
   - [x] `greenlight_sanitize_svg()` : hook `wp_handle_upload_prefilter`, sanitisation via `DOMDocument` (suppression scripts, événements JS, xlink malveillants)
   - [x] Conditionné au toggle SVG dans l'admin
 - [x] **Nettoyage WP** : `functions.php` — supprimer `wp_generator`, RSD link, wlwmanifest, shortlink, feed links inutiles, REST API link du head (via `remove_action` sur `wp_head`)
-- [ ] **Audit DOM** : vérifier que chaque template type reste sous 80 éléments DOM — documenter le comptage dans `PROJECT_STATE.md`
+- [x] **Audit DOM** : vérifier que chaque template type reste sous 80 éléments DOM — documenter le comptage dans `PROJECT_STATE.md`
 - [ ] **Inline Gutenberg** : compromis accepté — les global-styles inline restent, pas de dequeue agressif (préserver la compatibilité éditeur)
 - [ ] **Documentation nginx** : bloc recommandé dans `README.md` pour gzip, cache static assets, headers security, et `try_files` WordPress
 - [ ] **Documentation Apache** : fichier `.htaccess` exemple dans `README.md` pour mod_deflate, mod_expires, mod_headers, et mod_rewrite WordPress

@@ -170,6 +170,110 @@ greenlight/
 - compatibilite Gutenberg conservee;
 - code PHP et sorties maintenables.
 
+## Configuration serveur recommandee
+
+Le theme fonctionne sur nginx et Apache sans configuration specifique — le cache HTML et les headers HTTP sont geres en PHP pur. Les blocs suivants sont optionnels mais ameliorent les performances de facon significative.
+
+### nginx
+
+Ajouter dans le bloc `server {}` ou dans un fichier inclus :
+
+```nginx
+# WordPress rewrite
+location /greenlight/ {
+    try_files $uri $uri/ /greenlight/index.php?$args;
+    index index.php;
+}
+
+# Compression
+gzip on;
+gzip_vary on;
+gzip_min_length 1024;
+gzip_proxied any;
+gzip_comp_level 6;
+gzip_types
+    text/plain
+    text/css
+    text/javascript
+    application/javascript
+    application/json
+    image/svg+xml;
+
+# Cache static assets
+location ~* \.(css|js|woff2?|ttf|otf|eot|svg|png|jpg|jpeg|webp|avif|ico|gif)$ {
+    expires 1y;
+    add_header Cache-Control "public, immutable";
+    add_header Vary Accept-Encoding;
+    access_log off;
+}
+
+# Security headers
+add_header X-Frame-Options "SAMEORIGIN" always;
+add_header X-Content-Type-Options "nosniff" always;
+add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+```
+
+### Apache (.htaccess)
+
+Placer a la racine du dossier WordPress. Requiert `mod_deflate`, `mod_expires`, `mod_headers`, `mod_rewrite`.
+
+```apache
+# WordPress rewrite
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /greenlight/
+    RewriteRule ^index\.php$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /greenlight/index.php [L]
+</IfModule>
+
+# Compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain text/css text/html
+    AddOutputFilterByType DEFLATE text/javascript application/javascript
+    AddOutputFilterByType DEFLATE application/json image/svg+xml
+</IfModule>
+
+# Cache static assets
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/avif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always append Vary Accept-Encoding
+</IfModule>
+
+# Protect sensitive files
+<FilesMatch "\.(log|md|json|sh|sql)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+```
+
+### Brotli (nginx, optionnel)
+
+Si le module `ngx_brotli` est disponible :
+
+```nginx
+brotli on;
+brotli_comp_level 6;
+brotli_types text/plain text/css application/javascript application/json image/svg+xml;
+```
+
 ## Rappel de conduite
 
 Avant chaque ajout, se poser trois questions:
