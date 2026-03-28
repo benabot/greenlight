@@ -227,26 +227,26 @@ git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cac
 
 ### 6D-SEO — SEO avancé
 
-- [ ] **Analyse de contenu** : mot-clé principal, densité, présence dans titre/H2/alt/premier paragraphe, liens internes/externes, longueur contenu → score SEO (pastille rouge/orange/vert) dans sidebar Gutenberg + colonne admin articles (`inc/seo-analysis.php` + `assets/js/seo-analysis.js`)
-- [ ] **Score lisibilité Flesch** : formule Kandel-Moles (français), longueur phrases, phrases longues → pastille dans sidebar Gutenberg (`assets/js/seo-analysis.js`)
-- [ ] **Redirections 301** : manager dans l'admin, stockage en option WP, hook `template_redirect`, compteur hits, import CSV, log 404 (50 dernières) (`inc/seo-redirects.php`)
-- [ ] **Breadcrumbs PHP natifs** : `greenlight_breadcrumbs()` réutilisant `greenlight_get_breadcrumb_items()`, `<nav aria-label>` + `<ol>` + Schema.org, toggle admin, CSS ~10 lignes (`inc/seo-breadcrumbs.php`)
-- [ ] **Éditeur robots.txt** : textarea dans l'admin, filtre `robots_txt`, valeur par défaut pré-remplie, bouton restaurer (`inc/seo-robots.php`)
+- [x] **Analyse de contenu** : mot-clé principal, densité, présence dans titre/H2/alt/premier paragraphe, liens internes/externes, longueur contenu → score SEO (pastille rouge/orange/vert) dans sidebar Gutenberg + colonne admin articles (`inc/seo-analysis.php` + `assets/js/seo-analysis.js`)
+- [x] **Score lisibilité Flesch** : formule Kandel-Moles (français), longueur phrases, phrases longues → pastille dans sidebar Gutenberg (`assets/js/seo-analysis.js`)
+- [x] **Redirections 301** : manager dans l'admin, stockage en option WP, hook `template_redirect`, compteur hits, import CSV, log 404 (50 dernières) (`inc/seo-redirects.php`)
+- [x] **Breadcrumbs PHP natifs** : `greenlight_breadcrumbs()` réutilisant `greenlight_get_breadcrumb_items()`, `<nav aria-label>` + `<ol>` + Schema.org, toggle admin, CSS ~10 lignes (`inc/seo-breadcrumbs.php`)
+- [x] **Éditeur robots.txt** : textarea dans l'admin, filtre `robots_txt`, valeur par défaut pré-remplie, bouton restaurer (`inc/seo-robots.php`)
 
 ### 6D-PERF — Performance avancée
 
-- [ ] **Critical CSS** : `assets/css/critical.css` (~50 lignes above-the-fold), inline dans `wp_head`, defer du CSS principal via `media="print" onload`, toggle admin (`inc/critical-css.php`)
-- [ ] **Prefetch DNS / Preconnect** : textarea domaines dans l'admin, injection `<link rel="dns-prefetch/preconnect">`, auto-détection domaines externes (`inc/prefetch.php`)
-- [ ] **Database cleanup** : supprimer révisions, brouillons auto, corbeille, spam, transients expirés, optimiser tables — boutons individuels + cron hebdomadaire (`inc/db-cleanup.php`)
-- [ ] **Heartbeat control** : admin/éditeur/front séparément — désactiver ou réduire l'intervalle (15s→120s) (`inc/heartbeat.php`)
-- [ ] **Concaténation CSS** : bundle unique `greenlight-bundle.css` généré lazy, réduit les requêtes HTTP de ~10 à 1-2, invalidation auto (`inc/concat.php`)
+- [x] **Critical CSS** : `assets/css/critical.css` (~50 lignes above-the-fold), inline dans `wp_head`, defer du CSS principal via `media="print" onload`, toggle admin (`inc/critical-css.php`)
+- [x] **Prefetch DNS / Preconnect** : textarea domaines dans l'admin, injection `<link rel="dns-prefetch/preconnect">`, auto-détection domaines externes (`inc/prefetch.php`)
+- [x] **Database cleanup** : supprimer révisions, brouillons auto, corbeille, spam, transients expirés, optimiser tables — boutons individuels + cron hebdomadaire (`inc/db-cleanup.php`)
+- [x] **Heartbeat control** : admin/éditeur/front séparément — désactiver ou réduire l'intervalle (15s→120s) (`inc/heartbeat.php`)
+- [x] **Concaténation CSS** : bundle unique `greenlight-bundle.css` généré lazy, réduit les requêtes HTTP de ~10 à 1-2, invalidation auto (`inc/concat.php`)
 
 ### 6D-IMG — Images avancées
 
-- [ ] **AVIF** : détection support PHP 8.1+, toggle + qualité séparé, réécriture `<img>` → `<picture>` avec source AVIF/WebP/original (`inc/images.php`)
-- [ ] **Bulk optimisation** : scan médiathèque, traitement par batch AJAX (5/10/20 images), progress bar JS, WebP + AVIF en masse (`inc/images-bulk.php`)
-- [ ] **Redimensionner originaux** : seuil configurable (défaut 2560px), hook `wp_handle_upload`, option garder copie originale (`inc/images.php`)
-- [ ] **Statistiques détaillées** : dashboard images (poids total, économie, top 10 plus lourdes), colonne médiathèque (poids original vs optimisé), filtre "non optimisées" (`inc/images-settings.php`)
+- [x] **AVIF** : détection support PHP 8.1+, toggle + qualité séparé, réécriture `<img>` → `<picture>` avec source AVIF/WebP/original (`inc/images.php`)
+- [x] **Bulk optimisation** : scan médiathèque, traitement par batch AJAX (5/10/20 images), progress bar JS, WebP + AVIF en masse (`inc/images-bulk.php`)
+- [x] **Redimensionner originaux** : seuil configurable (défaut 2560px), hook `wp_handle_upload`, option garder copie originale (`inc/images.php`)
+- [x] **Statistiques détaillées** : dashboard images (poids total, économie, top 10 plus lourdes), colonne médiathèque (poids original vs optimisé), filtre "non optimisées" (`inc/images-settings.php`)
 
 ## Phase 7 — Tests et finalisation
 - [ ] Lighthouse : perf ≥ 95, a11y ≥ 95, SEO ≥ 95, best practices ≥ 95
