@@ -2176,7 +2176,30 @@ function greenlight_render_admin_tab_tools() {
 		<div>
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Outils', 'greenlight' ); ?></p>
 			<h2><?php esc_html_e( 'Import et export des réglages', 'greenlight' ); ?></h2>
-			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Deplacez les reglages d’un site a l’autre comme des snapshots de configuration, sans toucher au contenu.', 'greenlight' ); ?></p>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Déplacez les réglages d’un site à l’autre comme des snapshots de configuration, sans toucher au contenu.', 'greenlight' ); ?></p>
+		</div>
+	</div>
+
+	<div class="greenlight-admin-tab-panel__summary">
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Export', 'greenlight' ); ?></p>
+			<strong><?php esc_html_e( 'JSON', 'greenlight' ); ?></strong>
+			<span><?php esc_html_e( 'Sauvegarde portable.', 'greenlight' ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Import', 'greenlight' ); ?></p>
+			<strong><?php esc_html_e( 'JSON', 'greenlight' ); ?></strong>
+			<span><?php esc_html_e( 'Restauration ciblée.', 'greenlight' ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Sécurité', 'greenlight' ); ?></p>
+			<strong><?php esc_html_e( 'Nonce', 'greenlight' ); ?></strong>
+			<span><?php esc_html_e( 'Actions protégées.', 'greenlight' ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Portée', 'greenlight' ); ?></p>
+			<strong><?php esc_html_e( 'Réglages', 'greenlight' ); ?></strong>
+			<span><?php esc_html_e( 'Aucun contenu déplacé.', 'greenlight' ); ?></span>
 		</div>
 	</div>
 
@@ -2186,14 +2209,14 @@ function greenlight_render_admin_tab_tools() {
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Export', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Sauvegarder la configuration', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Téléchargez un JSON avec les réglages SEO, Images, Performance, Apparence et SVG.', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Exporter la configuration', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Téléchargez un JSON avec les réglages Greenlight.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 					<input type="hidden" name="action" value="greenlight_export">
 					<?php wp_nonce_field( 'greenlight_export' ); ?>
-					<button type="submit" class="button button-primary"><?php esc_html_e( 'Exporter (JSON)', 'greenlight' ); ?></button>
+					<button type="submit" class="button button-primary"><?php esc_html_e( 'Exporter', 'greenlight' ); ?></button>
 				</form>
 			</section>
 
@@ -2201,8 +2224,8 @@ function greenlight_render_admin_tab_tools() {
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Import', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Restaurer une configuration', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Importez un fichier exporté par Greenlight pour répliquer les réglages sur un autre site.', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Restaurer un JSON', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Importez une configuration Greenlight exportée depuis un autre site.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data">
@@ -2225,13 +2248,13 @@ function greenlight_render_admin_tab_tools() {
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Usage', 'greenlight' ); ?></p>
 						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Flux recommandé', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Exportez avant une modification de structure, importez seulement des fichiers sûrs et versionnés.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Exportez avant une modification de structure, puis importez seulement des fichiers sûrs.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<ul class="greenlight-admin-tab-panel__list">
-					<li><?php esc_html_e( 'Un export = un snapshot de configuration.', 'greenlight' ); ?></li>
-					<li><?php esc_html_e( 'L’import écrase les réglages actuels de la même manière que l’interface native.', 'greenlight' ); ?></li>
-					<li><?php esc_html_e( 'Les contenus, pages et médias ne sont pas touchés.', 'greenlight' ); ?></li>
+					<li><?php esc_html_e( 'Un export fige l’état courant.', 'greenlight' ); ?></li>
+					<li><?php esc_html_e( 'L’import remplace les réglages actuels.', 'greenlight' ); ?></li>
+					<li><?php esc_html_e( 'Contenus, pages et médias restent intactes.', 'greenlight' ); ?></li>
 				</ul>
 			</section>
 		</aside>
