@@ -316,8 +316,10 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 
 ### Phase 9A — Personnalisation avancée du thème
 
-- [ ] Ajouter des presets éditoriaux complets (`Minimal`, `Magazine`, `Studio`, `Journal`)
-- [ ] Ajouter des variantes pilotables pour `hero`, archives, cartes, single et footer
+- [x] Ajouter des presets éditoriaux complets (`Minimal`, `Magazine`, `Studio`, `Journal`)
+- [x] 9A.1 — Étendre le hero : image, couleur, dégradé, titre/sous-titre, hauteur (`content`, `70vh`, `100vh`) + mode simple
+- [ ] 9A.2 — Étendre la navigation : couleurs, sticky, layout, sous-menus CSS-only
+- [ ] Ajouter des variantes pilotables pour archives, cartes, single et footer
 - [ ] Ajouter des réglages de densité visuelle : espacements, rayons, contraste, hauteur de header
 - [ ] Ajouter des réglages par contexte : home, archives, single, pages
 - [ ] Aligner les patterns Gutenberg sur ces presets pour éviter le CSS manuel

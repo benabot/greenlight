@@ -195,6 +195,10 @@ body > main {
 	align-items: flex-end;
 	gap: var(--wp--preset--spacing--md) var(--wp--preset--spacing--lg);
 	padding-block: var(--greenlight-section-gap, var(--wp--preset--spacing--xl));
+	position: relative;
+	isolation: isolate;
+	border-radius: var(--greenlight-card-radius, 1em);
+	overflow: clip;
 }
 
 .hero-lead {
@@ -224,6 +228,82 @@ body > main {
 	color: var(--wp--preset--color--on-surface-variant);
 	text-wrap: pretty;
 	max-width: 44ch;
+}
+
+.page-hero > * {
+	position: relative;
+	z-index: 1;
+}
+
+.page-hero::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: transparent;
+	pointer-events: none;
+	z-index: 0;
+}
+
+.page-hero--centered {
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+.page-hero--centered .hero-lead,
+.page-hero--centered .hero-body {
+	align-items: center;
+	align-self: center;
+}
+
+.page-hero--height-tall {
+	min-height: 70vh;
+}
+
+.page-hero--height-full {
+	min-height: 100vh;
+}
+
+.page-hero--background-color,
+.page-hero--background-gradient {
+	background: var(--greenlight-hero-background, var(--wp--preset--color--surface));
+}
+
+.page-hero--background-image {
+	background-color: var(--wp--preset--color--surface);
+	background-image: var(--greenlight-hero-background-image);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	color: var(--wp--preset--color--surface-alt);
+}
+
+.page-hero--background-image .hero-description {
+	color: color-mix(in srgb, var(--wp--preset--color--surface-alt) 82%, transparent);
+}
+
+.page-hero--overlay-soft::before {
+	background: linear-gradient(180deg, rgba(47, 52, 45, 0.08), rgba(47, 52, 45, 0.18));
+}
+
+.page-hero--overlay-strong::before {
+	background: linear-gradient(180deg, rgba(47, 52, 45, 0.18), rgba(47, 52, 45, 0.38));
+}
+
+.page-intro-simple {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--wp--preset--spacing--sm);
+	padding-block: var(--greenlight-section-gap, var(--wp--preset--spacing--xl));
+}
+
+.page-intro-simple h1 {
+	font-size: var(--wp--preset--font-size--xx-large);
+	letter-spacing: -0.03em;
+	line-height: 1.1;
+	text-wrap: balance;
+	max-width: var(--greenlight-hero-width, 14ch);
 }
 
 /* === Archive intro (home, archive) — asymmetric === */

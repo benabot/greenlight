@@ -201,7 +201,18 @@ function greenlight_get_appearance_defaults() {
 		'color_header_bg'          => '',
 		'show_tagline'             => 0,
 		// Hero.
+		'hero_enabled'             => 1,
 		'hero_style'               => 'asymmetric',
+		'hero_background_mode'     => 'none',
+		'hero_background_image'    => '',
+		'hero_background_color'    => '',
+		'hero_gradient_preset'     => 'moss',
+		'hero_heading_mode'        => 'page_title',
+		'hero_heading_text'        => '',
+		'hero_subheading_mode'     => 'page_excerpt',
+		'hero_subheading_text'     => '',
+		'hero_height_mode'         => 'content',
+		'hero_overlay_strength'    => 'soft',
 		'show_hero_badge'          => 1,
 		'hero_text'                => '',
 		// Single.
@@ -319,6 +330,32 @@ function greenlight_get_appearance_densities() {
 }
 
 /**
+ * Returns the available hero gradients.
+ *
+ * @return array<string, array<string, string>>
+ */
+function greenlight_get_hero_gradient_presets() {
+	return array(
+		'moss'  => array(
+			'label' => __( 'Mousse', 'greenlight' ),
+			'value' => 'linear-gradient(135deg, #556d51 0%, #d8e0c5 100%)',
+		),
+		'dawn'  => array(
+			'label' => __( 'Aube', 'greenlight' ),
+			'value' => 'linear-gradient(135deg, #f4ede0 0%, #d9c2a3 100%)',
+		),
+		'stone' => array(
+			'label' => __( 'Pierre', 'greenlight' ),
+			'value' => 'linear-gradient(135deg, #ced4cb 0%, #f5f3eb 100%)',
+		),
+		'sea'   => array(
+			'label' => __( 'Mer', 'greenlight' ),
+			'value' => 'linear-gradient(135deg, #54737e 0%, #d7e7e6 100%)',
+		),
+	);
+}
+
+/**
  * Returns CSS variables for the selected theme preset and density.
  *
  * @param array<string, mixed> $options Appearance options.
@@ -380,6 +417,7 @@ function greenlight_sanitize_appearance_settings( $input ) {
 	$defaults  = greenlight_get_appearance_defaults();
 	$presets   = greenlight_get_appearance_presets();
 	$densities = greenlight_get_appearance_densities();
+	$gradients = greenlight_get_hero_gradient_presets();
 
 	$badge_value = isset( $input['carbon_badge_value'] )
 		? sanitize_text_field( $input['carbon_badge_value'] )
@@ -421,9 +459,32 @@ function greenlight_sanitize_appearance_settings( $input ) {
 		'color_header_bg'          => $sanitize_color( $input['color_header_bg'] ?? '' ),
 		'show_tagline'             => isset( $input['show_tagline'] ) ? 1 : 0,
 		// Hero.
+		'hero_enabled'             => isset( $input['hero_enabled'] ) ? 1 : 0,
 		'hero_style'               => in_array( $input['hero_style'] ?? '', array( 'asymmetric', 'centered' ), true )
 			? sanitize_key( $input['hero_style'] )
 			: $defaults['hero_style'],
+		'hero_background_mode'     => in_array( $input['hero_background_mode'] ?? '', array( 'none', 'color', 'gradient', 'image' ), true )
+			? sanitize_key( $input['hero_background_mode'] )
+			: $defaults['hero_background_mode'],
+		'hero_background_image'    => isset( $input['hero_background_image'] ) ? esc_url_raw( $input['hero_background_image'] ) : '',
+		'hero_background_color'    => $sanitize_color( $input['hero_background_color'] ?? '' ),
+		'hero_gradient_preset'     => isset( $input['hero_gradient_preset'] ) && isset( $gradients[ sanitize_key( (string) $input['hero_gradient_preset'] ) ] )
+			? sanitize_key( (string) $input['hero_gradient_preset'] )
+			: $defaults['hero_gradient_preset'],
+		'hero_heading_mode'        => in_array( $input['hero_heading_mode'] ?? '', array( 'page_title', 'site_title', 'custom', 'none' ), true )
+			? sanitize_key( $input['hero_heading_mode'] )
+			: $defaults['hero_heading_mode'],
+		'hero_heading_text'        => isset( $input['hero_heading_text'] ) ? sanitize_text_field( $input['hero_heading_text'] ) : '',
+		'hero_subheading_mode'     => in_array( $input['hero_subheading_mode'] ?? '', array( 'page_excerpt', 'site_tagline', 'custom', 'none' ), true )
+			? sanitize_key( $input['hero_subheading_mode'] )
+			: $defaults['hero_subheading_mode'],
+		'hero_subheading_text'     => isset( $input['hero_subheading_text'] ) ? sanitize_textarea_field( $input['hero_subheading_text'] ) : '',
+		'hero_height_mode'         => in_array( $input['hero_height_mode'] ?? '', array( 'content', 'tall', 'full' ), true )
+			? sanitize_key( $input['hero_height_mode'] )
+			: $defaults['hero_height_mode'],
+		'hero_overlay_strength'    => in_array( $input['hero_overlay_strength'] ?? '', array( 'none', 'soft', 'strong' ), true )
+			? sanitize_key( $input['hero_overlay_strength'] )
+			: $defaults['hero_overlay_strength'],
 		'show_hero_badge'          => isset( $input['show_hero_badge'] ) ? 1 : 0,
 		'hero_text'                => isset( $input['hero_text'] ) ? sanitize_textarea_field( $input['hero_text'] ) : '',
 		// Single.
@@ -1999,6 +2060,18 @@ function greenlight_render_admin_tab_appearance() {
 	$o                                        = array_merge( $def, $o );
 	$appearance_presets                       = greenlight_get_appearance_presets();
 	$appearance_densities                     = greenlight_get_appearance_densities();
+	$hero_gradients                           = greenlight_get_hero_gradient_presets();
+	$hero_background_labels                   = array(
+		'none'     => __( 'Aucun', 'greenlight' ),
+		'color'    => __( 'Couleur', 'greenlight' ),
+		'gradient' => __( 'Dégradé', 'greenlight' ),
+		'image'    => __( 'Image', 'greenlight' ),
+	);
+	$hero_height_labels                       = array(
+		'content' => __( 'Contenu', 'greenlight' ),
+		'tall'    => __( '70vh', 'greenlight' ),
+		'full'    => __( '100vh', 'greenlight' ),
+	);
 	$key                                      = GREENLIGHT_APPEARANCE_OPTION_KEY;
 	$appearance_fields                        = array(
 		'theme_preset',
@@ -2015,7 +2088,18 @@ function greenlight_render_admin_tab_appearance() {
 		'color_on_surface_variant',
 		'color_header_bg',
 		'show_tagline',
+		'hero_enabled',
 		'hero_style',
+		'hero_background_mode',
+		'hero_background_image',
+		'hero_background_color',
+		'hero_gradient_preset',
+		'hero_heading_mode',
+		'hero_heading_text',
+		'hero_subheading_mode',
+		'hero_subheading_text',
+		'hero_height_mode',
+		'hero_overlay_strength',
 		'show_hero_badge',
 		'hero_text',
 		'show_date',
@@ -2059,14 +2143,14 @@ function greenlight_render_admin_tab_appearance() {
 			<span><?php esc_html_e( 'Respiration du site.', 'greenlight' ); ?></span>
 		</div>
 		<div class="greenlight-admin-summary-card">
-			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Hero', 'greenlight' ); ?></p>
-			<strong><?php echo esc_html( isset( $o['hero_style'] ) && 'centered' === $o['hero_style'] ? __( 'Centré', 'greenlight' ) : __( 'Asymétrique', 'greenlight' ) ); ?></strong>
-			<span><?php esc_html_e( 'Structure d’entrée.', 'greenlight' ); ?></span>
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Fond hero', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( ! empty( $o['hero_enabled'] ) ? ( isset( $hero_background_labels[ $o['hero_background_mode'] ] ) ? $hero_background_labels[ $o['hero_background_mode'] ] : $hero_background_labels['none'] ) : __( 'Simple', 'greenlight' ) ); ?></strong>
+			<span><?php esc_html_e( 'Mode d’entrée.', 'greenlight' ); ?></span>
 		</div>
 		<div class="greenlight-admin-summary-card">
-			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Archives', 'greenlight' ); ?></p>
-			<strong><?php echo esc_html( isset( $o['archive_layout'] ) && 'list' === $o['archive_layout'] ? __( 'Liste', 'greenlight' ) : __( 'Grille', 'greenlight' ) ); ?></strong>
-			<span><?php esc_html_e( 'Lecture des contenus.', 'greenlight' ); ?></span>
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Hauteur', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( ! empty( $o['hero_enabled'] ) ? ( isset( $hero_height_labels[ $o['hero_height_mode'] ] ) ? $hero_height_labels[ $o['hero_height_mode'] ] : $hero_height_labels['content'] ) : __( 'Auto', 'greenlight' ) ); ?></strong>
+			<span><?php esc_html_e( 'Emprise du hero.', 'greenlight' ); ?></span>
 		</div>
 	</div>
 
@@ -2158,12 +2242,12 @@ function greenlight_render_admin_tab_appearance() {
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Structure', 'greenlight' ); ?></p>
 						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'En-tête et hero', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'En-tête lisible, hero aligné.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Tagline, fond, texte et hauteur.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="options.php">
 					<?php settings_fields( 'greenlight_appearance' ); ?>
-					<?php $greenlight_emit_appearance_hidden_fields( array( 'color_header_bg', 'show_tagline', 'hero_style', 'show_hero_badge', 'hero_text' ) ); ?>
+					<?php $greenlight_emit_appearance_hidden_fields( array( 'color_header_bg', 'show_tagline', 'hero_enabled', 'hero_style', 'hero_background_mode', 'hero_background_image', 'hero_background_color', 'hero_gradient_preset', 'hero_heading_mode', 'hero_heading_text', 'hero_subheading_mode', 'hero_subheading_text', 'hero_height_mode', 'hero_overlay_strength', 'show_hero_badge', 'hero_text' ) ); ?>
 					<table class="form-table" role="presentation">
 						<tr>
 							<th><?php esc_html_e( 'Fond header', 'greenlight' ); ?></th>
@@ -2172,6 +2256,13 @@ function greenlight_render_admin_tab_appearance() {
 						<tr>
 							<th><?php esc_html_e( 'Tagline', 'greenlight' ); ?></th>
 							<td><label><input name="<?php echo esc_attr( $key ); ?>[show_tagline]" type="checkbox" value="1" <?php checked( (int) $o['show_tagline'], 1 ); ?>> <?php esc_html_e( 'Afficher la description sous le nom du site', 'greenlight' ); ?></label></td>
+						</tr>
+						<tr>
+							<th><?php esc_html_e( 'Hero', 'greenlight' ); ?></th>
+							<td>
+								<label><input name="<?php echo esc_attr( $key ); ?>[hero_enabled]" type="checkbox" value="1" <?php checked( (int) $o['hero_enabled'], 1 ); ?>> <?php esc_html_e( 'Utiliser le hero avancé', 'greenlight' ); ?></label>
+								<p class="description"><?php esc_html_e( 'Désactivé = intro simple.', 'greenlight' ); ?></p>
+							</td>
 						</tr>
 						<tr>
 							<th><label for="gl-hero-style"><?php esc_html_e( 'Style hero', 'greenlight' ); ?></label></th>
@@ -2183,13 +2274,97 @@ function greenlight_render_admin_tab_appearance() {
 							</td>
 						</tr>
 						<tr>
+							<th><label for="gl-hero-background-mode"><?php esc_html_e( 'Fond hero', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-hero-background-mode" name="<?php echo esc_attr( $key ); ?>[hero_background_mode]">
+									<?php foreach ( $hero_background_labels as $background_key => $background_label ) : ?>
+										<option value="<?php echo esc_attr( $background_key ); ?>" <?php selected( $o['hero_background_mode'], $background_key ); ?>><?php echo esc_html( $background_label ); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th><?php esc_html_e( 'Couleur hero', 'greenlight' ); ?></th>
+							<td><input type="text" name="<?php echo esc_attr( $key ); ?>[hero_background_color]" class="greenlight-color-picker" value="<?php echo esc_attr( $o['hero_background_color'] ); ?>" data-default-color="#dfe6d7"></td>
+						</tr>
+						<tr>
+							<th><label for="gl-hero-gradient"><?php esc_html_e( 'Dégradé hero', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-hero-gradient" name="<?php echo esc_attr( $key ); ?>[hero_gradient_preset]">
+									<?php foreach ( $hero_gradients as $gradient_key => $gradient_data ) : ?>
+										<option value="<?php echo esc_attr( $gradient_key ); ?>" <?php selected( $o['hero_gradient_preset'], $gradient_key ); ?>><?php echo esc_html( $gradient_data['label'] ); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th><label for="gl-hero-image"><?php esc_html_e( 'Image hero', 'greenlight' ); ?></label></th>
+							<td>
+								<input id="gl-hero-image" name="<?php echo esc_attr( $key ); ?>[hero_background_image]" type="url" class="regular-text code" value="<?php echo esc_attr( $o['hero_background_image'] ); ?>" placeholder="https://">
+								<p class="description"><?php esc_html_e( 'URL d’image de fond.', 'greenlight' ); ?></p>
+							</td>
+						</tr>
+						<tr>
+							<th><label for="gl-hero-heading-mode"><?php esc_html_e( 'Titre hero', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-hero-heading-mode" name="<?php echo esc_attr( $key ); ?>[hero_heading_mode]">
+									<option value="page_title" <?php selected( $o['hero_heading_mode'], 'page_title' ); ?>><?php esc_html_e( 'Titre de page', 'greenlight' ); ?></option>
+									<option value="site_title" <?php selected( $o['hero_heading_mode'], 'site_title' ); ?>><?php esc_html_e( 'Titre du site', 'greenlight' ); ?></option>
+									<option value="custom" <?php selected( $o['hero_heading_mode'], 'custom' ); ?>><?php esc_html_e( 'Titre personnalisé', 'greenlight' ); ?></option>
+									<option value="none" <?php selected( $o['hero_heading_mode'], 'none' ); ?>><?php esc_html_e( 'Aucun titre', 'greenlight' ); ?></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th><label for="gl-hero-heading-text"><?php esc_html_e( 'Titre personnalisé', 'greenlight' ); ?></label></th>
+							<td><input id="gl-hero-heading-text" name="<?php echo esc_attr( $key ); ?>[hero_heading_text]" type="text" class="regular-text" value="<?php echo esc_attr( $o['hero_heading_text'] ); ?>"></td>
+						</tr>
+						<tr>
+							<th><label for="gl-hero-subheading-mode"><?php esc_html_e( 'Sous-titre hero', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-hero-subheading-mode" name="<?php echo esc_attr( $key ); ?>[hero_subheading_mode]">
+									<option value="page_excerpt" <?php selected( $o['hero_subheading_mode'], 'page_excerpt' ); ?>><?php esc_html_e( 'Extrait de page', 'greenlight' ); ?></option>
+									<option value="site_tagline" <?php selected( $o['hero_subheading_mode'], 'site_tagline' ); ?>><?php esc_html_e( 'Slogan du site', 'greenlight' ); ?></option>
+									<option value="custom" <?php selected( $o['hero_subheading_mode'], 'custom' ); ?>><?php esc_html_e( 'Texte personnalisé', 'greenlight' ); ?></option>
+									<option value="none" <?php selected( $o['hero_subheading_mode'], 'none' ); ?>><?php esc_html_e( 'Aucun sous-titre', 'greenlight' ); ?></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th><label for="gl-hero-subheading-text"><?php esc_html_e( 'Sous-titre personnalisé', 'greenlight' ); ?></label></th>
+							<td>
+								<textarea id="gl-hero-subheading-text" name="<?php echo esc_attr( $key ); ?>[hero_subheading_text]" class="large-text" rows="3"><?php echo esc_textarea( $o['hero_subheading_text'] ); ?></textarea>
+								<p class="description"><?php esc_html_e( 'Le texte historique reste en secours.', 'greenlight' ); ?></p>
+							</td>
+						</tr>
+						<tr>
+							<th><label for="gl-hero-height"><?php esc_html_e( 'Hauteur hero', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-hero-height" name="<?php echo esc_attr( $key ); ?>[hero_height_mode]">
+									<?php foreach ( $hero_height_labels as $height_key => $height_label ) : ?>
+										<option value="<?php echo esc_attr( $height_key ); ?>" <?php selected( $o['hero_height_mode'], $height_key ); ?>><?php echo esc_html( $height_label ); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th><label for="gl-hero-overlay"><?php esc_html_e( 'Overlay', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-hero-overlay" name="<?php echo esc_attr( $key ); ?>[hero_overlay_strength]">
+									<option value="none" <?php selected( $o['hero_overlay_strength'], 'none' ); ?>><?php esc_html_e( 'Aucun', 'greenlight' ); ?></option>
+									<option value="soft" <?php selected( $o['hero_overlay_strength'], 'soft' ); ?>><?php esc_html_e( 'Léger', 'greenlight' ); ?></option>
+									<option value="strong" <?php selected( $o['hero_overlay_strength'], 'strong' ); ?>><?php esc_html_e( 'Soutenu', 'greenlight' ); ?></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
 							<th><?php esc_html_e( 'Carbon Badge', 'greenlight' ); ?></th>
 							<td><label><input name="<?php echo esc_attr( $key ); ?>[show_hero_badge]" type="checkbox" value="1" <?php checked( (int) $o['show_hero_badge'], 1 ); ?>> <?php esc_html_e( 'Afficher le badge CO₂ dans le hero', 'greenlight' ); ?></label></td>
 						</tr>
 						<tr>
-							<th><label for="gl-hero-text"><?php esc_html_e( 'Texte hero personnalisé', 'greenlight' ); ?></label></th>
+							<th><label for="gl-hero-text"><?php esc_html_e( 'Texte de secours', 'greenlight' ); ?></label></th>
 							<td>
-								<textarea id="gl-hero-text" name="<?php echo esc_attr( $key ); ?>[hero_text]" class="large-text" rows="3" placeholder="<?php esc_attr_e( 'Vide = description du site.', 'greenlight' ); ?>"><?php echo esc_textarea( $o['hero_text'] ); ?></textarea>
+								<textarea id="gl-hero-text" name="<?php echo esc_attr( $key ); ?>[hero_text]" class="large-text" rows="2" placeholder="<?php esc_attr_e( 'Ancien sous-titre conservé pour compatibilité.', 'greenlight' ); ?>"><?php echo esc_textarea( $o['hero_text'] ); ?></textarea>
 							</td>
 						</tr>
 					</table>

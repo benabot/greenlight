@@ -235,7 +235,9 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 - [x] Positionnement produit clarifié : Greenlight couvre une partie importante de Yoast Premium et WP Rocket, sans viser le clone complet
 - [x] Prochaine priorité validée : personnalisation du thème avant toute extension fonctionnelle lourde
 - [x] Périmètre sécurité validé : durcissement léger uniquement, pas de bascule vers une suite de sécurité
-- [ ] Presets éditoriaux et variantes de rendu
+- [x] Presets éditoriaux et premiers tokens de rendu
+- [x] Hero avancé : fond image/couleur/dégradé, titre, sous-titre, hauteur, mode simple
+- [ ] Navigation avancée : couleurs, sticky, sous-menus CSS-only
 - [ ] Réglages avancés de densité visuelle et de templates par contexte
 - [ ] Durcissement ciblé sur sanitation, import/export, logs et uploads
 
