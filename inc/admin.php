@@ -1956,22 +1956,22 @@ function greenlight_render_admin_tab_appearance() {
 				</form>
 			</section>
 		</div>
-
-		<aside class="greenlight-admin-tab-panel__column">
-			<section class="greenlight-admin-tab-panel__card greenlight-admin-tab-panel__card--soft">
-				<div class="greenlight-admin-tab-panel__card-head">
-					<div>
-						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Prévisualisation', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Rendu du site', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Surveillez le résultat visuel pendant que vous ajustez les réglages éditoriaux.', 'greenlight' ); ?></p>
-					</div>
-				</div>
-				<iframe id="greenlight-preview-frame"
-						src="<?php echo esc_url( home_url( '/' ) ); ?>"
-						title="<?php esc_attr_e( 'Prévisualisation du site', 'greenlight' ); ?>"></iframe>
-			</section>
-		</aside>
 	</div>
+
+	<section class="greenlight-admin-tab-panel__preview">
+		<section class="greenlight-admin-tab-panel__card greenlight-admin-tab-panel__card--soft">
+			<div class="greenlight-admin-tab-panel__card-head">
+				<div>
+					<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Prévisualisation', 'greenlight' ); ?></p>
+					<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Rendu du site', 'greenlight' ); ?></h3>
+					<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Surveillez le résultat visuel pendant que vous ajustez les réglages éditoriaux.', 'greenlight' ); ?></p>
+				</div>
+			</div>
+			<iframe id="greenlight-preview-frame"
+					src="<?php echo esc_url( home_url( '/' ) ); ?>"
+					title="<?php esc_attr_e( 'Prévisualisation du site', 'greenlight' ); ?>"></iframe>
+		</section>
+	</section>
 	<?php
 }
 

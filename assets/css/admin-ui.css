@@ -237,9 +237,17 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel__shell {
 	align-items: start;
 }
 
+body.toplevel_page_greenlight .greenlight-admin-tab-panel__shell--appearance {
+	grid-template-columns: minmax(0, 1fr);
+}
+
 body.toplevel_page_greenlight .greenlight-admin-tab-panel__column {
 	display: grid;
 	gap: 22px;
+}
+
+body.toplevel_page_greenlight .greenlight-admin-tab-panel__preview {
+	margin-top: 22px;
 }
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel__intro {
@@ -579,7 +587,7 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel details.gl-details .fo
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel #greenlight-preview-frame {
 	width: 100% !important;
-	height: 540px !important;
+	height: clamp(620px, 78vh, 980px) !important;
 	border: 1px solid var(--gl-admin-border);
 	border-radius: 22px;
 	box-shadow: var(--gl-admin-shadow-soft);
@@ -637,6 +645,10 @@ body.toplevel_page_greenlight .greenlight-admin-panel--note p {
 	}
 
 	body.toplevel_page_greenlight .greenlight-admin-tab-panel__shell {
+		grid-template-columns: 1fr;
+	}
+
+	body.toplevel_page_greenlight .greenlight-admin-tab-panel__shell--appearance {
 		grid-template-columns: 1fr;
 	}
 
