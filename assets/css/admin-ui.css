@@ -272,7 +272,7 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel__column {
 }
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel__preview {
-	margin-top: 22px;
+	margin: 18px 0 24px;
 }
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel__intro {
@@ -734,7 +734,7 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel details.gl-details .fo
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel #greenlight-preview-frame {
 	width: 100% !important;
-	height: clamp(620px, 78vh, 980px) !important;
+	height: clamp(420px, 58vh, 760px) !important;
 	border: 1px solid var(--gl-admin-border);
 	border-radius: 22px;
 	box-shadow: var(--gl-admin-shadow-soft);

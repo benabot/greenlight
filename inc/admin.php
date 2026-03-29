@@ -2499,6 +2499,21 @@ function greenlight_render_admin_tab_appearance() {
 		</div>
 	</div>
 
+	<section class="greenlight-admin-tab-panel__preview">
+		<section class="greenlight-admin-tab-panel__card greenlight-admin-tab-panel__card--soft">
+			<div class="greenlight-admin-tab-panel__card-head">
+				<div>
+					<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Prévisualisation', 'greenlight' ); ?></p>
+					<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Rendu du site', 'greenlight' ); ?></h3>
+					<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Aperçu du rendu.', 'greenlight' ); ?></p>
+				</div>
+			</div>
+			<iframe id="greenlight-preview-frame"
+					src="<?php echo esc_url( add_query_arg( 'greenlight_preview', 'appearance', home_url( '/' ) ) ); ?>"
+					title="<?php esc_attr_e( 'Prévisualisation du site', 'greenlight' ); ?>"></iframe>
+		</section>
+	</section>
+
 	<div class="greenlight-admin-tab-panel__summary">
 		<div class="greenlight-admin-summary-card">
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Style', 'greenlight' ); ?></p>
@@ -2955,21 +2970,6 @@ function greenlight_render_admin_tab_appearance() {
 			</section>
 		</div>
 	</div>
-
-	<section class="greenlight-admin-tab-panel__preview">
-		<section class="greenlight-admin-tab-panel__card greenlight-admin-tab-panel__card--soft">
-			<div class="greenlight-admin-tab-panel__card-head">
-				<div>
-					<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Prévisualisation', 'greenlight' ); ?></p>
-					<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Rendu du site', 'greenlight' ); ?></h3>
-					<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Aperçu du rendu.', 'greenlight' ); ?></p>
-				</div>
-			</div>
-			<iframe id="greenlight-preview-frame"
-					src="<?php echo esc_url( add_query_arg( 'greenlight_preview', 'appearance', home_url( '/' ) ) ); ?>"
-					title="<?php esc_attr_e( 'Prévisualisation du site', 'greenlight' ); ?>"></iframe>
-		</section>
-	</section>
 	<?php
 }
 
