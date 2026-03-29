@@ -292,6 +292,7 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel__summary {
 }
 
 body.toplevel_page_greenlight .greenlight-admin-summary-card {
+	min-width: 0;
 	padding: 16px 18px 17px;
 	border: 1px solid var(--gl-admin-border);
 	border-radius: 22px;
@@ -306,6 +307,8 @@ body.toplevel_page_greenlight .greenlight-admin-summary-card strong {
 	line-height: 1.2;
 	letter-spacing: -0.02em;
 	color: var(--gl-admin-text);
+	overflow-wrap: anywhere;
+	word-break: break-word;
 }
 
 body.toplevel_page_greenlight .greenlight-admin-summary-card span {
@@ -313,6 +316,8 @@ body.toplevel_page_greenlight .greenlight-admin-summary-card span {
 	margin-top: 6px;
 	color: var(--gl-admin-muted);
 	line-height: 1.45;
+	overflow-wrap: anywhere;
+	word-break: break-word;
 }
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel__intro h2 {
@@ -361,6 +366,7 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel__card-head {
 	gap: 18px;
 	align-items: flex-start;
 	margin-bottom: 18px;
+	min-width: 0;
 }
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel__card-title {
@@ -369,6 +375,8 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel__card-title {
 	line-height: 1.25;
 	letter-spacing: -0.02em;
 	color: var(--gl-admin-text);
+	overflow-wrap: anywhere;
+	word-break: break-word;
 }
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel__card-title + .greenlight-admin-tab-panel__card-note {
@@ -379,6 +387,8 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel__card-note {
 	margin: 0;
 	color: var(--gl-admin-muted);
 	line-height: 1.55;
+	overflow-wrap: anywhere;
+	word-break: break-word;
 }
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel__card .greenlight-admin-tab-panel__list + .greenlight-admin-tab-panel__card-note {
@@ -393,6 +403,11 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel__list {
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel__list li + li {
 	margin-top: 8px;
+}
+
+body.toplevel_page_greenlight .greenlight-admin-tab-panel__list li {
+	overflow-wrap: anywhere;
+	word-break: break-word;
 }
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel__meta {
@@ -440,6 +455,7 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel .greenlight-admin-tab-
 	max-width: none !important;
 	border-collapse: separate;
 	border-spacing: 0;
+	table-layout: fixed;
 	overflow: hidden;
 }
 
@@ -451,6 +467,9 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel .greenlight-admin-tab-
 body.toplevel_page_greenlight .greenlight-admin-tab-panel .greenlight-admin-tab-panel__card table.widefat th,
 body.toplevel_page_greenlight .greenlight-admin-tab-panel .greenlight-admin-tab-panel__card table.widefat td {
 	padding: 14px 16px;
+	min-width: 0;
+	overflow-wrap: anywhere;
+	word-break: break-word;
 }
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel .greenlight-admin-tab-panel__card table.widefat tbody tr:nth-child(odd) td {
@@ -604,6 +623,7 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel table.widefat {
 	max-width: none !important;
 	border-collapse: separate;
 	border-spacing: 0;
+	table-layout: fixed;
 	overflow: hidden;
 }
 
@@ -615,6 +635,9 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel table.widefat thead th
 body.toplevel_page_greenlight .greenlight-admin-tab-panel table.widefat th,
 body.toplevel_page_greenlight .greenlight-admin-tab-panel table.widefat td {
 	padding: 14px 16px;
+	min-width: 0;
+	overflow-wrap: anywhere;
+	word-break: break-word;
 }
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel table.widefat tbody tr:nth-child(odd) td {
