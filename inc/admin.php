@@ -183,6 +183,8 @@ add_action( 'admin_init', 'greenlight_register_performance_settings' );
  */
 function greenlight_get_appearance_defaults() {
 	return array(
+		'theme_preset'             => 'editorial',
+		'density_scale'            => 'balanced',
 		// Global.
 		'carbon_badge_enabled'     => 1,
 		'carbon_badge_value'       => '',
@@ -220,14 +222,164 @@ function greenlight_get_appearance_defaults() {
 }
 
 /**
+ * Returns the available editorial presets for the theme.
+ *
+ * @return array<string, array<string, mixed>>
+ */
+function greenlight_get_appearance_presets() {
+	return array(
+		'editorial' => array(
+			'label'       => __( 'Éditorial', 'greenlight' ),
+			'description' => __( 'Équilibré, lisible, polyvalent.', 'greenlight' ),
+			'vars'        => array(
+				'--greenlight-content-size'  => 'min(90vw, 1200px)',
+				'--greenlight-wide-size'     => 'min(95vw, 1400px)',
+				'--greenlight-main-gap'      => 'var(--wp--preset--spacing--xl)',
+				'--greenlight-section-gap'   => 'var(--wp--preset--spacing--xl)',
+				'--greenlight-hero-width'    => '14ch',
+				'--greenlight-card-radius'   => '1em',
+				'--greenlight-pill-radius'   => '1em',
+				'--greenlight-button-radius' => '0.375rem',
+			),
+		),
+		'magazine'  => array(
+			'label'       => __( 'Magazine', 'greenlight' ),
+			'description' => __( 'Plus ample et plus visuel.', 'greenlight' ),
+			'vars'        => array(
+				'--greenlight-content-size'  => 'min(92vw, 1280px)',
+				'--greenlight-wide-size'     => 'min(96vw, 1480px)',
+				'--greenlight-main-gap'      => 'var(--wp--preset--spacing--xl)',
+				'--greenlight-section-gap'   => 'var(--wp--preset--spacing--xl)',
+				'--greenlight-hero-width'    => '16ch',
+				'--greenlight-card-radius'   => '1.125em',
+				'--greenlight-pill-radius'   => '1em',
+				'--greenlight-button-radius' => '0.5rem',
+			),
+		),
+		'studio'    => array(
+			'label'       => __( 'Studio', 'greenlight' ),
+			'description' => __( 'Plus compact et plus cadré.', 'greenlight' ),
+			'vars'        => array(
+				'--greenlight-content-size'  => 'min(88vw, 1120px)',
+				'--greenlight-wide-size'     => 'min(94vw, 1320px)',
+				'--greenlight-main-gap'      => 'var(--wp--preset--spacing--lg)',
+				'--greenlight-section-gap'   => 'var(--wp--preset--spacing--lg)',
+				'--greenlight-hero-width'    => '13ch',
+				'--greenlight-card-radius'   => '0.875em',
+				'--greenlight-pill-radius'   => '0.875em',
+				'--greenlight-button-radius' => '0.5rem',
+			),
+		),
+		'journal'   => array(
+			'label'       => __( 'Journal', 'greenlight' ),
+			'description' => __( 'Dense, direct, lecture continue.', 'greenlight' ),
+			'vars'        => array(
+				'--greenlight-content-size'  => 'min(86vw, 1040px)',
+				'--greenlight-wide-size'     => 'min(94vw, 1220px)',
+				'--greenlight-main-gap'      => 'var(--wp--preset--spacing--md)',
+				'--greenlight-section-gap'   => 'var(--wp--preset--spacing--lg)',
+				'--greenlight-hero-width'    => '12ch',
+				'--greenlight-card-radius'   => '0.75em',
+				'--greenlight-pill-radius'   => '0.9em',
+				'--greenlight-button-radius' => '0.5rem',
+			),
+		),
+	);
+}
+
+/**
+ * Returns the available density scales.
+ *
+ * @return array<string, array<string, mixed>>
+ */
+function greenlight_get_appearance_densities() {
+	return array(
+		'airy'     => array(
+			'label'       => __( 'Aéré', 'greenlight' ),
+			'description' => __( 'Plus d’air entre les blocs.', 'greenlight' ),
+			'vars'        => array(
+				'--greenlight-main-gap'    => 'var(--wp--preset--spacing--xl)',
+				'--greenlight-section-gap' => 'var(--wp--preset--spacing--xl)',
+			),
+		),
+		'balanced' => array(
+			'label'       => __( 'Équilibré', 'greenlight' ),
+			'description' => __( 'Rythme de base.', 'greenlight' ),
+			'vars'        => array(),
+		),
+		'compact'  => array(
+			'label'       => __( 'Compact', 'greenlight' ),
+			'description' => __( 'Plus serré, plus dense.', 'greenlight' ),
+			'vars'        => array(
+				'--greenlight-main-gap'    => 'var(--wp--preset--spacing--lg)',
+				'--greenlight-section-gap' => 'var(--wp--preset--spacing--lg)',
+			),
+		),
+	);
+}
+
+/**
+ * Returns CSS variables for the selected theme preset and density.
+ *
+ * @param array<string, mixed> $options Appearance options.
+ * @return array<string, string>
+ */
+function greenlight_get_appearance_variant_vars( $options ) {
+	$options   = is_array( $options ) ? $options : array();
+	$presets   = greenlight_get_appearance_presets();
+	$densities = greenlight_get_appearance_densities();
+
+	$preset_key   = isset( $options['theme_preset'] ) ? sanitize_key( (string) $options['theme_preset'] ) : 'editorial';
+	$density_key  = isset( $options['density_scale'] ) ? sanitize_key( (string) $options['density_scale'] ) : 'balanced';
+	$preset_vars  = isset( $presets[ $preset_key ]['vars'] ) ? (array) $presets[ $preset_key ]['vars'] : $presets['editorial']['vars'];
+	$density_vars = isset( $densities[ $density_key ]['vars'] ) ? (array) $densities[ $density_key ]['vars'] : array();
+
+	return array_merge( $preset_vars, $density_vars );
+}
+
+/**
+ * Outputs variant CSS variables for the active appearance preset.
+ *
+ * @return void
+ */
+function greenlight_output_appearance_variants() {
+	$opts = get_option( GREENLIGHT_APPEARANCE_OPTION_KEY, array() );
+
+	if ( ! is_array( $opts ) ) {
+		$opts = array();
+	}
+
+	$vars = greenlight_get_appearance_variant_vars( $opts );
+
+	if ( empty( $vars ) ) {
+		return;
+	}
+
+	$css = '';
+	foreach ( $vars as $var => $value ) {
+		if ( '' !== $value ) {
+			$css .= $var . ':' . $value . ';';
+		}
+	}
+
+	if ( '' !== $css ) {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<style id="greenlight-appearance-variants">:root{' . $css . '}</style>' . "\n";
+	}
+}
+add_action( 'wp_head', 'greenlight_output_appearance_variants', 998 );
+
+/**
  * Sanitizes appearance settings and syncs badge value to legacy option.
  *
  * @param mixed $input Raw input.
  * @return array<string, mixed>
  */
 function greenlight_sanitize_appearance_settings( $input ) {
-	$input    = is_array( $input ) ? $input : array();
-	$defaults = greenlight_get_appearance_defaults();
+	$input     = is_array( $input ) ? $input : array();
+	$defaults  = greenlight_get_appearance_defaults();
+	$presets   = greenlight_get_appearance_presets();
+	$densities = greenlight_get_appearance_densities();
 
 	$badge_value = isset( $input['carbon_badge_value'] )
 		? sanitize_text_field( $input['carbon_badge_value'] )
@@ -247,6 +399,12 @@ function greenlight_sanitize_appearance_settings( $input ) {
 	};
 
 	return array(
+		'theme_preset'             => isset( $input['theme_preset'] ) && isset( $presets[ sanitize_key( (string) $input['theme_preset'] ) ] )
+			? sanitize_key( (string) $input['theme_preset'] )
+			: $defaults['theme_preset'],
+		'density_scale'            => isset( $input['density_scale'] ) && isset( $densities[ sanitize_key( (string) $input['density_scale'] ) ] )
+			? sanitize_key( (string) $input['density_scale'] )
+			: $defaults['density_scale'],
 		// Global.
 		'carbon_badge_enabled'     => isset( $input['carbon_badge_enabled'] ) ? 1 : 0,
 		'carbon_badge_value'       => $badge_value,
@@ -458,158 +616,166 @@ function greenlight_get_admin_shell_context( $current_tab ) {
 		'tools'       => __( 'Outils', 'greenlight' ),
 	);
 
-		$seo_options        = function_exists( 'greenlight_get_seo_options' ) ? greenlight_get_seo_options() : array();
-		$image_options      = function_exists( 'greenlight_get_images_options' ) ? greenlight_get_images_options() : array();
-		$perf_options       = get_option( GREENLIGHT_PERF_OPTION_KEY, greenlight_get_performance_defaults() );
-		$appearance_options = get_option( GREENLIGHT_APPEARANCE_OPTION_KEY, greenlight_get_appearance_defaults() );
-		$svg_options        = get_option( GREENLIGHT_SVG_OPTION_KEY, array( 'enable_svg' => 0 ) );
-		$redirects          = get_option( 'greenlight_redirects', array() );
-		$log_404            = get_option( 'greenlight_404_log', array() );
-		$cache_stats        = greenlight_get_cache_stats();
-		$image_report       = function_exists( 'greenlight_get_image_storage_report' )
-			? greenlight_get_image_storage_report()
-			: array(
-				'count' => 0,
-				'saved' => 0,
-			);
+	$seo_options          = function_exists( 'greenlight_get_seo_options' ) ? greenlight_get_seo_options() : array();
+	$image_options        = function_exists( 'greenlight_get_images_options' ) ? greenlight_get_images_options() : array();
+	$perf_options         = get_option( GREENLIGHT_PERF_OPTION_KEY, greenlight_get_performance_defaults() );
+	$appearance_options   = get_option( GREENLIGHT_APPEARANCE_OPTION_KEY, greenlight_get_appearance_defaults() );
+	$appearance_presets   = greenlight_get_appearance_presets();
+	$appearance_densities = greenlight_get_appearance_densities();
+	$svg_options          = get_option( GREENLIGHT_SVG_OPTION_KEY, array( 'enable_svg' => 0 ) );
+	$redirects            = get_option( 'greenlight_redirects', array() );
+	$log_404              = get_option( 'greenlight_404_log', array() );
+	$cache_stats          = greenlight_get_cache_stats();
+	$image_report         = function_exists( 'greenlight_get_image_storage_report' )
+		? greenlight_get_image_storage_report()
+		: array(
+			'count' => 0,
+			'saved' => 0,
+		);
 
 		$metrics = array();
 		$note    = __( 'Chaque onglet couvre un usage précis.', 'greenlight' );
 
-		switch ( $current_tab ) {
-			case 'seo':
-				$metrics = array(
-					array(
-						'label' => __( 'Sitemap', 'greenlight' ),
-						'value' => ! empty( $seo_options['enable_sitemap'] ) ? __( 'Actif', 'greenlight' ) : __( 'Inactif', 'greenlight' ),
-					),
-					array(
-						'label' => __( 'Redirections', 'greenlight' ),
-						'value' => number_format_i18n( is_array( $redirects ) ? count( $redirects ) : 0 ),
-					),
-					array(
-						'label' => __( '404 récents', 'greenlight' ),
-						'value' => number_format_i18n( is_array( $log_404 ) ? count( $log_404 ) : 0 ),
-					),
-					array(
-						'label' => __( 'Fil d’Ariane', 'greenlight' ),
-						'value' => ! empty( $seo_options['show_breadcrumbs'] ) ? __( 'Actifs', 'greenlight' ) : __( 'Désactivés', 'greenlight' ),
-					),
-				);
-				$note    = __( 'Indexation, crawl et redirections.', 'greenlight' );
-				break;
-			case 'images':
-				$metrics = array(
-					array(
-						'label' => __( 'WebP', 'greenlight' ),
-						'value' => ! empty( $image_options['enable_webp_conversion'] ) ? __( 'Actif', 'greenlight' ) : __( 'Désactivé', 'greenlight' ),
-					),
-					array(
-						'label' => __( 'AVIF', 'greenlight' ),
-						'value' => ! empty( $image_options['enable_avif'] ) ? __( 'Actif', 'greenlight' ) : __( 'Désactivé', 'greenlight' ),
-					),
-					array(
-						'label' => __( 'Images optimisées', 'greenlight' ),
-						'value' => number_format_i18n( isset( $image_report['count'] ) ? (int) $image_report['count'] : 0 ),
-					),
-					array(
-						'label' => __( 'Économie', 'greenlight' ),
-						'value' => function_exists( 'greenlight_format_image_bytes' ) ? greenlight_format_image_bytes( isset( $image_report['saved'] ) ? (int) $image_report['saved'] : 0 ) : '0 B',
-					),
-				);
-				$note    = __( 'Formats utiles, tailles justes, poids réduit.', 'greenlight' );
-				break;
-			case 'performance':
-				$metrics = array(
-					array(
-						'label' => __( 'Pages en cache', 'greenlight' ),
-						'value' => number_format_i18n( (int) $cache_stats['count'] ),
-					),
-					array(
-						'label' => __( 'Taille du cache', 'greenlight' ),
-						'value' => size_format( (int) $cache_stats['size'], 2 ),
-					),
-					array(
-						'label' => __( 'Diffusion CSS', 'greenlight' ),
-						'value' => ! empty( $perf_options['enable_css_min'] ) ? __( 'Minifiee', 'greenlight' ) : __( 'Source', 'greenlight' ),
-					),
-					array(
-						'label' => __( 'Rythme frontal', 'greenlight' ),
-						'value' => isset( $perf_options['heartbeat_front'] ) && 'reduce' === $perf_options['heartbeat_front']
-							? __( 'Reduit', 'greenlight' )
-							: (
-								isset( $perf_options['heartbeat_front'] ) && 'disable' === $perf_options['heartbeat_front']
-									? __( 'Coupe', 'greenlight' )
-									: __( 'Par defaut', 'greenlight' )
-							),
-					),
-				);
-				$note    = __( 'Cache, diffusion et maintenance.', 'greenlight' );
-				break;
-			case 'appearance':
-				$metrics = array(
-					array(
-						'label' => __( 'Badge carbone', 'greenlight' ),
-						'value' => ! empty( $appearance_options['carbon_badge_enabled'] ) ? __( 'Actif', 'greenlight' ) : __( 'Désactivé', 'greenlight' ),
-					),
-					array(
-						'label' => __( 'Style du hero', 'greenlight' ),
-						'value' => isset( $appearance_options['hero_style'] ) ? ucfirst( (string) $appearance_options['hero_style'] ) : __( 'Asymétrique', 'greenlight' ),
-					),
-					array(
-						'label' => __( 'Newsletter', 'greenlight' ),
-						'value' => ! empty( $appearance_options['newsletter_enabled'] ) ? __( 'Visible', 'greenlight' ) : __( 'Masquée', 'greenlight' ),
-					),
-					array(
-						'label' => __( 'Navigation footer', 'greenlight' ),
-						'value' => ! empty( $appearance_options['show_footer_nav'] ) ? __( 'Visible', 'greenlight' ) : __( 'Masquée', 'greenlight' ),
-					),
-				);
-				$note    = __( 'Surfaces, accents et aperçu du site.', 'greenlight' );
-				break;
-			case 'svg':
-				$metrics = array(
-					array(
-						'label' => __( 'SVG', 'greenlight' ),
-						'value' => ! empty( $svg_options['enable_svg'] ) ? __( 'Actif', 'greenlight' ) : __( 'Désactivé', 'greenlight' ),
-					),
-					array(
-						'label' => __( 'Sanitisation', 'greenlight' ),
-						'value' => __( 'DOMDocument', 'greenlight' ),
-					),
-					array(
-						'label' => __( 'Filtre d’upload', 'greenlight' ),
-						'value' => __( 'Actif', 'greenlight' ),
-					),
-					array(
-						'label' => __( 'Périmètre', 'greenlight' ),
-						'value' => __( 'Médias', 'greenlight' ),
-					),
-				);
-				$note    = __( 'Autoriser, nettoyer, limiter le risque.', 'greenlight' );
-				break;
-			case 'tools':
-				$metrics = array(
-					array(
-						'label' => __( 'Export', 'greenlight' ),
-						'value' => __( 'JSON', 'greenlight' ),
-					),
-					array(
-						'label' => __( 'Import', 'greenlight' ),
-						'value' => __( 'JSON', 'greenlight' ),
-					),
-					array(
-						'label' => __( 'Purge cache', 'greenlight' ),
-						'value' => __( 'Manuel', 'greenlight' ),
-					),
-					array(
-						'label' => __( 'Statut', 'greenlight' ),
-						'value' => __( 'Prêt', 'greenlight' ),
-					),
-				);
-				$note    = __( 'Import et export des réglages.', 'greenlight' );
-				break;
-		}
+	switch ( $current_tab ) {
+		case 'seo':
+			$metrics = array(
+				array(
+					'label' => __( 'Sitemap', 'greenlight' ),
+					'value' => ! empty( $seo_options['enable_sitemap'] ) ? __( 'Actif', 'greenlight' ) : __( 'Inactif', 'greenlight' ),
+				),
+				array(
+					'label' => __( 'Redirections', 'greenlight' ),
+					'value' => number_format_i18n( is_array( $redirects ) ? count( $redirects ) : 0 ),
+				),
+				array(
+					'label' => __( '404 récents', 'greenlight' ),
+					'value' => number_format_i18n( is_array( $log_404 ) ? count( $log_404 ) : 0 ),
+				),
+				array(
+					'label' => __( 'Fil d’Ariane', 'greenlight' ),
+					'value' => ! empty( $seo_options['show_breadcrumbs'] ) ? __( 'Actifs', 'greenlight' ) : __( 'Désactivés', 'greenlight' ),
+				),
+			);
+			$note    = __( 'Indexation, crawl et redirections.', 'greenlight' );
+			break;
+		case 'images':
+			$metrics = array(
+				array(
+					'label' => __( 'WebP', 'greenlight' ),
+					'value' => ! empty( $image_options['enable_webp_conversion'] ) ? __( 'Actif', 'greenlight' ) : __( 'Désactivé', 'greenlight' ),
+				),
+				array(
+					'label' => __( 'AVIF', 'greenlight' ),
+					'value' => ! empty( $image_options['enable_avif'] ) ? __( 'Actif', 'greenlight' ) : __( 'Désactivé', 'greenlight' ),
+				),
+				array(
+					'label' => __( 'Images optimisées', 'greenlight' ),
+					'value' => number_format_i18n( isset( $image_report['count'] ) ? (int) $image_report['count'] : 0 ),
+				),
+				array(
+					'label' => __( 'Économie', 'greenlight' ),
+					'value' => function_exists( 'greenlight_format_image_bytes' ) ? greenlight_format_image_bytes( isset( $image_report['saved'] ) ? (int) $image_report['saved'] : 0 ) : '0 B',
+				),
+			);
+			$note    = __( 'Formats utiles, tailles justes, poids réduit.', 'greenlight' );
+			break;
+		case 'performance':
+			$metrics = array(
+				array(
+					'label' => __( 'Pages en cache', 'greenlight' ),
+					'value' => number_format_i18n( (int) $cache_stats['count'] ),
+				),
+				array(
+					'label' => __( 'Taille du cache', 'greenlight' ),
+					'value' => size_format( (int) $cache_stats['size'], 2 ),
+				),
+				array(
+					'label' => __( 'Diffusion CSS', 'greenlight' ),
+					'value' => ! empty( $perf_options['enable_css_min'] ) ? __( 'Minifiee', 'greenlight' ) : __( 'Source', 'greenlight' ),
+				),
+				array(
+					'label' => __( 'Rythme frontal', 'greenlight' ),
+					'value' => isset( $perf_options['heartbeat_front'] ) && 'reduce' === $perf_options['heartbeat_front']
+						? __( 'Reduit', 'greenlight' )
+						: (
+							isset( $perf_options['heartbeat_front'] ) && 'disable' === $perf_options['heartbeat_front']
+								? __( 'Coupe', 'greenlight' )
+								: __( 'Par defaut', 'greenlight' )
+						),
+				),
+			);
+			$note    = __( 'Cache, diffusion et maintenance.', 'greenlight' );
+			break;
+		case 'appearance':
+			$preset_key  = isset( $appearance_options['theme_preset'] ) && isset( $appearance_presets[ sanitize_key( (string) $appearance_options['theme_preset'] ) ] )
+				? sanitize_key( (string) $appearance_options['theme_preset'] )
+				: 'editorial';
+			$density_key = isset( $appearance_options['density_scale'] ) && isset( $appearance_densities[ sanitize_key( (string) $appearance_options['density_scale'] ) ] )
+				? sanitize_key( (string) $appearance_options['density_scale'] )
+				: 'balanced';
+			$metrics     = array(
+				array(
+					'label' => __( 'Preset', 'greenlight' ),
+					'value' => isset( $appearance_presets[ $preset_key ]['label'] ) ? $appearance_presets[ $preset_key ]['label'] : $appearance_presets['editorial']['label'],
+				),
+				array(
+					'label' => __( 'Densité', 'greenlight' ),
+					'value' => isset( $appearance_densities[ $density_key ]['label'] ) ? $appearance_densities[ $density_key ]['label'] : $appearance_densities['balanced']['label'],
+				),
+				array(
+					'label' => __( 'Hero', 'greenlight' ),
+					'value' => isset( $appearance_options['hero_style'] ) && 'centered' === $appearance_options['hero_style'] ? __( 'Centré', 'greenlight' ) : __( 'Asymétrique', 'greenlight' ),
+				),
+				array(
+					'label' => __( 'Archives', 'greenlight' ),
+					'value' => isset( $appearance_options['archive_layout'] ) && 'list' === $appearance_options['archive_layout'] ? __( 'Liste', 'greenlight' ) : __( 'Grille', 'greenlight' ),
+				),
+			);
+			$note        = __( 'Preset éditorial, densité et rendu.', 'greenlight' );
+			break;
+		case 'svg':
+			$metrics = array(
+				array(
+					'label' => __( 'SVG', 'greenlight' ),
+					'value' => ! empty( $svg_options['enable_svg'] ) ? __( 'Actif', 'greenlight' ) : __( 'Désactivé', 'greenlight' ),
+				),
+				array(
+					'label' => __( 'Sanitisation', 'greenlight' ),
+					'value' => __( 'DOMDocument', 'greenlight' ),
+				),
+				array(
+					'label' => __( 'Filtre d’upload', 'greenlight' ),
+					'value' => __( 'Actif', 'greenlight' ),
+				),
+				array(
+					'label' => __( 'Périmètre', 'greenlight' ),
+					'value' => __( 'Médias', 'greenlight' ),
+				),
+			);
+			$note    = __( 'Autoriser, nettoyer, limiter le risque.', 'greenlight' );
+			break;
+		case 'tools':
+			$metrics = array(
+				array(
+					'label' => __( 'Export', 'greenlight' ),
+					'value' => __( 'JSON', 'greenlight' ),
+				),
+				array(
+					'label' => __( 'Import', 'greenlight' ),
+					'value' => __( 'JSON', 'greenlight' ),
+				),
+				array(
+					'label' => __( 'Purge cache', 'greenlight' ),
+					'value' => __( 'Manuel', 'greenlight' ),
+				),
+				array(
+					'label' => __( 'Statut', 'greenlight' ),
+					'value' => __( 'Prêt', 'greenlight' ),
+				),
+			);
+			$note    = __( 'Import et export des réglages.', 'greenlight' );
+			break;
+	}
 
 		return array(
 			'tab_label' => isset( $tabs[ $current_tab ] ) ? $tabs[ $current_tab ] : $tabs['seo'],
@@ -1831,8 +1997,12 @@ function greenlight_render_admin_tab_appearance() {
 	$o                                        = get_option( GREENLIGHT_APPEARANCE_OPTION_KEY, array() );
 	$def                                      = greenlight_get_appearance_defaults();
 	$o                                        = array_merge( $def, $o );
+	$appearance_presets                       = greenlight_get_appearance_presets();
+	$appearance_densities                     = greenlight_get_appearance_densities();
 	$key                                      = GREENLIGHT_APPEARANCE_OPTION_KEY;
 	$appearance_fields                        = array(
+		'theme_preset',
+		'density_scale',
 		'carbon_badge_enabled',
 		'carbon_badge_value',
 		'newsletter_enabled',
@@ -1873,15 +2043,20 @@ function greenlight_render_admin_tab_appearance() {
 		<div>
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Apparence', 'greenlight' ); ?></p>
 			<h2><?php esc_html_e( 'Apparence du site', 'greenlight' ); ?></h2>
-			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Réglez les surfaces, les accents et l’aperçu du site.', 'greenlight' ); ?></p>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Réglez le preset, la densité et les surfaces du site.', 'greenlight' ); ?></p>
 		</div>
 	</div>
 
 	<div class="greenlight-admin-tab-panel__summary">
 		<div class="greenlight-admin-summary-card">
-			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Badge carbone', 'greenlight' ); ?></p>
-			<strong><?php echo esc_html( ! empty( $o['carbon_badge_enabled'] ) ? __( 'Actif', 'greenlight' ) : __( 'Inactif', 'greenlight' ) ); ?></strong>
-			<span><?php esc_html_e( 'Badge éco.', 'greenlight' ); ?></span>
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Preset', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( isset( $appearance_presets[ $o['theme_preset'] ]['label'] ) ? $appearance_presets[ $o['theme_preset'] ]['label'] : $appearance_presets['editorial']['label'] ); ?></strong>
+			<span><?php esc_html_e( 'Largeur et rythme.', 'greenlight' ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Densité', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( isset( $appearance_densities[ $o['density_scale'] ]['label'] ) ? $appearance_densities[ $o['density_scale'] ]['label'] : $appearance_densities['balanced']['label'] ); ?></strong>
+			<span><?php esc_html_e( 'Respiration du site.', 'greenlight' ); ?></span>
 		</div>
 		<div class="greenlight-admin-summary-card">
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Hero', 'greenlight' ); ?></p>
@@ -1893,11 +2068,6 @@ function greenlight_render_admin_tab_appearance() {
 			<strong><?php echo esc_html( isset( $o['archive_layout'] ) && 'list' === $o['archive_layout'] ? __( 'Liste', 'greenlight' ) : __( 'Grille', 'greenlight' ) ); ?></strong>
 			<span><?php esc_html_e( 'Lecture des contenus.', 'greenlight' ); ?></span>
 		</div>
-		<div class="greenlight-admin-summary-card">
-			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Footer', 'greenlight' ); ?></p>
-			<strong><?php echo esc_html( ! empty( $o['show_footer_nav'] ) ? __( 'Visible', 'greenlight' ) : __( 'Allégé', 'greenlight' ) ); ?></strong>
-			<span><?php esc_html_e( 'Navigation de clôture.', 'greenlight' ); ?></span>
-		</div>
 	</div>
 
 	<div class="greenlight-admin-tab-panel__shell greenlight-admin-tab-panel__shell--appearance">
@@ -1906,14 +2076,36 @@ function greenlight_render_admin_tab_appearance() {
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Fondations', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Palette et marque', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Couleurs, repères.', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Preset et marque', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Preset, densité et couleurs.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="options.php">
 					<?php settings_fields( 'greenlight_appearance' ); ?>
-					<?php $greenlight_emit_appearance_hidden_fields( array( 'carbon_badge_enabled', 'carbon_badge_value', 'newsletter_enabled', 'color_primary', 'color_background', 'color_surface', 'color_text', 'color_tertiary', 'color_border', 'color_on_surface_variant' ) ); ?>
+					<?php $greenlight_emit_appearance_hidden_fields( array( 'theme_preset', 'density_scale', 'carbon_badge_enabled', 'carbon_badge_value', 'newsletter_enabled', 'color_primary', 'color_background', 'color_surface', 'color_text', 'color_tertiary', 'color_border', 'color_on_surface_variant' ) ); ?>
 					<table class="form-table" role="presentation">
+						<tr>
+							<th scope="row"><label for="gl-theme-preset"><?php esc_html_e( 'Preset éditorial', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-theme-preset" name="<?php echo esc_attr( $key ); ?>[theme_preset]">
+									<?php foreach ( $appearance_presets as $preset_key => $preset ) : ?>
+										<option value="<?php echo esc_attr( $preset_key ); ?>" <?php selected( isset( $o['theme_preset'] ) ? $o['theme_preset'] : 'editorial', $preset_key ); ?>><?php echo esc_html( $preset['label'] ); ?></option>
+									<?php endforeach; ?>
+								</select>
+								<p class="description"><?php esc_html_e( 'Largeur, rayons et rythme.', 'greenlight' ); ?></p>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="gl-density-scale"><?php esc_html_e( 'Densité', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-density-scale" name="<?php echo esc_attr( $key ); ?>[density_scale]">
+									<?php foreach ( $appearance_densities as $density_key => $density ) : ?>
+										<option value="<?php echo esc_attr( $density_key ); ?>" <?php selected( isset( $o['density_scale'] ) ? $o['density_scale'] : 'balanced', $density_key ); ?>><?php echo esc_html( $density['label'] ); ?></option>
+									<?php endforeach; ?>
+								</select>
+								<p class="description"><?php esc_html_e( 'Ajuste l’espace entre les blocs.', 'greenlight' ); ?></p>
+							</td>
+						</tr>
 						<tr>
 							<th scope="row"><?php esc_html_e( 'Carbon Badge', 'greenlight' ); ?></th>
 							<td>
