@@ -1085,8 +1085,31 @@ function greenlight_render_admin_tab_images() {
 	<div class="greenlight-admin-tab-panel__intro">
 		<div>
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Images', 'greenlight' ); ?></p>
-			<h2><?php esc_html_e( 'Formats, compression et lotissements', 'greenlight' ); ?></h2>
-			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Allegez les medias servis, pilotez les formats utiles et surveillez l’impact disque sans pipeline externe.', 'greenlight' ); ?></p>
+			<h2><?php esc_html_e( 'Formats et compression', 'greenlight' ); ?></h2>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Réduisez le poids des médias servis, gardez des formats modernes et pilotez l’optimisation sans outil externe.', 'greenlight' ); ?></p>
+		</div>
+	</div>
+
+	<div class="greenlight-admin-tab-panel__summary">
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'WebP', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( ! empty( $options['enable_webp_conversion'] ) ? __( 'Actif', 'greenlight' ) : __( 'Inactif', 'greenlight' ) ); ?></strong>
+			<span><?php esc_html_e( 'Conversion à l’upload.', 'greenlight' ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'AVIF', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( ! empty( $options['enable_avif'] ) ? __( 'Actif', 'greenlight' ) : __( 'Inactif', 'greenlight' ) ); ?></strong>
+			<span><?php esc_html_e( 'Compression avancée.', 'greenlight' ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Économie', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( greenlight_format_image_bytes( (int) $report['saved'] ) ); ?></strong>
+			<span><?php esc_html_e( 'Espace déjà épargné.', 'greenlight' ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Lot', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( number_format_i18n( (int) $report['count'] ) ); ?></strong>
+			<span><?php esc_html_e( 'Médias WebP détectés.', 'greenlight' ); ?></span>
 		</div>
 	</div>
 
@@ -1097,7 +1120,7 @@ function greenlight_render_admin_tab_images() {
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Conversion', 'greenlight' ); ?></p>
 						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'WebP et tailles cibles', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Conservez une chaîne d’optimisation simple à maintenir, sans casser les uploads.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Gardez une chaîne simple à maintenir et sûre pour les uploads.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="options.php">
@@ -1115,7 +1138,7 @@ function greenlight_render_admin_tab_images() {
 							<td>
 								<label for="gl-enable-webp">
 									<input id="gl-enable-webp" name="<?php echo esc_attr( GREENLIGHT_IMAGES_OPTION_KEY ); ?>[enable_webp_conversion]" type="checkbox" value="1" <?php checked( (int) $options['enable_webp_conversion'], 1 ); ?>>
-									<?php esc_html_e( 'Générer un fichier WebP à l\'upload.', 'greenlight' ); ?>
+									<?php esc_html_e( 'Générer un WebP à l\'upload', 'greenlight' ); ?>
 								</label>
 							</td>
 						</tr>
@@ -1133,12 +1156,12 @@ function greenlight_render_admin_tab_images() {
 							<td>
 								<label for="gl-remove-sizes">
 									<input id="gl-remove-sizes" name="<?php echo esc_attr( GREENLIGHT_IMAGES_OPTION_KEY ); ?>[remove_core_sizes]" type="checkbox" value="1" <?php checked( (int) $options['remove_core_sizes'], 1 ); ?>>
-									<?php esc_html_e( 'Supprimer medium_large, 1536×1536 et 2048×2048.', 'greenlight' ); ?>
+									<?php esc_html_e( 'Retirer medium_large, 1536×1536 et 2048×2048', 'greenlight' ); ?>
 								</label>
 							</td>
 						</tr>
 					</table>
-					<?php submit_button(); ?>
+					<?php submit_button( __( 'Enregistrer les réglages médias', 'greenlight' ) ); ?>
 				</form>
 			</section>
 
@@ -1147,7 +1170,7 @@ function greenlight_render_admin_tab_images() {
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Traitement en masse', 'greenlight' ); ?></p>
 						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Optimisation des médias', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Lancez l’optimisation des fichiers existants par petits lots pour garder l’interface fluide.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Lancez l’optimisation des fichiers existants par petits lots pour garder le contrôle.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<?php
@@ -1179,13 +1202,13 @@ function greenlight_render_admin_tab_images() {
 				</p>
 
 				<div id="greenlight-bulk-optimize" class="greenlight-admin-tab-panel__actions">
-					<label for="gl-batch-size"><?php esc_html_e( 'Taille du lot :', 'greenlight' ); ?></label>
+					<label for="gl-batch-size"><?php esc_html_e( 'Lot :', 'greenlight' ); ?></label>
 					<select id="gl-batch-size">
 						<option value="5">5</option>
 						<option value="10" selected>10</option>
 						<option value="20">20</option>
 					</select>
-					<button type="button" id="gl-bulk-start" class="button button-primary"><?php esc_html_e( 'Démarrer l\'optimisation', 'greenlight' ); ?></button>
+					<button type="button" id="gl-bulk-start" class="button button-primary"><?php esc_html_e( 'Lancer le lot', 'greenlight' ); ?></button>
 				</div>
 				<div id="gl-bulk-progress" style="display:none;margin-top:1em">
 					<div style="background:#dcdcde;border-radius:4px;height:24px;max-width:400px">
@@ -1218,7 +1241,7 @@ function greenlight_render_admin_tab_images() {
 					<?php
 					printf(
 						/* translators: 1: original size 2: webp size */
-						esc_html__( 'Stockage original : %1$s. Stockage WebP : %2$s.', 'greenlight' ),
+						esc_html__( 'Original : %1$s. WebP : %2$s.', 'greenlight' ),
 						esc_html( greenlight_format_image_bytes( (int) $report['original'] ) ),
 						esc_html( greenlight_format_image_bytes( (int) $report['webp'] ) )
 					);
@@ -1231,7 +1254,7 @@ function greenlight_render_admin_tab_images() {
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'AVIF', 'greenlight' ); ?></p>
 						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Compression avancée', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Ajoutez AVIF quand le serveur le permet, sans alourdir l’interface principale.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Ajoutez AVIF seulement si le serveur le permet.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<?php
@@ -1261,7 +1284,7 @@ function greenlight_render_admin_tab_images() {
 							<td>
 								<label for="gl-enable-avif">
 									<input id="gl-enable-avif" name="<?php echo esc_attr( GREENLIGHT_IMAGES_OPTION_KEY ); ?>[enable_avif]" type="checkbox" value="1" <?php checked( ! empty( $options['enable_avif'] ), true ); ?>>
-									<?php esc_html_e( 'Générer un fichier AVIF en plus du WebP à l\'upload.', 'greenlight' ); ?>
+									<?php esc_html_e( 'Générer un AVIF en plus du WebP', 'greenlight' ); ?>
 								</label>
 							</td>
 						</tr>
