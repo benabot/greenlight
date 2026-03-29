@@ -1057,6 +1057,11 @@ body > main {
 	gap: var(--wp--preset--spacing--xs);
 }
 
+.greenlight-preview-footer-sample {
+	border-radius: var(--greenlight-card-radius, 1em);
+	overflow: hidden;
+}
+
 /* === Comments area === */
 
 .comments-area {

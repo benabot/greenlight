@@ -2551,7 +2551,7 @@ function greenlight_render_admin_tab_appearance() {
 				</div>
 				<form method="post" action="options.php">
 					<?php settings_fields( 'greenlight_appearance' ); ?>
-					<?php $greenlight_emit_appearance_hidden_fields( array( 'theme_preset', 'density_scale', 'carbon_badge_enabled', 'carbon_badge_value', 'carbon_badge_position', 'newsletter_enabled', 'color_primary', 'color_background', 'color_surface', 'color_text', 'color_tertiary', 'color_border', 'color_on_surface_variant', 'color_header_bg', 'color_header_text', 'color_header_accent', 'header_layout', 'header_sticky', 'nav_link_case', 'submenu_style' ) ); ?>
+					<?php $greenlight_emit_appearance_hidden_fields( array( 'theme_preset', 'density_scale', 'carbon_badge_enabled', 'carbon_badge_value', 'carbon_badge_position', 'newsletter_enabled', 'color_primary', 'color_background', 'color_surface', 'color_text', 'color_tertiary', 'color_border', 'color_on_surface_variant' ) ); ?>
 					<table class="form-table" role="presentation">
 						<tr>
 							<th scope="row">
@@ -2644,23 +2644,82 @@ function greenlight_render_admin_tab_appearance() {
 			<section class="greenlight-admin-tab-panel__card">
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
-						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Structure', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'En-tête, hero et base visuelle', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Tagline, fond, texte et hero.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Navigation', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Header et menu', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Header, tagline et sous-menus.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="options.php">
 					<?php settings_fields( 'greenlight_appearance' ); ?>
-					<?php $greenlight_emit_appearance_hidden_fields( array( 'color_header_bg', 'show_tagline', 'hero_enabled', 'hero_style', 'hero_background_mode', 'hero_background_image', 'hero_background_color', 'hero_gradient_preset', 'hero_heading_mode', 'hero_heading_text', 'hero_subheading_mode', 'hero_subheading_text', 'hero_height_mode', 'hero_overlay_strength', 'show_hero_badge', 'hero_text' ) ); ?>
+					<?php $greenlight_emit_appearance_hidden_fields( array( 'color_header_bg', 'color_header_text', 'color_header_accent', 'header_layout', 'header_sticky', 'nav_link_case', 'submenu_style', 'show_tagline' ) ); ?>
 					<table class="form-table" role="presentation">
+						<tr>
+							<th><label for="gl-header-layout"><?php esc_html_e( 'Layout header', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-header-layout" name="<?php echo esc_attr( $key ); ?>[header_layout]">
+									<option value="inline" <?php selected( $o['header_layout'], 'inline' ); ?>><?php esc_html_e( 'Ligne simple', 'greenlight' ); ?></option>
+									<option value="split" <?php selected( $o['header_layout'], 'split' ); ?>><?php esc_html_e( 'Séparé', 'greenlight' ); ?></option>
+									<option value="stacked" <?php selected( $o['header_layout'], 'stacked' ); ?>><?php esc_html_e( 'Empilé', 'greenlight' ); ?></option>
+								</select>
+								<p class="description"><?php esc_html_e( 'Branding, menu et CTA.', 'greenlight' ); ?></p>
+							</td>
+						</tr>
+						<tr>
+							<th><?php esc_html_e( 'Sticky', 'greenlight' ); ?></th>
+							<td><label><input name="<?php echo esc_attr( $key ); ?>[header_sticky]" type="checkbox" value="1" <?php checked( (int) $o['header_sticky'], 1 ); ?>> <?php esc_html_e( 'Header collant', 'greenlight' ); ?></label></td>
+						</tr>
+						<tr>
+							<th><?php esc_html_e( 'Tagline', 'greenlight' ); ?></th>
+							<td><label><input name="<?php echo esc_attr( $key ); ?>[show_tagline]" type="checkbox" value="1" <?php checked( (int) $o['show_tagline'], 1 ); ?>> <?php esc_html_e( 'Afficher la description du site', 'greenlight' ); ?></label></td>
+						</tr>
 						<tr>
 							<th><?php esc_html_e( 'Fond header', 'greenlight' ); ?></th>
 							<td><input type="text" name="<?php echo esc_attr( $key ); ?>[color_header_bg]" class="greenlight-color-picker" value="<?php echo esc_attr( $o['color_header_bg'] ); ?>" data-default-color="#faf9f4"></td>
 						</tr>
 						<tr>
-							<th><?php esc_html_e( 'Tagline', 'greenlight' ); ?></th>
-							<td><label><input name="<?php echo esc_attr( $key ); ?>[show_tagline]" type="checkbox" value="1" <?php checked( (int) $o['show_tagline'], 1 ); ?>> <?php esc_html_e( 'Afficher la description sous le nom du site', 'greenlight' ); ?></label></td>
+							<th><label for="gl-header-text"><?php esc_html_e( 'Texte header', 'greenlight' ); ?></label></th>
+							<td><input type="text" id="gl-header-text" name="<?php echo esc_attr( $key ); ?>[color_header_text]" class="greenlight-color-picker" value="<?php echo esc_attr( $o['color_header_text'] ); ?>" data-default-color="#2f342d"></td>
 						</tr>
+						<tr>
+							<th><label for="gl-header-accent"><?php esc_html_e( 'Accent header', 'greenlight' ); ?></label></th>
+							<td><input type="text" id="gl-header-accent" name="<?php echo esc_attr( $key ); ?>[color_header_accent]" class="greenlight-color-picker" value="<?php echo esc_attr( $o['color_header_accent'] ); ?>" data-default-color="#4c6547"></td>
+						</tr>
+						<tr>
+							<th><label for="gl-nav-case"><?php esc_html_e( 'Casse menu', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-nav-case" name="<?php echo esc_attr( $key ); ?>[nav_link_case]">
+									<option value="normal" <?php selected( $o['nav_link_case'], 'normal' ); ?>><?php esc_html_e( 'Normale', 'greenlight' ); ?></option>
+									<option value="uppercase" <?php selected( $o['nav_link_case'], 'uppercase' ); ?>><?php esc_html_e( 'Majuscules', 'greenlight' ); ?></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th><label for="gl-submenu-style"><?php esc_html_e( 'Sous-menus', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-submenu-style" name="<?php echo esc_attr( $key ); ?>[submenu_style]">
+									<option value="plain" <?php selected( $o['submenu_style'], 'plain' ); ?>><?php esc_html_e( 'Discrets', 'greenlight' ); ?></option>
+									<option value="surface" <?php selected( $o['submenu_style'], 'surface' ); ?>><?php esc_html_e( 'En surface', 'greenlight' ); ?></option>
+								</select>
+								<p class="description"><?php esc_html_e( 'Dropdowns CSS-only.', 'greenlight' ); ?></p>
+							</td>
+						</tr>
+					</table>
+					<?php submit_button(); ?>
+				</form>
+			</section>
+
+			<section class="greenlight-admin-tab-panel__card">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Structure', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Hero et introduction', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Type d’entrée, fond et texte.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<form method="post" action="options.php">
+					<?php settings_fields( 'greenlight_appearance' ); ?>
+					<?php $greenlight_emit_appearance_hidden_fields( array( 'hero_enabled', 'hero_style', 'hero_background_mode', 'hero_background_image', 'hero_background_color', 'hero_gradient_preset', 'hero_heading_mode', 'hero_heading_text', 'hero_subheading_mode', 'hero_subheading_text', 'hero_height_mode', 'hero_overlay_strength', 'show_hero_badge', 'hero_text' ) ); ?>
+					<table class="form-table" role="presentation">
 						<tr>
 							<th><?php esc_html_e( 'Hero', 'greenlight' ); ?></th>
 							<td>

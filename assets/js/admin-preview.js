@@ -409,6 +409,21 @@
     syncCarbonBadge( doc, footerCopy, '.footer-copy__badge', showFooterBadge, badgeValue, false );
   }
 
+  function applyFooterPreview( doc ) {
+    var footerText = doc.querySelector( '.greenlight-preview-footer-text' );
+    var customCopy = getFieldValue( 'custom_copyright' ).trim();
+
+    if ( ! footerText ) {
+      return;
+    }
+
+    if ( ! footerText.dataset.defaultCopy ) {
+      footerText.dataset.defaultCopy = footerText.textContent.trim();
+    }
+
+    footerText.textContent = customCopy || footerText.dataset.defaultCopy;
+  }
+
   function applyPreview() {
     var doc = getPreviewDocument();
 
@@ -423,6 +438,7 @@
     applyArchivePreview( doc );
     applySinglePreview( doc );
     applyFooterBadge( doc );
+    applyFooterPreview( doc );
   }
 
   function snapshotFields() {
@@ -473,7 +489,8 @@
       'show_tags',
       'show_newsletter_single',
       'show_footer_nav',
-      'show_low_emission'
+      'show_low_emission',
+      'custom_copyright'
     ].map( function ( key ) {
       return key + ':' + getFieldValue( key );
     } ).join( '|' );

@@ -241,6 +241,29 @@ if ( have_posts() ) :
 						<button type="button"><?php esc_html_e( 'S’abonner', 'greenlight' ); ?></button>
 					</form>
 				</section>
+				<section class="greenlight-preview-section" aria-labelledby="greenlight-preview-footer-title">
+					<p class="eyebrow"><?php esc_html_e( 'Aperçu footer', 'greenlight' ); ?></p>
+					<h2 id="greenlight-preview-footer-title"><?php esc_html_e( 'Footer et mentions', 'greenlight' ); ?></h2>
+					<p class="archive-note"><?php esc_html_e( 'Cette zone reflète la mise en page du footer, le badge et la navigation basse.', 'greenlight' ); ?></p>
+				</section>
+				<div class="site-footer greenlight-preview-footer-sample" aria-label="<?php esc_attr_e( 'Échantillon de footer', 'greenlight' ); ?>">
+					<p class="footer-copy">
+						<span class="greenlight-preview-footer-text">
+							&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?>
+							<strong><?php echo esc_html( strtoupper( get_bloginfo( 'name' ) ) ); ?></strong>.
+							<?php esc_html_e( 'DESIGNED FOR PERMANENCE.', 'greenlight' ); ?>
+						</span>
+						<span class="footer-copy__badge"><?php echo greenlight_carbon_badge( 'footer' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+					</p>
+					<nav class="footer-nav" aria-label="<?php esc_attr_e( 'Navigation secondaire', 'greenlight' ); ?>">
+						<ul>
+							<li><a href="#preview-footer-1"><?php esc_html_e( 'Archives', 'greenlight' ); ?></a></li>
+							<li><a href="#preview-footer-2"><?php esc_html_e( 'À propos', 'greenlight' ); ?></a></li>
+							<li><a href="#preview-footer-3"><?php esc_html_e( 'Contact', 'greenlight' ); ?></a></li>
+						</ul>
+					</nav>
+					<p class="footer-emission"><?php esc_html_e( '☘ LOW EMISSION MODE', 'greenlight' ); ?></p>
+				</div>
 			</div>
 			<?php
 		endif;
