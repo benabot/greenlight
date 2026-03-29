@@ -219,7 +219,7 @@ git add -A && git commit -m "Phase 6C/B: Interface admin unifiée Greenlight —
 git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cache, SVG, nettoyage head"
 ```
 
-## Phase 6D — Services premium intégrés (remplace Yoast + WP Rocket + Imagify)
+## Phase 6D — Services premium intégrés (couvre une partie importante de Yoast Premium + WP Rocket + Imagify)
 
 > Référence complète : `PHASE_6D.md`
 > Branche : `feat/ui-improvement` (suite historique)
@@ -306,6 +306,30 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 - [ ] Aucun changement du rendu front
 - [ ] PHPCS et `php -l` sur les fichiers PHP modifiés
 - [ ] Smoke test navigateur sur `SEO`, `Performance`, `Images`, `Apparence`
+
+## Phase 9 — Valeur produit sans alourdir
+
+> Positionnement produit :
+> Greenlight remplace une partie importante de Yoast Premium et WP Rocket pour un site éditorial sobre.
+> Greenlight n’est pas un clone complet de Yoast Premium + WP Rocket.
+> La prochaine vraie valeur doit rester légère : personnalisation du thème d’abord, durcissement sécurité léger ensuite.
+
+### Phase 9A — Personnalisation avancée du thème
+
+- [ ] Ajouter des presets éditoriaux complets (`Minimal`, `Magazine`, `Studio`, `Journal`)
+- [ ] Ajouter des variantes pilotables pour `hero`, archives, cartes, single et footer
+- [ ] Ajouter des réglages de densité visuelle : espacements, rayons, contraste, hauteur de header
+- [ ] Ajouter des réglages par contexte : home, archives, single, pages
+- [ ] Aligner les patterns Gutenberg sur ces presets pour éviter le CSS manuel
+- [ ] Garder zéro impact front en JS et zéro dépendance externe
+
+### Phase 9B — Durcissement sécurité léger
+
+- [ ] Renforcer la sanitation et les validations sur les actions admin sensibles
+- [ ] Ajouter des garde-fous sur import/export et sur certaines opérations de maintenance
+- [ ] Documenter les headers de sécurité recommandés côté serveur sans déplacer la logique dans le thème
+- [ ] Renforcer l’hygiène des logs et des uploads déjà gérés par Greenlight
+- [ ] Éviter tout glissement vers un firewall, anti-bruteforce, malware scanner ou suite de sécurité lourde
 
 ## Environnement local ✓
 - [x] Diagnostic 404 généralisé : serveur nginx MAMP sans `try_files` WordPress (2026-03-28)
