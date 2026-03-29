@@ -486,20 +486,22 @@ body > main {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: flex-start;
-	gap: var(--wp--preset--spacing--md);
-	background: var(--wp--preset--color--surface);
-	padding: var(--wp--preset--spacing--lg);
+	flex-direction: var(--greenlight-archive-featured-direction, row);
+	gap: var(--greenlight-archive-card-gap, var(--wp--preset--spacing--md));
+	background: var(--greenlight-archive-card-surface, var(--wp--preset--color--surface));
+	padding: var(--greenlight-archive-card-padding, var(--wp--preset--spacing--lg));
+	border: var(--greenlight-archive-card-border, 1px solid transparent);
 	border-radius: var(--greenlight-card-radius, 1em);
-	box-shadow: 0 20px 40px rgba(47, 52, 45, 0.04);
+	box-shadow: var(--greenlight-archive-card-shadow, 0 20px 40px rgba(47, 52, 45, 0.04));
 }
 
 .entry--featured .entry-media {
-	flex: 1 1 clamp(200px, 45%, 520px);
+	flex: 1 1 var(--greenlight-archive-featured-media, clamp(200px, 45%, 520px));
 	margin: 0;
 }
 
 .entry--featured .entry-body {
-	flex: 1 1 clamp(220px, 45%, 520px);
+	flex: 1 1 var(--greenlight-archive-featured-body, clamp(220px, 45%, 520px));
 	display: flex;
 	flex-direction: column;
 	gap: var(--wp--preset--spacing--sm);
@@ -510,7 +512,7 @@ body > main {
 .post-list {
 	display: flex;
 	flex-direction: column;
-	gap: var(--wp--preset--spacing--lg);
+	gap: var(--greenlight-archive-list-gap, var(--wp--preset--spacing--lg));
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -520,7 +522,7 @@ body > main {
 .post-list--grid {
 	flex-direction: row;
 	flex-wrap: wrap;
-	gap: var(--wp--preset--spacing--md);
+	gap: var(--greenlight-archive-list-gap, var(--wp--preset--spacing--md));
 }
 
 .post-list--grid .post-item {
@@ -531,16 +533,22 @@ body > main {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: flex-start;
-	gap: var(--wp--preset--spacing--md);
+	flex-direction: var(--greenlight-archive-teaser-direction, row);
+	gap: var(--greenlight-archive-card-gap, var(--wp--preset--spacing--md));
+	background: var(--greenlight-archive-card-surface, var(--wp--preset--color--surface));
+	padding: var(--greenlight-archive-card-padding, var(--wp--preset--spacing--lg));
+	border: var(--greenlight-archive-card-border, 1px solid transparent);
+	border-radius: var(--greenlight-card-radius, 1em);
+	box-shadow: var(--greenlight-archive-card-shadow, 0 20px 40px rgba(47, 52, 45, 0.04));
 }
 
 .entry--teaser .entry-media {
-	flex: 1 1 clamp(160px, 40%, 420px);
+	flex: 1 1 var(--greenlight-archive-teaser-media, clamp(160px, 40%, 420px));
 	margin: 0;
 }
 
 .entry--teaser .entry-body {
-	flex: 1 1 clamp(220px, 50%, 520px);
+	flex: 1 1 var(--greenlight-archive-teaser-body, clamp(220px, 50%, 520px));
 	display: flex;
 	flex-direction: column;
 	gap: var(--wp--preset--spacing--sm);
@@ -548,7 +556,7 @@ body > main {
 
 /* Alternate image side on even list items */
 .post-list > li:nth-child(even) > .entry--teaser {
-	flex-direction: row-reverse;
+	flex-direction: var(--greenlight-archive-teaser-direction-even, row-reverse);
 }
 
 /* === Entry: image === */
@@ -604,13 +612,13 @@ body > main {
 
 .entry--featured .entry-title {
 	font-size: var(--wp--preset--font-size--xx-large);
-	max-width: 14ch;
+	max-width: var(--greenlight-archive-featured-title-width, 14ch);
 	letter-spacing: -0.03em;
 }
 
 .entry--teaser .entry-title {
 	font-size: var(--wp--preset--font-size--large);
-	max-width: 22ch;
+	max-width: var(--greenlight-archive-teaser-title-width, 22ch);
 }
 
 .entry-title a {
@@ -635,9 +643,14 @@ body > main {
 }
 
 .entry--featured .entry-summary {
-	font-size: var(--wp--preset--font-size--large);
-	max-width: 44ch;
+	font-size: var(--greenlight-archive-featured-summary-size, var(--wp--preset--font-size--large));
+	max-width: var(--greenlight-archive-featured-summary-width, 44ch);
 	line-height: 1.5;
+}
+
+.entry--teaser .entry-summary {
+	font-size: var(--greenlight-archive-teaser-summary-size, var(--wp--preset--font-size--medium));
+	max-width: var(--greenlight-archive-teaser-summary-width, 52ch);
 }
 
 /* === "Read more" link === */
@@ -668,20 +681,22 @@ body > main {
 .entry--single {
 	display: flex;
 	flex-direction: column;
-	gap: var(--wp--preset--spacing--md);
+	gap: var(--greenlight-single-gap, var(--wp--preset--spacing--md));
+	width: min(100%, var(--greenlight-single-content-width, 65ch));
+	margin-inline: auto;
 }
 
 .entry--single .entry-header {
 	display: flex;
 	flex-direction: column;
-	gap: var(--wp--preset--spacing--sm);
+	gap: var(--greenlight-single-gap, var(--wp--preset--spacing--sm));
 }
 
 .entry--single h1 {
 	font-size: var(--wp--preset--font-size--xx-large);
 	letter-spacing: -0.03em;
 	line-height: 1.1;
-	max-width: 18ch;
+	max-width: var(--greenlight-single-heading-width, 18ch);
 	text-wrap: balance;
 }
 
@@ -744,6 +759,7 @@ body > main {
 .entry-hero-media {
 	margin: 0;
 	width: 100%;
+	border-radius: var(--greenlight-single-media-radius, var(--greenlight-card-radius, 1em));
 }
 
 .entry-hero-media figcaption {
@@ -756,11 +772,11 @@ body > main {
 
 /* Italic intro paragraph */
 .entry-intro {
-	font-size: var(--wp--preset--font-size--large);
-	font-style: italic;
+	font-size: var(--greenlight-single-intro-size, var(--wp--preset--font-size--large));
+	font-style: var(--greenlight-single-intro-font-style, italic);
 	line-height: 1.6;
 	color: var(--wp--preset--color--on-surface-variant);
-	max-width: 65ch;
+	max-width: var(--greenlight-single-content-width, 65ch);
 	text-wrap: pretty;
 }
 
@@ -769,8 +785,13 @@ body > main {
 .wp-block-post-content {
 	display: flex;
 	flex-direction: column;
-	gap: var(--wp--preset--spacing--sm);
-	max-width: 65ch;
+	gap: var(--greenlight-single-gap, var(--wp--preset--spacing--sm));
+	max-width: var(--greenlight-single-content-width, 65ch);
+}
+
+.entry--single .entry-content,
+.entry--single .wp-block-post-content {
+	max-width: none;
 }
 
 /* Blockquote with primary left border */
@@ -846,9 +867,11 @@ body > main {
 	display: flex;
 	flex-direction: column;
 	gap: var(--wp--preset--spacing--sm);
-	background: var(--wp--preset--color--surface);
-	padding: var(--wp--preset--spacing--lg);
+	background: var(--greenlight-archive-card-surface, var(--wp--preset--color--surface));
+	padding: var(--greenlight-archive-card-padding, var(--wp--preset--spacing--lg));
+	border: var(--greenlight-archive-card-border, 1px solid transparent);
 	border-radius: var(--greenlight-card-radius, 1em);
+	box-shadow: var(--greenlight-archive-card-shadow, 0 20px 40px rgba(47, 52, 45, 0.04));
 }
 
 .newsletter-cta--centered {
@@ -956,10 +979,11 @@ body > main {
 .site-footer {
 	display: flex;
 	flex-wrap: wrap;
-	align-items: center;
-	justify-content: space-between;
-	gap: var(--wp--preset--spacing--sm) var(--wp--preset--spacing--md);
-	padding-block: var(--wp--preset--spacing--md);
+	flex-direction: var(--greenlight-footer-direction, row);
+	align-items: var(--greenlight-footer-align, center);
+	justify-content: var(--greenlight-footer-justify, space-between);
+	gap: var(--greenlight-footer-gap, var(--wp--preset--spacing--sm) var(--wp--preset--spacing--md));
+	padding-block: var(--greenlight-footer-padding-block, var(--wp--preset--spacing--md));
 	padding-inline: var(--wp--preset--spacing--md);
 	/* Admin colour override via --greenlight-footer-bg, falls back to surface */
 	background: var(--greenlight-footer-bg, var(--wp--preset--color--surface));
@@ -971,11 +995,13 @@ body > main {
 	letter-spacing: 0.05em;
 	text-transform: uppercase;
 	color: var(--wp--preset--color--on-surface-variant);
+	text-align: var(--greenlight-footer-text-align, left);
 }
 
 .footer-nav ul {
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: var(--greenlight-footer-nav-justify, flex-start);
 	gap: var(--wp--preset--spacing--sm);
 	list-style: none;
 	margin: 0;

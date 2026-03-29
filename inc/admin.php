@@ -229,10 +229,13 @@ function greenlight_get_appearance_defaults() {
 		'show_newsletter_single'   => 1,
 		// Archive.
 		'archive_layout'           => 'asymmetric',
+		'archive_card_style'       => 'balanced',
 		'show_excerpts_archive'    => 1,
 		'show_thumbnails_archive'  => 1,
+		'single_layout'            => 'editorial',
 		// Footer.
 		'color_footer_bg'          => '',
+		'footer_layout'            => 'split',
 		'show_low_emission'        => 1,
 		'custom_copyright'         => '',
 		'show_footer_nav'          => 1,
@@ -337,6 +340,186 @@ function greenlight_get_appearance_densities() {
 }
 
 /**
+ * Returns the available archive card styles.
+ *
+ * @return array<string, array<string, mixed>>
+ */
+function greenlight_get_archive_card_styles() {
+	return array(
+		'balanced' => array(
+			'label'       => __( 'Équilibré', 'greenlight' ),
+			'description' => __( 'Cartes lisibles et stables.', 'greenlight' ),
+			'vars'        => array(
+				'--greenlight-archive-card-surface'        => 'var(--wp--preset--color--surface)',
+				'--greenlight-archive-card-border'         => 'transparent',
+				'--greenlight-archive-card-shadow'         => '0 20px 40px rgba(47, 52, 45, 0.04)',
+				'--greenlight-archive-card-padding'        => 'var(--wp--preset--spacing--lg)',
+				'--greenlight-archive-card-gap'            => 'var(--wp--preset--spacing--md)',
+				'--greenlight-archive-featured-direction'  => 'row',
+				'--greenlight-archive-featured-media'      => 'clamp(200px, 45%, 520px)',
+				'--greenlight-archive-featured-body'       => 'clamp(220px, 45%, 520px)',
+				'--greenlight-archive-featured-title-width' => '14ch',
+				'--greenlight-archive-featured-summary-size' => 'var(--wp--preset--font-size--large)',
+				'--greenlight-archive-featured-summary-width' => '44ch',
+				'--greenlight-archive-teaser-direction'    => 'row',
+				'--greenlight-archive-teaser-media'        => 'clamp(160px, 40%, 420px)',
+				'--greenlight-archive-teaser-body'         => 'clamp(220px, 50%, 520px)',
+				'--greenlight-archive-teaser-title-width'  => '22ch',
+				'--greenlight-archive-teaser-summary-size' => 'var(--wp--preset--font-size--medium)',
+				'--greenlight-archive-teaser-summary-width' => '52ch',
+				'--greenlight-archive-teaser-direction-even' => 'row-reverse',
+				'--greenlight-archive-list-gap'            => 'var(--wp--preset--spacing--lg)',
+			),
+		),
+		'compact'  => array(
+			'label'       => __( 'Compact', 'greenlight' ),
+			'description' => __( 'Plus serré et plus vertical.', 'greenlight' ),
+			'vars'        => array(
+				'--greenlight-archive-card-surface'        => 'var(--wp--preset--color--surface-alt)',
+				'--greenlight-archive-card-border'         => '1px solid var(--wp--preset--color--border)',
+				'--greenlight-archive-card-shadow'         => '0 14px 28px rgba(47, 52, 45, 0.03)',
+				'--greenlight-archive-card-padding'        => 'var(--wp--preset--spacing--md)',
+				'--greenlight-archive-card-gap'            => 'var(--wp--preset--spacing--sm)',
+				'--greenlight-archive-featured-direction'  => 'column',
+				'--greenlight-archive-featured-media'      => '100%',
+				'--greenlight-archive-featured-body'       => '100%',
+				'--greenlight-archive-featured-title-width' => '18ch',
+				'--greenlight-archive-featured-summary-size' => 'var(--wp--preset--font-size--medium)',
+				'--greenlight-archive-featured-summary-width' => '100%',
+				'--greenlight-archive-teaser-direction'    => 'column',
+				'--greenlight-archive-teaser-media'        => '100%',
+				'--greenlight-archive-teaser-body'         => '100%',
+				'--greenlight-archive-teaser-title-width'  => '18ch',
+				'--greenlight-archive-teaser-summary-size' => 'var(--wp--preset--font-size--small)',
+				'--greenlight-archive-teaser-summary-width' => '100%',
+				'--greenlight-archive-teaser-direction-even' => 'column-reverse',
+				'--greenlight-archive-list-gap'            => 'var(--wp--preset--spacing--md)',
+			),
+		),
+		'framed'   => array(
+			'label'       => __( 'Encadré', 'greenlight' ),
+			'description' => __( 'Bordure plus nette.', 'greenlight' ),
+			'vars'        => array(
+				'--greenlight-archive-card-surface'        => 'linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(244, 241, 233, 0.96))',
+				'--greenlight-archive-card-border'         => '1px solid rgba(77, 101, 72, 0.12)',
+				'--greenlight-archive-card-shadow'         => '0 18px 34px rgba(47, 52, 45, 0.05)',
+				'--greenlight-archive-card-padding'        => 'var(--wp--preset--spacing--lg)',
+				'--greenlight-archive-card-gap'            => 'var(--wp--preset--spacing--md)',
+				'--greenlight-archive-featured-direction'  => 'row',
+				'--greenlight-archive-featured-media'      => 'clamp(200px, 42%, 500px)',
+				'--greenlight-archive-featured-body'       => 'clamp(220px, 48%, 540px)',
+				'--greenlight-archive-featured-title-width' => '15ch',
+				'--greenlight-archive-featured-summary-size' => 'var(--wp--preset--font-size--large)',
+				'--greenlight-archive-featured-summary-width' => '42ch',
+				'--greenlight-archive-teaser-direction'    => 'row',
+				'--greenlight-archive-teaser-media'        => 'clamp(160px, 38%, 380px)',
+				'--greenlight-archive-teaser-body'         => 'clamp(220px, 54%, 540px)',
+				'--greenlight-archive-teaser-title-width'  => '20ch',
+				'--greenlight-archive-teaser-summary-size' => 'var(--wp--preset--font-size--medium)',
+				'--greenlight-archive-teaser-summary-width' => '50ch',
+				'--greenlight-archive-teaser-direction-even' => 'row-reverse',
+				'--greenlight-archive-list-gap'            => 'var(--wp--preset--spacing--lg)',
+			),
+		),
+	);
+}
+
+/**
+ * Returns the available single layout variants.
+ *
+ * @return array<string, array<string, mixed>>
+ */
+function greenlight_get_single_layout_variants() {
+	return array(
+		'editorial' => array(
+			'label'       => __( 'Éditorial', 'greenlight' ),
+			'description' => __( 'Lecture dense mais respirante.', 'greenlight' ),
+			'vars'        => array(
+				'--greenlight-single-content-width'    => '65ch',
+				'--greenlight-single-heading-width'    => '18ch',
+				'--greenlight-single-gap'              => 'var(--wp--preset--spacing--md)',
+				'--greenlight-single-intro-font-style' => 'italic',
+				'--greenlight-single-intro-size'       => 'var(--wp--preset--font-size--large)',
+				'--greenlight-single-media-radius'     => 'var(--greenlight-card-radius, 1em)',
+			),
+		),
+		'classic'   => array(
+			'label'       => __( 'Classique', 'greenlight' ),
+			'description' => __( 'Plus court et plus direct.', 'greenlight' ),
+			'vars'        => array(
+				'--greenlight-single-content-width'    => '58ch',
+				'--greenlight-single-heading-width'    => '18ch',
+				'--greenlight-single-gap'              => 'var(--wp--preset--spacing--sm)',
+				'--greenlight-single-intro-font-style' => 'normal',
+				'--greenlight-single-intro-size'       => 'var(--wp--preset--font-size--medium)',
+				'--greenlight-single-media-radius'     => '0.85em',
+			),
+		),
+		'immersive' => array(
+			'label'       => __( 'Immersif', 'greenlight' ),
+			'description' => __( 'Plus large et plus ample.', 'greenlight' ),
+			'vars'        => array(
+				'--greenlight-single-content-width'    => '72ch',
+				'--greenlight-single-heading-width'    => '22ch',
+				'--greenlight-single-gap'              => 'var(--wp--preset--spacing--lg)',
+				'--greenlight-single-intro-font-style' => 'normal',
+				'--greenlight-single-intro-size'       => 'var(--wp--preset--font-size--x-large)',
+				'--greenlight-single-media-radius'     => '1.25em',
+			),
+		),
+	);
+}
+
+/**
+ * Returns the available footer layout variants.
+ *
+ * @return array<string, array<string, mixed>>
+ */
+function greenlight_get_footer_layout_variants() {
+	return array(
+		'split'   => array(
+			'label'       => __( 'Séparé', 'greenlight' ),
+			'description' => __( 'Navigation et mentions sur une ligne.', 'greenlight' ),
+			'vars'        => array(
+				'--greenlight-footer-direction'     => 'row',
+				'--greenlight-footer-justify'       => 'space-between',
+				'--greenlight-footer-align'         => 'center',
+				'--greenlight-footer-nav-justify'   => 'flex-start',
+				'--greenlight-footer-text-align'    => 'left',
+				'--greenlight-footer-gap'           => 'var(--wp--preset--spacing--sm) var(--wp--preset--spacing--md)',
+				'--greenlight-footer-padding-block' => 'var(--wp--preset--spacing--md)',
+			),
+		),
+		'stacked' => array(
+			'label'       => __( 'Empilé', 'greenlight' ),
+			'description' => __( 'Tout centré en colonne.', 'greenlight' ),
+			'vars'        => array(
+				'--greenlight-footer-direction'     => 'column',
+				'--greenlight-footer-justify'       => 'center',
+				'--greenlight-footer-align'         => 'center',
+				'--greenlight-footer-nav-justify'   => 'center',
+				'--greenlight-footer-text-align'    => 'center',
+				'--greenlight-footer-gap'           => 'var(--wp--preset--spacing--sm)',
+				'--greenlight-footer-padding-block' => 'var(--wp--preset--spacing--lg)',
+			),
+		),
+		'compact' => array(
+			'label'       => __( 'Compact', 'greenlight' ),
+			'description' => __( 'Plus court et plus dense.', 'greenlight' ),
+			'vars'        => array(
+				'--greenlight-footer-direction'     => 'row',
+				'--greenlight-footer-justify'       => 'flex-start',
+				'--greenlight-footer-align'         => 'center',
+				'--greenlight-footer-nav-justify'   => 'flex-start',
+				'--greenlight-footer-text-align'    => 'left',
+				'--greenlight-footer-gap'           => 'var(--wp--preset--spacing--xs) var(--wp--preset--spacing--sm)',
+				'--greenlight-footer-padding-block' => 'var(--wp--preset--spacing--sm)',
+			),
+		),
+	);
+}
+
+/**
  * Returns the available Carbon Badge placements.
  *
  * @return array<string, array<string, string>>
@@ -387,16 +570,25 @@ function greenlight_get_hero_gradient_presets() {
  * @return array<string, string>
  */
 function greenlight_get_appearance_variant_vars( $options ) {
-	$options   = is_array( $options ) ? $options : array();
-	$presets   = greenlight_get_appearance_presets();
-	$densities = greenlight_get_appearance_densities();
+	$options             = is_array( $options ) ? $options : array();
+	$presets             = greenlight_get_appearance_presets();
+	$densities           = greenlight_get_appearance_densities();
+	$archive_card_styles = greenlight_get_archive_card_styles();
+	$single_layouts      = greenlight_get_single_layout_variants();
+	$footer_layouts      = greenlight_get_footer_layout_variants();
 
-	$preset_key   = isset( $options['theme_preset'] ) ? sanitize_key( (string) $options['theme_preset'] ) : 'editorial';
-	$density_key  = isset( $options['density_scale'] ) ? sanitize_key( (string) $options['density_scale'] ) : 'balanced';
-	$preset_vars  = isset( $presets[ $preset_key ]['vars'] ) ? (array) $presets[ $preset_key ]['vars'] : $presets['editorial']['vars'];
-	$density_vars = isset( $densities[ $density_key ]['vars'] ) ? (array) $densities[ $density_key ]['vars'] : array();
+	$preset_key         = isset( $options['theme_preset'] ) ? sanitize_key( (string) $options['theme_preset'] ) : 'editorial';
+	$density_key        = isset( $options['density_scale'] ) ? sanitize_key( (string) $options['density_scale'] ) : 'balanced';
+	$archive_card_key   = isset( $options['archive_card_style'] ) ? sanitize_key( (string) $options['archive_card_style'] ) : 'balanced';
+	$single_layout_key  = isset( $options['single_layout'] ) ? sanitize_key( (string) $options['single_layout'] ) : 'editorial';
+	$footer_layout_key  = isset( $options['footer_layout'] ) ? sanitize_key( (string) $options['footer_layout'] ) : 'split';
+	$preset_vars        = isset( $presets[ $preset_key ]['vars'] ) ? (array) $presets[ $preset_key ]['vars'] : $presets['editorial']['vars'];
+	$density_vars       = isset( $densities[ $density_key ]['vars'] ) ? (array) $densities[ $density_key ]['vars'] : array();
+	$archive_card_vars  = isset( $archive_card_styles[ $archive_card_key ]['vars'] ) ? (array) $archive_card_styles[ $archive_card_key ]['vars'] : $archive_card_styles['balanced']['vars'];
+	$single_layout_vars = isset( $single_layouts[ $single_layout_key ]['vars'] ) ? (array) $single_layouts[ $single_layout_key ]['vars'] : $single_layouts['editorial']['vars'];
+	$footer_layout_vars = isset( $footer_layouts[ $footer_layout_key ]['vars'] ) ? (array) $footer_layouts[ $footer_layout_key ]['vars'] : $footer_layouts['split']['vars'];
 
-	return array_merge( $preset_vars, $density_vars );
+	return array_merge( $preset_vars, $density_vars, $archive_card_vars, $single_layout_vars, $footer_layout_vars );
 }
 
 /**
@@ -438,12 +630,15 @@ add_action( 'wp_head', 'greenlight_output_appearance_variants', 998 );
  * @return array<string, mixed>
  */
 function greenlight_sanitize_appearance_settings( $input ) {
-	$input     = is_array( $input ) ? $input : array();
-	$defaults  = greenlight_get_appearance_defaults();
-	$presets   = greenlight_get_appearance_presets();
-	$densities = greenlight_get_appearance_densities();
-	$positions = greenlight_get_carbon_badge_positions();
-	$gradients = greenlight_get_hero_gradient_presets();
+	$input               = is_array( $input ) ? $input : array();
+	$defaults            = greenlight_get_appearance_defaults();
+	$presets             = greenlight_get_appearance_presets();
+	$densities           = greenlight_get_appearance_densities();
+	$archive_card_styles = greenlight_get_archive_card_styles();
+	$single_layouts      = greenlight_get_single_layout_variants();
+	$footer_layouts      = greenlight_get_footer_layout_variants();
+	$positions           = greenlight_get_carbon_badge_positions();
+	$gradients           = greenlight_get_hero_gradient_presets();
 
 	$badge_value = isset( $input['carbon_badge_value'] )
 		? sanitize_text_field( $input['carbon_badge_value'] )
@@ -537,10 +732,19 @@ function greenlight_sanitize_appearance_settings( $input ) {
 		'archive_layout'           => in_array( $input['archive_layout'] ?? '', array( 'asymmetric', 'list' ), true )
 			? sanitize_key( $input['archive_layout'] )
 			: $defaults['archive_layout'],
+		'archive_card_style'       => isset( $input['archive_card_style'] ) && isset( $archive_card_styles[ sanitize_key( (string) $input['archive_card_style'] ) ] )
+			? sanitize_key( (string) $input['archive_card_style'] )
+			: $defaults['archive_card_style'],
 		'show_excerpts_archive'    => isset( $input['show_excerpts_archive'] ) ? 1 : 0,
 		'show_thumbnails_archive'  => isset( $input['show_thumbnails_archive'] ) ? 1 : 0,
+		'single_layout'            => isset( $input['single_layout'] ) && isset( $single_layouts[ sanitize_key( (string) $input['single_layout'] ) ] )
+			? sanitize_key( (string) $input['single_layout'] )
+			: $defaults['single_layout'],
 		// Footer.
 		'color_footer_bg'          => $sanitize_color( $input['color_footer_bg'] ?? '' ),
+		'footer_layout'            => isset( $input['footer_layout'] ) && isset( $footer_layouts[ sanitize_key( (string) $input['footer_layout'] ) ] )
+			? sanitize_key( (string) $input['footer_layout'] )
+			: $defaults['footer_layout'],
 		'show_low_emission'        => isset( $input['show_low_emission'] ) ? 1 : 0,
 		'custom_copyright'         => isset( $input['custom_copyright'] ) ? sanitize_text_field( $input['custom_copyright'] ) : '',
 		'show_footer_nav'          => isset( $input['show_footer_nav'] ) ? 1 : 0,
@@ -2162,6 +2366,9 @@ function greenlight_render_admin_tab_appearance() {
 	$o                                        = array_merge( $def, $o );
 	$appearance_presets                       = greenlight_get_appearance_presets();
 	$appearance_densities                     = greenlight_get_appearance_densities();
+	$archive_card_styles                      = greenlight_get_archive_card_styles();
+	$single_layouts                           = greenlight_get_single_layout_variants();
+	$footer_layouts                           = greenlight_get_footer_layout_variants();
 	$hero_gradients                           = greenlight_get_hero_gradient_presets();
 	$hero_background_labels                   = array(
 		'none'     => __( 'Aucun', 'greenlight' ),
@@ -2216,9 +2423,12 @@ function greenlight_render_admin_tab_appearance() {
 		'show_tags',
 		'show_newsletter_single',
 		'archive_layout',
+		'archive_card_style',
 		'show_excerpts_archive',
 		'show_thumbnails_archive',
+		'single_layout',
 		'color_footer_bg',
+		'footer_layout',
 		'show_low_emission',
 		'custom_copyright',
 		'show_footer_nav',
@@ -2236,7 +2446,7 @@ function greenlight_render_admin_tab_appearance() {
 		<div>
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Apparence', 'greenlight' ); ?></p>
 			<h2><?php esc_html_e( 'Apparence du site', 'greenlight' ); ?></h2>
-			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Réglez le style, le rythme, le hero et le badge CO₂.', 'greenlight' ); ?></p>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Réglez le style, les cartes, l’article, le hero et le badge CO₂.', 'greenlight' ); ?></p>
 		</div>
 	</div>
 
@@ -2522,12 +2732,12 @@ function greenlight_render_admin_tab_appearance() {
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Contenu', 'greenlight' ); ?></p>
 						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Articles et archives', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Lecture des contenus et archives.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Lecture des contenus, des cartes et du gabarit article.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="options.php">
 					<?php settings_fields( 'greenlight_appearance' ); ?>
-					<?php $greenlight_emit_appearance_hidden_fields( array( 'show_date', 'show_author', 'show_tags', 'show_newsletter_single', 'archive_layout', 'show_excerpts_archive', 'show_thumbnails_archive' ) ); ?>
+					<?php $greenlight_emit_appearance_hidden_fields( array( 'show_date', 'show_author', 'show_tags', 'show_newsletter_single', 'archive_layout', 'archive_card_style', 'show_excerpts_archive', 'show_thumbnails_archive', 'single_layout' ) ); ?>
 					<table class="form-table" role="presentation">
 						<tr>
 							<th><?php esc_html_e( 'Date', 'greenlight' ); ?></th>
@@ -2546,10 +2756,35 @@ function greenlight_render_admin_tab_appearance() {
 							<td><label><input name="<?php echo esc_attr( $key ); ?>[show_newsletter_single]" type="checkbox" value="1" <?php checked( (int) $o['show_newsletter_single'], 1 ); ?>> <?php esc_html_e( 'Afficher le CTA newsletter en bas de l\'article', 'greenlight' ); ?></label></td>
 						</tr>
 						<tr>
-							<th><?php esc_html_e( 'Layout', 'greenlight' ); ?></th>
+							<th><label for="gl-archive-layout"><?php esc_html_e( 'Archives', 'greenlight' ); ?></label></th>
 							<td>
-								<label><input type="radio" name="<?php echo esc_attr( $key ); ?>[archive_layout]" value="asymmetric" <?php checked( $o['archive_layout'], 'asymmetric' ); ?>> <?php esc_html_e( 'Grille asymétrique', 'greenlight' ); ?></label><br>
-								<label><input type="radio" name="<?php echo esc_attr( $key ); ?>[archive_layout]" value="list" <?php checked( $o['archive_layout'], 'list' ); ?>> <?php esc_html_e( 'Liste simple', 'greenlight' ); ?></label>
+								<select id="gl-archive-layout" name="<?php echo esc_attr( $key ); ?>[archive_layout]">
+									<option value="asymmetric" <?php selected( $o['archive_layout'], 'asymmetric' ); ?>><?php esc_html_e( 'Grille asymétrique', 'greenlight' ); ?></option>
+									<option value="list" <?php selected( $o['archive_layout'], 'list' ); ?>><?php esc_html_e( 'Liste simple', 'greenlight' ); ?></option>
+								</select>
+								<p class="description"><?php esc_html_e( 'Contrôle la structure des listes d’articles.', 'greenlight' ); ?></p>
+							</td>
+						</tr>
+						<tr>
+							<th><label for="gl-archive-card-style"><?php esc_html_e( 'Cartes d\'archive', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-archive-card-style" name="<?php echo esc_attr( $key ); ?>[archive_card_style]">
+									<?php foreach ( $archive_card_styles as $archive_card_style_key => $archive_card_style ) : ?>
+										<option value="<?php echo esc_attr( $archive_card_style_key ); ?>" <?php selected( $o['archive_card_style'], $archive_card_style_key ); ?>><?php echo esc_html( $archive_card_style['label'] ); ?></option>
+									<?php endforeach; ?>
+								</select>
+								<p class="description"><?php esc_html_e( 'Ajuste la matière, l’espace et la tenue des cartes.', 'greenlight' ); ?></p>
+							</td>
+						</tr>
+						<tr>
+							<th><label for="gl-single-layout"><?php esc_html_e( 'Article', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-single-layout" name="<?php echo esc_attr( $key ); ?>[single_layout]">
+									<?php foreach ( $single_layouts as $single_layout_key => $single_layout ) : ?>
+										<option value="<?php echo esc_attr( $single_layout_key ); ?>" <?php selected( $o['single_layout'], $single_layout_key ); ?>><?php echo esc_html( $single_layout['label'] ); ?></option>
+									<?php endforeach; ?>
+								</select>
+								<p class="description"><?php esc_html_e( 'Définit la largeur et le ton de l’article.', 'greenlight' ); ?></p>
 							</td>
 						</tr>
 						<tr>
@@ -2570,13 +2805,24 @@ function greenlight_render_admin_tab_appearance() {
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Pied de page', 'greenlight' ); ?></p>
 						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Pied de page et mentions', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Marque et navigation.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Mise en page, marque et navigation.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="options.php">
 					<?php settings_fields( 'greenlight_appearance' ); ?>
-					<?php $greenlight_emit_appearance_hidden_fields( array( 'color_footer_bg', 'show_low_emission', 'custom_copyright', 'show_footer_nav' ) ); ?>
+					<?php $greenlight_emit_appearance_hidden_fields( array( 'color_footer_bg', 'footer_layout', 'show_low_emission', 'custom_copyright', 'show_footer_nav' ) ); ?>
 					<table class="form-table" role="presentation">
+						<tr>
+							<th><label for="gl-footer-layout"><?php esc_html_e( 'Mise en page footer', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-footer-layout" name="<?php echo esc_attr( $key ); ?>[footer_layout]">
+									<?php foreach ( $footer_layouts as $footer_layout_key => $footer_layout ) : ?>
+										<option value="<?php echo esc_attr( $footer_layout_key ); ?>" <?php selected( $o['footer_layout'], $footer_layout_key ); ?>><?php echo esc_html( $footer_layout['label'] ); ?></option>
+									<?php endforeach; ?>
+								</select>
+								<p class="description"><?php esc_html_e( 'Aligne mentions et navigation.', 'greenlight' ); ?></p>
+							</td>
+						</tr>
 						<tr>
 							<th><?php esc_html_e( 'Fond footer', 'greenlight' ); ?></th>
 							<td><input type="text" name="<?php echo esc_attr( $key ); ?>[color_footer_bg]" class="greenlight-color-picker" value="<?php echo esc_attr( $o['color_footer_bg'] ); ?>" data-default-color="#f4f4ee"></td>

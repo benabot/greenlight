@@ -7,12 +7,13 @@
 
 get_header();
 
-$_gl_app           = array_merge(
+$_gl_app            = array_merge(
 	function_exists( 'greenlight_get_appearance_defaults' ) ? greenlight_get_appearance_defaults() : array(),
 	(array) get_option( 'greenlight_appearance_options', array() )
 );
-$_gl_show_thumbs   = ! empty( $_gl_app['show_thumbnails_archive'] );
-$_gl_show_excerpts = ! empty( $_gl_app['show_excerpts_archive'] );
+$_gl_archive_layout = isset( $_gl_app['archive_layout'] ) && 'list' === $_gl_app['archive_layout'] ? 'list' : 'asymmetric';
+$_gl_show_thumbs    = ! empty( $_gl_app['show_thumbnails_archive'] );
+$_gl_show_excerpts  = ! empty( $_gl_app['show_excerpts_archive'] );
 
 global $wp_query;
 
@@ -89,7 +90,7 @@ $archive_desc  = get_the_archive_description();
 	</article>
 
 	<?php if ( have_posts() ) : ?>
-	<ul class="post-list post-list--grid" aria-label="<?php esc_attr_e( 'Articles de l\'archive', 'greenlight' ); ?>">
+	<ul class="<?php echo esc_attr( 'list' === $_gl_archive_layout ? 'post-list' : 'post-list post-list--grid' ); ?>" aria-label="<?php esc_attr_e( 'Articles de l\'archive', 'greenlight' ); ?>">
 		<?php
 		while ( have_posts() ) :
 			the_post();
