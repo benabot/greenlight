@@ -162,6 +162,31 @@ body.toplevel_page_greenlight .greenlight-admin-metric__value {
 	color: var(--gl-admin-text);
 }
 
+body.toplevel_page_greenlight .greenlight-admin-state {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 700;
+	color: var(--gl-admin-text);
+}
+
+body.toplevel_page_greenlight .greenlight-admin-state::before {
+	content: "";
+	width: 8px;
+	height: 8px;
+	border-radius: 999px;
+	background: currentColor;
+	opacity: 0.82;
+}
+
+body.toplevel_page_greenlight .greenlight-admin-state--ok {
+	color: #366346;
+}
+
+body.toplevel_page_greenlight .greenlight-admin-state--off {
+	color: #8c4e46;
+}
+
 body.toplevel_page_greenlight .greenlight-admin-main {
 	min-width: 0;
 }
@@ -259,6 +284,37 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel__intro {
 	padding: 0 2px;
 }
 
+body.toplevel_page_greenlight .greenlight-admin-tab-panel__summary {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 14px;
+	margin: 0 0 22px;
+}
+
+body.toplevel_page_greenlight .greenlight-admin-summary-card {
+	padding: 16px 18px 17px;
+	border: 1px solid var(--gl-admin-border);
+	border-radius: 22px;
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(243, 240, 232, 0.92));
+	box-shadow: var(--gl-admin-shadow-soft);
+}
+
+body.toplevel_page_greenlight .greenlight-admin-summary-card strong {
+	display: block;
+	margin: 0;
+	font-size: 1.15rem;
+	line-height: 1.2;
+	letter-spacing: -0.02em;
+	color: var(--gl-admin-text);
+}
+
+body.toplevel_page_greenlight .greenlight-admin-summary-card span {
+	display: block;
+	margin-top: 6px;
+	color: var(--gl-admin-muted);
+	line-height: 1.45;
+}
+
 body.toplevel_page_greenlight .greenlight-admin-tab-panel__intro h2 {
 	margin: 0;
 	font-size: clamp(1.55rem, 1.8vw, 2rem);
@@ -325,6 +381,10 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel__card-note {
 	line-height: 1.55;
 }
 
+body.toplevel_page_greenlight .greenlight-admin-tab-panel__card .greenlight-admin-tab-panel__list + .greenlight-admin-tab-panel__card-note {
+	margin-top: 12px;
+}
+
 body.toplevel_page_greenlight .greenlight-admin-tab-panel__list {
 	margin: 0;
 	padding-left: 18px;
@@ -333,6 +393,10 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel__list {
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel__list li + li {
 	margin-top: 8px;
+}
+
+body.toplevel_page_greenlight .greenlight-admin-tab-panel__meta {
+	color: var(--gl-admin-muted);
 }
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel > form,
@@ -398,6 +462,7 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel__actions {
 	flex-wrap: wrap;
 	gap: 10px;
 	align-items: center;
+	margin-top: 18px;
 }
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel__actions form {
@@ -612,6 +677,10 @@ body.toplevel_page_greenlight .greenlight-admin-panel--note p {
 		position: static;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
+
+	body.toplevel_page_greenlight .greenlight-admin-tab-panel__summary {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
 }
 
 @media (max-width: 782px) {
@@ -649,6 +718,10 @@ body.toplevel_page_greenlight .greenlight-admin-panel--note p {
 	}
 
 	body.toplevel_page_greenlight .greenlight-admin-tab-panel__shell--appearance {
+		grid-template-columns: 1fr;
+	}
+
+	body.toplevel_page_greenlight .greenlight-admin-tab-panel__summary {
 		grid-template-columns: 1fr;
 	}
 

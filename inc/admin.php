@@ -474,7 +474,7 @@ function greenlight_get_admin_shell_context( $current_tab ) {
 			);
 
 		$metrics = array();
-		$note    = __( 'Conservez le contenu dans les cartes, puis ajustez les réglages sans changer la logique métier.', 'greenlight' );
+		$note    = __( 'Organisez chaque onglet autour d’un effet concret: mieux diffuser, mieux indexer, mieux maintenir.', 'greenlight' );
 
 		switch ( $current_tab ) {
 			case 'seo':
@@ -496,7 +496,7 @@ function greenlight_get_admin_shell_context( $current_tab ) {
 						'value' => ! empty( $seo_options['show_breadcrumbs'] ) ? __( 'Actifs', 'greenlight' ) : __( 'Désactivés', 'greenlight' ),
 					),
 				);
-				$note    = __( 'Gardez le SEO au-dessus du pli: métadonnées, indexation, robots.txt et redirections doivent rester lisibles d’un coup d’œil.', 'greenlight' );
+				$note    = __( 'Maintenez l’indexation, le crawl et les routes de secours dans une vue stable, courte et priorisée.', 'greenlight' );
 				break;
 			case 'images':
 				$metrics = array(
@@ -517,7 +517,7 @@ function greenlight_get_admin_shell_context( $current_tab ) {
 						'value' => function_exists( 'greenlight_format_image_bytes' ) ? greenlight_format_image_bytes( isset( $image_report['saved'] ) ? (int) $image_report['saved'] : 0 ) : '0 B',
 					),
 				);
-				$note    = __( 'Le réglage image doit rester technique, compact et lisible: conversion, tailles utiles et impact disque.', 'greenlight' );
+				$note    = __( 'Réduisez le poids des médias sans empiler les réglages: formats utiles, tailles justes et impact disque lisible.', 'greenlight' );
 				break;
 			case 'performance':
 				$metrics = array(
@@ -530,15 +530,21 @@ function greenlight_get_admin_shell_context( $current_tab ) {
 						'value' => size_format( (int) $cache_stats['size'], 2 ),
 					),
 					array(
-						'label' => __( 'Minification CSS', 'greenlight' ),
-						'value' => ! empty( $perf_options['enable_css_min'] ) ? __( 'Actif', 'greenlight' ) : __( 'Désactivée', 'greenlight' ),
+						'label' => __( 'Diffusion CSS', 'greenlight' ),
+						'value' => ! empty( $perf_options['enable_css_min'] ) ? __( 'Minifiee', 'greenlight' ) : __( 'Source', 'greenlight' ),
 					),
 					array(
-						'label' => __( 'Heartbeat frontal', 'greenlight' ),
-						'value' => isset( $perf_options['heartbeat_front'] ) ? ucfirst( (string) $perf_options['heartbeat_front'] ) : __( 'Par défaut', 'greenlight' ),
+						'label' => __( 'Rythme frontal', 'greenlight' ),
+						'value' => isset( $perf_options['heartbeat_front'] ) && 'reduce' === $perf_options['heartbeat_front']
+							? __( 'Reduit', 'greenlight' )
+							: (
+								isset( $perf_options['heartbeat_front'] ) && 'disable' === $perf_options['heartbeat_front']
+									? __( 'Coupe', 'greenlight' )
+									: __( 'Par defaut', 'greenlight' )
+							),
 					),
 				);
-				$note    = __( 'Performance doit rester une boîte à outils, pas une liste de raccourcis technique dispersée.', 'greenlight' );
+				$note    = __( 'Réglez ici ce qui est servi, mis en cache et entretenu. Chaque option doit exprimer un effet direct sur le poids ou la stabilité.', 'greenlight' );
 				break;
 			case 'appearance':
 				$metrics = array(
@@ -559,7 +565,7 @@ function greenlight_get_admin_shell_context( $current_tab ) {
 						'value' => ! empty( $appearance_options['show_footer_nav'] ) ? __( 'Visible', 'greenlight' ) : __( 'Masquée', 'greenlight' ),
 					),
 				);
-				$note    = __( 'L’onglet Apparence doit donner l’impression d’un panneau créatif éditorial avec prévisualisation et surfaces premium.', 'greenlight' );
+				$note    = __( 'Pilotez les surfaces, les accents et la signature éditoriale sans perdre la lisibilite du systeme.', 'greenlight' );
 				break;
 			case 'svg':
 				$metrics = array(
@@ -580,7 +586,7 @@ function greenlight_get_admin_shell_context( $current_tab ) {
 						'value' => __( 'Médias', 'greenlight' ),
 					),
 				);
-				$note    = __( 'SVG reste un onglet d’infrastructure: compact, propre et sans bruit visuel inutile.', 'greenlight' );
+				$note    = __( 'Gardez cet onglet court: autoriser, nettoyer, limiter le risque.', 'greenlight' );
 				break;
 			case 'tools':
 				$metrics = array(
@@ -601,14 +607,14 @@ function greenlight_get_admin_shell_context( $current_tab ) {
 						'value' => __( 'Prêt', 'greenlight' ),
 					),
 				);
-				$note    = __( 'Les outils doivent ressembler à une zone de maintenance premium, pas à une page utilitaire brute.', 'greenlight' );
+				$note    = __( 'Traitez les imports, exports et actions globales comme des operations de maintenance controlees.', 'greenlight' );
 				break;
 		}
 
 		return array(
 			'tab_label' => isset( $tabs[ $current_tab ] ) ? $tabs[ $current_tab ] : $tabs['seo'],
 			'headline'  => __( 'Suite éditoriale', 'greenlight' ),
-			'lead'      => __( 'Pilotez le SEO, la vitesse, les images et l’hygiène du site dans un outil éco-conçu qui peut remplacer plusieurs extensions.', 'greenlight' ),
+			'lead'      => __( 'Centralisez SEO, diffusion, medias et maintenance dans un espace d’eco-conception capable de remplacer plusieurs extensions.', 'greenlight' ),
 			'note'      => $note,
 			'metrics'   => $metrics,
 		);
@@ -668,7 +674,7 @@ function greenlight_render_admin_page() {
 		<div class="greenlight-admin-layout">
 			<aside class="greenlight-admin-rail">
 				<div class="greenlight-admin-panel greenlight-admin-panel--metrics">
-					<p class="greenlight-admin-panel__eyebrow"><?php esc_html_e( 'Repères rapides', 'greenlight' ); ?></p>
+					<p class="greenlight-admin-panel__eyebrow"><?php esc_html_e( 'Etat actuel', 'greenlight' ); ?></p>
 					<div class="greenlight-admin-metrics">
 						<?php foreach ( $shell['metrics'] as $metric ) : ?>
 							<div class="greenlight-admin-metric">
@@ -680,7 +686,7 @@ function greenlight_render_admin_page() {
 				</div>
 
 				<div class="greenlight-admin-panel greenlight-admin-panel--note">
-					<p class="greenlight-admin-panel__eyebrow"><?php esc_html_e( 'Repère', 'greenlight' ); ?></p>
+					<p class="greenlight-admin-panel__eyebrow"><?php esc_html_e( 'Pourquoi ca compte', 'greenlight' ); ?></p>
 					<p><?php echo esc_html( $shell['note'] ); ?></p>
 				</div>
 			</aside>
@@ -751,7 +757,30 @@ function greenlight_render_admin_tab_seo() {
 		<div>
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'SEO', 'greenlight' ); ?></p>
 			<h2><?php esc_html_e( 'Indexation et contrôle éditorial', 'greenlight' ); ?></h2>
-			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Réglez les métadonnées, robots.txt et redirections dans une surface unique capable de remplacer plusieurs extensions.', 'greenlight' ); ?></p>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Pilotez l’indexation, les metadonnees et les routes de secours dans un espace d’eco-publication pense pour limiter les extensions.', 'greenlight' ); ?></p>
+		</div>
+	</div>
+
+	<div class="greenlight-admin-tab-panel__summary">
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Sitemap', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( ! empty( $options['enable_sitemap'] ) ? __( 'Actif', 'greenlight' ) : __( 'Inactif', 'greenlight' ) ); ?></strong>
+			<span><?php esc_html_e( 'Signal de crawl natif.', 'greenlight' ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Fil d’Ariane', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( ! empty( $options['show_breadcrumbs'] ) ? __( 'Visible', 'greenlight' ) : __( 'Désactivé', 'greenlight' ) ); ?></strong>
+			<span><?php esc_html_e( 'Contexte éditorial et maillage interne.', 'greenlight' ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Redirections', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( number_format_i18n( count( $redirects ) ) ); ?></strong>
+			<span><?php esc_html_e( 'Règles de secours actives.', 'greenlight' ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( '404 récents', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( number_format_i18n( count( $log_404 ) ) ); ?></strong>
+			<span><?php esc_html_e( 'Points à corriger ou à rediriger.', 'greenlight' ); ?></span>
 		</div>
 	</div>
 
@@ -762,7 +791,7 @@ function greenlight_render_admin_tab_seo() {
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Réglages essentiels', 'greenlight' ); ?></p>
 						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Métadonnées globales', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Pilotez le titre, la description et les options d’indexation principales.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Réglez le socle éditorial et les bascules qui influencent tout le site.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="options.php">
@@ -770,7 +799,7 @@ function greenlight_render_admin_tab_seo() {
 					<table class="form-table" role="presentation">
 						<tr>
 							<th scope="row">
-								<label for="gl-site-title"><?php esc_html_e( 'Titre du site pour les SERP', 'greenlight' ); ?></label>
+								<label for="gl-site-title"><?php esc_html_e( 'Titre SERP', 'greenlight' ); ?></label>
 							</th>
 							<td>
 								<input id="gl-site-title" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[site_title]" type="text" class="regular-text" value="<?php echo esc_attr( $options['site_title'] ); ?>">
@@ -778,7 +807,7 @@ function greenlight_render_admin_tab_seo() {
 						</tr>
 						<tr>
 							<th scope="row">
-								<label for="gl-site-desc"><?php esc_html_e( 'Description globale', 'greenlight' ); ?></label>
+								<label for="gl-site-desc"><?php esc_html_e( 'Description du site', 'greenlight' ); ?></label>
 							</th>
 							<td>
 								<textarea id="gl-site-desc" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[site_description]" class="large-text" rows="4"><?php echo esc_textarea( $options['site_description'] ); ?></textarea>
@@ -786,7 +815,7 @@ function greenlight_render_admin_tab_seo() {
 						</tr>
 						<tr>
 							<th scope="row">
-								<label for="gl-title-sep"><?php esc_html_e( 'Séparateur de titre', 'greenlight' ); ?></label>
+								<label for="gl-title-sep"><?php esc_html_e( 'Séparateur', 'greenlight' ); ?></label>
 							</th>
 							<td>
 								<input id="gl-title-sep" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[title_separator]" type="text" class="small-text" value="<?php echo esc_attr( $options['title_separator'] ); ?>">
@@ -797,7 +826,7 @@ function greenlight_render_admin_tab_seo() {
 							<td>
 								<label for="gl-sitemap">
 									<input id="gl-sitemap" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[enable_sitemap]" type="checkbox" value="1" <?php checked( (int) $options['enable_sitemap'], 1 ); ?>>
-									<?php esc_html_e( 'Activer le sitemap natif.', 'greenlight' ); ?>
+									<?php esc_html_e( 'Activer le sitemap natif', 'greenlight' ); ?>
 								</label>
 							</td>
 						</tr>
@@ -806,7 +835,7 @@ function greenlight_render_admin_tab_seo() {
 							<td>
 								<label for="gl-noindex-author">
 									<input id="gl-noindex-author" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[noindex_author_archives]" type="checkbox" value="1" <?php checked( (int) $options['noindex_author_archives'], 1 ); ?>>
-									<?php esc_html_e( 'Noindexer les archives auteur.', 'greenlight' ); ?>
+									<?php esc_html_e( 'Passer les archives auteur en noindex', 'greenlight' ); ?>
 								</label>
 							</td>
 						</tr>
@@ -815,7 +844,7 @@ function greenlight_render_admin_tab_seo() {
 							<td>
 								<label for="gl-noindex-tags">
 									<input id="gl-noindex-tags" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[noindex_tag_archives]" type="checkbox" value="1" <?php checked( (int) $options['noindex_tag_archives'], 1 ); ?>>
-									<?php esc_html_e( 'Noindexer les archives de tags.', 'greenlight' ); ?>
+									<?php esc_html_e( 'Passer les archives de tags en noindex', 'greenlight' ); ?>
 								</label>
 							</td>
 						</tr>
@@ -824,7 +853,7 @@ function greenlight_render_admin_tab_seo() {
 							<td>
 								<label for="gl-breadcrumbs">
 									<input id="gl-breadcrumbs" name="<?php echo esc_attr( GREENLIGHT_SEO_OPTION_KEY ); ?>[show_breadcrumbs]" type="checkbox" value="1" <?php checked( ! empty( $options['show_breadcrumbs'] ), true ); ?>>
-									<?php esc_html_e( 'Afficher le fil d\'Ariane sur les pages et articles.', 'greenlight' ); ?>
+									<?php esc_html_e( 'Afficher le fil d\'Ariane', 'greenlight' ); ?>
 								</label>
 							</td>
 						</tr>
@@ -838,7 +867,7 @@ function greenlight_render_admin_tab_seo() {
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Robots.txt', 'greenlight' ); ?></p>
 						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Fichier personnalisé', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Le contenu remplace la sortie par défaut de WordPress.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Ce contenu remplace la sortie par défaut de WordPress.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="options.php">
@@ -936,7 +965,7 @@ function greenlight_render_admin_tab_seo() {
 					<p class="description"><?php esc_html_e( 'Aucune redirection enregistrée.', 'greenlight' ); ?></p>
 				<?php endif; ?>
 
-				<h4><?php esc_html_e( 'Ajouter une redirection', 'greenlight' ); ?></h4>
+				<h4><?php esc_html_e( 'Ajouter une règle', 'greenlight' ); ?></h4>
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 					<input type="hidden" name="action" value="greenlight_add_redirect">
 					<?php wp_nonce_field( 'greenlight_add_redirect' ); ?>
@@ -962,7 +991,7 @@ function greenlight_render_admin_tab_seo() {
 					<?php submit_button( __( 'Ajouter', 'greenlight' ), 'secondary' ); ?>
 				</form>
 
-				<h4><?php esc_html_e( 'Importer des redirections (CSV)', 'greenlight' ); ?></h4>
+				<h4><?php esc_html_e( 'Importer un CSV', 'greenlight' ); ?></h4>
 				<p class="description"><?php esc_html_e( 'Format : source,destination,code (une ligne par redirection).', 'greenlight' ); ?></p>
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data">
 					<input type="hidden" name="action" value="greenlight_import_redirects">
@@ -990,6 +1019,20 @@ function greenlight_render_admin_tab_seo() {
 					<li><?php echo esc_html( sprintf( __( 'Redirections : %d', 'greenlight' ), count( $redirects ) ) ); ?></li>
 					<?php /* translators: 1: 404 log count. */ ?>
 					<li><?php echo esc_html( sprintf( __( '404 récents : %d', 'greenlight' ), count( $log_404 ) ) ); ?></li>
+				</ul>
+			</section>
+
+			<section class="greenlight-admin-tab-panel__card">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Impact attendu', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Ce que ces réglages changent', 'greenlight' ); ?></h3>
+					</div>
+				</div>
+				<ul class="greenlight-admin-tab-panel__list">
+					<li><?php esc_html_e( 'Un sitemap actif aide les moteurs à parcourir les contenus sans charger d’extension dédiée.', 'greenlight' ); ?></li>
+					<li><?php esc_html_e( 'Les archives noindex gardent le crawl centré sur les pages utiles.', 'greenlight' ); ?></li>
+					<li><?php esc_html_e( 'Les redirections et les 404 permettent de corriger les liens cassés sans perdre le suivi.', 'greenlight' ); ?></li>
 				</ul>
 			</section>
 
@@ -1043,7 +1086,7 @@ function greenlight_render_admin_tab_images() {
 		<div>
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Images', 'greenlight' ); ?></p>
 			<h2><?php esc_html_e( 'Formats, compression et lotissements', 'greenlight' ); ?></h2>
-			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Réduisez le poids des médias avec la conversion embarquée, l’optimisation en masse et un contrôle clair du stockage.', 'greenlight' ); ?></p>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Allegez les medias servis, pilotez les formats utiles et surveillez l’impact disque sans pipeline externe.', 'greenlight' ); ?></p>
 		</div>
 	</div>
 
@@ -1310,403 +1353,446 @@ function greenlight_render_admin_tab_images() {
  * @return void
  */
 function greenlight_render_admin_tab_performance() {
-	$options   = get_option( GREENLIGHT_PERF_OPTION_KEY, greenlight_get_performance_defaults() );
-	$stats     = greenlight_get_cache_stats();
-	$theme_dir = get_stylesheet_directory();
+	$options          = get_option( GREENLIGHT_PERF_OPTION_KEY, greenlight_get_performance_defaults() );
+	$stats            = greenlight_get_cache_stats();
+	$theme_dir        = get_stylesheet_directory();
+	$perf_fields      = array_keys( greenlight_get_performance_defaults() );
+	$bundle_path      = $theme_dir . '/assets/css/greenlight-bundle.css';
+	$critical_path    = get_theme_file_path( 'assets/css/critical.css' );
+	$bundle_exists    = file_exists( $bundle_path );
+	$critical_exists  = file_exists( $critical_path );
+	$detected_domains = get_transient( 'greenlight_detected_domains' );
+	$server_software  = isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '';
+	$heartbeat_labels = array(
+		'default' => __( 'Par defaut', 'greenlight' ),
+		'reduce'  => __( 'Reduit', 'greenlight' ),
+		'disable' => __( 'Coupe', 'greenlight' ),
+	);
+	$lifetimes        = array(
+		3600   => __( '1 heure', 'greenlight' ),
+		21600  => __( '6 heures', 'greenlight' ),
+		43200  => __( '12 heures', 'greenlight' ),
+		86400  => __( '24 heures', 'greenlight' ),
+		604800 => __( '1 semaine', 'greenlight' ),
+	);
+	$min_files        = array(
+		'style.min.css'                => $theme_dir . '/style.min.css',
+		'assets/js/seo-sidebar.min.js' => $theme_dir . '/assets/js/seo-sidebar.min.js',
+	);
+	$cleanup_tasks    = array(
+		'revisions'  => __( 'Supprimer les revisions', 'greenlight' ),
+		'autodraft'  => __( 'Supprimer les brouillons auto', 'greenlight' ),
+		'trash'      => __( 'Vider la corbeille', 'greenlight' ),
+		'spam'       => __( 'Supprimer les commentaires spam', 'greenlight' ),
+		'transients' => __( 'Supprimer les transients expires', 'greenlight' ),
+		'optimize'   => __( 'Optimiser les tables', 'greenlight' ),
+	);
+	$server_note      = '';
+
+	foreach ( array( 'navigation', 'image', 'heading', 'paragraph', 'separator', 'button', 'group', 'query' ) as $block_slug ) {
+		$min_files[ 'blocks/' . $block_slug . '.min.css' ] = $theme_dir . '/assets/css/blocks/' . $block_slug . '.min.css';
+	}
+
+	if ( false !== stripos( $server_software, 'nginx' ) ) {
+		$server_note = __( 'nginx detecte: gardez la compression et les headers de cache actifs pour diffuser moins de poids.', 'greenlight' );
+	} elseif ( false !== stripos( $server_software, 'apache' ) ) {
+		$server_note = __( 'Apache detecte: activez mod_deflate, mod_expires et les headers de cache pour garder une diffusion sobre.', 'greenlight' );
+	} else {
+		/* translators: %s: server software string. */
+		$server_note = sprintf( __( 'Serveur detecte: %s.', 'greenlight' ), '' !== $server_software ? $server_software : __( 'inconnu', 'greenlight' ) );
+	}
+
+	$emit_perf_hidden_fields = static function ( array $exclude ) use ( $perf_fields, $options ) {
+		foreach ( $perf_fields as $perf_field ) {
+			if ( in_array( $perf_field, $exclude, true ) || ! isset( $options[ $perf_field ] ) ) {
+				continue;
+			}
+
+			$value = $options[ $perf_field ];
+
+			if ( is_numeric( $value ) ) {
+				if ( 0 === (int) $value ) {
+					continue;
+				}
+
+				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $perf_field ) . ']" value="' . esc_attr( $value ) . '">';
+				continue;
+			}
+
+			echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $perf_field ) . ']" value="' . esc_attr( $value ) . '">';
+		}
+	};
 
 	// Notifications GET.
 	// phpcs:disable WordPress.Security.NonceVerification.Recommended
 	if ( isset( $_GET['purged'] ) && '1' === $_GET['purged'] ) {
-		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Cache purgé avec succès.', 'greenlight' ) . '</p></div>';
+		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Cache purge avec succes.', 'greenlight' ) . '</p></div>';
 	}
 	if ( isset( $_GET['regen'] ) && '1' === $_GET['regen'] ) {
-		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Fichiers minifiés supprimés — ils seront régénérés au prochain chargement.', 'greenlight' ) . '</p></div>';
+		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Fichiers minifies supprimes: ils seront regeneres au prochain chargement.', 'greenlight' ) . '</p></div>';
 	}
 	// phpcs:enable
 	?>
 	<div class="greenlight-admin-tab-panel__intro">
 		<div>
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Performance', 'greenlight' ); ?></p>
-			<h2><?php esc_html_e( 'Cache, minification et maintenance', 'greenlight' ); ?></h2>
-			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Consolidez la vitesse, le cache et le nettoyage dans un seul outil d’éco-optimisation.', 'greenlight' ); ?></p>
+			<h2><?php esc_html_e( 'Diffusion, cache et maintenance', 'greenlight' ); ?></h2>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Reduisez le poids servi, stabilisez l’administration et gardez le cache sous controle dans un meme poste d’eco-optimisation.', 'greenlight' ); ?></p>
 		</div>
 	</div>
 
 	<div class="greenlight-admin-tab-panel__shell greenlight-admin-tab-panel__shell--performance">
 		<div class="greenlight-admin-tab-panel__column">
+			<section class="greenlight-admin-tab-panel__card greenlight-admin-tab-panel__card--soft">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Impact actuel', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Lecture rapide', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Lisez d’abord ce qui est effectivement diffuse, mis en cache et entretenu.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<div class="greenlight-admin-metrics">
+					<div class="greenlight-admin-metric">
+						<span class="greenlight-admin-metric__label"><?php esc_html_e( 'Cache HTML', 'greenlight' ); ?></span>
+						<span class="greenlight-admin-metric__value"><?php echo esc_html( ! empty( $options['enable_page_cache'] ) ? __( 'Actif', 'greenlight' ) : __( 'Inactif', 'greenlight' ) ); ?></span>
+					</div>
+					<div class="greenlight-admin-metric">
+						<span class="greenlight-admin-metric__label"><?php esc_html_e( 'Diffusion CSS', 'greenlight' ); ?></span>
+						<span class="greenlight-admin-metric__value"><?php echo esc_html( ! empty( $options['enable_css_min'] ) ? __( 'Minifiee', 'greenlight' ) : __( 'Source', 'greenlight' ) ); ?></span>
+					</div>
+					<div class="greenlight-admin-metric">
+						<span class="greenlight-admin-metric__label"><?php esc_html_e( 'Bundle CSS', 'greenlight' ); ?></span>
+						<span class="greenlight-admin-metric__value"><?php echo esc_html( ! empty( $options['enable_concat'] ) ? __( 'Active', 'greenlight' ) : __( 'Desactive', 'greenlight' ) ); ?></span>
+					</div>
+					<div class="greenlight-admin-metric">
+						<span class="greenlight-admin-metric__label"><?php esc_html_e( 'Entretien auto', 'greenlight' ); ?></span>
+						<span class="greenlight-admin-metric__value"><?php echo esc_html( ! empty( $options['enable_auto_cleanup'] ) ? __( 'Hebdo', 'greenlight' ) : __( 'Manuel', 'greenlight' ) ); ?></span>
+					</div>
+				</div>
+			</section>
+
 			<section class="greenlight-admin-tab-panel__card">
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
-						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Optimisation de base', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Minification et cache HTML', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Activez les optimisations à la source avant de diffuser les fichiers générés.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Diffusion', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Fichiers servis', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Reduisez le poids diffuse avant d’agir sur la maintenance. Cette carte regroupe minification, bundle CSS et critical CSS.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="options.php">
-		<?php settings_fields( 'greenlight_performance' ); ?>
-		<table class="form-table" role="presentation">
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Minification CSS', 'greenlight' ); ?></th>
-				<td>
-					<label for="gl-css-min">
-						<input id="gl-css-min" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[enable_css_min]" type="checkbox" value="1" <?php checked( (int) $options['enable_css_min'], 1 ); ?>>
-						<?php esc_html_e( 'Charger les fichiers .min.css (générés automatiquement si absents).', 'greenlight' ); ?>
-					</label>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Minification JS', 'greenlight' ); ?></th>
-				<td>
-					<label for="gl-js-min">
-						<input id="gl-js-min" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[enable_js_min]" type="checkbox" value="1" <?php checked( (int) $options['enable_js_min'], 1 ); ?>>
-						<?php esc_html_e( 'Charger les fichiers .min.js (générés automatiquement si absents).', 'greenlight' ); ?>
-					</label>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Cache page HTML', 'greenlight' ); ?></th>
-				<td>
-					<label for="gl-page-cache">
-						<input id="gl-page-cache" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[enable_page_cache]" type="checkbox" value="1" <?php checked( (int) $options['enable_page_cache'], 1 ); ?>>
-						<?php esc_html_e( 'Activer le cache statique HTML.', 'greenlight' ); ?>
-					</label>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row">
-					<label for="gl-lifetime"><?php esc_html_e( 'Durée de vie du cache', 'greenlight' ); ?></label>
-				</th>
-				<td>
-					<select id="gl-lifetime" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[cache_lifetime]">
-						<?php
-						$lifetimes = array(
-							3600   => __( '1 heure', 'greenlight' ),
-							21600  => __( '6 heures', 'greenlight' ),
-							43200  => __( '12 heures', 'greenlight' ),
-							86400  => __( '24 heures', 'greenlight' ),
-							604800 => __( '1 semaine', 'greenlight' ),
-						);
-						foreach ( $lifetimes as $value => $label ) :
-							?>
-							<option value="<?php echo esc_attr( $value ); ?>" <?php selected( (int) $options['cache_lifetime'], $value ); ?>><?php echo esc_html( $label ); ?></option>
-						<?php endforeach; ?>
-					</select>
-				</td>
-			</tr>
-		</table>
-		<?php submit_button(); ?>
+					<?php settings_fields( 'greenlight_performance' ); ?>
+					<?php $emit_perf_hidden_fields( array( 'enable_css_min', 'enable_js_min', 'enable_critical_css', 'enable_concat' ) ); ?>
+					<table class="form-table" role="presentation">
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Minification CSS', 'greenlight' ); ?></th>
+							<td>
+								<label for="gl-css-min">
+									<input id="gl-css-min" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[enable_css_min]" type="checkbox" value="1" <?php checked( (int) $options['enable_css_min'], 1 ); ?>>
+									<?php esc_html_e( 'Servir les fichiers .min.css quand ils existent ou les generer si besoin.', 'greenlight' ); ?>
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Minification JS', 'greenlight' ); ?></th>
+							<td>
+								<label for="gl-js-min">
+									<input id="gl-js-min" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[enable_js_min]" type="checkbox" value="1" <?php checked( (int) $options['enable_js_min'], 1 ); ?>>
+									<?php esc_html_e( 'Servir les fichiers .min.js quand ils existent ou les generer si besoin.', 'greenlight' ); ?>
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Bundle CSS', 'greenlight' ); ?></th>
+							<td>
+								<label for="gl-concat">
+									<input id="gl-concat" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[enable_concat]" type="checkbox" value="1" <?php checked( ! empty( $options['enable_concat'] ), true ); ?>>
+									<?php esc_html_e( 'Fusionner style.css et les blocs en un seul fichier pour reduire les requetes CSS.', 'greenlight' ); ?>
+								</label>
+								<?php if ( $bundle_exists ) : ?>
+									<p class="description"><?php esc_html_e( 'Bundle genere.', 'greenlight' ); ?> (<?php echo esc_html( size_format( (int) filesize( $bundle_path ), 1 ) ); ?>)</p>
+								<?php endif; ?>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Critical CSS', 'greenlight' ); ?></th>
+							<td>
+								<label for="gl-critical-css">
+									<input id="gl-critical-css" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[enable_critical_css]" type="checkbox" value="1" <?php checked( ! empty( $options['enable_critical_css'] ), true ); ?>>
+									<?php esc_html_e( 'Inliner le CSS critique et differer la feuille principale pour accelerer le premier rendu.', 'greenlight' ); ?>
+								</label>
+								<?php if ( ! $critical_exists ) : ?>
+									<p class="description"><?php esc_html_e( 'Le fichier assets/css/critical.css est absent.', 'greenlight' ); ?></p>
+								<?php endif; ?>
+							</td>
+						</tr>
+					</table>
+					<?php submit_button( __( 'Enregistrer la diffusion', 'greenlight' ) ); ?>
 				</form>
+			</section>
 
-	<h2><?php esc_html_e( 'Statut de la minification', 'greenlight' ); ?></h2>
-	<?php
-	$min_files     = array(
-		'style.min.css'                => $theme_dir . '/style.min.css',
-		'assets/js/seo-sidebar.min.js' => $theme_dir . '/assets/js/seo-sidebar.min.js',
-	);
-	$block_min_dir = $theme_dir . '/assets/css/blocks/';
-	foreach ( array( 'navigation', 'image', 'heading', 'paragraph', 'separator', 'button', 'group', 'query' ) as $b ) {
-		$min_files[ 'blocks/' . $b . '.min.css' ] = $block_min_dir . $b . '.min.css';
-	}
-	echo '<table class="widefat striped" style="max-width:600px"><thead><tr><th>' . esc_html__( 'Fichier', 'greenlight' ) . '</th><th>' . esc_html__( 'Statut', 'greenlight' ) . '</th><th>' . esc_html__( 'Taille', 'greenlight' ) . '</th></tr></thead><tbody>';
-	foreach ( $min_files as $label => $path ) {
-		$exists = file_exists( $path );
-		$status = $exists
-			? '<span style="color:#46b450">&#10003; ' . esc_html__( 'Présent', 'greenlight' ) . '</span>'
-			: '<span style="color:#dc3232">&#10007; ' . esc_html__( 'Absent', 'greenlight' ) . '</span>';
-		$size   = $exists ? esc_html( size_format( (int) filesize( $path ), 1 ) ) : '—';
-		$mtime  = $exists ? ' <small style="color:#999">(' . esc_html( gmdate( 'd/m H:i', filemtime( $path ) ) ) . ')</small>' : '';
-		echo '<tr><td><code>' . esc_html( $label ) . '</code></td><td>' . $status . $mtime . '</td><td>' . $size . '</td></tr>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	}
-	echo '</tbody></table>';
-	?>
-	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin-top:1em">
-		<input type="hidden" name="action" value="greenlight_regen_min">
-		<?php wp_nonce_field( 'greenlight_regen_min' ); ?>
-		<button type="submit" class="button button-secondary"><?php esc_html_e( 'Supprimer les fichiers minifiés (régénération au prochain chargement)', 'greenlight' ); ?></button>
-	</form>
+			<section class="greenlight-admin-tab-panel__card">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Cache HTML', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Pages diffusees en statique', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Le cache HTML réduit le travail serveur sur les pages anonymes. Reglez sa presence et sa duree ici.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<form method="post" action="options.php">
+					<?php settings_fields( 'greenlight_performance' ); ?>
+					<?php $emit_perf_hidden_fields( array( 'enable_page_cache', 'cache_lifetime' ) ); ?>
+					<table class="form-table" role="presentation">
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Cache page HTML', 'greenlight' ); ?></th>
+							<td>
+								<label for="gl-page-cache">
+									<input id="gl-page-cache" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[enable_page_cache]" type="checkbox" value="1" <?php checked( (int) $options['enable_page_cache'], 1 ); ?>>
+									<?php esc_html_e( 'Activer le cache statique HTML pour les visites anonymes.', 'greenlight' ); ?>
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="gl-lifetime"><?php esc_html_e( 'Duree de vie du cache', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-lifetime" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[cache_lifetime]">
+									<?php foreach ( $lifetimes as $value => $label ) : ?>
+										<option value="<?php echo esc_attr( $value ); ?>" <?php selected( (int) $options['cache_lifetime'], $value ); ?>><?php echo esc_html( $label ); ?></option>
+									<?php endforeach; ?>
+								</select>
+								<p class="description"><?php esc_html_e( 'Choisissez une duree qui reste compatible avec votre frequence de publication.', 'greenlight' ); ?></p>
+							</td>
+						</tr>
+					</table>
+					<?php submit_button( __( 'Enregistrer le cache', 'greenlight' ), 'secondary' ); ?>
+				</form>
+				<div class="greenlight-admin-tab-panel__actions">
+					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+						<input type="hidden" name="action" value="greenlight_purge_cache">
+						<?php wp_nonce_field( 'greenlight_purge_cache' ); ?>
+						<button type="submit" class="button button-secondary"><?php esc_html_e( 'Purger le cache HTML', 'greenlight' ); ?></button>
+					</form>
+				</div>
+			</section>
 
+			<section class="greenlight-admin-tab-panel__card">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Rythme', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Connexions et pulsation du site', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Cadrez les connexions externes et le rythme Heartbeat pour réduire les appels inutiles sans fragiliser l’edition.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<form method="post" action="options.php">
+					<?php settings_fields( 'greenlight_performance' ); ?>
+					<?php $emit_perf_hidden_fields( array( 'prefetch_domains', 'heartbeat_front', 'heartbeat_admin', 'heartbeat_editor' ) ); ?>
+					<table class="form-table" role="presentation">
+						<tr>
+							<th scope="row"><label for="gl-prefetch"><?php esc_html_e( 'Domaines externes', 'greenlight' ); ?></label></th>
+							<td>
+								<textarea id="gl-prefetch" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[prefetch_domains]" class="large-text code" rows="4" placeholder="https://fonts.googleapis.com"><?php echo esc_textarea( isset( $options['prefetch_domains'] ) ? $options['prefetch_domains'] : '' ); ?></textarea>
+								<p class="description"><?php esc_html_e( 'Un domaine par ligne. Greenlight peut aussi detecter les domaines externes rencontres sur le site.', 'greenlight' ); ?></p>
+								<?php if ( is_array( $detected_domains ) && ! empty( $detected_domains ) ) : ?>
+									<p class="description">
+										<?php esc_html_e( 'Domaines detectes :', 'greenlight' ); ?>
+										<code><?php echo esc_html( implode( ', ', $detected_domains ) ); ?></code>
+									</p>
+								<?php endif; ?>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="gl-hb-front"><?php esc_html_e( 'Heartbeat front', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-hb-front" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[heartbeat_front]">
+									<?php foreach ( $heartbeat_labels as $value => $label ) : ?>
+										<option value="<?php echo esc_attr( $value ); ?>" <?php selected( isset( $options['heartbeat_front'] ) ? $options['heartbeat_front'] : 'default', $value ); ?>><?php echo esc_html( $label ); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="gl-hb-admin"><?php esc_html_e( 'Heartbeat admin', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-hb-admin" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[heartbeat_admin]">
+									<?php foreach ( $heartbeat_labels as $value => $label ) : ?>
+										<option value="<?php echo esc_attr( $value ); ?>" <?php selected( isset( $options['heartbeat_admin'] ) ? $options['heartbeat_admin'] : 'default', $value ); ?>><?php echo esc_html( $label ); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="gl-hb-editor"><?php esc_html_e( 'Heartbeat editeur', 'greenlight' ); ?></label></th>
+							<td>
+								<select id="gl-hb-editor" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[heartbeat_editor]">
+									<?php foreach ( $heartbeat_labels as $value => $label ) : ?>
+										<option value="<?php echo esc_attr( $value ); ?>" <?php selected( isset( $options['heartbeat_editor'] ) ? $options['heartbeat_editor'] : 'default', $value ); ?>><?php echo esc_html( $label ); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</td>
+						</tr>
+					</table>
+					<?php submit_button( __( 'Enregistrer le rythme', 'greenlight' ), 'secondary' ); ?>
+				</form>
+			</section>
+
+			<section class="greenlight-admin-tab-panel__card">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Maintenance', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Nettoyage et regeneration', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Isolez ici les actions ponctuelles et les routines automatiques pour eviter de confondre configuration et maintenance.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<?php
+				// phpcs:disable WordPress.Security.NonceVerification.Recommended
+				if ( isset( $_GET['cleanup'] ) && isset( $_GET['cleaned'] ) ) {
+					/* translators: 1: cleanup task slug 2: number of cleaned items. */
+					$cleanup_message = esc_html__( 'Nettoyage "%1$s" termine: %2$d element(s) traite(s).', 'greenlight' );
+					printf(
+						'<div class="notice notice-success is-dismissible"><p>' . esc_html( $cleanup_message ) . '</p></div>',
+						esc_html( sanitize_key( $_GET['cleanup'] ) ),
+						absint( $_GET['cleaned'] )
+					);
+				}
+				// phpcs:enable
+				?>
+				<div class="greenlight-admin-tab-panel__actions">
+					<?php foreach ( $cleanup_tasks as $task_key => $task_label ) : ?>
+						<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+							<input type="hidden" name="action" value="greenlight_db_cleanup">
+							<input type="hidden" name="cleanup_task" value="<?php echo esc_attr( $task_key ); ?>">
+							<?php wp_nonce_field( 'greenlight_db_cleanup' ); ?>
+							<button type="submit" class="button button-secondary"><?php echo esc_html( $task_label ); ?></button>
+						</form>
+					<?php endforeach; ?>
+				</div>
+
+				<form method="post" action="options.php">
+					<?php settings_fields( 'greenlight_performance' ); ?>
+					<?php $emit_perf_hidden_fields( array( 'enable_auto_cleanup' ) ); ?>
+					<table class="form-table" role="presentation">
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Nettoyage automatique', 'greenlight' ); ?></th>
+							<td>
+								<label for="gl-auto-cleanup">
+									<input id="gl-auto-cleanup" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[enable_auto_cleanup]" type="checkbox" value="1" <?php checked( ! empty( $options['enable_auto_cleanup'] ), true ); ?>>
+									<?php esc_html_e( 'Executer un cycle hebdomadaire sur revisions, brouillons, corbeille, spam et transients expires.', 'greenlight' ); ?>
+								</label>
+							</td>
+						</tr>
+					</table>
+					<?php submit_button( __( 'Enregistrer la maintenance', 'greenlight' ), 'secondary' ); ?>
+				</form>
+			</section>
+
+			<section class="greenlight-admin-tab-panel__card">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Fichiers generes', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Presence des sorties minifiees', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Verifiez rapidement si les sorties diffusees existent deja avant de regenerer.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<table class="widefat striped">
+					<thead>
+						<tr>
+							<th><?php esc_html_e( 'Fichier', 'greenlight' ); ?></th>
+							<th><?php esc_html_e( 'Statut', 'greenlight' ); ?></th>
+							<th><?php esc_html_e( 'Taille', 'greenlight' ); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ( $min_files as $label => $path ) : ?>
+							<?php
+							$exists       = file_exists( $path );
+							$status_class = $exists ? 'greenlight-admin-state greenlight-admin-state--ok' : 'greenlight-admin-state greenlight-admin-state--off';
+							$status_label = $exists ? __( 'Present', 'greenlight' ) : __( 'Absent', 'greenlight' );
+							$size_label   = $exists ? size_format( (int) filesize( $path ), 1 ) : '—';
+							$mtime_markup = '';
+
+							if ( $exists ) {
+								$mtime_markup = ' <small class="greenlight-admin-tab-panel__meta">(' . esc_html( gmdate( 'd/m H:i', filemtime( $path ) ) ) . ')</small>';
+							}
+							?>
+							<tr>
+								<td><code><?php echo esc_html( $label ); ?></code></td>
+								<td>
+									<span class="<?php echo esc_attr( $status_class ); ?>"><?php echo esc_html( $status_label ); ?></span>
+									<?php echo wp_kses_post( $mtime_markup ); ?>
+								</td>
+								<td><?php echo esc_html( $size_label ); ?></td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+				<div class="greenlight-admin-tab-panel__actions">
+					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+						<input type="hidden" name="action" value="greenlight_regen_min">
+						<?php wp_nonce_field( 'greenlight_regen_min' ); ?>
+						<button type="submit" class="button button-secondary"><?php esc_html_e( 'Supprimer les sorties minifiees', 'greenlight' ); ?></button>
+					</form>
+				</div>
 			</section>
 		</div>
+
 		<aside class="greenlight-admin-tab-panel__column">
 			<section class="greenlight-admin-tab-panel__card greenlight-admin-tab-panel__card--soft">
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
-						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Cache HTML', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'État actuel', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Etat actuel', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Diffusion et cache', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Ce panneau resume l’etat du site tel qu’il est actuellement servi.', 'greenlight' ); ?></p>
 					</div>
-				</div>
-
-	<h2><?php esc_html_e( 'Statut du cache HTML', 'greenlight' ); ?></h2>
-	<p>
-		<?php
-		printf(
-			/* translators: 1: page count 2: total size */
-			esc_html__( '%1$s page(s) en cache · %2$s', 'greenlight' ),
-			esc_html( number_format_i18n( $stats['count'] ) ),
-			esc_html( size_format( $stats['size'], 2 ) )
-		);
-		?>
-	</p>
-	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-		<input type="hidden" name="action" value="greenlight_purge_cache">
-		<?php wp_nonce_field( 'greenlight_purge_cache' ); ?>
-		<button type="submit" class="button button-secondary"><?php esc_html_e( 'Purger le cache HTML', 'greenlight' ); ?></button>
-	</form>
-
-	<h2><?php esc_html_e( 'Environnement serveur', 'greenlight' ); ?></h2>
-	<?php
-	$server_software = isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '';
-	if ( stripos( $server_software, 'nginx' ) !== false ) {
-		echo '<p>' . esc_html__( 'Serveur nginx détecté — activez gzip/brotli dans nginx.conf pour compresser les assets.', 'greenlight' ) . '</p>';
-		echo '<code>gzip on; gzip_types text/css application/javascript;</code>';
-	} elseif ( stripos( $server_software, 'apache' ) !== false ) {
-		echo '<p>' . esc_html__( 'Serveur Apache détecté — ajoutez mod_deflate et mod_expires dans votre .htaccess.', 'greenlight' ) . '</p>';
-	} else {
-		/* translators: %s: server software string */
-		$server_software_message = __( 'Serveur : %s', 'greenlight' );
-		echo '<p>' . esc_html(
-			sprintf(
-				$server_software_message,
-				'' !== $server_software ? $server_software : __( 'inconnu', 'greenlight' )
-			)
-		) . '</p>';
-	}
-	?>
-
+					</div>
+					<ul class="greenlight-admin-tab-panel__list">
+						<?php /* translators: %s: cache HTML status. */ ?>
+						<li><?php echo esc_html( sprintf( __( 'Cache HTML: %s', 'greenlight' ), ! empty( $options['enable_page_cache'] ) ? __( 'actif', 'greenlight' ) : __( 'inactif', 'greenlight' ) ) ); ?></li>
+						<?php /* translators: %s: number of cached pages. */ ?>
+						<li><?php echo esc_html( sprintf( __( 'Pages en cache: %s', 'greenlight' ), number_format_i18n( (int) $stats['count'] ) ) ); ?></li>
+						<?php /* translators: %s: total cache size. */ ?>
+						<li><?php echo esc_html( sprintf( __( 'Poids en cache: %s', 'greenlight' ), size_format( (int) $stats['size'], 2 ) ) ); ?></li>
+						<?php /* translators: %s: critical CSS status. */ ?>
+						<li><?php echo esc_html( sprintf( __( 'Critical CSS: %s', 'greenlight' ), ! empty( $options['enable_critical_css'] ) ? __( 'actif', 'greenlight' ) : __( 'inactif', 'greenlight' ) ) ); ?></li>
+						<?php /* translators: %s: CSS bundle status. */ ?>
+						<li><?php echo esc_html( sprintf( __( 'Bundle CSS: %s', 'greenlight' ), ! empty( $options['enable_concat'] ) ? __( 'actif', 'greenlight' ) : __( 'inactif', 'greenlight' ) ) ); ?></li>
+						<?php /* translators: %s: heartbeat mode label. */ ?>
+						<li><?php echo esc_html( sprintf( __( 'Heartbeat front: %s', 'greenlight' ), isset( $heartbeat_labels[ $options['heartbeat_front'] ] ) ? $heartbeat_labels[ $options['heartbeat_front'] ] : $heartbeat_labels['default'] ) ); ?></li>
+					</ul>
 			</section>
 
-			<section class="greenlight-admin-tab-panel__card">
+			<section class="greenlight-admin-tab-panel__card greenlight-admin-tab-panel__card--soft">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Impact', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Ce que ces reglages changent', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Greenlight doit rendre l’effet de chaque option lisible, pas seulement son nom technique.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<ul class="greenlight-admin-tab-panel__list">
+					<li><?php esc_html_e( 'La minification et le bundle CSS reduisent le volume et le nombre de fichiers servis.', 'greenlight' ); ?></li>
+					<li><?php esc_html_e( 'Le cache HTML diminue le travail serveur sur les visites anonymes.', 'greenlight' ); ?></li>
+					<li><?php esc_html_e( 'Le prefetch et le preconnect anticipent certaines connexions externes utiles.', 'greenlight' ); ?></li>
+					<li><?php esc_html_e( 'Le Heartbeat et le nettoyage base de donnees protègent la stabilite de l’administration dans le temps.', 'greenlight' ); ?></li>
+				</ul>
+			</section>
 
-	<!-- Critical CSS -->
-	<h2><?php esc_html_e( 'Critical CSS', 'greenlight' ); ?></h2>
-	<form method="post" action="options.php">
-		<?php settings_fields( 'greenlight_performance' ); ?>
-		<?php
-		foreach ( $options as $pk => $pv ) {
-			if ( in_array( $pk, array( 'enable_critical_css', 'prefetch_domains', 'enable_concat', 'heartbeat_front', 'heartbeat_admin', 'heartbeat_editor', 'enable_auto_cleanup' ), true ) ) {
-				continue;
-			}
-			if ( is_numeric( $pv ) && (int) $pv ) {
-				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
-			} elseif ( ! is_numeric( $pv ) ) {
-				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
-			}
-		}
-		// Preserve other new options.
-		foreach ( array( 'prefetch_domains', 'enable_concat', 'heartbeat_front', 'heartbeat_admin', 'heartbeat_editor', 'enable_auto_cleanup' ) as $hk ) {
-			if ( isset( $options[ $hk ] ) ) {
-				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $hk ) . ']" value="' . esc_attr( $options[ $hk ] ) . '">';
-			}
-		}
-		$critical_exists = file_exists( get_theme_file_path( 'assets/css/critical.css' ) );
-		?>
-		<table class="form-table" role="presentation">
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Critical CSS', 'greenlight' ); ?></th>
-				<td>
-					<label for="gl-critical-css">
-						<input id="gl-critical-css" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[enable_critical_css]" type="checkbox" value="1" <?php checked( ! empty( $options['enable_critical_css'] ), true ); ?>>
-						<?php esc_html_e( 'Inliner le CSS critique et différer le chargement du style principal.', 'greenlight' ); ?>
-					</label>
-					<?php if ( ! $critical_exists ) : ?>
-						<p class="description" style="color:#dc3232"><?php esc_html_e( 'Le fichier assets/css/critical.css est absent.', 'greenlight' ); ?></p>
-					<?php endif; ?>
-				</td>
-			</tr>
-		</table>
-		<?php submit_button( __( 'Enregistrer', 'greenlight' ), 'secondary' ); ?>
-	</form>
-
-	<!-- Prefetch -->
-	<h2><?php esc_html_e( 'DNS Prefetch & Preconnect', 'greenlight' ); ?></h2>
-	<form method="post" action="options.php">
-		<?php settings_fields( 'greenlight_performance' ); ?>
-		<?php
-		foreach ( $options as $pk => $pv ) {
-			if ( 'prefetch_domains' === $pk ) {
-				continue;
-			}
-			if ( is_numeric( $pv ) && (int) $pv ) {
-				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
-			} elseif ( ! is_numeric( $pv ) ) {
-				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
-			}
-		}
-		$detected = get_transient( 'greenlight_detected_domains' );
-		?>
-		<table class="form-table" role="presentation">
-			<tr>
-				<th scope="row">
-					<label for="gl-prefetch"><?php esc_html_e( 'Domaines', 'greenlight' ); ?></label>
-				</th>
-				<td>
-					<textarea id="gl-prefetch" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[prefetch_domains]" class="large-text code" rows="4" placeholder="https://fonts.googleapis.com"><?php echo esc_textarea( isset( $options['prefetch_domains'] ) ? $options['prefetch_domains'] : '' ); ?></textarea>
-					<p class="description"><?php esc_html_e( 'Un domaine par ligne. Les domaines externes sont aussi auto-détectés chaque semaine.', 'greenlight' ); ?></p>
-					<?php if ( is_array( $detected ) && ! empty( $detected ) ) : ?>
-						<p class="description">
-							<?php esc_html_e( 'Domaines auto-détectés :', 'greenlight' ); ?>
-							<code><?php echo esc_html( implode( ', ', $detected ) ); ?></code>
-						</p>
-					<?php endif; ?>
-				</td>
-			</tr>
-		</table>
-		<?php submit_button( __( 'Enregistrer', 'greenlight' ), 'secondary' ); ?>
-	</form>
-
-	<!-- Concat CSS -->
-	<h2><?php esc_html_e( 'Concaténation CSS', 'greenlight' ); ?></h2>
-	<form method="post" action="options.php">
-		<?php settings_fields( 'greenlight_performance' ); ?>
-		<?php
-		foreach ( $options as $pk => $pv ) {
-			if ( 'enable_concat' === $pk ) {
-				continue;
-			}
-			if ( is_numeric( $pv ) && (int) $pv ) {
-				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
-			} elseif ( ! is_numeric( $pv ) ) {
-				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
-			}
-		}
-		$bundle_exists = file_exists( get_stylesheet_directory() . '/assets/css/greenlight-bundle.css' );
-		?>
-		<table class="form-table" role="presentation">
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Bundle CSS', 'greenlight' ); ?></th>
-				<td>
-					<label for="gl-concat">
-						<input id="gl-concat" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[enable_concat]" type="checkbox" value="1" <?php checked( ! empty( $options['enable_concat'] ), true ); ?>>
-						<?php esc_html_e( 'Concaténer style.css + blocs en un seul fichier.', 'greenlight' ); ?>
-					</label>
-					<?php if ( $bundle_exists ) : ?>
-						<p class="description"><?php esc_html_e( 'Bundle généré.', 'greenlight' ); ?> (<?php echo esc_html( size_format( (int) filesize( get_stylesheet_directory() . '/assets/css/greenlight-bundle.css' ), 1 ) ); ?>)</p>
-					<?php endif; ?>
-				</td>
-			</tr>
-		</table>
-		<?php submit_button( __( 'Enregistrer', 'greenlight' ), 'secondary' ); ?>
-	</form>
-
-	<!-- Heartbeat -->
-	<h2><?php esc_html_e( 'Heartbeat API', 'greenlight' ); ?></h2>
-	<form method="post" action="options.php">
-		<?php settings_fields( 'greenlight_performance' ); ?>
-		<?php
-		foreach ( $options as $pk => $pv ) {
-			if ( in_array( $pk, array( 'heartbeat_front', 'heartbeat_admin', 'heartbeat_editor' ), true ) ) {
-				continue;
-			}
-			if ( is_numeric( $pv ) && (int) $pv ) {
-				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
-			} elseif ( ! is_numeric( $pv ) ) {
-				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
-			}
-		}
-
-		$hb_choices = array(
-			'default' => __( 'Par défaut', 'greenlight' ),
-			'reduce'  => __( 'Réduire (120s)', 'greenlight' ),
-			'disable' => __( 'Désactiver', 'greenlight' ),
-		);
-		?>
-		<table class="form-table" role="presentation">
-			<tr>
-				<th scope="row"><label for="gl-hb-front"><?php esc_html_e( 'Front-end', 'greenlight' ); ?></label></th>
-				<td>
-					<select id="gl-hb-front" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[heartbeat_front]">
-						<?php foreach ( $hb_choices as $val => $label ) : ?>
-							<option value="<?php echo esc_attr( $val ); ?>" <?php selected( isset( $options['heartbeat_front'] ) ? $options['heartbeat_front'] : 'default', $val ); ?>><?php echo esc_html( $label ); ?></option>
-						<?php endforeach; ?>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row"><label for="gl-hb-admin"><?php esc_html_e( 'Administration', 'greenlight' ); ?></label></th>
-				<td>
-					<select id="gl-hb-admin" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[heartbeat_admin]">
-						<?php foreach ( $hb_choices as $val => $label ) : ?>
-							<option value="<?php echo esc_attr( $val ); ?>" <?php selected( isset( $options['heartbeat_admin'] ) ? $options['heartbeat_admin'] : 'default', $val ); ?>><?php echo esc_html( $label ); ?></option>
-						<?php endforeach; ?>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row"><label for="gl-hb-editor"><?php esc_html_e( 'Éditeur de blocs', 'greenlight' ); ?></label></th>
-				<td>
-					<select id="gl-hb-editor" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[heartbeat_editor]">
-						<?php foreach ( $hb_choices as $val => $label ) : ?>
-							<option value="<?php echo esc_attr( $val ); ?>" <?php selected( isset( $options['heartbeat_editor'] ) ? $options['heartbeat_editor'] : 'default', $val ); ?>><?php echo esc_html( $label ); ?></option>
-						<?php endforeach; ?>
-					</select>
-				</td>
-			</tr>
-		</table>
-		<?php submit_button( __( 'Enregistrer', 'greenlight' ), 'secondary' ); ?>
-	</form>
-
-	<!-- DB Cleanup -->
-	<h2><?php esc_html_e( 'Nettoyage de la base de données', 'greenlight' ); ?></h2>
-	<?php
-	// phpcs:disable WordPress.Security.NonceVerification.Recommended
-	if ( isset( $_GET['cleanup'] ) && isset( $_GET['cleaned'] ) ) {
-		/* translators: 1: cleanup task slug 2: number of cleaned items. */
-		$cleanup_message = esc_html__( 'Nettoyage "%1$s" terminé : %2$d élément(s) traité(s).', 'greenlight' );
-		printf(
-			'<div class="notice notice-success is-dismissible"><p>' . esc_html( $cleanup_message ) . '</p></div>',
-			esc_html( sanitize_key( $_GET['cleanup'] ) ),
-			absint( $_GET['cleaned'] )
-		);
-	}
-	// phpcs:enable
-
-	$cleanup_tasks = array(
-		'revisions'  => __( 'Supprimer les révisions', 'greenlight' ),
-		'autodraft'  => __( 'Supprimer les brouillons auto', 'greenlight' ),
-		'trash'      => __( 'Vider la corbeille', 'greenlight' ),
-		'spam'       => __( 'Supprimer les commentaires spam', 'greenlight' ),
-		'transients' => __( 'Supprimer les transients expirés', 'greenlight' ),
-		'optimize'   => __( 'Optimiser les tables', 'greenlight' ),
-	);
-	?>
-	<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1em">
-		<?php foreach ( $cleanup_tasks as $task_key => $task_label ) : ?>
-			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline">
-				<input type="hidden" name="action" value="greenlight_db_cleanup">
-				<input type="hidden" name="cleanup_task" value="<?php echo esc_attr( $task_key ); ?>">
-				<?php wp_nonce_field( 'greenlight_db_cleanup' ); ?>
-				<button type="submit" class="button button-secondary"><?php echo esc_html( $task_label ); ?></button>
-			</form>
-		<?php endforeach; ?>
-	</div>
-
-	<form method="post" action="options.php">
-		<?php settings_fields( 'greenlight_performance' ); ?>
-		<?php
-		foreach ( $options as $pk => $pv ) {
-			if ( 'enable_auto_cleanup' === $pk ) {
-				continue;
-			}
-			if ( is_numeric( $pv ) && (int) $pv ) {
-				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
-			} elseif ( ! is_numeric( $pv ) ) {
-				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $pk ) . ']" value="' . esc_attr( $pv ) . '">';
-			}
-		}
-		?>
-		<table class="form-table" role="presentation">
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Nettoyage automatique', 'greenlight' ); ?></th>
-				<td>
-					<label for="gl-auto-cleanup">
-						<input id="gl-auto-cleanup" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[enable_auto_cleanup]" type="checkbox" value="1" <?php checked( ! empty( $options['enable_auto_cleanup'] ), true ); ?>>
-						<?php esc_html_e( 'Exécuter le nettoyage automatiquement chaque semaine (révisions, brouillons, corbeille, spam, transients).', 'greenlight' ); ?>
-					</label>
-				</td>
-			</tr>
-		</table>
-		<?php submit_button( __( 'Enregistrer', 'greenlight' ), 'secondary' ); ?>
-	</form>
+			<section class="greenlight-admin-tab-panel__card greenlight-admin-tab-panel__card--soft">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Infrastructure', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Environnement serveur', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php echo esc_html( $server_note ); ?></p>
+					</div>
+					</div>
+					<ul class="greenlight-admin-tab-panel__list">
+						<?php /* translators: %s: server software string. */ ?>
+						<li><?php echo esc_html( sprintf( __( 'Serveur: %s', 'greenlight' ), '' !== $server_software ? $server_software : __( 'inconnu', 'greenlight' ) ) ); ?></li>
+						<?php /* translators: %s: cache lifetime label. */ ?>
+						<li><?php echo esc_html( sprintf( __( 'Cache courant: %s', 'greenlight' ), isset( $lifetimes[ (int) $options['cache_lifetime'] ] ) ? $lifetimes[ (int) $options['cache_lifetime'] ] : __( '1 heure', 'greenlight' ) ) ); ?></li>
+						<?php /* translators: %s: bundle presence label. */ ?>
+						<li><?php echo esc_html( sprintf( __( 'Bundle genere: %s', 'greenlight' ), $bundle_exists ? __( 'oui', 'greenlight' ) : __( 'non', 'greenlight' ) ) ); ?></li>
+						<?php /* translators: %s: critical CSS file presence label. */ ?>
+						<li><?php echo esc_html( sprintf( __( 'Critical CSS present: %s', 'greenlight' ), $critical_exists ? __( 'oui', 'greenlight' ) : __( 'non', 'greenlight' ) ) ); ?></li>
+					</ul>
 			</section>
 		</aside>
 	</div>
@@ -1764,7 +1850,7 @@ function greenlight_render_admin_tab_appearance() {
 		<div>
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Apparence', 'greenlight' ); ?></p>
 			<h2><?php esc_html_e( 'Direction éditoriale du site', 'greenlight' ); ?></h2>
-			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Orchestrez le système visuel du thème avec des réglages centralisés, lisibles et faciles à maintenir.', 'greenlight' ); ?></p>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Ajustez les surfaces, les accents et les signatures editoriales tout en gardant un apercu stable du site.', 'greenlight' ); ?></p>
 		</div>
 	</div>
 
@@ -1987,7 +2073,7 @@ function greenlight_render_admin_tab_svg() {
 		<div>
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'SVG', 'greenlight' ); ?></p>
 			<h2><?php esc_html_e( 'Upload vectoriel sécurisé', 'greenlight' ); ?></h2>
-			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Activez les SVG uniquement si le besoin est réel, puis laissez Greenlight les nettoyer avant l’enregistrement.', 'greenlight' ); ?></p>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Autorisez le vectoriel seulement quand il est utile, puis laissez Greenlight neutraliser ce qui ne doit pas passer.', 'greenlight' ); ?></p>
 		</div>
 	</div>
 
@@ -2067,7 +2153,7 @@ function greenlight_render_admin_tab_tools() {
 		<div>
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Outils', 'greenlight' ); ?></p>
 			<h2><?php esc_html_e( 'Import et export des réglages', 'greenlight' ); ?></h2>
-			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Transportez la configuration Greenlight d’un site à l’autre sans exporter la logique métier ni les contenus.', 'greenlight' ); ?></p>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Deplacez les reglages d’un site a l’autre comme des snapshots de configuration, sans toucher au contenu.', 'greenlight' ); ?></p>
 		</div>
 	</div>
 
