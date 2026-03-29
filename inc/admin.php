@@ -1417,12 +1417,12 @@ function greenlight_render_admin_tab_performance() {
 	}
 
 	if ( false !== stripos( $server_software, 'nginx' ) ) {
-		$server_note = __( 'nginx detecte: gardez la compression et les headers de cache actifs pour diffuser moins de poids.', 'greenlight' );
+		$server_note = __( 'nginx détecté : gardez la compression et les headers de cache actifs pour diffuser moins de poids.', 'greenlight' );
 	} elseif ( false !== stripos( $server_software, 'apache' ) ) {
-		$server_note = __( 'Apache detecte: activez mod_deflate, mod_expires et les headers de cache pour garder une diffusion sobre.', 'greenlight' );
+		$server_note = __( 'Apache détecté : activez mod_deflate, mod_expires et les headers de cache pour garder une diffusion sobre.', 'greenlight' );
 	} else {
 		/* translators: %s: server software string. */
-		$server_note = sprintf( __( 'Serveur detecte: %s.', 'greenlight' ), '' !== $server_software ? $server_software : __( 'inconnu', 'greenlight' ) );
+		$server_note = sprintf( __( 'Serveur détecté : %s.', 'greenlight' ), '' !== $server_software ? $server_software : __( 'inconnu', 'greenlight' ) );
 	}
 
 	$emit_perf_hidden_fields = static function ( array $exclude ) use ( $perf_fields, $options ) {
@@ -1460,7 +1460,7 @@ function greenlight_render_admin_tab_performance() {
 		<div>
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Performance', 'greenlight' ); ?></p>
 			<h2><?php esc_html_e( 'Diffusion, cache et maintenance', 'greenlight' ); ?></h2>
-			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Reduisez le poids servi, stabilisez l’administration et gardez le cache sous controle dans un meme poste d’eco-optimisation.', 'greenlight' ); ?></p>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Réduisez le poids servi, stabilisez l’administration et gardez le cache sous contrôle dans un même poste d’éco-optimisation.', 'greenlight' ); ?></p>
 		</div>
 	</div>
 
@@ -1470,8 +1470,8 @@ function greenlight_render_admin_tab_performance() {
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Impact actuel', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Lecture rapide', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Lisez d’abord ce qui est effectivement diffuse, mis en cache et entretenu.', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Vue d’ensemble', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Lisez d’abord ce qui est servi, mis en cache et entretenu.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<div class="greenlight-admin-metrics">
@@ -1481,15 +1481,15 @@ function greenlight_render_admin_tab_performance() {
 					</div>
 					<div class="greenlight-admin-metric">
 						<span class="greenlight-admin-metric__label"><?php esc_html_e( 'Diffusion CSS', 'greenlight' ); ?></span>
-						<span class="greenlight-admin-metric__value"><?php echo esc_html( ! empty( $options['enable_css_min'] ) ? __( 'Minifiee', 'greenlight' ) : __( 'Source', 'greenlight' ) ); ?></span>
+						<span class="greenlight-admin-metric__value"><?php echo esc_html( ! empty( $options['enable_css_min'] ) ? __( 'Minifiée', 'greenlight' ) : __( 'Source', 'greenlight' ) ); ?></span>
 					</div>
 					<div class="greenlight-admin-metric">
 						<span class="greenlight-admin-metric__label"><?php esc_html_e( 'Bundle CSS', 'greenlight' ); ?></span>
-						<span class="greenlight-admin-metric__value"><?php echo esc_html( ! empty( $options['enable_concat'] ) ? __( 'Active', 'greenlight' ) : __( 'Desactive', 'greenlight' ) ); ?></span>
+						<span class="greenlight-admin-metric__value"><?php echo esc_html( ! empty( $options['enable_concat'] ) ? __( 'Actif', 'greenlight' ) : __( 'Désactivé', 'greenlight' ) ); ?></span>
 					</div>
 					<div class="greenlight-admin-metric">
 						<span class="greenlight-admin-metric__label"><?php esc_html_e( 'Entretien auto', 'greenlight' ); ?></span>
-						<span class="greenlight-admin-metric__value"><?php echo esc_html( ! empty( $options['enable_auto_cleanup'] ) ? __( 'Hebdo', 'greenlight' ) : __( 'Manuel', 'greenlight' ) ); ?></span>
+						<span class="greenlight-admin-metric__value"><?php echo esc_html( ! empty( $options['enable_auto_cleanup'] ) ? __( 'Hebdomadaire', 'greenlight' ) : __( 'Manuel', 'greenlight' ) ); ?></span>
 					</div>
 				</div>
 			</section>
@@ -1499,7 +1499,7 @@ function greenlight_render_admin_tab_performance() {
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Diffusion', 'greenlight' ); ?></p>
 						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Fichiers servis', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Reduisez le poids diffuse avant d’agir sur la maintenance. Cette carte regroupe minification, bundle CSS et critical CSS.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Réduisez le poids servi avant d’agir sur la maintenance. Cette carte regroupe minification, bundle CSS et critical CSS.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="options.php">
@@ -1557,8 +1557,8 @@ function greenlight_render_admin_tab_performance() {
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Cache HTML', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Pages diffusees en statique', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Le cache HTML réduit le travail serveur sur les pages anonymes. Reglez sa presence et sa duree ici.', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Pages statiques servies', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Le cache HTML réduit le travail serveur sur les pages anonymes. Réglez sa présence et sa durée ici.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="options.php">
@@ -1601,8 +1601,8 @@ function greenlight_render_admin_tab_performance() {
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Rythme', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Connexions et pulsation du site', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Cadrez les connexions externes et le rythme Heartbeat pour réduire les appels inutiles sans fragiliser l’edition.', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Connexions et rythme', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Cadrez les connexions externes et le rythme Heartbeat pour réduire les appels inutiles sans fragiliser l’édition.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="options.php">
@@ -1661,8 +1661,8 @@ function greenlight_render_admin_tab_performance() {
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Maintenance', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Nettoyage et regeneration', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Isolez ici les actions ponctuelles et les routines automatiques pour eviter de confondre configuration et maintenance.', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Nettoyage et régénération', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Isolez ici les actions ponctuelles et les routines automatiques pour éviter de confondre configuration et maintenance.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<?php
@@ -1711,8 +1711,8 @@ function greenlight_render_admin_tab_performance() {
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Fichiers generes', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Presence des sorties minifiees', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Verifiez rapidement si les sorties diffusees existent deja avant de regenerer.', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Sorties générées', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Vérifiez rapidement si les fichiers servent déjà avant de régénérer.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<table class="widefat striped">
@@ -1761,9 +1761,9 @@ function greenlight_render_admin_tab_performance() {
 			<section class="greenlight-admin-tab-panel__card greenlight-admin-tab-panel__card--soft">
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
-						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Etat actuel', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'État actuel', 'greenlight' ); ?></p>
 						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Diffusion et cache', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Ce panneau resume l’etat du site tel qu’il est actuellement servi.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Ce panneau résume l’état du site tel qu’il est actuellement servi.', 'greenlight' ); ?></p>
 					</div>
 					</div>
 					<ul class="greenlight-admin-tab-panel__list">
@@ -1786,7 +1786,7 @@ function greenlight_render_admin_tab_performance() {
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Impact', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Ce que ces reglages changent', 'greenlight' ); ?></h3>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Effets des réglages', 'greenlight' ); ?></h3>
 						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Greenlight doit rendre l’effet de chaque option lisible, pas seulement son nom technique.', 'greenlight' ); ?></p>
 					</div>
 				</div>
@@ -1873,7 +1873,30 @@ function greenlight_render_admin_tab_appearance() {
 		<div>
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Apparence', 'greenlight' ); ?></p>
 			<h2><?php esc_html_e( 'Direction éditoriale du site', 'greenlight' ); ?></h2>
-			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Ajustez les surfaces, les accents et les signatures editoriales tout en gardant un apercu stable du site.', 'greenlight' ); ?></p>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Ajustez les surfaces, les accents et les signatures éditoriales tout en gardant un aperçu stable du site.', 'greenlight' ); ?></p>
+		</div>
+	</div>
+
+	<div class="greenlight-admin-tab-panel__summary">
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Badge carbone', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( ! empty( $o['carbon_badge_enabled'] ) ? __( 'Actif', 'greenlight' ) : __( 'Inactif', 'greenlight' ) ); ?></strong>
+			<span><?php esc_html_e( 'Signature éco visible.', 'greenlight' ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Hero', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( isset( $o['hero_style'] ) && 'centered' === $o['hero_style'] ? __( 'Centré', 'greenlight' ) : __( 'Asymétrique', 'greenlight' ) ); ?></strong>
+			<span><?php esc_html_e( 'Structure d’entrée.', 'greenlight' ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Archives', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( isset( $o['archive_layout'] ) && 'list' === $o['archive_layout'] ? __( 'Liste', 'greenlight' ) : __( 'Grille', 'greenlight' ) ); ?></strong>
+			<span><?php esc_html_e( 'Lecture des contenus.', 'greenlight' ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Footer', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( ! empty( $o['show_footer_nav'] ) ? __( 'Visible', 'greenlight' ) : __( 'Allégé', 'greenlight' ) ); ?></strong>
+			<span><?php esc_html_e( 'Navigation de clôture.', 'greenlight' ); ?></span>
 		</div>
 	</div>
 
@@ -1884,7 +1907,7 @@ function greenlight_render_admin_tab_appearance() {
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Fondations', 'greenlight' ); ?></p>
 						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Palette et marque', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Centralisez les couleurs et les marqueurs visuels du thème dans une seule surface.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Centralisez les couleurs et les repères visuels du thème dans une seule surface.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="options.php">
@@ -1942,7 +1965,7 @@ function greenlight_render_admin_tab_appearance() {
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Structure', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Header et hero', 'greenlight' ); ?></h3>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'En-tête et hero', 'greenlight' ); ?></h3>
 						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Gardez un en-tête lisible et un hero aligné avec le ton du site.', 'greenlight' ); ?></p>
 					</div>
 				</div>
@@ -1956,7 +1979,7 @@ function greenlight_render_admin_tab_appearance() {
 						</tr>
 						<tr>
 							<th><?php esc_html_e( 'Tagline', 'greenlight' ); ?></th>
-							<td><label><input name="<?php echo esc_attr( $key ); ?>[show_tagline]" type="checkbox" value="1" <?php checked( (int) $o['show_tagline'], 1 ); ?>> <?php esc_html_e( 'Afficher la description du site sous le nom', 'greenlight' ); ?></label></td>
+							<td><label><input name="<?php echo esc_attr( $key ); ?>[show_tagline]" type="checkbox" value="1" <?php checked( (int) $o['show_tagline'], 1 ); ?>> <?php esc_html_e( 'Afficher la description sous le nom du site', 'greenlight' ); ?></label></td>
 						</tr>
 						<tr>
 							<th><label for="gl-hero-style"><?php esc_html_e( 'Style hero', 'greenlight' ); ?></label></th>
@@ -1969,7 +1992,7 @@ function greenlight_render_admin_tab_appearance() {
 						</tr>
 						<tr>
 							<th><?php esc_html_e( 'Carbon Badge', 'greenlight' ); ?></th>
-							<td><label><input name="<?php echo esc_attr( $key ); ?>[show_hero_badge]" type="checkbox" value="1" <?php checked( (int) $o['show_hero_badge'], 1 ); ?>> <?php esc_html_e( 'Afficher le badge CO₂ sur le hero', 'greenlight' ); ?></label></td>
+							<td><label><input name="<?php echo esc_attr( $key ); ?>[show_hero_badge]" type="checkbox" value="1" <?php checked( (int) $o['show_hero_badge'], 1 ); ?>> <?php esc_html_e( 'Afficher le badge CO₂ dans le hero', 'greenlight' ); ?></label></td>
 						</tr>
 						<tr>
 							<th><label for="gl-hero-text"><?php esc_html_e( 'Texte hero personnalisé', 'greenlight' ); ?></label></th>
@@ -1987,7 +2010,7 @@ function greenlight_render_admin_tab_appearance() {
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Contenu', 'greenlight' ); ?></p>
 						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Articles et archives', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Réglez la lecture des contenus publiés et leur affichage en index.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Réglez la lecture des contenus publiés et leur affichage en archive.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="options.php">
@@ -2034,8 +2057,8 @@ function greenlight_render_admin_tab_appearance() {
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Pied de page', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Footer et mentions', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Terminez l’expérience éditoriale avec les bons marqueurs de marque et de navigation.', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Pied de page et mentions', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Clôturez l’expérience éditoriale avec les bons marqueurs de marque et de navigation.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="options.php">
@@ -2096,7 +2119,30 @@ function greenlight_render_admin_tab_svg() {
 		<div>
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'SVG', 'greenlight' ); ?></p>
 			<h2><?php esc_html_e( 'Upload vectoriel sécurisé', 'greenlight' ); ?></h2>
-			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Autorisez le vectoriel seulement quand il est utile, puis laissez Greenlight neutraliser ce qui ne doit pas passer.', 'greenlight' ); ?></p>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Autorisez le vectoriel seulement quand le besoin est réel, puis laissez Greenlight nettoyer ce qui ne doit pas passer.', 'greenlight' ); ?></p>
+		</div>
+	</div>
+
+	<div class="greenlight-admin-tab-panel__summary">
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'SVG', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( ! empty( $options['enable_svg'] ) ? __( 'Actif', 'greenlight' ) : __( 'Inactif', 'greenlight' ) ); ?></strong>
+			<span><?php esc_html_e( 'Upload vectoriel.', 'greenlight' ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'MIME', 'greenlight' ); ?></p>
+			<strong><?php esc_html_e( 'Validé', 'greenlight' ); ?></strong>
+			<span><?php esc_html_e( 'Contrôle au chargement.', 'greenlight' ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Sanitisation', 'greenlight' ); ?></p>
+			<strong><?php esc_html_e( 'DOMDocument', 'greenlight' ); ?></strong>
+			<span><?php esc_html_e( 'Nettoyage automatique.', 'greenlight' ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Portée', 'greenlight' ); ?></p>
+			<strong><?php esc_html_e( 'Médias', 'greenlight' ); ?></strong>
+			<span><?php esc_html_e( 'Sans effet sur le front.', 'greenlight' ); ?></span>
 		</div>
 	</div>
 
@@ -2106,8 +2152,8 @@ function greenlight_render_admin_tab_svg() {
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Contrôle', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Autoriser les uploads SVG', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Le thème valide le type MIME, puis nettoie les scripts et attributs dangereux avant sauvegarde.', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Autoriser les SVG', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Le thème valide le MIME, puis nettoie les scripts et attributs dangereux avant sauvegarde.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="options.php">
@@ -2118,7 +2164,7 @@ function greenlight_render_admin_tab_svg() {
 							<td>
 								<label for="gl-svg">
 									<input id="gl-svg" name="<?php echo esc_attr( GREENLIGHT_SVG_OPTION_KEY ); ?>[enable_svg]" type="checkbox" value="1" <?php checked( (int) $options['enable_svg'], 1 ); ?>>
-									<?php esc_html_e( 'Autoriser l\'upload de fichiers SVG.', 'greenlight' ); ?>
+									<?php esc_html_e( 'Autoriser l\'upload de fichiers SVG', 'greenlight' ); ?>
 								</label>
 								<p class="description">
 									<?php esc_html_e( 'Les SVG uploadés sont sanitisés via DOMDocument (suppression des scripts inline, des gestionnaires d\'événements JS et des xlink malveillants).', 'greenlight' ); ?>
@@ -2126,7 +2172,7 @@ function greenlight_render_admin_tab_svg() {
 							</td>
 						</tr>
 					</table>
-					<?php submit_button(); ?>
+					<?php submit_button( __( 'Enregistrer les SVG', 'greenlight' ) ); ?>
 				</form>
 			</section>
 		</div>
@@ -2136,7 +2182,7 @@ function greenlight_render_admin_tab_svg() {
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Sécurité', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Ce que fait la sanitisation', 'greenlight' ); ?></h3>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Effets de la sanitisation', 'greenlight' ); ?></h3>
 						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Scripts, événements JavaScript et références externes sont supprimés pour réduire le risque d’injection.', 'greenlight' ); ?></p>
 					</div>
 				</div>
@@ -2254,7 +2300,7 @@ function greenlight_render_admin_tab_tools() {
 				<ul class="greenlight-admin-tab-panel__list">
 					<li><?php esc_html_e( 'Un export fige l’état courant.', 'greenlight' ); ?></li>
 					<li><?php esc_html_e( 'L’import remplace les réglages actuels.', 'greenlight' ); ?></li>
-					<li><?php esc_html_e( 'Contenus, pages et médias restent intactes.', 'greenlight' ); ?></li>
+					<li><?php esc_html_e( 'Contenus, pages et médias restent intacts.', 'greenlight' ); ?></li>
 				</ul>
 			</section>
 		</aside>
