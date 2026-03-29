@@ -883,6 +883,12 @@ body > main {
 	color: var(--wp--preset--color--primary);
 }
 
+.footer-copy__badge {
+	display: inline-flex;
+	margin-inline-start: 0.8em;
+	vertical-align: middle;
+}
+
 .footer-emission {
 	font-size: var(--wp--preset--font-size--small);
 	letter-spacing: 0.06em;

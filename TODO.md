@@ -318,6 +318,7 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 
 - [x] Ajouter des presets éditoriaux complets (`Minimal`, `Magazine`, `Studio`, `Journal`)
 - [x] 9A.1 — Étendre le hero : image, couleur, dégradé, titre/sous-titre, hauteur (`content`, `70vh`, `100vh`) + mode simple
+- [x] Badge CO₂ : valeur manuelle, lien EcoIndex et placement `haut de page` / `footer`
 - [ ] 9A.2 — Étendre la navigation : couleurs, sticky, layout, sous-menus CSS-only
 - [ ] Ajouter des variantes pilotables pour archives, cartes, single et footer
 - [ ] Ajouter des réglages de densité visuelle : espacements, rayons, contraste, hauteur de header

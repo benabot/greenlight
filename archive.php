@@ -25,7 +25,7 @@ $archive_desc  = get_the_archive_description();
 <section class="archive-intro" aria-labelledby="archive-heading">
 	<div class="archive-intro-lead">
 		<p class="eyebrow"><?php esc_html_e( 'ARCHIVE DIGITALE', 'greenlight' ); ?></p>
-		<?php echo greenlight_carbon_badge(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<?php echo greenlight_carbon_badge( 'top' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<h1 id="archive-heading"><?php echo wp_kses_post( $archive_title ); ?></h1>
 	</div>
 	<div class="archive-intro-body">

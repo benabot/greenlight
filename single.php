@@ -29,7 +29,7 @@ if ( have_posts() ) :
 					<?php if ( $single_cat ) : ?>
 						<a href="<?php echo esc_url( get_category_link( $single_cat->term_id ) ); ?>" class="entry-category-pill"><?php echo esc_html( $single_cat->name ); ?></a>
 					<?php endif; ?>
-					<?php echo greenlight_carbon_badge(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php echo greenlight_carbon_badge( 'top' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				</p>
 				<h1><?php the_title(); ?></h1>
 				<?php if ( $_gl_show_author || $_gl_show_date ) : ?>

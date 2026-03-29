@@ -96,7 +96,7 @@ if ( have_posts() ) :
 			<section class="<?php echo esc_attr( $_gl_hero_cls ); ?>"<?php echo '' !== $_gl_hero_style_attr ? ' style="' . esc_attr( $_gl_hero_style_attr ) . '"' : ''; ?> <?php echo '' !== $_gl_intro['heading'] ? 'aria-labelledby="hero-heading"' : 'aria-label="' . esc_attr__( 'Hero principal', 'greenlight' ) . '"'; ?>>
 				<div class="hero-lead">
 					<?php if ( $_gl_hero_badge ) : ?>
-						<?php echo greenlight_carbon_badge(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<?php echo greenlight_carbon_badge( 'top' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php endif; ?>
 					<?php if ( '' !== $_gl_intro['heading'] ) : ?>
 						<h1 id="hero-heading"><?php echo esc_html( $_gl_intro['heading'] ); ?></h1>
@@ -111,7 +111,7 @@ if ( have_posts() ) :
 		<?php else : ?>
 			<section class="page-intro-simple" <?php echo '' !== $_gl_intro['heading'] ? 'aria-labelledby="hero-heading"' : 'aria-label="' . esc_attr__( 'Introduction principale', 'greenlight' ) . '"'; ?>>
 				<?php if ( $_gl_hero_badge ) : ?>
-					<?php echo greenlight_carbon_badge(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php echo greenlight_carbon_badge( 'top' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php endif; ?>
 				<?php if ( '' !== $_gl_intro['heading'] ) : ?>
 					<h1 id="hero-heading"><?php echo esc_html( $_gl_intro['heading'] ); ?></h1>
@@ -142,7 +142,7 @@ else :
 		<section class="<?php echo esc_attr( $_gl_hero_cls ); ?>"<?php echo '' !== $_gl_hero_style_attr ? ' style="' . esc_attr( $_gl_hero_style_attr ) . '"' : ''; ?> <?php echo '' !== $_gl_intro['heading'] ? 'aria-labelledby="hero-heading"' : 'aria-label="' . esc_attr__( 'Hero principal', 'greenlight' ) . '"'; ?>>
 			<div class="hero-lead">
 				<?php if ( $_gl_hero_badge ) : ?>
-					<?php echo greenlight_carbon_badge(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php echo greenlight_carbon_badge( 'top' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php endif; ?>
 				<?php if ( '' !== $_gl_intro['heading'] ) : ?>
 					<h1 id="hero-heading"><?php echo esc_html( $_gl_intro['heading'] ); ?></h1>
@@ -157,7 +157,7 @@ else :
 	<?php else : ?>
 		<section class="page-intro-simple" <?php echo '' !== $_gl_intro['heading'] ? 'aria-labelledby="hero-heading"' : 'aria-label="' . esc_attr__( 'Introduction principale', 'greenlight' ) . '"'; ?>>
 			<?php if ( $_gl_hero_badge ) : ?>
-				<?php echo greenlight_carbon_badge(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo greenlight_carbon_badge( 'top' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php endif; ?>
 			<?php if ( '' !== $_gl_intro['heading'] ) : ?>
 				<h1 id="hero-heading"><?php echo esc_html( $_gl_intro['heading'] ); ?></h1>

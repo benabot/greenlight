@@ -188,6 +188,7 @@ function greenlight_get_appearance_defaults() {
 		// Global.
 		'carbon_badge_enabled'     => 1,
 		'carbon_badge_value'       => '',
+		'carbon_badge_position'    => 'top',
 		'newsletter_enabled'       => 1,
 		// Couleurs.
 		'color_primary'            => '',
@@ -330,6 +331,24 @@ function greenlight_get_appearance_densities() {
 }
 
 /**
+ * Returns the available Carbon Badge placements.
+ *
+ * @return array<string, array<string, string>>
+ */
+function greenlight_get_carbon_badge_positions() {
+	return array(
+		'top'    => array(
+			'label'       => __( 'Haut de page', 'greenlight' ),
+			'description' => __( 'Affiché dans le hero ou l’intro.', 'greenlight' ),
+		),
+		'footer' => array(
+			'label'       => __( 'Pied de page', 'greenlight' ),
+			'description' => __( 'Affiché dans le footer.', 'greenlight' ),
+		),
+	);
+}
+
+/**
  * Returns the available hero gradients.
  *
  * @return array<string, array<string, string>>
@@ -417,6 +436,7 @@ function greenlight_sanitize_appearance_settings( $input ) {
 	$defaults  = greenlight_get_appearance_defaults();
 	$presets   = greenlight_get_appearance_presets();
 	$densities = greenlight_get_appearance_densities();
+	$positions = greenlight_get_carbon_badge_positions();
 	$gradients = greenlight_get_hero_gradient_presets();
 
 	$badge_value = isset( $input['carbon_badge_value'] )
@@ -446,6 +466,9 @@ function greenlight_sanitize_appearance_settings( $input ) {
 		// Global.
 		'carbon_badge_enabled'     => isset( $input['carbon_badge_enabled'] ) ? 1 : 0,
 		'carbon_badge_value'       => $badge_value,
+		'carbon_badge_position'    => isset( $input['carbon_badge_position'] ) && isset( $positions[ sanitize_key( (string) $input['carbon_badge_position'] ) ] )
+			? sanitize_key( (string) $input['carbon_badge_position'] )
+			: $defaults['carbon_badge_position'],
 		'newsletter_enabled'       => isset( $input['newsletter_enabled'] ) ? 1 : 0,
 		// Couleurs.
 		'color_primary'            => $sanitize_color( $input['color_primary'] ?? '' ),
@@ -2086,6 +2109,7 @@ function greenlight_render_admin_tab_appearance() {
 		'color_tertiary',
 		'color_border',
 		'color_on_surface_variant',
+		'carbon_badge_position',
 		'color_header_bg',
 		'show_tagline',
 		'hero_enabled',
@@ -2127,20 +2151,20 @@ function greenlight_render_admin_tab_appearance() {
 		<div>
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Apparence', 'greenlight' ); ?></p>
 			<h2><?php esc_html_e( 'Apparence du site', 'greenlight' ); ?></h2>
-			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Réglez le preset, la densité et les surfaces du site.', 'greenlight' ); ?></p>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Réglez le style, le rythme, le hero et le badge CO₂.', 'greenlight' ); ?></p>
 		</div>
 	</div>
 
 	<div class="greenlight-admin-tab-panel__summary">
 		<div class="greenlight-admin-summary-card">
-			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Preset', 'greenlight' ); ?></p>
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Style', 'greenlight' ); ?></p>
 			<strong><?php echo esc_html( isset( $appearance_presets[ $o['theme_preset'] ]['label'] ) ? $appearance_presets[ $o['theme_preset'] ]['label'] : $appearance_presets['editorial']['label'] ); ?></strong>
-			<span><?php esc_html_e( 'Largeur et rythme.', 'greenlight' ); ?></span>
+			<span><?php esc_html_e( 'Largeur et rythme du site.', 'greenlight' ); ?></span>
 		</div>
 		<div class="greenlight-admin-summary-card">
-			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Densité', 'greenlight' ); ?></p>
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Rythme', 'greenlight' ); ?></p>
 			<strong><?php echo esc_html( isset( $appearance_densities[ $o['density_scale'] ]['label'] ) ? $appearance_densities[ $o['density_scale'] ]['label'] : $appearance_densities['balanced']['label'] ); ?></strong>
-			<span><?php esc_html_e( 'Respiration du site.', 'greenlight' ); ?></span>
+			<span><?php esc_html_e( 'Respiration entre les blocs.', 'greenlight' ); ?></span>
 		</div>
 		<div class="greenlight-admin-summary-card">
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Fond hero', 'greenlight' ); ?></p>
@@ -2160,44 +2184,80 @@ function greenlight_render_admin_tab_appearance() {
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Fondations', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Preset et marque', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Preset, densité et couleurs.', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Style, rythme et badge CO₂', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Choisissez le style éditorial, l’espace entre les blocs et l’emplacement du badge.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<div class="greenlight-admin-appearance-guide" aria-hidden="true">
+					<div class="greenlight-admin-appearance-guide__item">
+						<span class="greenlight-admin-appearance-guide__icon"><span class="dashicons dashicons-admin-site-alt3"></span></span>
+						<strong><?php esc_html_e( 'Style éditorial', 'greenlight' ); ?></strong>
+						<span><?php esc_html_e( 'Magazine, studio ou journal.', 'greenlight' ); ?></span>
+					</div>
+					<div class="greenlight-admin-appearance-guide__item">
+						<span class="greenlight-admin-appearance-guide__icon"><span class="dashicons dashicons-align-wide"></span></span>
+						<strong><?php esc_html_e( 'Rythme visuel', 'greenlight' ); ?></strong>
+						<span><?php esc_html_e( 'Aéré, équilibré ou compact.', 'greenlight' ); ?></span>
+					</div>
+					<div class="greenlight-admin-appearance-guide__item">
+						<span class="greenlight-admin-appearance-guide__icon"><span class="dashicons dashicons-chart-area"></span></span>
+						<strong><?php esc_html_e( 'Badge CO₂', 'greenlight' ); ?></strong>
+						<span><?php esc_html_e( 'En haut de page ou dans le footer.', 'greenlight' ); ?></span>
 					</div>
 				</div>
 				<form method="post" action="options.php">
 					<?php settings_fields( 'greenlight_appearance' ); ?>
-					<?php $greenlight_emit_appearance_hidden_fields( array( 'theme_preset', 'density_scale', 'carbon_badge_enabled', 'carbon_badge_value', 'newsletter_enabled', 'color_primary', 'color_background', 'color_surface', 'color_text', 'color_tertiary', 'color_border', 'color_on_surface_variant' ) ); ?>
+					<?php $greenlight_emit_appearance_hidden_fields( array( 'theme_preset', 'density_scale', 'carbon_badge_enabled', 'carbon_badge_value', 'carbon_badge_position', 'newsletter_enabled', 'color_primary', 'color_background', 'color_surface', 'color_text', 'color_tertiary', 'color_border', 'color_on_surface_variant' ) ); ?>
 					<table class="form-table" role="presentation">
 						<tr>
-							<th scope="row"><label for="gl-theme-preset"><?php esc_html_e( 'Preset éditorial', 'greenlight' ); ?></label></th>
+							<th scope="row">
+								<span class="greenlight-admin-field-illustration greenlight-admin-field-illustration--preset" aria-hidden="true"><span class="dashicons dashicons-admin-page"></span></span>
+								<label for="gl-theme-preset"><?php esc_html_e( 'Style éditorial', 'greenlight' ); ?></label>
+							</th>
 							<td>
 								<select id="gl-theme-preset" name="<?php echo esc_attr( $key ); ?>[theme_preset]">
 									<?php foreach ( $appearance_presets as $preset_key => $preset ) : ?>
 										<option value="<?php echo esc_attr( $preset_key ); ?>" <?php selected( isset( $o['theme_preset'] ) ? $o['theme_preset'] : 'editorial', $preset_key ); ?>><?php echo esc_html( $preset['label'] ); ?></option>
 									<?php endforeach; ?>
 								</select>
-								<p class="description"><?php esc_html_e( 'Largeur, rayons et rythme.', 'greenlight' ); ?></p>
+								<p class="description"><?php esc_html_e( 'Définit la largeur, les rayons et l’allure générale.', 'greenlight' ); ?></p>
 							</td>
 						</tr>
 						<tr>
-							<th scope="row"><label for="gl-density-scale"><?php esc_html_e( 'Densité', 'greenlight' ); ?></label></th>
+							<th scope="row">
+								<span class="greenlight-admin-field-illustration greenlight-admin-field-illustration--density" aria-hidden="true"><span class="dashicons dashicons-editor-expand"></span></span>
+								<label for="gl-density-scale"><?php esc_html_e( 'Rythme de page', 'greenlight' ); ?></label>
+							</th>
 							<td>
 								<select id="gl-density-scale" name="<?php echo esc_attr( $key ); ?>[density_scale]">
 									<?php foreach ( $appearance_densities as $density_key => $density ) : ?>
 										<option value="<?php echo esc_attr( $density_key ); ?>" <?php selected( isset( $o['density_scale'] ) ? $o['density_scale'] : 'balanced', $density_key ); ?>><?php echo esc_html( $density['label'] ); ?></option>
 									<?php endforeach; ?>
 								</select>
-								<p class="description"><?php esc_html_e( 'Ajuste l’espace entre les blocs.', 'greenlight' ); ?></p>
+								<p class="description"><?php esc_html_e( 'Ajuste l’espace entre les blocs et la respiration visuelle.', 'greenlight' ); ?></p>
 							</td>
 						</tr>
 						<tr>
-							<th scope="row"><?php esc_html_e( 'Carbon Badge', 'greenlight' ); ?></th>
+							<th scope="row">
+								<span class="greenlight-admin-field-illustration greenlight-admin-field-illustration--carbon" aria-hidden="true"><span class="dashicons dashicons-chart-line"></span></span>
+								<label><?php esc_html_e( 'Badge CO₂', 'greenlight' ); ?></label>
+							</th>
 							<td>
 								<label><input name="<?php echo esc_attr( $key ); ?>[carbon_badge_enabled]" type="checkbox" value="1" <?php checked( (int) $o['carbon_badge_enabled'], 1 ); ?>> <?php esc_html_e( 'Afficher le badge CO₂', 'greenlight' ); ?></label><br>
 								<label style="margin-top:.4em;display:block"><?php esc_html_e( 'Valeur manuelle :', 'greenlight' ); ?>
 									<input name="<?php echo esc_attr( $key ); ?>[carbon_badge_value]" type="text" class="small-text" value="<?php echo esc_attr( $o['carbon_badge_value'] ); ?>" placeholder="0.2g">
 								</label>
-								<p class="description"><?php esc_html_e( 'Vide = 0.2g.', 'greenlight' ); ?></p>
+								<label style="margin-top:.4em;display:block"><?php esc_html_e( 'Emplacement :', 'greenlight' ); ?>
+									<select name="<?php echo esc_attr( $key ); ?>[carbon_badge_position]">
+										<?php foreach ( greenlight_get_carbon_badge_positions() as $position_key => $position ) : ?>
+											<option value="<?php echo esc_attr( $position_key ); ?>" <?php selected( isset( $o['carbon_badge_position'] ) ? $o['carbon_badge_position'] : 'top', $position_key ); ?>><?php echo esc_html( $position['label'] ); ?></option>
+										<?php endforeach; ?>
+									</select>
+								</label>
+								<p class="description">
+									<?php esc_html_e( 'Vide = 0.2g. Lien EcoIndex :', 'greenlight' ); ?>
+									<a href="https://www.ecoindex.fr/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'calculer la page', 'greenlight' ); ?></a>.
+								</p>
 							</td>
 						</tr>
 						<tr>
@@ -2247,7 +2307,7 @@ function greenlight_render_admin_tab_appearance() {
 				</div>
 				<form method="post" action="options.php">
 					<?php settings_fields( 'greenlight_appearance' ); ?>
-					<?php $greenlight_emit_appearance_hidden_fields( array( 'color_header_bg', 'show_tagline', 'hero_enabled', 'hero_style', 'hero_background_mode', 'hero_background_image', 'hero_background_color', 'hero_gradient_preset', 'hero_heading_mode', 'hero_heading_text', 'hero_subheading_mode', 'hero_subheading_text', 'hero_height_mode', 'hero_overlay_strength', 'show_hero_badge', 'hero_text' ) ); ?>
+					<?php $greenlight_emit_appearance_hidden_fields( array( 'color_header_bg', 'show_tagline', 'carbon_badge_position', 'hero_enabled', 'hero_style', 'hero_background_mode', 'hero_background_image', 'hero_background_color', 'hero_gradient_preset', 'hero_heading_mode', 'hero_heading_text', 'hero_subheading_mode', 'hero_subheading_text', 'hero_height_mode', 'hero_overlay_strength', 'show_hero_badge', 'hero_text' ) ); ?>
 					<table class="form-table" role="presentation">
 						<tr>
 							<th><?php esc_html_e( 'Fond header', 'greenlight' ); ?></th>
@@ -2382,7 +2442,7 @@ function greenlight_render_admin_tab_appearance() {
 				</div>
 				<form method="post" action="options.php">
 					<?php settings_fields( 'greenlight_appearance' ); ?>
-					<?php $greenlight_emit_appearance_hidden_fields( array( 'show_date', 'show_author', 'show_tags', 'show_newsletter_single', 'archive_layout', 'show_excerpts_archive', 'show_thumbnails_archive' ) ); ?>
+					<?php $greenlight_emit_appearance_hidden_fields( array( 'carbon_badge_position', 'show_date', 'show_author', 'show_tags', 'show_newsletter_single', 'archive_layout', 'show_excerpts_archive', 'show_thumbnails_archive' ) ); ?>
 					<table class="form-table" role="presentation">
 						<tr>
 							<th><?php esc_html_e( 'Date', 'greenlight' ); ?></th>
@@ -2430,7 +2490,7 @@ function greenlight_render_admin_tab_appearance() {
 				</div>
 				<form method="post" action="options.php">
 					<?php settings_fields( 'greenlight_appearance' ); ?>
-					<?php $greenlight_emit_appearance_hidden_fields( array( 'color_footer_bg', 'show_low_emission', 'custom_copyright', 'show_footer_nav' ) ); ?>
+					<?php $greenlight_emit_appearance_hidden_fields( array( 'carbon_badge_position', 'color_footer_bg', 'show_low_emission', 'custom_copyright', 'show_footer_nav' ) ); ?>
 					<table class="form-table" role="presentation">
 						<tr>
 							<th><?php esc_html_e( 'Fond footer', 'greenlight' ); ?></th>

@@ -196,7 +196,7 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 | Phase | Statut | Tâches principales |
 |-------|--------|--------------------|
 | **8 — Admin UI premium** | 🟡 En cours | Shell premium, navigation numérotée, mini design system admin, refonte progressive des onglets SEO / Performance / Images / Apparence / SVG / Outils |
-| **9 — Valeur produit sans alourdir** | ⏳ À lancer | Personnalisation avancée du thème, presets éditoriaux, variantes de rendu, durcissement sécurité léger |
+| **9 — Valeur produit sans alourdir** | 🟡 En cours | Personnalisation avancée du thème, presets éditoriaux, hero simple/avancé, badge CO₂ top/footer, durcissement sécurité léger |
 | **6C/A — Redesign visuel** | ✅ Terminé | Palette DESIGN.md dans theme.json, templates front alignés sur esthétique EcoEditorial, patterns, Carbon Badge, surfaces, boutons |
 | **6C/B — Admin unifiée** | ✅ Terminé | Page top-level Greenlight avec onglets (SEO, Images, Performance, Apparence, SVG, Outils) |
 | **6C/C — Éco-optimisation** | ✅ Terminé | bin/minify.sh, inc/minify.php, inc/cache.php, inc/svg.php, fonctions.php conditionnel, nettoyage wp_head |

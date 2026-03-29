@@ -24,7 +24,7 @@ $home_count    = (int) $wp_query->found_posts;
 
 <section class="archive-intro" aria-labelledby="home-heading">
 	<div class="archive-intro-lead">
-		<?php echo greenlight_carbon_badge(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<?php echo greenlight_carbon_badge( 'top' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<h1 id="home-heading"><?php echo esc_html( $home_title ); ?></h1>
 	</div>
 	<div class="archive-intro-body">

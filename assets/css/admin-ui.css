@@ -335,6 +335,53 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel__lead {
 	line-height: 1.65;
 }
 
+body.toplevel_page_greenlight .greenlight-admin-appearance-guide {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 14px;
+	margin: 0 0 18px;
+}
+
+body.toplevel_page_greenlight .greenlight-admin-appearance-guide__item {
+	display: grid;
+	gap: 8px;
+	padding: 16px;
+	border: 1px solid rgba(77, 101, 72, 0.12);
+	border-radius: 18px;
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(244, 241, 233, 0.9));
+	box-shadow: var(--gl-admin-shadow-soft);
+}
+
+body.toplevel_page_greenlight .greenlight-admin-appearance-guide__item strong {
+	font-size: 0.98rem;
+	line-height: 1.25;
+}
+
+body.toplevel_page_greenlight .greenlight-admin-appearance-guide__item span {
+	color: var(--gl-admin-muted);
+	line-height: 1.45;
+}
+
+body.toplevel_page_greenlight .greenlight-admin-appearance-guide__icon,
+body.toplevel_page_greenlight .greenlight-admin-field-illustration {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.2rem;
+	height: 2.2rem;
+	border-radius: 999px;
+	background: rgba(77, 101, 72, 0.12);
+	color: var(--gl-admin-accent-strong);
+}
+
+body.toplevel_page_greenlight .greenlight-admin-appearance-guide__icon .dashicons,
+body.toplevel_page_greenlight .greenlight-admin-field-illustration .dashicons {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+	line-height: 18px;
+}
+
 body.toplevel_page_greenlight .greenlight-admin-tab-panel__eyebrow {
 	margin: 0 0 10px;
 	font-size: 0.72rem;
@@ -530,8 +577,20 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel .form-table th {
 	font-weight: 700;
 }
 
+body.toplevel_page_greenlight .greenlight-admin-tab-panel .form-table th label {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+}
+
 body.toplevel_page_greenlight .greenlight-admin-tab-panel .form-table td {
 	color: var(--gl-admin-text);
+}
+
+body.toplevel_page_greenlight .greenlight-admin-tab-panel .form-table a {
+	color: var(--gl-admin-accent-strong);
+	font-weight: 700;
+	text-underline-offset: 0.16em;
 }
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel .form-table .description,
@@ -703,6 +762,10 @@ body.toplevel_page_greenlight .greenlight-admin-panel--note p {
 
 	body.toplevel_page_greenlight .greenlight-admin-tab-panel__summary {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	body.toplevel_page_greenlight .greenlight-admin-appearance-guide {
+		grid-template-columns: 1fr;
 	}
 }
 
