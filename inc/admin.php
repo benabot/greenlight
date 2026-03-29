@@ -84,12 +84,61 @@ function greenlight_admin_enqueue( $hook_suffix ) {
 	if ( 'appearance' === $current_tab ) {
 		$preview_path = get_theme_file_path( 'assets/js/admin-preview.js' );
 		if ( file_exists( $preview_path ) ) {
+			$variant_maps   = array(
+				'theme_preset'       => array(),
+				'density_scale'      => array(),
+				'archive_card_style' => array(),
+				'single_layout'      => array(),
+				'footer_layout'      => array(),
+			);
+			$hero_gradients = array();
+
+			foreach ( greenlight_get_appearance_presets() as $preset_key => $preset_data ) {
+				$variant_maps['theme_preset'][ $preset_key ] = isset( $preset_data['vars'] ) ? (array) $preset_data['vars'] : array();
+			}
+
+			foreach ( greenlight_get_appearance_densities() as $density_key => $density_data ) {
+				$variant_maps['density_scale'][ $density_key ] = isset( $density_data['vars'] ) ? (array) $density_data['vars'] : array();
+			}
+
+			foreach ( greenlight_get_archive_card_styles() as $archive_key => $archive_data ) {
+				$variant_maps['archive_card_style'][ $archive_key ] = isset( $archive_data['vars'] ) ? (array) $archive_data['vars'] : array();
+			}
+
+			foreach ( greenlight_get_single_layout_variants() as $single_key => $single_data ) {
+				$variant_maps['single_layout'][ $single_key ] = isset( $single_data['vars'] ) ? (array) $single_data['vars'] : array();
+			}
+
+			foreach ( greenlight_get_footer_layout_variants() as $footer_key => $footer_data ) {
+				$variant_maps['footer_layout'][ $footer_key ] = isset( $footer_data['vars'] ) ? (array) $footer_data['vars'] : array();
+			}
+
+			foreach ( greenlight_get_hero_gradient_presets() as $gradient_key => $gradient_data ) {
+				$hero_gradients[ $gradient_key ] = isset( $gradient_data['value'] ) ? (string) $gradient_data['value'] : '';
+			}
+
+			$preview_data = array(
+				'optionKey'         => GREENLIGHT_APPEARANCE_OPTION_KEY,
+				'variants'          => $variant_maps,
+				'heroGradients'     => $hero_gradients,
+				'siteName'          => get_bloginfo( 'name' ),
+				'siteTagline'       => get_bloginfo( 'description' ),
+				'previewQueryArg'   => 'greenlight_preview',
+				'previewQueryValue' => 'appearance',
+			);
+
 			wp_enqueue_script(
 				'greenlight-admin-preview',
 				get_theme_file_uri( 'assets/js/admin-preview.js' ),
 				array(),
 				filemtime( $preview_path ),
 				true
+			);
+
+			wp_add_inline_script(
+				'greenlight-admin-preview',
+				'window.greenlightAdminPreview = ' . wp_json_encode( $preview_data ) . ';',
+				'before'
 			);
 		}
 	}
@@ -2858,7 +2907,7 @@ function greenlight_render_admin_tab_appearance() {
 				</div>
 			</div>
 			<iframe id="greenlight-preview-frame"
-					src="<?php echo esc_url( home_url( '/' ) ); ?>"
+					src="<?php echo esc_url( add_query_arg( 'greenlight_preview', 'appearance', home_url( '/' ) ) ); ?>"
 					title="<?php esc_attr_e( 'Prévisualisation du site', 'greenlight' ); ?>"></iframe>
 		</section>
 	</section>

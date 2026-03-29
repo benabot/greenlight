@@ -229,6 +229,22 @@ function greenlight_is_articles_index_request() {
 }
 
 /**
+ * Returns whether the current request is the protected admin appearance preview.
+ *
+ * @return bool
+ */
+function greenlight_is_admin_preview_request() {
+	if ( is_admin() || wp_doing_ajax() ) {
+		return false;
+	}
+
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only preview flag for a protected admin iframe.
+	$preview = isset( $_GET['greenlight_preview'] ) ? sanitize_key( (string) wp_unslash( $_GET['greenlight_preview'] ) ) : '';
+
+	return 'appearance' === $preview && is_user_logged_in() && current_user_can( 'manage_options' );
+}
+
+/**
  * Registers a stable `/articles/` route for the blog index.
  *
  * @return void

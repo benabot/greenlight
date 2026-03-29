@@ -1044,6 +1044,19 @@ body > main {
 	max-width: 65ch;
 }
 
+.greenlight-preview-stack {
+	display: flex;
+	flex-direction: column;
+	gap: var(--greenlight-section-gap, var(--wp--preset--spacing--xl));
+	width: 100%;
+}
+
+.greenlight-preview-section {
+	display: flex;
+	flex-direction: column;
+	gap: var(--wp--preset--spacing--xs);
+}
+
 /* === Comments area === */
 
 .comments-area {

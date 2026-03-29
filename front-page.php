@@ -11,6 +11,7 @@ $_gl_app              = array_merge(
 	function_exists( 'greenlight_get_appearance_defaults' ) ? greenlight_get_appearance_defaults() : array(),
 	(array) get_option( 'greenlight_appearance_options', array() )
 );
+$_gl_preview_mode     = function_exists( 'greenlight_is_admin_preview_request' ) && greenlight_is_admin_preview_request();
 $_gl_hero_badge       = ! empty( $_gl_app['show_hero_badge'] );
 $_gl_use_rich_hero    = ! isset( $_gl_app['hero_enabled'] ) || ! empty( $_gl_app['hero_enabled'] );
 $_gl_hero_style       = isset( $_gl_app['hero_style'] ) && 'centered' === $_gl_app['hero_style'] ? 'centered' : 'asymmetric';
@@ -40,6 +41,7 @@ if ( 'color' === $_gl_hero_mode && ! empty( $_gl_app['hero_background_color'] ) 
 }
 
 $_gl_hero_style_attr = implode( ';', $_gl_hero_style_attr );
+$_gl_preview_image   = get_theme_file_uri( 'screenshot.png' );
 
 /**
  * Builds front-page heading and description from appearance options.
@@ -92,8 +94,8 @@ if ( have_posts() ) :
 			has_excerpt() ? get_the_excerpt() : get_bloginfo( 'description' )
 		);
 		?>
-		<?php if ( $_gl_use_rich_hero ) : ?>
-			<section class="<?php echo esc_attr( $_gl_hero_cls ); ?>"<?php echo '' !== $_gl_hero_style_attr ? ' style="' . esc_attr( $_gl_hero_style_attr ) . '"' : ''; ?> <?php echo '' !== $_gl_intro['heading'] ? 'aria-labelledby="hero-heading"' : 'aria-label="' . esc_attr__( 'Hero principal', 'greenlight' ) . '"'; ?>>
+		<?php if ( $_gl_preview_mode || $_gl_use_rich_hero ) : ?>
+			<section class="<?php echo esc_attr( $_gl_hero_cls ); ?>"<?php echo '' !== $_gl_hero_style_attr ? ' style="' . esc_attr( $_gl_hero_style_attr ) . '"' : ''; ?> <?php echo '' !== $_gl_intro['heading'] ? 'aria-labelledby="hero-heading"' : 'aria-label="' . esc_attr__( 'Hero principal', 'greenlight' ) . '"'; ?><?php echo ( $_gl_preview_mode && ! $_gl_use_rich_hero ) ? ' hidden' : ''; ?>>
 				<div class="hero-lead">
 					<?php if ( $_gl_hero_badge ) : ?>
 						<?php echo greenlight_carbon_badge( 'top' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -108,8 +110,9 @@ if ( have_posts() ) :
 					</div>
 				<?php endif; ?>
 			</section>
-		<?php else : ?>
-			<section class="page-intro-simple" <?php echo '' !== $_gl_intro['heading'] ? 'aria-labelledby="hero-heading"' : 'aria-label="' . esc_attr__( 'Introduction principale', 'greenlight' ) . '"'; ?>>
+		<?php endif; ?>
+		<?php if ( $_gl_preview_mode || ! $_gl_use_rich_hero ) : ?>
+			<section class="page-intro-simple" <?php echo '' !== $_gl_intro['heading'] ? 'aria-labelledby="hero-heading"' : 'aria-label="' . esc_attr__( 'Introduction principale', 'greenlight' ) . '"'; ?><?php echo ( $_gl_preview_mode && $_gl_use_rich_hero ) ? ' hidden' : ''; ?>>
 				<?php if ( $_gl_hero_badge ) : ?>
 					<?php echo greenlight_carbon_badge( 'top' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php endif; ?>
@@ -129,6 +132,118 @@ if ( have_posts() ) :
 			</div>
 			<?php
 		endif;
+		if ( $_gl_preview_mode ) :
+			?>
+			<div class="greenlight-preview-stack" aria-label="<?php esc_attr_e( 'Échantillons de mise en page', 'greenlight' ); ?>">
+				<section class="greenlight-preview-section" aria-labelledby="greenlight-preview-archive-title">
+					<p class="eyebrow"><?php esc_html_e( 'Aperçu archive', 'greenlight' ); ?></p>
+					<h2 id="greenlight-preview-archive-title"><?php esc_html_e( 'Cartes et listes d’articles', 'greenlight' ); ?></h2>
+					<p class="archive-note"><?php esc_html_e( 'Cette zone reflète les réglages d’archives et de cartes.', 'greenlight' ); ?></p>
+				</section>
+				<article class="entry entry--featured greenlight-preview-featured">
+					<figure class="entry-media">
+						<a class="entry-media-link" href="#preview-featured" tabindex="-1" aria-hidden="true">
+							<img src="<?php echo esc_url( $_gl_preview_image ); ?>" alt="">
+						</a>
+					</figure>
+					<div class="entry-body">
+						<header class="entry-header">
+							<p class="entry-label">
+								<a href="#preview-category" class="entry-category"><?php esc_html_e( 'Éditorial', 'greenlight' ); ?></a>
+								<time datetime="2026-03-29"><?php esc_html_e( '29 mars 2026', 'greenlight' ); ?></time>
+							</p>
+							<h2 class="entry-title"><a href="#preview-featured"><?php esc_html_e( 'Article mis en avant', 'greenlight' ); ?></a></h2>
+						</header>
+						<p class="entry-summary"><?php esc_html_e( 'Un exemple de carte principale pour juger le rythme, la matière et la largeur des textes.', 'greenlight' ); ?></p>
+						<a href="#preview-featured" class="entry-more"><?php esc_html_e( 'Lire', 'greenlight' ); ?></a>
+					</div>
+				</article>
+				<ul class="post-list post-list--grid greenlight-preview-archive-list" aria-label="<?php esc_attr_e( 'Exemples d’articles', 'greenlight' ); ?>">
+					<li class="post-item">
+						<article class="entry entry--teaser">
+							<figure class="entry-media">
+								<a class="entry-media-link" href="#preview-one" tabindex="-1" aria-hidden="true">
+									<img src="<?php echo esc_url( $_gl_preview_image ); ?>" alt="">
+								</a>
+							</figure>
+							<div class="entry-body">
+								<header class="entry-header">
+									<p class="entry-label">
+										<a href="#preview-category" class="entry-category"><?php esc_html_e( 'Climat', 'greenlight' ); ?></a>
+										<time datetime="2026-03-28"><?php esc_html_e( '28 mars 2026', 'greenlight' ); ?></time>
+									</p>
+									<h2 class="entry-title"><a href="#preview-one"><?php esc_html_e( 'Carte secondaire', 'greenlight' ); ?></a></h2>
+								</header>
+								<p class="entry-summary"><?php esc_html_e( 'Résumé court pour vérifier l’équilibre des extraits.', 'greenlight' ); ?></p>
+								<a href="#preview-one" class="entry-more"><?php esc_html_e( 'Lire', 'greenlight' ); ?></a>
+							</div>
+						</article>
+					</li>
+					<li class="post-item">
+						<article class="entry entry--teaser">
+							<figure class="entry-media">
+								<a class="entry-media-link" href="#preview-two" tabindex="-1" aria-hidden="true">
+									<img src="<?php echo esc_url( $_gl_preview_image ); ?>" alt="">
+								</a>
+							</figure>
+							<div class="entry-body">
+								<header class="entry-header">
+									<p class="entry-label">
+										<a href="#preview-category" class="entry-category"><?php esc_html_e( 'Sobriété', 'greenlight' ); ?></a>
+										<time datetime="2026-03-27"><?php esc_html_e( '27 mars 2026', 'greenlight' ); ?></time>
+									</p>
+									<h2 class="entry-title"><a href="#preview-two"><?php esc_html_e( 'Carte alternée', 'greenlight' ); ?></a></h2>
+								</header>
+								<p class="entry-summary"><?php esc_html_e( 'Deuxième exemple pour valider la cadence des cartes et leur orientation.', 'greenlight' ); ?></p>
+								<a href="#preview-two" class="entry-more"><?php esc_html_e( 'Lire', 'greenlight' ); ?></a>
+							</div>
+						</article>
+					</li>
+				</ul>
+				<section class="greenlight-preview-section" aria-labelledby="greenlight-preview-single-title">
+					<p class="eyebrow"><?php esc_html_e( 'Aperçu article', 'greenlight' ); ?></p>
+					<h2 id="greenlight-preview-single-title"><?php esc_html_e( 'Article et footer', 'greenlight' ); ?></h2>
+					<p class="archive-note"><?php esc_html_e( 'Cette zone reflète le gabarit article, les tags et la newsletter.', 'greenlight' ); ?></p>
+				</section>
+				<article class="entry entry--single greenlight-preview-single">
+					<header class="entry-header">
+						<p class="entry-badges">
+							<a href="#preview-category" class="entry-category-pill"><?php esc_html_e( 'Dossier', 'greenlight' ); ?></a>
+						</p>
+						<h1><?php esc_html_e( 'Exemple de page longue', 'greenlight' ); ?></h1>
+						<p class="entry-meta">
+							<a href="#preview-author" class="entry-author"><?php esc_html_e( 'Greenlight Studio', 'greenlight' ); ?></a>
+							<span class="entry-date"><?php esc_html_e( 'Publié', 'greenlight' ); ?> <time datetime="2026-03-29"><?php esc_html_e( '29 mars 2026', 'greenlight' ); ?></time></span>
+						</p>
+					</header>
+					<figure class="entry-hero-media">
+						<img src="<?php echo esc_url( $_gl_preview_image ); ?>" alt="">
+					</figure>
+					<p class="entry-intro"><?php esc_html_e( 'Un court chapô pour vérifier la largeur de lecture et le ton du gabarit article.', 'greenlight' ); ?></p>
+					<section class="entry-content">
+						<p><?php esc_html_e( 'Le texte principal sert d’échantillon pour la largeur de colonne, le rythme vertical et la respiration générale.', 'greenlight' ); ?></p>
+						<blockquote><p><?php esc_html_e( 'Le bon aperçu n’est pas décoratif. Il doit permettre de juger immédiatement le rendu final.', 'greenlight' ); ?></p></blockquote>
+						<p><?php esc_html_e( 'Les réglages de densité, de preset et de carte doivent rester visibles ici sans enregistrer.', 'greenlight' ); ?></p>
+					</section>
+					<footer class="entry-footer">
+						<ul class="entry-tags" aria-label="<?php esc_attr_e( 'Tags', 'greenlight' ); ?>">
+							<li><a href="#preview-tag-1" class="tag-pill"><?php esc_html_e( 'Éco-conception', 'greenlight' ); ?></a></li>
+							<li><a href="#preview-tag-2" class="tag-pill"><?php esc_html_e( 'WordPress', 'greenlight' ); ?></a></li>
+						</ul>
+					</footer>
+				</article>
+				<section id="newsletter" class="newsletter-cta newsletter-cta--centered greenlight-preview-newsletter" aria-labelledby="greenlight-preview-newsletter-heading">
+					<h2 id="greenlight-preview-newsletter-heading"><?php esc_html_e( 'Bloc newsletter', 'greenlight' ); ?></h2>
+					<p><?php esc_html_e( 'Ce bloc reflète l’activation du CTA en bas d’un article.', 'greenlight' ); ?></p>
+					<form class="newsletter-form" action="#" method="post">
+						<label for="greenlight-preview-email" class="sr-only"><?php esc_html_e( 'Adresse email', 'greenlight' ); ?></label>
+						<input type="email" id="greenlight-preview-email" placeholder="<?php esc_attr_e( 'prenom@email.com', 'greenlight' ); ?>">
+						<button type="button"><?php esc_html_e( 'S’abonner', 'greenlight' ); ?></button>
+					</form>
+				</section>
+			</div>
+			<?php
+		endif;
 	endwhile;
 else :
 	$_gl_intro = $greenlight_build_front_intro(
@@ -138,8 +253,8 @@ else :
 		get_bloginfo( 'description' )
 	);
 	?>
-	<?php if ( $_gl_use_rich_hero ) : ?>
-		<section class="<?php echo esc_attr( $_gl_hero_cls ); ?>"<?php echo '' !== $_gl_hero_style_attr ? ' style="' . esc_attr( $_gl_hero_style_attr ) . '"' : ''; ?> <?php echo '' !== $_gl_intro['heading'] ? 'aria-labelledby="hero-heading"' : 'aria-label="' . esc_attr__( 'Hero principal', 'greenlight' ) . '"'; ?>>
+	<?php if ( $_gl_preview_mode || $_gl_use_rich_hero ) : ?>
+		<section class="<?php echo esc_attr( $_gl_hero_cls ); ?>"<?php echo '' !== $_gl_hero_style_attr ? ' style="' . esc_attr( $_gl_hero_style_attr ) . '"' : ''; ?> <?php echo '' !== $_gl_intro['heading'] ? 'aria-labelledby="hero-heading"' : 'aria-label="' . esc_attr__( 'Hero principal', 'greenlight' ) . '"'; ?><?php echo ( $_gl_preview_mode && ! $_gl_use_rich_hero ) ? ' hidden' : ''; ?>>
 			<div class="hero-lead">
 				<?php if ( $_gl_hero_badge ) : ?>
 					<?php echo greenlight_carbon_badge( 'top' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -154,8 +269,9 @@ else :
 				</div>
 			<?php endif; ?>
 		</section>
-	<?php else : ?>
-		<section class="page-intro-simple" <?php echo '' !== $_gl_intro['heading'] ? 'aria-labelledby="hero-heading"' : 'aria-label="' . esc_attr__( 'Introduction principale', 'greenlight' ) . '"'; ?>>
+	<?php endif; ?>
+	<?php if ( $_gl_preview_mode || ! $_gl_use_rich_hero ) : ?>
+		<section class="page-intro-simple" <?php echo '' !== $_gl_intro['heading'] ? 'aria-labelledby="hero-heading"' : 'aria-label="' . esc_attr__( 'Introduction principale', 'greenlight' ) . '"'; ?><?php echo ( $_gl_preview_mode && $_gl_use_rich_hero ) ? ' hidden' : ''; ?>>
 			<?php if ( $_gl_hero_badge ) : ?>
 				<?php echo greenlight_carbon_badge( 'top' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php endif; ?>
