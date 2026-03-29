@@ -6,7 +6,7 @@
 
 ## Branche active
 
-`feat/ui-improvement`
+`feat/admin-ui`
 
 ## Commits réalisés
 
@@ -270,7 +270,7 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 ### Branche git
 ```bash
 git checkout dev
-git checkout -b feat/ui-improvement
+git checkout -b feat/admin-ui
 ```
 
 ### Phase 6C/C — Éco-optimisation (2026-03-28)

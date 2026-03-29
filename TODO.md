@@ -85,7 +85,7 @@
 
 ## Phase 6C — UI, Admin unifiée & Éco-optimisation
 
-> Branche : `feat/ui-improvement` depuis `dev`
+> Branche : `feat/ui-improvement` depuis `dev` (historique)
 > Référence visuelle : maquettes EcoEditorial (page.png, single.png, index.png, archives.png)
 > Contrainte permanente : zéro jQuery, zéro dépendance externe, DOM minimal, CSS minimal
 
@@ -212,7 +212,7 @@ Objectif : passer de EcoIndex B à A. Améliorer la compression, le cache, la mi
 
 ```bash
 git checkout dev
-git checkout -b feat/ui-improvement
+git checkout -b feat/admin-ui
 # Travailler volet par volet, commit par volet
 git add -A && git commit -m "Phase 6C/A: Redesign visuel éditorial — palette DESIGN.md, templates, patterns"
 git add -A && git commit -m "Phase 6C/B: Interface admin unifiée Greenlight — onglets, réglages"
@@ -222,7 +222,7 @@ git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cac
 ## Phase 6D — Services premium intégrés (remplace Yoast + WP Rocket + Imagify)
 
 > Référence complète : `PHASE_6D.md`
-> Branche : `feat/ui-improvement` (suite)
+> Branche : `feat/ui-improvement` (suite historique)
 > Règle : admin riche en JS autorisé, front zéro impact supplémentaire
 
 ### 6D-SEO — SEO avancé
