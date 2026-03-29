@@ -129,6 +129,18 @@
     }
   }
 
+  function setNodeId( node, id ) {
+    if ( ! node ) {
+      return;
+    }
+
+    if ( id ) {
+      node.id = id;
+    } else if ( node.id ) {
+      node.removeAttribute( 'id' );
+    }
+  }
+
   function syncTextNode( doc, container, selector, tagName, text, prepend ) {
     if ( ! container ) {
       return null;
@@ -254,6 +266,38 @@
     return customText || legacyText || ( previewConfig.siteTagline || '' );
   }
 
+  function getFieldLabel( key ) {
+    var fields = getVisibleFields( key );
+
+    if ( ! fields.length ) {
+      return '';
+    }
+
+    if ( fields[ 0 ].type === 'radio' ) {
+      var checkedRadio = fields.find( function ( field ) {
+        return field.checked;
+      } );
+
+      if ( checkedRadio ) {
+        return checkedRadio.parentElement ? checkedRadio.parentElement.textContent.trim() : checkedRadio.value;
+      }
+
+      return '';
+    }
+
+    if ( fields[ 0 ].tagName === 'SELECT' ) {
+      var option = fields[ 0 ].selectedOptions && fields[ 0 ].selectedOptions[ 0 ];
+
+      return option ? option.textContent.trim() : fields[ 0 ].value || '';
+    }
+
+    if ( fields[ 0 ].type === 'checkbox' ) {
+      return fields[ 0 ].checked ? 'Actif' : 'Inactif';
+    }
+
+    return fields[ 0 ].value || '';
+  }
+
   function applyVariantVariables( doc ) {
     var root = doc.documentElement;
     var merged = {};
@@ -334,6 +378,7 @@
     var description = getHeroDescription();
 
     if ( richHero ) {
+      setNodeId( richHero, useAdvancedHero ? 'greenlight-preview-hero' : '' );
       removeClassPrefix( richHero, 'page-hero--' );
       richHero.classList.add( 'page-hero--' + ( getFieldValue( 'hero_style' ) || 'asymmetric' ) );
       richHero.classList.add( 'page-hero--background-' + ( getFieldValue( 'hero_background_mode' ) || 'none' ) );
@@ -362,6 +407,7 @@
     }
 
     if ( simpleHero ) {
+      setNodeId( simpleHero, useAdvancedHero ? '' : 'greenlight-preview-hero' );
       syncTextNode( doc, simpleHero, 'h1', 'h1', heading, false );
       syncTextNode( doc, simpleHero, '.hero-description', 'p', description, false );
       syncCarbonBadge( doc, simpleHero, '.greenlight-preview-top-badge', showHeroBadge, badgeValue, true );
@@ -424,6 +470,33 @@
     footerText.textContent = customCopy || footerText.dataset.defaultCopy;
   }
 
+  function applyPreviewBadges( doc ) {
+    syncTextNode(
+      doc,
+      doc.querySelector( '.greenlight-preview-section[aria-labelledby="greenlight-preview-archive-title"]' ),
+      '.greenlight-preview-archive-variant',
+      'p',
+      getFieldLabel( 'archive_layout' ) + ' · ' + getFieldLabel( 'archive_card_style' ),
+      false
+    );
+    syncTextNode(
+      doc,
+      doc.querySelector( '.greenlight-preview-section[aria-labelledby="greenlight-preview-single-title"]' ),
+      '.greenlight-preview-single-variant',
+      'p',
+      getFieldLabel( 'single_layout' ),
+      false
+    );
+    syncTextNode(
+      doc,
+      doc.querySelector( '.greenlight-preview-section[aria-labelledby="greenlight-preview-footer-title"]' ),
+      '.greenlight-preview-footer-variant',
+      'p',
+      getFieldLabel( 'footer_layout' ),
+      false
+    );
+  }
+
   function applyPreview() {
     var doc = getPreviewDocument();
 
@@ -439,6 +512,7 @@
     applySinglePreview( doc );
     applyFooterBadge( doc );
     applyFooterPreview( doc );
+    applyPreviewBadges( doc );
   }
 
   function snapshotFields() {

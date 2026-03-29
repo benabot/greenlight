@@ -134,10 +134,17 @@ if ( have_posts() ) :
 		endif;
 		if ( $_gl_preview_mode ) :
 			?>
+			<nav class="greenlight-preview-nav" aria-label="<?php esc_attr_e( 'Sections de l’aperçu', 'greenlight' ); ?>">
+				<a href="#greenlight-preview-hero"><?php esc_html_e( 'Hero', 'greenlight' ); ?></a>
+				<a href="#greenlight-preview-archive-title"><?php esc_html_e( 'Archives', 'greenlight' ); ?></a>
+				<a href="#greenlight-preview-single-title"><?php esc_html_e( 'Article', 'greenlight' ); ?></a>
+				<a href="#greenlight-preview-footer-title"><?php esc_html_e( 'Footer', 'greenlight' ); ?></a>
+			</nav>
 			<div class="greenlight-preview-stack" aria-label="<?php esc_attr_e( 'Échantillons de mise en page', 'greenlight' ); ?>">
 				<section class="greenlight-preview-section" aria-labelledby="greenlight-preview-archive-title">
 					<p class="eyebrow"><?php esc_html_e( 'Aperçu archive', 'greenlight' ); ?></p>
 					<h2 id="greenlight-preview-archive-title"><?php esc_html_e( 'Cartes et listes d’articles', 'greenlight' ); ?></h2>
+					<p class="greenlight-preview-variant greenlight-preview-archive-variant"><?php esc_html_e( 'Grille asymétrique · Équilibré', 'greenlight' ); ?></p>
 					<p class="archive-note"><?php esc_html_e( 'Cette zone reflète les réglages d’archives et de cartes.', 'greenlight' ); ?></p>
 				</section>
 				<article class="entry entry--featured greenlight-preview-featured">
@@ -203,6 +210,7 @@ if ( have_posts() ) :
 				<section class="greenlight-preview-section" aria-labelledby="greenlight-preview-single-title">
 					<p class="eyebrow"><?php esc_html_e( 'Aperçu article', 'greenlight' ); ?></p>
 					<h2 id="greenlight-preview-single-title"><?php esc_html_e( 'Article et footer', 'greenlight' ); ?></h2>
+					<p class="greenlight-preview-variant greenlight-preview-single-variant"><?php esc_html_e( 'Éditorial', 'greenlight' ); ?></p>
 					<p class="archive-note"><?php esc_html_e( 'Cette zone reflète le gabarit article, les tags et la newsletter.', 'greenlight' ); ?></p>
 				</section>
 				<article class="entry entry--single greenlight-preview-single">
@@ -244,6 +252,7 @@ if ( have_posts() ) :
 				<section class="greenlight-preview-section" aria-labelledby="greenlight-preview-footer-title">
 					<p class="eyebrow"><?php esc_html_e( 'Aperçu footer', 'greenlight' ); ?></p>
 					<h2 id="greenlight-preview-footer-title"><?php esc_html_e( 'Footer et mentions', 'greenlight' ); ?></h2>
+					<p class="greenlight-preview-variant greenlight-preview-footer-variant"><?php esc_html_e( 'Séparé', 'greenlight' ); ?></p>
 					<p class="archive-note"><?php esc_html_e( 'Cette zone reflète la mise en page du footer, le badge et la navigation basse.', 'greenlight' ); ?></p>
 				</section>
 				<div class="site-footer greenlight-preview-footer-sample" aria-label="<?php esc_attr_e( 'Échantillon de footer', 'greenlight' ); ?>">
