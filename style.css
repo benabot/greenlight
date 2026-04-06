@@ -368,6 +368,16 @@ body.front-page .site-main {
 	text-align: center;
 }
 
+.page-hero--height-full.page-hero--centered {
+	align-items: flex-start;
+	justify-content: flex-start;
+}
+
+.page-hero--height-full.page-hero--centered .hero-lead,
+.page-hero--height-full.page-hero--centered .hero-body {
+	align-self: flex-start;
+}
+
 .page-hero--centered .hero-lead,
 .page-hero--centered .hero-body {
 	align-items: center;

@@ -56,6 +56,41 @@ function greenlight_generate_bundle() {
 }
 
 /**
+ * Returns the latest modification time among CSS sources used in the bundle.
+ *
+ * @return int
+ */
+function greenlight_get_bundle_source_mtime() {
+	$theme_dir = get_stylesheet_directory();
+	$files     = array( $theme_dir . '/style.css' );
+	$max_mtime = 0;
+
+	$block_files = glob( $theme_dir . '/assets/css/blocks/*.css' );
+
+	if ( $block_files ) {
+		foreach ( $block_files as $file ) {
+			if ( preg_match( '/\.min\.css$/', $file ) ) {
+				continue;
+			}
+
+			$files[] = $file;
+		}
+	}
+
+	foreach ( $files as $file ) {
+		if ( file_exists( $file ) ) {
+			$file_mtime = (int) filemtime( $file );
+
+			if ( $file_mtime > $max_mtime ) {
+				$max_mtime = $file_mtime;
+			}
+		}
+	}
+
+	return $max_mtime;
+}
+
+/**
  * Invalidates the bundle when performance options change.
  *
  * @return void
@@ -82,11 +117,13 @@ function greenlight_maybe_enqueue_bundle() {
 		return;
 	}
 
-	$theme_dir   = get_stylesheet_directory();
-	$bundle_path = $theme_dir . '/assets/css/greenlight-bundle.css';
+	$theme_dir    = get_stylesheet_directory();
+	$bundle_path  = $theme_dir . '/assets/css/greenlight-bundle.css';
+	$bundle_mtime = file_exists( $bundle_path ) ? (int) filemtime( $bundle_path ) : 0;
+	$source_mtime = greenlight_get_bundle_source_mtime();
 
-	// Auto-generate if missing.
-	if ( ! file_exists( $bundle_path ) ) {
+	// Auto-generate if missing or stale.
+	if ( ! file_exists( $bundle_path ) || $bundle_mtime < $source_mtime ) {
 		greenlight_generate_bundle();
 	}
 
