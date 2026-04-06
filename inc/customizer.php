@@ -55,6 +55,7 @@ function greenlight_customize_register( $wp_customize ) {
 	$defaults            = greenlight_get_appearance_defaults();
 	$presets             = greenlight_get_appearance_presets();
 	$densities           = greenlight_get_appearance_densities();
+	$density_contexts    = greenlight_get_appearance_density_contexts();
 	$archive_card_styles = greenlight_get_archive_card_styles();
 	$single_layouts      = greenlight_get_single_layout_variants();
 	$footer_layouts      = greenlight_get_footer_layout_variants();
@@ -70,6 +71,8 @@ function greenlight_customize_register( $wp_customize ) {
 	foreach ( $densities as $density_key => $density_data ) {
 		$density_choices[ $density_key ] = isset( $density_data['label'] ) ? $density_data['label'] : $density_key;
 	}
+
+	$density_choices_with_inherit = greenlight_get_density_choices( true );
 
 	$archive_card_choices = array();
 	foreach ( $archive_card_styles as $archive_key => $archive_data ) {
@@ -353,17 +356,46 @@ function greenlight_customize_register( $wp_customize ) {
 	);
 
 	$add_select( 'greenlight_appearance_foundations', 'density_scale', __( 'Rythme de page', 'greenlight' ), $density_choices, $defaults['density_scale'], '', 20 );
-	$add_checkbox( 'greenlight_appearance_foundations', 'carbon_badge_enabled', __( 'Afficher le badge CO₂', 'greenlight' ), $defaults['carbon_badge_enabled'], '', 30 );
-	$add_text( 'greenlight_appearance_foundations', 'carbon_badge_value', __( 'Valeur CO₂', 'greenlight' ), $defaults['carbon_badge_value'], __( 'Laisser vide pour la valeur par défaut.', 'greenlight' ), 40 );
-	$add_select( 'greenlight_appearance_foundations', 'carbon_badge_position', __( 'Emplacement du badge', 'greenlight' ), $carbon_badge_position_choices, $defaults['carbon_badge_position'], '', 50 );
-	$add_checkbox( 'greenlight_appearance_foundations', 'newsletter_enabled', __( 'Afficher la newsletter', 'greenlight' ), $defaults['newsletter_enabled'], '', 60 );
-	$add_color( 'greenlight_appearance_foundations', 'color_primary', __( 'Couleur primaire', 'greenlight' ), $defaults['color_primary'], '', 70 );
-	$add_color( 'greenlight_appearance_foundations', 'color_background', __( 'Fond de page', 'greenlight' ), $defaults['color_background'], '', 80 );
-	$add_color( 'greenlight_appearance_foundations', 'color_surface', __( 'Surface', 'greenlight' ), $defaults['color_surface'], '', 90 );
-	$add_color( 'greenlight_appearance_foundations', 'color_text', __( 'Texte', 'greenlight' ), $defaults['color_text'], '', 100 );
-	$add_color( 'greenlight_appearance_foundations', 'color_tertiary', __( 'Tertiaire', 'greenlight' ), $defaults['color_tertiary'], '', 110 );
-	$add_color( 'greenlight_appearance_foundations', 'color_border', __( 'Bordure', 'greenlight' ), $defaults['color_border'], '', 120 );
-	$add_color( 'greenlight_appearance_foundations', 'color_on_surface_variant', __( 'Texte secondaire', 'greenlight' ), $defaults['color_on_surface_variant'], '', 130 );
+	$priority = 30;
+	foreach ( $density_contexts as $context_data ) {
+		$field = isset( $context_data['field'] ) ? $context_data['field'] : '';
+		if ( '' === $field ) {
+			continue;
+		}
+
+		$add_select(
+			'greenlight_appearance_foundations',
+			$field,
+			isset( $context_data['label'] ) ? $context_data['label'] : $field,
+			$density_choices_with_inherit,
+			isset( $defaults[ $field ] ) ? $defaults[ $field ] : 'inherit',
+			isset( $context_data['description'] ) ? $context_data['description'] : '',
+			$priority
+		);
+
+		$priority += 10;
+	}
+	$add_checkbox( 'greenlight_appearance_foundations', 'carbon_badge_enabled', __( 'Afficher le badge CO₂', 'greenlight' ), $defaults['carbon_badge_enabled'], '', $priority );
+	$priority += 10;
+	$add_text( 'greenlight_appearance_foundations', 'carbon_badge_value', __( 'Valeur CO₂', 'greenlight' ), $defaults['carbon_badge_value'], __( 'Laisser vide pour la valeur par défaut.', 'greenlight' ), $priority );
+	$priority += 10;
+	$add_select( 'greenlight_appearance_foundations', 'carbon_badge_position', __( 'Emplacement du badge', 'greenlight' ), $carbon_badge_position_choices, $defaults['carbon_badge_position'], '', $priority );
+	$priority += 10;
+	$add_checkbox( 'greenlight_appearance_foundations', 'newsletter_enabled', __( 'Afficher la newsletter', 'greenlight' ), $defaults['newsletter_enabled'], '', $priority );
+	$priority += 10;
+	$add_color( 'greenlight_appearance_foundations', 'color_primary', __( 'Couleur primaire', 'greenlight' ), $defaults['color_primary'], '', $priority );
+	$priority += 10;
+	$add_color( 'greenlight_appearance_foundations', 'color_background', __( 'Fond de page', 'greenlight' ), $defaults['color_background'], '', $priority );
+	$priority += 10;
+	$add_color( 'greenlight_appearance_foundations', 'color_surface', __( 'Surface', 'greenlight' ), $defaults['color_surface'], '', $priority );
+	$priority += 10;
+	$add_color( 'greenlight_appearance_foundations', 'color_text', __( 'Texte', 'greenlight' ), $defaults['color_text'], '', $priority );
+	$priority += 10;
+	$add_color( 'greenlight_appearance_foundations', 'color_tertiary', __( 'Tertiaire', 'greenlight' ), $defaults['color_tertiary'], '', $priority );
+	$priority += 10;
+	$add_color( 'greenlight_appearance_foundations', 'color_border', __( 'Bordure', 'greenlight' ), $defaults['color_border'], '', $priority );
+	$priority += 10;
+	$add_color( 'greenlight_appearance_foundations', 'color_on_surface_variant', __( 'Texte secondaire', 'greenlight' ), $defaults['color_on_surface_variant'], '', $priority );
 
 	// Navigation.
 	$add_color( 'greenlight_appearance_navigation', 'color_header_bg', __( 'Fond header', 'greenlight' ), $defaults['color_header_bg'], '', 10 );

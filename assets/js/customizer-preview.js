@@ -41,6 +41,30 @@
 		} );
 	}
 
+	function getDensityVars( densityKey ) {
+		if ( config.densities && config.densities[ densityKey ] && config.densities[ densityKey ].vars ) {
+			return config.densities[ densityKey ].vars;
+		}
+
+		if ( config.densities && config.densities.balanced && config.densities.balanced.vars ) {
+			return config.densities.balanced.vars;
+		}
+
+		return {};
+	}
+
+	function prefixVariantVars( vars, prefix ) {
+		var prefixed = {};
+
+		Object.keys( vars || {} ).forEach( function( name ) {
+			if ( 0 === name.indexOf( '--greenlight-' ) ) {
+				prefixed[ name.replace( /^--greenlight-/, '--greenlight-' + prefix + '-density-' ) ] = vars[ name ];
+			}
+		} );
+
+		return prefixed;
+	}
+
 	function collectVariantVars() {
 		var presetKey = state.theme_preset || 'editorial';
 		var densityKey = state.density_scale || 'balanced';
@@ -53,9 +77,21 @@
 			Object.assign( vars, config.presets[ presetKey ].vars );
 		}
 
-		if ( config.densities && config.densities[ densityKey ] && config.densities[ densityKey ].vars ) {
-			Object.assign( vars, config.densities[ densityKey ].vars );
-		}
+		Object.assign( vars, getDensityVars( densityKey ) );
+
+		[
+			[ 'home', 'home_density_scale' ],
+			[ 'archive', 'archive_density_scale' ],
+			[ 'single', 'single_density_scale' ],
+			[ 'page', 'page_density_scale' ],
+		].forEach( function( entry ) {
+			var contextKey = entry[ 0 ];
+			var settingKey = entry[ 1 ];
+			var contextDensityKey = state[ settingKey ] || 'inherit';
+			var effectiveDensityKey = 'inherit' === contextDensityKey ? densityKey : contextDensityKey;
+
+			Object.assign( vars, prefixVariantVars( getDensityVars( effectiveDensityKey ), contextKey ) );
+		} );
 
 		if ( config.archiveCardStyles && config.archiveCardStyles[ archiveKey ] && config.archiveCardStyles[ archiveKey ].vars ) {
 			Object.assign( vars, config.archiveCardStyles[ archiveKey ].vars );
@@ -295,6 +331,10 @@
 	[
 		'theme_preset',
 		'density_scale',
+		'home_density_scale',
+		'archive_density_scale',
+		'single_density_scale',
+		'page_density_scale',
 		'archive_card_style',
 		'single_layout',
 		'footer_layout',

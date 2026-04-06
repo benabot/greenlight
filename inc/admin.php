@@ -155,6 +155,10 @@ function greenlight_get_appearance_defaults() {
 	return array(
 		'theme_preset'             => 'editorial',
 		'density_scale'            => 'balanced',
+		'home_density_scale'       => 'inherit',
+		'archive_density_scale'    => 'inherit',
+		'single_density_scale'     => 'inherit',
+		'page_density_scale'       => 'inherit',
 		// Global.
 		'carbon_badge_enabled'     => 1,
 		'carbon_badge_value'       => '',
@@ -290,24 +294,124 @@ function greenlight_get_appearance_densities() {
 			'label'       => __( 'Aéré', 'greenlight' ),
 			'description' => __( 'Plus d’air entre les blocs.', 'greenlight' ),
 			'vars'        => array(
-				'--greenlight-main-gap'    => 'var(--wp--preset--spacing--xl)',
-				'--greenlight-section-gap' => 'var(--wp--preset--spacing--xl)',
+				'--greenlight-main-gap'             => 'var(--wp--preset--spacing--xl)',
+				'--greenlight-section-gap'          => 'var(--wp--preset--spacing--xl)',
+				'--greenlight-archive-card-gap'     => 'var(--wp--preset--spacing--xl)',
+				'--greenlight-archive-card-padding' => 'var(--wp--preset--spacing--xl)',
+				'--greenlight-archive-list-gap'     => 'var(--wp--preset--spacing--xl)',
+				'--greenlight-single-gap'           => 'var(--wp--preset--spacing--lg)',
+				'--greenlight-single-content-width' => '68ch',
+				'--greenlight-single-heading-width' => '22ch',
+				'--greenlight-single-intro-size'    => 'var(--wp--preset--font-size--large)',
+				'--greenlight-page-content-gap'     => 'var(--wp--preset--spacing--lg)',
+				'--greenlight-page-content-width'   => '68ch',
 			),
 		),
 		'balanced' => array(
 			'label'       => __( 'Équilibré', 'greenlight' ),
 			'description' => __( 'Rythme de base.', 'greenlight' ),
-			'vars'        => array(),
+			'vars'        => array(
+				'--greenlight-main-gap'             => 'var(--wp--preset--spacing--xl)',
+				'--greenlight-section-gap'          => 'var(--wp--preset--spacing--xl)',
+				'--greenlight-archive-card-gap'     => 'var(--wp--preset--spacing--md)',
+				'--greenlight-archive-card-padding' => 'var(--wp--preset--spacing--lg)',
+				'--greenlight-archive-list-gap'     => 'var(--wp--preset--spacing--lg)',
+				'--greenlight-single-gap'           => 'var(--wp--preset--spacing--md)',
+				'--greenlight-single-content-width' => '65ch',
+				'--greenlight-single-heading-width' => '18ch',
+				'--greenlight-single-intro-size'    => 'var(--wp--preset--font-size--large)',
+				'--greenlight-page-content-gap'     => 'var(--wp--preset--spacing--md)',
+				'--greenlight-page-content-width'   => '65ch',
+			),
 		),
 		'compact'  => array(
 			'label'       => __( 'Compact', 'greenlight' ),
 			'description' => __( 'Plus serré, plus dense.', 'greenlight' ),
 			'vars'        => array(
-				'--greenlight-main-gap'    => 'var(--wp--preset--spacing--lg)',
-				'--greenlight-section-gap' => 'var(--wp--preset--spacing--lg)',
+				'--greenlight-main-gap'             => 'var(--wp--preset--spacing--lg)',
+				'--greenlight-section-gap'          => 'var(--wp--preset--spacing--lg)',
+				'--greenlight-archive-card-gap'     => 'var(--wp--preset--spacing--sm)',
+				'--greenlight-archive-card-padding' => 'var(--wp--preset--spacing--md)',
+				'--greenlight-archive-list-gap'     => 'var(--wp--preset--spacing--md)',
+				'--greenlight-single-gap'           => 'var(--wp--preset--spacing--sm)',
+				'--greenlight-single-content-width' => '60ch',
+				'--greenlight-single-heading-width' => '16ch',
+				'--greenlight-single-intro-size'    => 'var(--wp--preset--font-size--medium)',
+				'--greenlight-page-content-gap'     => 'var(--wp--preset--spacing--sm)',
+				'--greenlight-page-content-width'   => '60ch',
 			),
 		),
 	);
+}
+
+/**
+ * Returns the contextual density fields.
+ *
+ * @return array<string, array<string, string>>
+ */
+function greenlight_get_appearance_density_contexts() {
+	return array(
+		'home'    => array(
+			'field'       => 'home_density_scale',
+			'label'       => __( 'Densité de l’accueil', 'greenlight' ),
+			'description' => __( 'Accueil et blog.', 'greenlight' ),
+		),
+		'archive' => array(
+			'field'       => 'archive_density_scale',
+			'label'       => __( 'Densité des archives', 'greenlight' ),
+			'description' => __( 'Catégories, tags et recherche.', 'greenlight' ),
+		),
+		'single'  => array(
+			'field'       => 'single_density_scale',
+			'label'       => __( 'Densité des articles', 'greenlight' ),
+			'description' => __( 'Lecture d’un contenu.', 'greenlight' ),
+		),
+		'page'    => array(
+			'field'       => 'page_density_scale',
+			'label'       => __( 'Densité des pages', 'greenlight' ),
+			'description' => __( 'Pages et gabarits statiques.', 'greenlight' ),
+		),
+	);
+}
+
+/**
+ * Returns the available density choices, optionally with inheritance.
+ *
+ * @param bool $include_inherit Whether to include an inherited option.
+ * @return array<string, string>
+ */
+function greenlight_get_density_choices( $include_inherit = false ) {
+	$choices = array();
+
+	if ( $include_inherit ) {
+		$choices['inherit'] = __( 'Hérité', 'greenlight' );
+	}
+
+	foreach ( greenlight_get_appearance_densities() as $density_key => $density_data ) {
+		$choices[ $density_key ] = isset( $density_data['label'] ) ? $density_data['label'] : $density_key;
+	}
+
+	return $choices;
+}
+
+/**
+ * Prefixes custom property names for a specific density context.
+ *
+ * @param array<string, string> $vars Custom properties.
+ * @param string                $context Context key.
+ * @return array<string, string>
+ */
+function greenlight_prefix_appearance_variant_vars( array $vars, $context ) {
+	$prefixed = array();
+	$context  = sanitize_key( (string) $context );
+
+	foreach ( $vars as $name => $value ) {
+		if ( 0 === strpos( $name, '--greenlight-' ) ) {
+			$prefixed[ preg_replace( '/^--greenlight-/', '--greenlight-' . $context . '-density-', $name ) ] = $value;
+		}
+	}
+
+	return $prefixed;
 }
 
 /**
@@ -547,19 +651,39 @@ function greenlight_get_appearance_variant_vars( $options ) {
 	$archive_card_styles = greenlight_get_archive_card_styles();
 	$single_layouts      = greenlight_get_single_layout_variants();
 	$footer_layouts      = greenlight_get_footer_layout_variants();
+	$density_contexts    = greenlight_get_appearance_density_contexts();
 
 	$preset_key         = isset( $options['theme_preset'] ) ? sanitize_key( (string) $options['theme_preset'] ) : 'editorial';
-	$density_key        = isset( $options['density_scale'] ) ? sanitize_key( (string) $options['density_scale'] ) : 'balanced';
+	$density_key        = isset( $options['density_scale'] ) && isset( $densities[ sanitize_key( (string) $options['density_scale'] ) ] )
+		? sanitize_key( (string) $options['density_scale'] )
+		: 'balanced';
 	$archive_card_key   = isset( $options['archive_card_style'] ) ? sanitize_key( (string) $options['archive_card_style'] ) : 'balanced';
 	$single_layout_key  = isset( $options['single_layout'] ) ? sanitize_key( (string) $options['single_layout'] ) : 'editorial';
 	$footer_layout_key  = isset( $options['footer_layout'] ) ? sanitize_key( (string) $options['footer_layout'] ) : 'split';
 	$preset_vars        = isset( $presets[ $preset_key ]['vars'] ) ? (array) $presets[ $preset_key ]['vars'] : $presets['editorial']['vars'];
-	$density_vars       = isset( $densities[ $density_key ]['vars'] ) ? (array) $densities[ $density_key ]['vars'] : array();
+	$density_vars       = isset( $densities[ $density_key ]['vars'] ) ? (array) $densities[ $density_key ]['vars'] : $densities['balanced']['vars'];
 	$archive_card_vars  = isset( $archive_card_styles[ $archive_card_key ]['vars'] ) ? (array) $archive_card_styles[ $archive_card_key ]['vars'] : $archive_card_styles['balanced']['vars'];
 	$single_layout_vars = isset( $single_layouts[ $single_layout_key ]['vars'] ) ? (array) $single_layouts[ $single_layout_key ]['vars'] : $single_layouts['editorial']['vars'];
 	$footer_layout_vars = isset( $footer_layouts[ $footer_layout_key ]['vars'] ) ? (array) $footer_layouts[ $footer_layout_key ]['vars'] : $footer_layouts['split']['vars'];
+	$context_vars       = array();
 
-	return array_merge( $preset_vars, $density_vars, $archive_card_vars, $single_layout_vars, $footer_layout_vars );
+	foreach ( $density_contexts as $context_key => $context_data ) {
+		$field = isset( $context_data['field'] ) ? $context_data['field'] : '';
+
+		if ( '' === $field ) {
+			continue;
+		}
+
+		$context_density_key = isset( $options[ $field ] ) ? sanitize_key( (string) $options[ $field ] ) : 'inherit';
+		if ( 'inherit' === $context_density_key || ! isset( $densities[ $context_density_key ] ) ) {
+			$context_density_key = $density_key;
+		}
+
+		$context_density_vars = isset( $densities[ $context_density_key ]['vars'] ) ? (array) $densities[ $context_density_key ]['vars'] : $density_vars;
+		$context_vars         = array_merge( $context_vars, greenlight_prefix_appearance_variant_vars( $context_density_vars, $context_key ) );
+	}
+
+	return array_merge( $preset_vars, $density_vars, $context_vars, $archive_card_vars, $single_layout_vars, $footer_layout_vars );
 }
 
 /**
@@ -610,6 +734,7 @@ function greenlight_sanitize_appearance_settings( $input ) {
 	$footer_layouts      = greenlight_get_footer_layout_variants();
 	$positions           = greenlight_get_carbon_badge_positions();
 	$gradients           = greenlight_get_hero_gradient_presets();
+	$density_keys        = array_merge( array( 'inherit' ), array_keys( $densities ) );
 
 	$badge_value = isset( $input['carbon_badge_value'] )
 		? sanitize_text_field( $input['carbon_badge_value'] )
@@ -635,6 +760,18 @@ function greenlight_sanitize_appearance_settings( $input ) {
 		'density_scale'            => isset( $input['density_scale'] ) && isset( $densities[ sanitize_key( (string) $input['density_scale'] ) ] )
 			? sanitize_key( (string) $input['density_scale'] )
 			: $defaults['density_scale'],
+		'home_density_scale'       => isset( $input['home_density_scale'] ) && in_array( sanitize_key( (string) $input['home_density_scale'] ), $density_keys, true )
+			? sanitize_key( (string) $input['home_density_scale'] )
+			: $defaults['home_density_scale'],
+		'archive_density_scale'    => isset( $input['archive_density_scale'] ) && in_array( sanitize_key( (string) $input['archive_density_scale'] ), $density_keys, true )
+			? sanitize_key( (string) $input['archive_density_scale'] )
+			: $defaults['archive_density_scale'],
+		'single_density_scale'     => isset( $input['single_density_scale'] ) && in_array( sanitize_key( (string) $input['single_density_scale'] ), $density_keys, true )
+			? sanitize_key( (string) $input['single_density_scale'] )
+			: $defaults['single_density_scale'],
+		'page_density_scale'       => isset( $input['page_density_scale'] ) && in_array( sanitize_key( (string) $input['page_density_scale'] ), $density_keys, true )
+			? sanitize_key( (string) $input['page_density_scale'] )
+			: $defaults['page_density_scale'],
 		// Global.
 		'carbon_badge_enabled'     => isset( $input['carbon_badge_enabled'] ) ? 1 : 0,
 		'carbon_badge_value'       => $badge_value,
@@ -1011,7 +1148,7 @@ function greenlight_get_admin_shell_context( $current_tab ) {
 					'value' => isset( $appearance_options['archive_layout'] ) && 'list' === $appearance_options['archive_layout'] ? __( 'Liste', 'greenlight' ) : __( 'Grille', 'greenlight' ),
 				),
 			);
-			$note        = __( 'Preset éditorial, densité et rendu.', 'greenlight' );
+			$note        = __( 'Preset éditorial, densités et rendu.', 'greenlight' );
 			break;
 		case 'svg':
 			$metrics = array(

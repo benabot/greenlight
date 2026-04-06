@@ -321,9 +321,9 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 - [x] Badge CO₂ : valeur manuelle, lien EcoIndex et placement `haut de page` / `footer`
 - [x] 9A.2 — Étendre la navigation : couleurs, sticky, layout, sous-menus CSS-only
 - [x] Ajouter des variantes pilotables pour archives, cartes, single et footer
-- [ ] Ajouter des réglages de densité visuelle : espacements, rayons, contraste, hauteur de header
-- [ ] Ajouter des réglages par contexte : home, archives, single, pages
-- [ ] Aligner les patterns Gutenberg sur ces presets pour éviter le CSS manuel
+- [x] Ajouter des réglages de densité visuelle : espacements, rayons, contraste, hauteur de header
+- [x] Ajouter des réglages par contexte : home, archives, single, pages
+- [x] Aligner les patterns Gutenberg sur ces presets pour éviter le CSS manuel
 - [ ] Garder zéro impact front en JS et zéro dépendance externe
 
 ### Phase 9B — Durcissement sécurité léger

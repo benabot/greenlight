@@ -14,6 +14,12 @@
 - Greenlight n’est pas un clone complet de Yoast Premium + WP Rocket.
 - La prochaine vraie valeur sans alourdir : personnalisation du thème d’abord, durcissement sécurité léger ensuite.
 
+## Phase 9A — En cours
+
+- Densité visuelle pilotable par contexte: accueil, archives, articles, pages.
+- Presets éditoriaux alignés sur le thème et les patterns Gutenberg.
+- Hero, navigation, archives, cartes, single et footer exposés dans le Customizer avec preview live.
+
 ## Commits réalisés
 
 | Hash | Phase | Description |

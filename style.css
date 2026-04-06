@@ -77,6 +77,46 @@ body > main {
 	padding-inline: var(--wp--preset--spacing--md);
 }
 
+body.home,
+body.blog {
+	--greenlight-main-gap: var(--greenlight-home-density-main-gap);
+	--greenlight-section-gap: var(--greenlight-home-density-section-gap);
+	--greenlight-archive-card-gap: var(--greenlight-home-density-archive-card-gap);
+	--greenlight-archive-card-padding: var(--greenlight-home-density-archive-card-padding);
+	--greenlight-archive-list-gap: var(--greenlight-home-density-archive-list-gap);
+}
+
+body.archive,
+body.search,
+body.category,
+body.tag,
+body.author,
+body.date,
+body.post-type-archive {
+	--greenlight-main-gap: var(--greenlight-archive-density-main-gap);
+	--greenlight-section-gap: var(--greenlight-archive-density-section-gap);
+	--greenlight-archive-card-gap: var(--greenlight-archive-density-archive-card-gap);
+	--greenlight-archive-card-padding: var(--greenlight-archive-density-archive-card-padding);
+	--greenlight-archive-list-gap: var(--greenlight-archive-density-archive-list-gap);
+}
+
+body.single {
+	--greenlight-main-gap: var(--greenlight-single-density-main-gap);
+	--greenlight-section-gap: var(--greenlight-single-density-section-gap);
+	--greenlight-single-gap: var(--greenlight-single-density-single-gap);
+	--greenlight-single-content-width: var(--greenlight-single-density-single-content-width);
+	--greenlight-single-heading-width: var(--greenlight-single-density-single-heading-width);
+	--greenlight-single-intro-size: var(--greenlight-single-density-single-intro-size);
+}
+
+body.page,
+body.front-page {
+	--greenlight-main-gap: var(--greenlight-page-density-main-gap);
+	--greenlight-section-gap: var(--greenlight-page-density-section-gap);
+	--greenlight-page-content-gap: var(--greenlight-page-density-page-content-gap);
+	--greenlight-page-content-width: var(--greenlight-page-density-page-content-width);
+}
+
 /* === Site Header — 3-zone flex === */
 
 .site-header {
@@ -1055,8 +1095,27 @@ body.front-page .site-main {
 .page-content {
 	display: flex;
 	flex-direction: column;
-	gap: var(--wp--preset--spacing--md);
-	max-width: 65ch;
+	gap: var(--greenlight-page-content-gap, var(--wp--preset--spacing--md));
+	max-width: min(100%, var(--greenlight-page-content-width, 65ch));
+}
+
+.entry--page {
+	display: flex;
+	flex-direction: column;
+	gap: var(--greenlight-page-content-gap, var(--wp--preset--spacing--md));
+	width: min(100%, var(--greenlight-page-content-width, 65ch));
+	margin-inline: auto;
+}
+
+.entry--page .entry-header,
+.entry--page .entry-content {
+	max-width: none;
+}
+
+.entry--page .entry-header {
+	display: flex;
+	flex-direction: column;
+	gap: var(--greenlight-page-content-gap, var(--wp--preset--spacing--sm));
 }
 
 .greenlight-preview-stack {
