@@ -211,21 +211,21 @@ function greenlight_customize_register( $wp_customize ) {
 		return $color ? $color : '';
 	};
 
-	$add_setting = static function ( $field, $default_value, $sanitize_callback ) use ( $wp_customize ) {
+	$add_setting = static function ( $field, $default_value, $sanitize_callback, $transport = 'postMessage' ) use ( $wp_customize ) {
 		$wp_customize->add_setting(
 			greenlight_customize_appearance_setting_id( $field ),
 			array(
 				'default'           => $default_value,
 				'type'              => 'option',
 				'capability'        => 'edit_theme_options',
-				'transport'         => 'refresh',
+				'transport'         => $transport,
 				'sanitize_callback' => $sanitize_callback,
 			)
 		);
 	};
 
-	$add_select = static function ( $section, $field, $label, array $choices, $default_value, $description = '', $priority = 10 ) use ( $wp_customize, $add_setting, $sanitize_choice ) {
-		$add_setting( $field, $default_value, $sanitize_choice( $choices, $default_value ) );
+	$add_select = static function ( $section, $field, $label, array $choices, $default_value, $description = '', $priority = 10, $transport = 'postMessage' ) use ( $wp_customize, $add_setting, $sanitize_choice ) {
+		$add_setting( $field, $default_value, $sanitize_choice( $choices, $default_value ), $transport );
 
 		$args = array(
 			'label'    => $label,
@@ -243,8 +243,8 @@ function greenlight_customize_register( $wp_customize ) {
 		$wp_customize->add_control( greenlight_customize_appearance_setting_id( $field ), $args );
 	};
 
-	$add_checkbox = static function ( $section, $field, $label, $default_value = 0, $description = '', $priority = 10 ) use ( $wp_customize, $add_setting, $sanitize_bool ) {
-		$add_setting( $field, $default_value, $sanitize_bool );
+	$add_checkbox = static function ( $section, $field, $label, $default_value = 0, $description = '', $priority = 10, $transport = 'postMessage' ) use ( $wp_customize, $add_setting, $sanitize_bool ) {
+		$add_setting( $field, $default_value, $sanitize_bool, $transport );
 
 		$args = array(
 			'label'    => $label,
@@ -261,8 +261,8 @@ function greenlight_customize_register( $wp_customize ) {
 		$wp_customize->add_control( greenlight_customize_appearance_setting_id( $field ), $args );
 	};
 
-	$add_text = static function ( $section, $field, $label, $default_value = '', $description = '', $priority = 10 ) use ( $wp_customize, $add_setting, $sanitize_text ) {
-		$add_setting( $field, $default_value, $sanitize_text );
+	$add_text = static function ( $section, $field, $label, $default_value = '', $description = '', $priority = 10, $transport = 'postMessage' ) use ( $wp_customize, $add_setting, $sanitize_text ) {
+		$add_setting( $field, $default_value, $sanitize_text, $transport );
 
 		$args = array(
 			'label'    => $label,
@@ -279,8 +279,8 @@ function greenlight_customize_register( $wp_customize ) {
 		$wp_customize->add_control( greenlight_customize_appearance_setting_id( $field ), $args );
 	};
 
-	$add_textarea = static function ( $section, $field, $label, $default_value = '', $description = '', $priority = 10 ) use ( $wp_customize, $add_setting, $sanitize_textarea ) {
-		$add_setting( $field, $default_value, $sanitize_textarea );
+	$add_textarea = static function ( $section, $field, $label, $default_value = '', $description = '', $priority = 10, $transport = 'postMessage' ) use ( $wp_customize, $add_setting, $sanitize_textarea ) {
+		$add_setting( $field, $default_value, $sanitize_textarea, $transport );
 
 		$args = array(
 			'label'    => $label,
@@ -297,8 +297,8 @@ function greenlight_customize_register( $wp_customize ) {
 		$wp_customize->add_control( greenlight_customize_appearance_setting_id( $field ), $args );
 	};
 
-	$add_url = static function ( $section, $field, $label, $default_value = '', $description = '', $priority = 10 ) use ( $wp_customize, $add_setting, $sanitize_url ) {
-		$add_setting( $field, $default_value, $sanitize_url );
+	$add_url = static function ( $section, $field, $label, $default_value = '', $description = '', $priority = 10, $transport = 'postMessage' ) use ( $wp_customize, $add_setting, $sanitize_url ) {
+		$add_setting( $field, $default_value, $sanitize_url, $transport );
 
 		$args = array(
 			'label'    => $label,
@@ -315,8 +315,8 @@ function greenlight_customize_register( $wp_customize ) {
 		$wp_customize->add_control( greenlight_customize_appearance_setting_id( $field ), $args );
 	};
 
-	$add_color = static function ( $section, $field, $label, $default_value = '', $description = '', $priority = 10 ) use ( $wp_customize, $add_setting, $sanitize_color ) {
-		$add_setting( $field, $default_value, $sanitize_color );
+	$add_color = static function ( $section, $field, $label, $default_value = '', $description = '', $priority = 10, $transport = 'postMessage' ) use ( $wp_customize, $add_setting, $sanitize_color ) {
+		$add_setting( $field, $default_value, $sanitize_color, $transport );
 
 		$args = array(
 			'label'    => $label,
@@ -372,8 +372,9 @@ function greenlight_customize_register( $wp_customize ) {
 	$add_select( 'greenlight_appearance_navigation', 'header_layout', __( 'Layout header', 'greenlight' ), $header_layout_choices, $defaults['header_layout'], '', 40 );
 	$add_checkbox( 'greenlight_appearance_navigation', 'header_sticky', __( 'Header collant', 'greenlight' ), $defaults['header_sticky'], '', 50 );
 	$add_checkbox( 'greenlight_appearance_navigation', 'show_tagline', __( 'Afficher la description du site', 'greenlight' ), $defaults['show_tagline'], '', 60 );
-	$add_select( 'greenlight_appearance_navigation', 'nav_link_case', __( 'Casse menu', 'greenlight' ), $nav_case_choices, $defaults['nav_link_case'], '', 70 );
-	$add_select( 'greenlight_appearance_navigation', 'submenu_style', __( 'Sous-menus', 'greenlight' ), $submenu_choices, $defaults['submenu_style'], '', 80 );
+	$add_checkbox( 'greenlight_appearance_navigation', 'show_header_cta', __( 'Afficher le bouton d\'abonnement', 'greenlight' ), $defaults['show_header_cta'], '', 70 );
+	$add_select( 'greenlight_appearance_navigation', 'nav_link_case', __( 'Casse menu', 'greenlight' ), $nav_case_choices, $defaults['nav_link_case'], '', 80 );
+	$add_select( 'greenlight_appearance_navigation', 'submenu_style', __( 'Sous-menus', 'greenlight' ), $submenu_choices, $defaults['submenu_style'], '', 90 );
 
 	// Hero.
 	$add_checkbox( 'greenlight_appearance_hero', 'hero_enabled', __( 'Utiliser le hero avancé', 'greenlight' ), $defaults['hero_enabled'], __( 'Désactivé = intro simple.', 'greenlight' ), 10 );
@@ -422,3 +423,77 @@ function greenlight_customize_register( $wp_customize ) {
 	$add_checkbox( 'greenlight_appearance_footer', 'show_footer_nav', __( 'Afficher le menu de navigation footer', 'greenlight' ), $defaults['show_footer_nav'], '', 50 );
 }
 add_action( 'customize_register', 'greenlight_customize_register' );
+
+/**
+ * Enqueues the Customizer preview script.
+ *
+ * @return void
+ */
+function greenlight_customize_preview_init() {
+	$script_path = get_theme_file_path( 'assets/js/customizer-preview.js' );
+	$script_url  = get_theme_file_uri( 'assets/js/customizer-preview.js' );
+
+	if ( ! file_exists( $script_path ) ) {
+		return;
+	}
+
+	wp_enqueue_script(
+		'greenlight-customizer-preview',
+		$script_url,
+		array( 'customize-preview' ),
+		filemtime( $script_path ),
+		true
+	);
+
+	$preview_data = array(
+		'siteTitle'         => get_bloginfo( 'name' ),
+		'siteTagline'       => get_bloginfo( 'description' ),
+		'presets'           => array(),
+		'densities'         => array(),
+		'archiveCardStyles' => array(),
+		'singleLayouts'     => array(),
+		'footerLayouts'     => array(),
+		'gradients'         => array(),
+	);
+
+	foreach ( greenlight_get_appearance_presets() as $preset_key => $preset_data ) {
+		$preview_data['presets'][ $preset_key ] = array(
+			'vars' => isset( $preset_data['vars'] ) ? (array) $preset_data['vars'] : array(),
+		);
+	}
+
+	foreach ( greenlight_get_appearance_densities() as $density_key => $density_data ) {
+		$preview_data['densities'][ $density_key ] = array(
+			'vars' => isset( $density_data['vars'] ) ? (array) $density_data['vars'] : array(),
+		);
+	}
+
+	foreach ( greenlight_get_archive_card_styles() as $style_key => $style_data ) {
+		$preview_data['archiveCardStyles'][ $style_key ] = array(
+			'vars' => isset( $style_data['vars'] ) ? (array) $style_data['vars'] : array(),
+		);
+	}
+
+	foreach ( greenlight_get_single_layout_variants() as $layout_key => $layout_data ) {
+		$preview_data['singleLayouts'][ $layout_key ] = array(
+			'vars' => isset( $layout_data['vars'] ) ? (array) $layout_data['vars'] : array(),
+		);
+	}
+
+	foreach ( greenlight_get_footer_layout_variants() as $layout_key => $layout_data ) {
+		$preview_data['footerLayouts'][ $layout_key ] = array(
+			'vars' => isset( $layout_data['vars'] ) ? (array) $layout_data['vars'] : array(),
+		);
+	}
+
+	foreach ( greenlight_get_hero_gradient_presets() as $gradient_key => $gradient_data ) {
+		$preview_data['gradients'][ $gradient_key ] = isset( $gradient_data['value'] ) ? (string) $gradient_data['value'] : '';
+	}
+
+	wp_add_inline_script(
+		'greenlight-customizer-preview',
+		'window.greenlightCustomizerPreview = ' . wp_json_encode( $preview_data ) . ';',
+		'before'
+	);
+}
+add_action( 'customize_preview_init', 'greenlight_customize_preview_init' );

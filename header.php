@@ -25,6 +25,7 @@ $_gl_header_sticky = ! empty( $_gl_app_h['header_sticky'] );
 $_gl_nav_case      = isset( $_gl_app_h['nav_link_case'] ) && 'uppercase' === $_gl_app_h['nav_link_case'] ? 'uppercase' : 'normal';
 $_gl_submenu_style = isset( $_gl_app_h['submenu_style'] ) && 'surface' === $_gl_app_h['submenu_style'] ? 'surface' : 'plain';
 $_gl_show_tagline  = ! empty( $_gl_app_h['show_tagline'] );
+$_gl_show_cta      = ! empty( $_gl_app_h['newsletter_enabled'] ) && ! empty( $_gl_app_h['show_header_cta'] );
 ?>
 <header class="site-header site-header--layout-<?php echo esc_attr( $_gl_header_layout ); ?> site-header--nav-<?php echo esc_attr( $_gl_nav_case ); ?> site-header--submenu-<?php echo esc_attr( $_gl_submenu_style ); ?><?php echo $_gl_header_sticky ? ' site-header--sticky' : ''; ?>">
 	<div class="site-branding">
@@ -45,6 +46,8 @@ $_gl_show_tagline  = ! empty( $_gl_app_h['show_tagline'] );
 		);
 		?>
 	</nav>
+	<?php if ( $_gl_show_cta ) : ?>
 	<a href="#newsletter" class="cta-subscribe"><?php esc_html_e( 'Subscribe', 'greenlight' ); ?></a>
+	<?php endif; ?>
 </header>
 <main id="main-content" class="site-main">

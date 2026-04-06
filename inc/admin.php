@@ -177,6 +177,7 @@ function greenlight_get_appearance_defaults() {
 		'nav_link_case'            => 'normal',
 		'submenu_style'            => 'plain',
 		'show_tagline'             => 0,
+		'show_header_cta'          => 1,
 		// Hero.
 		'hero_enabled'             => 1,
 		'hero_style'               => 'asymmetric',
@@ -664,6 +665,7 @@ function greenlight_sanitize_appearance_settings( $input ) {
 			? sanitize_key( $input['submenu_style'] )
 			: $defaults['submenu_style'],
 		'show_tagline'             => isset( $input['show_tagline'] ) ? 1 : 0,
+		'show_header_cta'          => isset( $input['show_header_cta'] ) ? 1 : 0,
 		// Hero.
 		'hero_enabled'             => isset( $input['hero_enabled'] ) ? 1 : 0,
 		'hero_style'               => in_array( $input['hero_style'] ?? '', array( 'asymmetric', 'centered' ), true )
