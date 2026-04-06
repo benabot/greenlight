@@ -236,7 +236,7 @@ git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cac
 ### 6D-PERF — Performance avancée
 
 - [x] **Critical CSS** : `assets/css/critical.css` (~50 lignes above-the-fold), inline dans `wp_head`, defer du CSS principal via `media="print" onload`, toggle admin (`inc/critical-css.php`)
-- [x] **Prefetch DNS / Preconnect** : textarea domaines dans l'admin, injection `<link rel="dns-prefetch/preconnect">`, auto-détection domaines externes (`inc/prefetch.php`)
+- [x] **Prefetch DNS / Preconnect** : textarea domaines explicites dans l'admin, injection `<link rel="dns-prefetch/preconnect">` uniquement pour les domaines saisis manuellement, sans auto-détection du contenu (`inc/prefetch.php`)
 - [x] **Database cleanup** : supprimer révisions, brouillons auto, corbeille, spam, transients expirés, optimiser tables — boutons individuels + cron hebdomadaire (`inc/db-cleanup.php`)
 - [x] **Heartbeat control** : admin/éditeur/front séparément — désactiver ou réduire l'intervalle (15s→120s) (`inc/heartbeat.php`)
 - [x] **Concaténation CSS** : bundle unique `greenlight-bundle.css` généré lazy, réduit les requêtes HTTP de ~10 à 1-2, invalidation auto (`inc/concat.php`)

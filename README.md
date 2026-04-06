@@ -156,7 +156,7 @@ La configuration du theme se fait dans **Apparence > Greenlight**:
 
 - **SEO** : titre global, description globale, separator, sitemap, noindex archives;
 - **Images** : WebP, qualite, suppression des tailles inutiles;
-- **Performance** : minification, cache HTML, nettoyage du head;
+- **Performance** : minification, cache HTML, prefetch DNS / preconnect manuel, nettoyage du head;
 - **Apparence** : hero, single, archive, footer, surfaces et espacements;
 - **SVG** : sanitisation et validation des imports;
 - **Outils** : import/export JSON des reglages.

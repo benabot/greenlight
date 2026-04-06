@@ -266,6 +266,7 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 - **Outils** : Import/Export JSON de tous les réglages (`greenlight_handle_export`, `greenlight_handle_import`)
 - **Apparence** : hub léger vers le Customizer WordPress natif — Global, Header, Hero, Single, Archive, Footer, avec aperçu live
 - **Performance** : tableau statut fichiers `.min`, détection serveur (nginx/Apache), bouton régénération
+- **Prefetch** : uniquement les domaines explicites saisis dans l'admin; plus de détection automatique des URLs externes ni de cron associé
 - **Preview** : Customizer WordPress natif pour l’aperçu live de l’apparence
 - **JS admin** : aucun JS dédié pour l’aperçu d’Apparence ; plus d’iframe maison
 
