@@ -17,6 +17,7 @@ require_once get_theme_file_path( 'inc/seo-settings.php' );
 require_once get_theme_file_path( 'inc/images.php' );
 require_once get_theme_file_path( 'inc/images-settings.php' );
 require_once get_theme_file_path( 'inc/admin.php' );
+require_once get_theme_file_path( 'inc/customizer.php' );
 require_once get_theme_file_path( 'inc/minify.php' );
 require_once get_theme_file_path( 'inc/cache.php' );
 require_once get_theme_file_path( 'inc/svg.php' );
@@ -226,22 +227,6 @@ function greenlight_is_articles_index_request() {
 	$request_path  = untrailingslashit( $request_path );
 
 	return $request_path === $articles_path || 0 === strpos( $request_path, $articles_path . '/page/' );
-}
-
-/**
- * Returns whether the current request is the protected admin appearance preview.
- *
- * @return bool
- */
-function greenlight_is_admin_preview_request() {
-	if ( is_admin() || wp_doing_ajax() ) {
-		return false;
-	}
-
-	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only preview flag for a protected admin iframe.
-	$preview = isset( $_GET['greenlight_preview'] ) ? sanitize_key( (string) wp_unslash( $_GET['greenlight_preview'] ) ) : '';
-
-	return 'appearance' === $preview && is_user_logged_in() && current_user_can( 'manage_options' );
 }
 
 /**

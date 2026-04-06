@@ -137,7 +137,7 @@ Objectif : regrouper tous les réglages du thème dans une page admin top-level 
   - [x] **Section Single** : toggle date, toggle auteur, toggle tags, toggle articles liés, toggle newsletter
   - [x] **Section Archive** : layout, toggle extraits, toggle miniatures, articles par page
   - [x] **Section Footer** : fond footer, toggle "Low Emission Mode", copyright personnalisé, toggle nav footer
-- [x] **Prévisualisation live couleurs** : `assets/js/admin-preview.js` (~30 lignes vanilla JS) + iframe de prévisualisation dans l'onglet Apparence
+- [x] **Prévisualisation live couleurs** : Customizer WordPress natif avec aperçu du thème Greenlight dans `customize.php`
 - [x] **Onglet SVG** : toggle + info sanitisation DOMDocument
 - [x] **Onglet Outils** (nouveau) :
   - [x] Export JSON : bouton → télécharge un `.json` avec toutes les options Greenlight
@@ -294,7 +294,7 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 
 - [x] Étendre le shell premium aux onglets `Images` et `Apparence`
 - [x] Étendre le shell premium aux onglets `SVG`, `Outils`
-- [x] Refaire l'onglet `Apparence` avec une meilleure intégration de la prévisualisation iframe
+- [x] Refaire l'onglet `Apparence` en hub léger vers le Customizer, sans formulaire redondant
 - [x] Refaire l'onglet `Images` avec une mise en avant des stats de stockage et du bulk
 - [x] Uniformiser les tableaux, formulaires secondaires et zones d'actions sensibles
 - [ ] Vérifier le responsive admin sur laptop et écrans étroits

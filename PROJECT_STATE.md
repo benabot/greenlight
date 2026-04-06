@@ -195,7 +195,7 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 
 | Phase | Statut | Tâches principales |
 |-------|--------|--------------------|
-| **8 — Admin UI premium** | 🟡 En cours | Shell premium, navigation numérotée, mini design system admin, refonte progressive des onglets SEO / Performance / Images / Apparence / SVG / Outils |
+| **8 — Admin UI premium** | 🟡 En cours | Shell premium, navigation numérotée, mini design system admin, hub Apparence vers le Customizer, onglets SEO / Performance / Images / SVG / Outils |
 | **9 — Valeur produit sans alourdir** | 🟡 En cours | Personnalisation avancée du thème, presets éditoriaux, hero simple/avancé, badge CO₂ top/footer, navigation CSS-only avancée, variantes archives/cartes/single/footer, durcissement sécurité léger |
 | **6C/A — Redesign visuel** | ✅ Terminé | Palette DESIGN.md dans theme.json, templates front alignés sur esthétique EcoEditorial, patterns, Carbon Badge, surfaces, boutons |
 | **6C/B — Admin unifiée** | ✅ Terminé | Page top-level Greenlight avec onglets (SEO, Images, Performance, Apparence, SVG, Outils) |
@@ -227,7 +227,7 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 - [x] Mini design system admin ajouté dans `assets/css/admin-ui.css`
 - [x] Aucune logique métier modifiée dans les handlers existants
 - [x] Refonte des onglets `SEO` et `Performance`
-- [x] Extension du shell aux onglets `Images` et `Apparence`
+- [x] Extension du shell aux onglets `Images` et `Apparence`, puis simplification d’`Apparence` en entrée vers le Customizer
 - [x] Extension du shell aux onglets `SVG`, `Outils`
 
 ### Phase 9 — Cadrage
@@ -264,10 +264,10 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 ### Admin
 - **Structure** : page top-level "Greenlight" avec 6 onglets CSS-only (SEO, Images, Performance, Apparence, SVG, Outils)
 - **Outils** : Import/Export JSON de tous les réglages (`greenlight_handle_export`, `greenlight_handle_import`)
-- **Apparence** : sections `<details>` sans JS — Global, Header, Hero, Single, Archive, Footer — ~30 options
+- **Apparence** : hub léger vers le Customizer WordPress natif — Global, Header, Hero, Single, Archive, Footer, avec aperçu live
 - **Performance** : tableau statut fichiers `.min`, détection serveur (nginx/Apache), bouton régénération
-- **Preview** : iframe live dans l'onglet Apparence, mis à jour par `assets/js/admin-preview.js` (vanilla JS, polling 600ms)
-- **JS admin** : `wp_color_picker` (jQuery, requis par WP) + `admin-preview.js` (vanilla, onglet Apparence uniquement)
+- **Preview** : Customizer WordPress natif pour l’aperçu live de l’apparence
+- **JS admin** : aucun JS dédié pour l’aperçu d’Apparence ; plus d’iframe maison
 
 ### SVG
 - **Sanitisation** : `DOMDocument` PHP natif — suppression scripts, événements JS, xlink malveillants
@@ -300,7 +300,7 @@ git checkout -b feat/admin-ui
 | `inc/minify.php` | Fallback lazy-generation sur disque + transient 24h ; `greenlight_ensure_min_file()`, `greenlight_clear_min_files()` |
 | `inc/cache.php` | Page cache HTML statique (`wp-content/cache/greenlight/`), headers `Cache-Control + Expires + ETag`, purge auto |
 | `inc/svg.php` | Upload SVG conditionnel, sanitisation `DOMDocument` (scripts, `on*`, xlink externes), fix MIME check |
-| `assets/js/admin-preview.js` | Preview iframe vanilla JS — polling 600ms sur `.greenlight-color-picker` → inject CSS vars dans iframe |
+| `inc/customizer.php` | Customizer natif de l’apparence — Hero, Navigation, Footer, couleurs et variantes de rendu |
 
 **Nouvelles options `greenlight_appearance_options`** (s'ajoutent à celles déjà existantes) :
 
