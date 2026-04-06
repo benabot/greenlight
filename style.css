@@ -284,6 +284,11 @@ body > main {
 	padding-block: var(--greenlight-section-gap, var(--wp--preset--spacing--xl));
 }
 
+body.home .site-main,
+body.front-page .site-main {
+	padding-block-start: 0;
+}
+
 /* === Carbon Badge pill === */
 
 .carbon-badge {
