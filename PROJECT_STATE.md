@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — Greenlight
 
-> État du projet au 28 mars 2026. Référence rapide pour reprendre le travail en contexte.
+> État du projet au 7 avril 2026. Référence rapide pour reprendre le travail en contexte.
 
 ---
 
@@ -14,11 +14,13 @@
 - Greenlight n’est pas un clone complet de Yoast Premium + WP Rocket.
 - La prochaine vraie valeur sans alourdir : personnalisation du thème d’abord, durcissement sécurité léger ensuite.
 
-## Phase 9A — En cours
+## État des phases
 
-- Densité visuelle pilotable par contexte: accueil, archives, articles, pages.
-- Presets éditoriaux alignés sur le thème et les patterns Gutenberg.
-- Hero, navigation, archives, cartes, single et footer exposés dans le Customizer avec preview live.
+| Phase | Statut | Notes |
+|-------|--------|-------|
+| **8 — Admin UI premium** | ✅ Terminé | Shell premium, navigation numérotée, onglets SEO/Performance/Images/SVG/Outils, smoke test validé |
+| **9A — Personnalisation avancée** | ✅ Terminé | Presets, hero avancé, nav CSS-only, densité par contexte |
+| **9B — Durcissement sécurité** | ✅ Terminé | SVG allowlist, IP anonymisée, upload guards, OPTIMIZE scope |
 
 ## Commits réalisés
 
@@ -197,16 +199,21 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 
 ---
 
-## Phases restantes
+## Historique des phases
 
-| Phase | Statut | Tâches principales |
-|-------|--------|--------------------|
-| **8 — Admin UI premium** | 🟡 En cours | Shell premium, navigation numérotée, mini design system admin, hub Apparence vers le Customizer, onglets SEO / Performance / Images / SVG / Outils |
-| **9 — Valeur produit sans alourdir** | 🟡 En cours | Personnalisation avancée du thème, presets éditoriaux, hero simple/avancé, badge CO₂ top/footer, navigation CSS-only avancée, variantes archives/cartes/single/footer, durcissement sécurité léger |
-| **6C/A — Redesign visuel** | ✅ Terminé | Palette DESIGN.md dans theme.json, templates front alignés sur esthétique EcoEditorial, patterns, Carbon Badge, surfaces, boutons |
-| **6C/B — Admin unifiée** | ✅ Terminé | Page top-level Greenlight avec onglets (SEO, Images, Performance, Apparence, SVG, Outils) |
-| **6C/C — Éco-optimisation** | ✅ Terminé | bin/minify.sh, inc/minify.php, inc/cache.php, inc/svg.php, fonctions.php conditionnel, nettoyage wp_head |
-| **7 — Tests** | ✅ Terminé | Lighthouse, Theme Check, PHPCS global, W3C, responsive 320→1920px, JS-off, métriques, docs |
+| Phase | Statut | Notes |
+|-------|--------|-------|
+| **9B — Durcissement sécurité** | ✅ Terminé | SVG allowlist, IP anonymisée, upload guards, OPTIMIZE scope |
+| **9A — Personnalisation avancée** | ✅ Terminé | Presets, hero avancé, nav CSS-only, densité par contexte |
+| **8 — Admin UI premium** | ✅ Terminé | Shell premium, navigation numérotée, onglets, smoke test validé |
+| **7 — Tests** | ✅ Terminé | Lighthouse, Theme Check, PHPCS global, W3C, responsive 320→1920px, JS-off |
+| **6C/C — Éco-optimisation** | ✅ Terminé | bin/minify.sh, inc/minify.php, inc/cache.php, inc/svg.php |
+| **6C/B — Admin unifiée** | ✅ Terminé | Page top-level Greenlight avec onglets |
+| **6C/A — Redesign visuel** | ✅ Terminé | Palette DESIGN.md, templates front, patterns, Carbon Badge |
+| **6B — Mise en forme minimale** | ✅ Terminé | Flexbox, clamp(), DOM minimal |
+| **6 — Optimisation images** | ✅ Terminé | WebP/AVIF, bulk, tailles custom |
+| **5 — SEO autonome** | ✅ Terminé | Meta, JSON-LD, sitemap, redirections, breadcrumbs |
+| **1→4 — Squelette, templates, CSS, patterns** | ✅ Terminé | |
 
 ### Phase 7 — Avancement actuel
 
@@ -226,27 +233,30 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 - [x] README.md enrichi (installation, configuration, utilisation)
 - [x] CHANGELOG.md ajouté
 
-### Phase 8 — Avancement actuel
+### Phase 8 — Terminé (2026-04-07)
 
-- [x] Shell admin premium posé sur `feat/admin-ui` : header, baseline, métriques, rail contextuel
-- [x] Navigation admin numérotée et stylée pour remplacer les `nav-tab` natives
-- [x] Mini design system admin ajouté dans `assets/css/admin-ui.css`
-- [x] Aucune logique métier modifiée dans les handlers existants
-- [x] Refonte des onglets `SEO` et `Performance`
-- [x] Extension du shell aux onglets `Images` et `Apparence`, puis simplification d’`Apparence` en entrée vers le Customizer
-- [x] Extension du shell aux onglets `SVG`, `Outils`
+- [x] Shell admin premium, navigation numérotée, mini design system `assets/css/admin-ui.css`
+- [x] Onglets SEO, Performance, Images, SVG, Outils refondus
+- [x] Apparence simplifié en hub vers le Customizer (rail latéral supprimé)
+- [x] Fatal error `$emit_perf_hidden_fields` corrigé (closure manquante)
+- [x] PHPCS zéro erreur sur 30 fichiers PHP modifiés
+- [x] Smoke test navigateur : SEO ✓ Performance ✓ Images ✓
+- [x] Responsive 768px et 1280px validés, zéro erreur JS console
 
-### Phase 9 — Cadrage
+### Phase 9 — Terminé (2026-04-07)
 
-- [x] Positionnement produit clarifié : Greenlight couvre une partie importante de Yoast Premium et WP Rocket, sans viser le clone complet
-- [x] Prochaine priorité validée : personnalisation du thème avant toute extension fonctionnelle lourde
-- [x] Périmètre sécurité validé : durcissement léger uniquement, pas de bascule vers une suite de sécurité
-- [x] Presets éditoriaux et premiers tokens de rendu
-- [x] Hero avancé : fond image/couleur/dégradé, titre, sous-titre, hauteur, mode simple
+- [x] Presets éditoriaux (Minimal, Magazine, Studio, Journal)
+- [x] Hero avancé : image/couleur/dégradé, titre, sous-titre, hauteur, mode simple
 - [x] Navigation avancée : couleurs, sticky, sous-menus CSS-only
-- [x] Variantes pilotables pour archives, cartes, single et footer
-- [ ] Réglages avancés de densité visuelle et de templates par contexte
-- [ ] Durcissement ciblé sur sanitation, import/export, logs et uploads
+- [x] Variantes archives, cartes, single et footer
+- [x] Densité visuelle par contexte (home, archives, single, pages)
+- [x] SVG allowlist (19 éléments sûrs) + suppression `foreignObject`/`animate`/`style`
+- [x] IP logs 404 anonymisée (`wp_privacy_anonymize_ip`)
+- [x] `is_uploaded_file()` + limites taille sur import JSON (512 Ko) et CSV (256 Ko, 500 règles)
+- [x] OPTIMIZE TABLE restreint aux tables `$wpdb->prefix`
+- [x] Source redirect forcée à commencer par `/`
+- [x] `wp_delete_file()` + `is_file()` sur purge cache
+- [x] README.md : `Permissions-Policy` Apache + HSTS commenté nginx + Apache
 
 ---
 
@@ -277,7 +287,7 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 - **JS admin** : aucun JS dédié pour l’aperçu d’Apparence ; plus d’iframe maison
 
 ### SVG
-- **Sanitisation** : `DOMDocument` PHP natif — suppression scripts, événements JS, xlink malveillants
+- **Sanitisation** : `DOMDocument` PHP natif — **allowlist** de 19 éléments sûrs (strategy switch denylist→allowlist en Phase 9B). `foreignObject`, `animate`, `iframe`, `embed`, `object`, `set`, `style` bloqués par défaut. Attributs `on*`, `style` et `href javascript:` supprimés. `<use>` externe supprimé.
 - **Activation** : conditionnée au toggle dans l'onglet SVG de l'admin
 
 ### Carbon Badge
