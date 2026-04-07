@@ -1448,65 +1448,6 @@ function greenlight_render_admin_tab_seo() {
 			<section class="greenlight-admin-tab-panel__card">
 				<div class="greenlight-admin-tab-panel__card-head">
 					<div>
-						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Navigation', 'greenlight' ); ?></p>
-						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Menu et sous-menus', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Layout, couleurs, sticky et dropdowns CSS-only.', 'greenlight' ); ?></p>
-					</div>
-				</div>
-				<form method="post" action="options.php">
-					<?php settings_fields( 'greenlight_appearance' ); ?>
-					<?php $greenlight_emit_appearance_hidden_fields( array( 'color_header_text', 'color_header_accent', 'header_layout', 'header_sticky', 'nav_link_case', 'submenu_style' ) ); ?>
-					<table class="form-table" role="presentation">
-						<tr>
-							<th><label for="gl-header-layout"><?php esc_html_e( 'Layout', 'greenlight' ); ?></label></th>
-							<td>
-								<select id="gl-header-layout" name="<?php echo esc_attr( $key ); ?>[header_layout]">
-									<option value="inline" <?php selected( $o['header_layout'], 'inline' ); ?>><?php esc_html_e( 'Ligne simple', 'greenlight' ); ?></option>
-									<option value="split" <?php selected( $o['header_layout'], 'split' ); ?>><?php esc_html_e( 'Séparé', 'greenlight' ); ?></option>
-									<option value="stacked" <?php selected( $o['header_layout'], 'stacked' ); ?>><?php esc_html_e( 'Empilé', 'greenlight' ); ?></option>
-								</select>
-								<p class="description"><?php esc_html_e( 'Définit la lecture du brand, du menu et du CTA.', 'greenlight' ); ?></p>
-							</td>
-						</tr>
-						<tr>
-							<th><?php esc_html_e( 'Sticky', 'greenlight' ); ?></th>
-							<td><label><input name="<?php echo esc_attr( $key ); ?>[header_sticky]" type="checkbox" value="1" <?php checked( (int) $o['header_sticky'], 1 ); ?>> <?php esc_html_e( 'Rendre le header collant au scroll', 'greenlight' ); ?></label></td>
-						</tr>
-						<tr>
-							<th><label for="gl-header-text"><?php esc_html_e( 'Texte header', 'greenlight' ); ?></label></th>
-							<td><input type="text" id="gl-header-text" name="<?php echo esc_attr( $key ); ?>[color_header_text]" class="greenlight-color-picker" value="<?php echo esc_attr( $o['color_header_text'] ); ?>" data-default-color="#2f342d"></td>
-						</tr>
-						<tr>
-							<th><label for="gl-header-accent"><?php esc_html_e( 'Accent header', 'greenlight' ); ?></label></th>
-							<td><input type="text" id="gl-header-accent" name="<?php echo esc_attr( $key ); ?>[color_header_accent]" class="greenlight-color-picker" value="<?php echo esc_attr( $o['color_header_accent'] ); ?>" data-default-color="#4c6547"></td>
-						</tr>
-						<tr>
-							<th><label for="gl-nav-case"><?php esc_html_e( 'Casse menu', 'greenlight' ); ?></label></th>
-							<td>
-								<select id="gl-nav-case" name="<?php echo esc_attr( $key ); ?>[nav_link_case]">
-									<option value="normal" <?php selected( $o['nav_link_case'], 'normal' ); ?>><?php esc_html_e( 'Normale', 'greenlight' ); ?></option>
-									<option value="uppercase" <?php selected( $o['nav_link_case'], 'uppercase' ); ?>><?php esc_html_e( 'Majuscules', 'greenlight' ); ?></option>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<th><label for="gl-submenu-style"><?php esc_html_e( 'Sous-menus', 'greenlight' ); ?></label></th>
-							<td>
-								<select id="gl-submenu-style" name="<?php echo esc_attr( $key ); ?>[submenu_style]">
-									<option value="plain" <?php selected( $o['submenu_style'], 'plain' ); ?>><?php esc_html_e( 'Discrets', 'greenlight' ); ?></option>
-									<option value="surface" <?php selected( $o['submenu_style'], 'surface' ); ?>><?php esc_html_e( 'En surface', 'greenlight' ); ?></option>
-								</select>
-								<p class="description"><?php esc_html_e( 'Ouvert au survol et au focus, sans JavaScript.', 'greenlight' ); ?></p>
-							</td>
-						</tr>
-					</table>
-					<?php submit_button(); ?>
-				</form>
-			</section>
-
-			<section class="greenlight-admin-tab-panel__card">
-				<div class="greenlight-admin-tab-panel__card-head">
-					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Robots.txt', 'greenlight' ); ?></p>
 						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Fichier personnalisé', 'greenlight' ); ?></h3>
 						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Remplace la sortie WordPress.', 'greenlight' ); ?></p>
