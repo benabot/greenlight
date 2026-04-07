@@ -1008,7 +1008,11 @@ function greenlight_handle_purge_cache() {
 			if ( ! is_array( $files ) ) {
 				$files = array();
 			}
-			array_map( 'unlink', $files );
+			foreach ( $files as $file ) {
+				if ( is_file( $file ) ) {
+					wp_delete_file( $file );
+				}
+			}
 		}
 	}
 
@@ -2243,8 +2247,22 @@ function greenlight_handle_import() {
 		exit;
 	}
 
+	$tmp = sanitize_text_field( $_FILES['greenlight_import_file']['tmp_name'] );
+
+	// Vérifier que le fichier provient bien d'un upload HTTP.
+	if ( ! is_uploaded_file( $tmp ) ) {
+		wp_safe_redirect( $redirect_base . '&import=error' );
+		exit;
+	}
+
+	// Limiter la taille du fichier JSON (512 Ko max — les réglages ne dépassent jamais cette taille).
+	if ( filesize( $tmp ) > 512 * 1024 ) {
+		wp_safe_redirect( $redirect_base . '&import=invalid' );
+		exit;
+	}
+
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-	$json = file_get_contents( sanitize_text_field( $_FILES['greenlight_import_file']['tmp_name'] ) );
+	$json = file_get_contents( $tmp );
 	$data = json_decode( $json, true );
 
 	if ( ! is_array( $data ) || empty( $data['greenlight_export_version'] ) ) {

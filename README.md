@@ -263,6 +263,8 @@ add_header X-Frame-Options "SAMEORIGIN" always;
 add_header X-Content-Type-Options "nosniff" always;
 add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+# Activer HSTS uniquement si le site est servi exclusivement en HTTPS
+# add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
 ```
 
 ### Apache (theme .htaccess)
@@ -334,6 +336,9 @@ Placer a la racine du dossier WordPress. Requiert `mod_deflate`, `mod_expires`, 
     Header always set X-Frame-Options "SAMEORIGIN"
     Header always set X-Content-Type-Options "nosniff"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    # Activer HSTS uniquement si le site est servi exclusivement en HTTPS
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
     Header always append Vary Accept-Encoding
 </IfModule>
 

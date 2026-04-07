@@ -328,11 +328,20 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 
 ### Phase 9B — Durcissement sécurité léger
 
-- [ ] Renforcer la sanitation et les validations sur les actions admin sensibles
-- [ ] Ajouter des garde-fous sur import/export et sur certaines opérations de maintenance
-- [ ] Documenter les headers de sécurité recommandés côté serveur sans déplacer la logique dans le thème
-- [ ] Renforcer l’hygiène des logs et des uploads déjà gérés par Greenlight
-- [ ] Éviter tout glissement vers un firewall, anti-bruteforce, malware scanner ou suite de sécurité lourde
+- [x] Renforcer la sanitation et les validations sur les actions admin sensibles
+  - [x] Source redirect forcée à commencer par `/` (`inc/seo-redirects.php`)
+  - [x] Cache purge : `is_file()` + `wp_delete_file()` avant unlink (`inc/admin.php`)
+- [x] Ajouter des garde-fous sur import/export et sur certaines opérations de maintenance
+  - [x] Import JSON : `is_uploaded_file()` + limite 512 Ko (`inc/admin.php`)
+  - [x] Import CSV redirections : `is_uploaded_file()` + limite 256 Ko + plafond 500 règles (`inc/seo-redirects.php`)
+  - [x] Optimize tables : restreint aux tables préfixées `$wpdb->prefix` (`inc/db-cleanup.php`)
+- [x] Documenter les headers de sécurité recommandés côté serveur sans déplacer la logique dans le thème
+  - [x] nginx : ajout HSTS commenté (`Strict-Transport-Security`) dans `README.md`
+  - [x] Apache `.htaccess` : ajout `Permissions-Policy` + HSTS commenté dans `README.md`
+- [x] Renforcer l’hygiène des logs et des uploads déjà gérés par Greenlight
+  - [x] Log 404 : IP anonymisée via `wp_privacy_anonymize_ip()` (`inc/seo-redirects.php`)
+  - [x] SVG sanitizer : passage denylist → allowlist d’éléments sûrs + suppression attributs `style` (`inc/svg.php`)
+- [x] Éviter tout glissement vers un firewall, anti-bruteforce, malware scanner ou suite de sécurité lourde
 
 ## Environnement local ✓
 - [x] Diagnostic 404 généralisé : serveur nginx MAMP sans `try_files` WordPress (2026-03-28)

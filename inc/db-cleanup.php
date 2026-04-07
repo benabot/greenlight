@@ -136,7 +136,14 @@ function greenlight_cleanup_expired_transients() {
 function greenlight_optimize_tables() {
 	global $wpdb;
 
-	$tables = $wpdb->get_col( 'SHOW TABLES' );
+	// Restreindre aux tables avec le préfixe WordPress pour ne pas toucher
+	// d'autres applications sur la même base de données.
+	$tables = $wpdb->get_col(
+		$wpdb->prepare(
+			'SHOW TABLES LIKE %s',
+			$wpdb->esc_like( $wpdb->prefix ) . '%'
+		)
+	);
 	$count  = 0;
 
 	foreach ( $tables as $table ) {

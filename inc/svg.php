@@ -88,7 +88,52 @@ function greenlight_sanitize_svg( $file ) {
 add_filter( 'wp_handle_upload_prefilter', 'greenlight_sanitize_svg' );
 
 /**
+ * Éléments SVG autorisés (allowlist).
+ *
+ * Tout élément non listé ici est supprimé. Approche allowlist plutôt que
+ * denylist pour bloquer par défaut foreignObject, animate, iframe, embed,
+ * object et toute variante future à risque XSS.
+ *
+ * @return string[]
+ */
+function greenlight_svg_allowed_elements() {
+	return array(
+		'svg',
+		'g',
+		'path',
+		'rect',
+		'circle',
+		'ellipse',
+		'line',
+		'polyline',
+		'polygon',
+		'text',
+		'tspan',
+		'textPath',
+		'defs',
+		'clipPath',
+		'mask',
+		'pattern',
+		'symbol',
+		'use',
+		'linearGradient',
+		'radialGradient',
+		'stop',
+		'title',
+		'desc',
+		'metadata',
+		'marker',
+		'image',
+	);
+}
+
+/**
  * Sanitise une chaîne SVG via DOMDocument.
+ *
+ * Stratégie allowlist : seuls les éléments listés dans
+ * greenlight_svg_allowed_elements() sont conservés. Les attributs
+ * d'événements (on*), href/xlink:href vers javascript: et les attributs
+ * style sont supprimés.
  *
  * @param string $svg Balisage SVG brut.
  * @return string|false SVG sanitisé, ou false en cas d'échec du parsing.
@@ -100,7 +145,7 @@ function greenlight_sanitize_svg_string( $svg ) {
 
 	/* phpcs:disable Generic.Formatting.MultipleStatementAlignment */
 	$dom = new DOMDocument();
-	$dom->formatOutput = false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMDocument API uses camelCase properties.
+	$dom->formatOutput       = false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMDocument API uses camelCase properties.
 	$dom->preserveWhiteSpace = false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMDocument API uses camelCase properties.
 	/* phpcs:enable Generic.Formatting.MultipleStatementAlignment */
 
@@ -112,14 +157,24 @@ function greenlight_sanitize_svg_string( $svg ) {
 		return false;
 	}
 
-	$xpath = new DOMXPath( $dom );
+	$xpath            = new DOMXPath( $dom );
+	$allowed_elements = greenlight_svg_allowed_elements();
 
-	// Supprime tous les éléments <script>.
-	foreach ( $xpath->query( '//script' ) as $node ) {
-		$node->parentNode->removeChild( $node ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMNode API uses camelCase properties.
+	// Supprime tous les éléments non listés dans l'allowlist (foreignObject,
+	// animate, script, iframe, embed, object, style, set...).
+	$nodes_to_remove = array();
+	foreach ( $xpath->query( '//*' ) as $element ) {
+		if ( ! in_array( $element->localName, $allowed_elements, true ) ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMElement API uses camelCase properties.
+			$nodes_to_remove[] = $element;
+		}
+	}
+	foreach ( $nodes_to_remove as $node ) {
+		if ( $node->parentNode ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMNode API uses camelCase properties.
+			$node->parentNode->removeChild( $node ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMNode API uses camelCase properties.
+		}
 	}
 
-	// Supprime les attributs d'événements JS (on*) et href/xlink:href vers javascript:.
+	// Supprime les attributs dangereux sur les éléments restants.
 	foreach ( $xpath->query( '//*' ) as $element ) {
 		if ( ! $element instanceof DOMElement ) {
 			continue;
@@ -132,6 +187,12 @@ function greenlight_sanitize_svg_string( $svg ) {
 
 			// Attributs événementiels (onclick, onload, onmouseover...).
 			if ( 0 === strpos( $name, 'on' ) ) {
+				$to_remove[] = $attr->name;
+				continue;
+			}
+
+			// Attributs style — vecteur d'exfiltration CSS (url(), expression()).
+			if ( 'style' === $name ) {
 				$to_remove[] = $attr->name;
 				continue;
 			}
@@ -150,7 +211,8 @@ function greenlight_sanitize_svg_string( $svg ) {
 		}
 	}
 
-	// Supprime les éléments <use> pointant vers des ressources externes.
+	// Supprime les éléments <use> pointant vers des ressources externes
+	// (non couvert par l'allowlist car <use> est autorisé pour les sprites).
 	foreach ( $xpath->query( '//use' ) as $node ) {
 		if ( ! $node instanceof DOMElement ) {
 			continue;
@@ -162,8 +224,10 @@ function greenlight_sanitize_svg_string( $svg ) {
 			$href = $node->getAttributeNS( 'http://www.w3.org/1999/xlink', 'href' );
 		}
 
-		if ( '' !== $href && ( '#' !== $href[0] ) ) {
-			$node->parentNode->removeChild( $node ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMNode API uses camelCase properties.
+		if ( '' !== $href && '#' !== $href[0] ) {
+			if ( $node->parentNode ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMNode API uses camelCase properties.
+				$node->parentNode->removeChild( $node ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMNode API uses camelCase properties.
+			}
 		}
 	}
 
