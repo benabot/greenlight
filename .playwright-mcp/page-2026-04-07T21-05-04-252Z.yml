@@ -1,0 +1,41 @@
+- generic [ref=e1]:
+  - heading "Se connecter" [level=1] [ref=e2]
+  - generic [ref=e3]:
+    - link "Propulsé par WordPress" [ref=e4] [cursor=pointer]:
+      - /url: https://fr.wordpress.org/
+    - paragraph [ref=e6]:
+      - strong [ref=e7]: "Erreur :"
+      - text: l’identifiant
+      - strong [ref=e8]: admin
+      - text: n’est pas inscrit sur ce site. Si vous doutez de votre identifiant, essayez plutôt votre adresse e-mail.
+    - generic [ref=e9]:
+      - paragraph [ref=e10]:
+        - generic [ref=e11]: Identifiant ou adresse e-mail
+        - textbox "Identifiant ou adresse e-mail" [active] [ref=e12]
+      - generic [ref=e13]:
+        - generic [ref=e14]: Mot de passe
+        - generic [ref=e15]:
+          - textbox "Mot de passe" [ref=e16]
+          - button "Afficher le mot de passe" [ref=e17] [cursor=pointer]:
+            - generic [ref=e18]: 
+      - paragraph [ref=e19]:
+        - checkbox "Se souvenir de moi" [ref=e20] [cursor=pointer]
+        - generic [ref=e21]: Se souvenir de moi
+      - paragraph:
+        - button "Se connecter" [ref=e22] [cursor=pointer]
+    - paragraph [ref=e23]:
+      - link "Mot de passe oublié ?" [ref=e24] [cursor=pointer]:
+        - /url: http://localhost:8888/greenlight/wp-login.php?action=lostpassword
+    - paragraph [ref=e25]:
+      - link "← Aller sur greenlight" [ref=e26] [cursor=pointer]:
+        - /url: http://localhost:8888/greenlight/
+    - link "Politique de confidentialité" [ref=e28] [cursor=pointer]:
+      - /url: http://localhost:8888/greenlight/politique-de-confidentialite/
+  - generic [ref=e30]:
+    - generic [ref=e31]:
+      - generic [ref=e32]: 
+      - generic [ref=e33]: Langue
+    - combobox "Langue" [ref=e34] [cursor=pointer]:
+      - option "English (United States)"
+      - option "Français" [selected]
+    - button "Modifier" [ref=e35] [cursor=pointer]
