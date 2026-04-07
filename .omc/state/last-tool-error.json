@@ -1,7 +1,0 @@
-{
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"vendor/bin/phpcs --standard=WordPress inc/svg.php inc/db-cleanup.php inc/seo-redirects.php inc/admin.php 2>&1 | grep -E \\\"FOUND|No errors\\\" && php -l inc/svg.php inc/db-cleanup.php inc/seo...",
-  "error": "Exit code 1",
-  "timestamp": "2026-04-07T21:20:13.805Z",
-  "retry_count": 1
-}
