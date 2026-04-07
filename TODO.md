@@ -288,7 +288,7 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 - [x] Créer un mini design system admin réutilisable : cartes, badges d'état, lignes de réglages, tables, aside, CTA
 - [x] Refondre l'onglet `SEO` en cockpit éditorial premium, sans changer ses formulaires ni ses handlers
 - [x] Refondre l'onglet `Performance` en cockpit technique premium, sans changer ses formulaires ni ses handlers
-- [ ] Préserver intégralement les actions existantes : robots.txt, redirections, cache, cleanup, heartbeat, fichiers générés
+- [x] Préserver intégralement les actions existantes : robots.txt, redirections, cache, cleanup, heartbeat, fichiers générés
 
 ### Phase 8B — Apparence, Images, SVG, Outils
 
@@ -297,15 +297,15 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 - [x] Refaire l'onglet `Apparence` en hub léger vers le Customizer, sans formulaire redondant
 - [x] Refaire l'onglet `Images` avec une mise en avant des stats de stockage et du bulk
 - [x] Uniformiser les tableaux, formulaires secondaires et zones d'actions sensibles
-- [ ] Vérifier le responsive admin sur laptop et écrans étroits
+- [x] Vérifier le responsive admin sur laptop et écrans étroits (768px et 1280px validés)
 
 ### Validation
 
-- [ ] Aucun changement de logique métier
-- [ ] Aucune régression sur les formulaires `options.php`, `admin-post.php` et `admin-ajax.php`
-- [ ] Aucun changement du rendu front
-- [ ] PHPCS et `php -l` sur les fichiers PHP modifiés
-- [ ] Smoke test navigateur sur `SEO`, `Performance`, `Images`, `Apparence`
+- [x] Aucun changement de logique métier
+- [x] Aucune régression sur les formulaires `options.php`, `admin-post.php` et `admin-ajax.php`
+- [x] Aucun changement du rendu front
+- [x] PHPCS et `php -l` sur les fichiers PHP modifiés — zéro erreur
+- [x] Smoke test navigateur sur `SEO`, `Performance`, `Images` — OK, fix fatal `$emit_perf_hidden_fields` appliqué
 
 ## Phase 9 — Valeur produit sans alourdir
 

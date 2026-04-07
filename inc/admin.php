@@ -1448,6 +1448,8 @@ function greenlight_render_admin_tab_images() {
 	</div>
 
 	<div class="greenlight-admin-tab-panel__shell greenlight-admin-tab-panel__shell--images">
+		<form method="post" action="options.php">
+		<?php settings_fields( 'greenlight_images' ); ?>
 		<div class="greenlight-admin-tab-panel__column">
 			<section class="greenlight-admin-tab-panel__card">
 				<div class="greenlight-admin-tab-panel__card-head">
@@ -1495,8 +1497,6 @@ function greenlight_render_admin_tab_images() {
 							</td>
 						</tr>
 					</table>
-					<?php submit_button( __( 'Enregistrer les réglages médias', 'greenlight' ) ); ?>
-				</form>
 			</section>
 
 			<section class="greenlight-admin-tab-panel__card">
@@ -1620,10 +1620,10 @@ function greenlight_render_admin_tab_images() {
 							</td>
 						</tr>
 					</table>
-					<?php submit_button( __( 'Enregistrer les options AVIF', 'greenlight' ) ); ?>
-				</form>
 			</section>
 		</div>
+		<?php submit_button( __( 'Enregistrer les réglages images', 'greenlight' ) ); ?>
+		</form>
 	</div>
 
 	<script>
@@ -1728,24 +1728,24 @@ function greenlight_render_admin_tab_performance() {
 		$server_note = sprintf( __( 'Serveur détecté : %s.', 'greenlight' ), '' !== $server_software ? $server_software : __( 'inconnu', 'greenlight' ) );
 	}
 
-	$emit_perf_hidden_fields = static function ( array $exclude ) use ( $perf_fields, $options ) {
-		foreach ( $perf_fields as $perf_field ) {
-			if ( in_array( $perf_field, $exclude, true ) || ! isset( $options[ $perf_field ] ) ) {
+	/**
+	 * Emits hidden inputs for performance option keys not handled by the current sub-form,
+	 * so that submitting one sub-form does not wipe the other keys from the option array.
+	 *
+	 * @param string[] $visible_keys Keys rendered as visible inputs in the current sub-form.
+	 */
+	$emit_perf_hidden_fields = function ( array $visible_keys ) use ( $options, $perf_fields ) {
+		foreach ( $perf_fields as $key ) {
+			if ( in_array( $key, $visible_keys, true ) ) {
 				continue;
 			}
-
-			$value = $options[ $perf_field ];
-
-			if ( is_numeric( $value ) ) {
-				if ( 0 === (int) $value ) {
-					continue;
-				}
-
-				echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $perf_field ) . ']" value="' . esc_attr( $value ) . '">';
-				continue;
-			}
-
-			echo '<input type="hidden" name="' . esc_attr( GREENLIGHT_PERF_OPTION_KEY ) . '[' . esc_attr( $perf_field ) . ']" value="' . esc_attr( $value ) . '">';
+			$value = isset( $options[ $key ] ) ? $options[ $key ] : '';
+			printf(
+				'<input type="hidden" name="%s[%s]" value="%s">',
+				esc_attr( GREENLIGHT_PERF_OPTION_KEY ),
+				esc_attr( $key ),
+				esc_attr( $value )
+			);
 		}
 	};
 
@@ -1767,6 +1767,8 @@ function greenlight_render_admin_tab_performance() {
 		</div>
 	</div>
 
+	<form method="post" action="options.php">
+	<?php settings_fields( 'greenlight_performance' ); ?>
 	<div class="greenlight-admin-tab-panel__shell greenlight-admin-tab-panel__shell--performance">
 		<div class="greenlight-admin-tab-panel__column">
 			<section class="greenlight-admin-tab-panel__card greenlight-admin-tab-panel__card--soft">
@@ -1852,8 +1854,6 @@ function greenlight_render_admin_tab_performance() {
 							</td>
 						</tr>
 					</table>
-					<?php submit_button( __( 'Enregistrer la diffusion', 'greenlight' ) ); ?>
-				</form>
 			</section>
 
 			<section class="greenlight-admin-tab-panel__card">
@@ -1889,15 +1889,6 @@ function greenlight_render_admin_tab_performance() {
 							</td>
 						</tr>
 					</table>
-					<?php submit_button( __( 'Enregistrer le cache', 'greenlight' ), 'secondary' ); ?>
-				</form>
-				<div class="greenlight-admin-tab-panel__actions">
-					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-						<input type="hidden" name="action" value="greenlight_purge_cache">
-						<?php wp_nonce_field( 'greenlight_purge_cache' ); ?>
-						<button type="submit" class="button button-secondary"><?php esc_html_e( 'Purger le cache HTML', 'greenlight' ); ?></button>
-					</form>
-				</div>
 			</section>
 
 			<section class="greenlight-admin-tab-panel__card">
@@ -1956,8 +1947,6 @@ function greenlight_render_admin_tab_performance() {
 							</td>
 						</tr>
 					</table>
-					<?php submit_button( __( 'Enregistrer le rythme', 'greenlight' ), 'secondary' ); ?>
-				</form>
 			</section>
 
 			<section class="greenlight-admin-tab-panel__card">
@@ -2006,8 +1995,6 @@ function greenlight_render_admin_tab_performance() {
 							</td>
 						</tr>
 					</table>
-					<?php submit_button( __( 'Enregistrer la maintenance', 'greenlight' ), 'secondary' ); ?>
-				</form>
 			</section>
 
 			<section class="greenlight-admin-tab-panel__card">
@@ -2059,11 +2046,25 @@ function greenlight_render_admin_tab_performance() {
 				</div>
 			</section>
 		</div>
-
-		<?php if ( '' !== $server_note ) : ?>
-			<p class="description"><?php echo esc_html( $server_note ); ?></p>
-		<?php endif; ?>
 	</div>
+	<?php submit_button( __( 'Enregistrer les réglages de performance', 'greenlight' ) ); ?>
+	<?php if ( '' !== $server_note ) : ?>
+		<p class="description"><?php echo esc_html( $server_note ); ?></p>
+	<?php endif; ?>
+	</form>
+
+		<div class="greenlight-admin-tab-panel__actions">
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+						<input type="hidden" name="action" value="greenlight_purge_cache">
+						<?php wp_nonce_field( 'greenlight_purge_cache' ); ?>
+						<button type="submit" class="button button-secondary"><?php esc_html_e( 'Purger le cache HTML', 'greenlight' ); ?></button>
+					</form>
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+						<input type="hidden" name="action" value="greenlight_purge_cache">
+						<?php wp_nonce_field( 'greenlight_purge_cache' ); ?>
+						<button type="submit" class="button button-secondary"><?php esc_html_e( 'Purger le cache HTML', 'greenlight' ); ?></button>
+					</form>
+		</div>
 	<?php
 }
 
