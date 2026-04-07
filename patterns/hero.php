@@ -11,8 +11,8 @@
  */
 
 ?>
-<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|xl","bottom":"var:preset|spacing|xl","left":"var:preset|spacing|sm","right":"var:preset|spacing|sm"}}},"backgroundColor":"background","layout":{"type":"flex","flexWrap":"wrap","verticalAlignment":"bottom","justifyContent":"space-between"}} -->
-<div class="wp-block-group alignfull has-background-background-color has-background" style="padding-top:var(--wp--preset--spacing--xl);padding-bottom:var(--wp--preset--spacing--xl);padding-left:var(--wp--preset--spacing--sm);padding-right:var(--wp--preset--spacing--sm)">
+<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|xl","bottom":"var:preset|spacing|xl","left":"var:preset|spacing|md","right":"var:preset|spacing|md"}}},"backgroundColor":"background","layout":{"type":"flex","flexWrap":"wrap","verticalAlignment":"bottom","justifyContent":"space-between"}} -->
+<div class="wp-block-group alignfull has-background-background-color has-background" style="padding-top:var(--greenlight-section-gap, var(--wp--preset--spacing--xl));padding-bottom:var(--greenlight-section-gap, var(--wp--preset--spacing--xl));padding-left:var(--greenlight-main-gap, var(--wp--preset--spacing--md));padding-right:var(--greenlight-main-gap, var(--wp--preset--spacing--md))">
 
 	<!-- wp:group {"style":{"layout":{"selfStretch":"fixed","flexSize":"60%"}},"layout":{"type":"flex","orientation":"vertical","justifyContent":"left"}} -->
 	<div class="wp-block-group">
@@ -21,12 +21,12 @@
 		<p class="has-on-tertiary-color has-tertiary-background-color has-text-color has-background carbon-badge" style="margin-bottom:var(--wp--preset--spacing--sm)"><?php echo esc_html_x( '0.2g CO₂/vue', 'Pattern placeholder', 'greenlight' ); ?></p>
 		<!-- /wp:paragraph -->
 
-		<!-- wp:heading {"level":1,"style":{"typography":{"letterSpacing":"-0.03em","lineHeight":"1.1"}},"textColor":"text","fontSize":"xx-large"} -->
-		<h1 class="wp-block-heading has-text-color has-text-text-color has-xx-large-font-size" style="letter-spacing:-0.03em;line-height:1.1;max-width:14ch"><?php echo esc_html_x( 'Titre principal mémorable', 'Pattern placeholder', 'greenlight' ); ?></h1>
-		<!-- /wp:heading -->
+	<!-- wp:heading {"level":1,"style":{"typography":{"letterSpacing":"-0.03em","lineHeight":"1.1"}},"textColor":"text","fontSize":"xx-large"} -->
+	<h1 class="wp-block-heading has-text-color has-text-text-color has-xx-large-font-size" style="letter-spacing:-0.03em;line-height:1.1;max-width:14ch"><?php echo esc_html_x( 'Titre principal mémorable', 'Pattern placeholder', 'greenlight' ); ?></h1>
+	<!-- /wp:heading -->
 
-		<!-- wp:buttons {"style":{"spacing":{"margin":{"top":"var:preset|spacing|md"}}}} -->
-		<div class="wp-block-buttons" style="margin-top:var(--wp--preset--spacing--md)">
+	<!-- wp:buttons {"style":{"spacing":{"margin":{"top":"var:preset|spacing|md"}}}} -->
+	<div class="wp-block-buttons" style="margin-top:var(--greenlight-main-gap, var(--wp--preset--spacing--md))">
 			<!-- wp:button {"backgroundColor":"primary","textColor":"surface-alt"} -->
 			<div class="wp-block-button"><a class="wp-block-button__link has-surface-alt-color has-primary-background-color has-text-color has-background wp-element-button"><?php echo esc_html_x( 'Découvrir', 'Pattern placeholder', 'greenlight' ); ?></a></div>
 			<!-- /wp:button -->

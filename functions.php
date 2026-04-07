@@ -17,6 +17,7 @@ require_once get_theme_file_path( 'inc/seo-settings.php' );
 require_once get_theme_file_path( 'inc/images.php' );
 require_once get_theme_file_path( 'inc/images-settings.php' );
 require_once get_theme_file_path( 'inc/admin.php' );
+require_once get_theme_file_path( 'inc/customizer.php' );
 require_once get_theme_file_path( 'inc/minify.php' );
 require_once get_theme_file_path( 'inc/cache.php' );
 require_once get_theme_file_path( 'inc/svg.php' );
@@ -422,15 +423,28 @@ add_action( 'init', 'greenlight_pattern_categories' );
  *
  * Displays an eco-metric chip with estimated CO2 per page view.
  * A manual override is possible via the `greenlight_carbon_badge_value` option.
+ * Badge placement is controlled via the Appearance settings.
  *
+ * @param string $placement Requested placement: top or footer.
  * @return string HTML string for the badge.
  */
-function greenlight_carbon_badge() {
+function greenlight_carbon_badge( $placement = 'top' ) {
 	// Check appearance options first (set via Greenlight admin), fall back to legacy option.
 	$appearance = get_option( 'greenlight_appearance_options', array() );
+	$placement  = sanitize_key( (string) $placement );
+	$configured  = isset( $appearance['carbon_badge_position'] ) ? sanitize_key( (string) $appearance['carbon_badge_position'] ) : 'top';
 	$manual     = isset( $appearance['carbon_badge_value'] ) && '' !== $appearance['carbon_badge_value']
 		? $appearance['carbon_badge_value']
 		: get_option( 'greenlight_carbon_badge_value', '' );
+
+	if ( ! empty( $appearance['carbon_badge_enabled'] ) && $placement !== $configured ) {
+		return '';
+	}
+
+	if ( empty( $appearance['carbon_badge_enabled'] ) ) {
+		return '';
+	}
+
 	$co2        = ( '' !== $manual ) ? esc_html( $manual ) : '0.2g';
 
 	return '<span class="carbon-badge">' .

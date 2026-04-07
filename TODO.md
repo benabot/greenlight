@@ -85,7 +85,7 @@
 
 ## Phase 6C — UI, Admin unifiée & Éco-optimisation
 
-> Branche : `feat/ui-improvement` depuis `dev`
+> Branche : `feat/ui-improvement` depuis `dev` (historique)
 > Référence visuelle : maquettes EcoEditorial (page.png, single.png, index.png, archives.png)
 > Contrainte permanente : zéro jQuery, zéro dépendance externe, DOM minimal, CSS minimal
 
@@ -137,7 +137,7 @@ Objectif : regrouper tous les réglages du thème dans une page admin top-level 
   - [x] **Section Single** : toggle date, toggle auteur, toggle tags, toggle articles liés, toggle newsletter
   - [x] **Section Archive** : layout, toggle extraits, toggle miniatures, articles par page
   - [x] **Section Footer** : fond footer, toggle "Low Emission Mode", copyright personnalisé, toggle nav footer
-- [x] **Prévisualisation live couleurs** : `assets/js/admin-preview.js` (~30 lignes vanilla JS) + iframe de prévisualisation dans l'onglet Apparence
+- [x] **Prévisualisation live couleurs** : Customizer WordPress natif avec aperçu du thème Greenlight dans `customize.php`
 - [x] **Onglet SVG** : toggle + info sanitisation DOMDocument
 - [x] **Onglet Outils** (nouveau) :
   - [x] Export JSON : bouton → télécharge un `.json` avec toutes les options Greenlight
@@ -212,17 +212,17 @@ Objectif : passer de EcoIndex B à A. Améliorer la compression, le cache, la mi
 
 ```bash
 git checkout dev
-git checkout -b feat/ui-improvement
+git checkout -b feat/admin-ui
 # Travailler volet par volet, commit par volet
 git add -A && git commit -m "Phase 6C/A: Redesign visuel éditorial — palette DESIGN.md, templates, patterns"
 git add -A && git commit -m "Phase 6C/B: Interface admin unifiée Greenlight — onglets, réglages"
 git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cache, SVG, nettoyage head"
 ```
 
-## Phase 6D — Services premium intégrés (remplace Yoast + WP Rocket + Imagify)
+## Phase 6D — Services premium intégrés (couvre une partie importante de Yoast Premium + WP Rocket + Imagify)
 
 > Référence complète : `PHASE_6D.md`
-> Branche : `feat/ui-improvement` (suite)
+> Branche : `feat/ui-improvement` (suite historique)
 > Règle : admin riche en JS autorisé, front zéro impact supplémentaire
 
 ### 6D-SEO — SEO avancé
@@ -236,7 +236,7 @@ git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cac
 ### 6D-PERF — Performance avancée
 
 - [x] **Critical CSS** : `assets/css/critical.css` (~50 lignes above-the-fold), inline dans `wp_head`, defer du CSS principal via `media="print" onload`, toggle admin (`inc/critical-css.php`)
-- [x] **Prefetch DNS / Preconnect** : textarea domaines dans l'admin, injection `<link rel="dns-prefetch/preconnect">`, auto-détection domaines externes (`inc/prefetch.php`)
+- [x] **Prefetch DNS / Preconnect** : textarea domaines explicites dans l'admin, injection `<link rel="dns-prefetch/preconnect">` uniquement pour les domaines saisis manuellement, sans auto-détection du contenu (`inc/prefetch.php`)
 - [x] **Database cleanup** : supprimer révisions, brouillons auto, corbeille, spam, transients expirés, optimiser tables — boutons individuels + cron hebdomadaire (`inc/db-cleanup.php`)
 - [x] **Heartbeat control** : admin/éditeur/front séparément — désactiver ou réduire l'intervalle (15s→120s) (`inc/heartbeat.php`)
 - [x] **Concaténation CSS** : bundle unique `greenlight-bundle.css` généré lazy, réduit les requêtes HTTP de ~10 à 1-2, invalidation auto (`inc/concat.php`)
@@ -266,6 +266,82 @@ git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cac
 - [x] Compter : lignes de CSS, lignes de JS, taille totale du thème
 - [x] README.md (installation, configuration, utilisation)
 - [x] CHANGELOG.md
+
+## Phase 8 — Admin UI premium
+
+> Branche de travail : `feat/admin-ui` depuis `dev`
+> Référence visuelle validée : `/Users/benoitabot/Downloads/stitch/screen.png`
+> Contraintes absolues : ne pas toucher au front, ne pas modifier la logique PHP/JS existante, ne pas ajouter de nouvelles features, uniquement restructurer et habiller l'interface admin Greenlight
+
+Objectif : transformer l'interface admin Greenlight en control center premium, plus proche d'une suite éditoriale haut de gamme que d'une page de réglages WordPress standard, tout en conservant strictement les fonctionnalités actuelles.
+
+### Direction validée
+
+- [x] Direction visuelle retenue : "éditeur premium" minéral, sobre, respirant, avec surfaces claires, hiérarchie forte, aside contextuel et cartes premium (Codex, 2026-03-28)
+- [x] Architecture validée : shell global Greenlight + navigation produit premium + layout `contenu principal + rail latéral` (Codex, 2026-03-28)
+- [x] Périmètre validé : refonte UI admin uniquement, aucune évolution fonctionnelle (Codex, 2026-03-28)
+
+### Phase 8A — Shell + SEO + Performance
+
+- [x] Refaire le shell global de la page Greenlight : header, baseline, métriques synthétiques, largeur utile, surfaces
+- [x] Remplacer les `nav-tab` WordPress par une navigation premium custom, en conservant le routing `?tab=...`
+- [x] Créer un mini design system admin réutilisable : cartes, badges d'état, lignes de réglages, tables, aside, CTA
+- [x] Refondre l'onglet `SEO` en cockpit éditorial premium, sans changer ses formulaires ni ses handlers
+- [x] Refondre l'onglet `Performance` en cockpit technique premium, sans changer ses formulaires ni ses handlers
+- [x] Préserver intégralement les actions existantes : robots.txt, redirections, cache, cleanup, heartbeat, fichiers générés
+
+### Phase 8B — Apparence, Images, SVG, Outils
+
+- [x] Étendre le shell premium aux onglets `Images` et `Apparence`
+- [x] Étendre le shell premium aux onglets `SVG`, `Outils`
+- [x] Refaire l'onglet `Apparence` en hub léger vers le Customizer, sans formulaire redondant
+- [x] Refaire l'onglet `Images` avec une mise en avant des stats de stockage et du bulk
+- [x] Uniformiser les tableaux, formulaires secondaires et zones d'actions sensibles
+- [x] Vérifier le responsive admin sur laptop et écrans étroits (768px et 1280px validés)
+
+### Validation
+
+- [x] Aucun changement de logique métier
+- [x] Aucune régression sur les formulaires `options.php`, `admin-post.php` et `admin-ajax.php`
+- [x] Aucun changement du rendu front
+- [x] PHPCS et `php -l` sur les fichiers PHP modifiés — zéro erreur
+- [x] Smoke test navigateur sur `SEO`, `Performance`, `Images` — OK, fix fatal `$emit_perf_hidden_fields` appliqué
+
+## Phase 9 — Valeur produit sans alourdir
+
+> Positionnement produit :
+> Greenlight remplace une partie importante de Yoast Premium et WP Rocket pour un site éditorial sobre.
+> Greenlight n’est pas un clone complet de Yoast Premium + WP Rocket.
+> La prochaine vraie valeur doit rester légère : personnalisation du thème d’abord, durcissement sécurité léger ensuite.
+
+### Phase 9A — Personnalisation avancée du thème
+
+- [x] Ajouter des presets éditoriaux complets (`Minimal`, `Magazine`, `Studio`, `Journal`)
+- [x] 9A.1 — Étendre le hero : image, couleur, dégradé, titre/sous-titre, hauteur (`content`, `70vh`, `100vh`) + mode simple
+- [x] Badge CO₂ : valeur manuelle, lien EcoIndex et placement `haut de page` / `footer`
+- [x] 9A.2 — Étendre la navigation : couleurs, sticky, layout, sous-menus CSS-only
+- [x] Ajouter des variantes pilotables pour archives, cartes, single et footer
+- [x] Ajouter des réglages de densité visuelle : espacements, rayons, contraste, hauteur de header
+- [x] Ajouter des réglages par contexte : home, archives, single, pages
+- [x] Aligner les patterns Gutenberg sur ces presets pour éviter le CSS manuel
+- [ ] Garder zéro impact front en JS et zéro dépendance externe
+
+### Phase 9B — Durcissement sécurité léger
+
+- [x] Renforcer la sanitation et les validations sur les actions admin sensibles
+  - [x] Source redirect forcée à commencer par `/` (`inc/seo-redirects.php`)
+  - [x] Cache purge : `is_file()` + `wp_delete_file()` avant unlink (`inc/admin.php`)
+- [x] Ajouter des garde-fous sur import/export et sur certaines opérations de maintenance
+  - [x] Import JSON : `is_uploaded_file()` + limite 512 Ko (`inc/admin.php`)
+  - [x] Import CSV redirections : `is_uploaded_file()` + limite 256 Ko + plafond 500 règles (`inc/seo-redirects.php`)
+  - [x] Optimize tables : restreint aux tables préfixées `$wpdb->prefix` (`inc/db-cleanup.php`)
+- [x] Documenter les headers de sécurité recommandés côté serveur sans déplacer la logique dans le thème
+  - [x] nginx : ajout HSTS commenté (`Strict-Transport-Security`) dans `README.md`
+  - [x] Apache `.htaccess` : ajout `Permissions-Policy` + HSTS commenté dans `README.md`
+- [x] Renforcer l’hygiène des logs et des uploads déjà gérés par Greenlight
+  - [x] Log 404 : IP anonymisée via `wp_privacy_anonymize_ip()` (`inc/seo-redirects.php`)
+  - [x] SVG sanitizer : passage denylist → allowlist d’éléments sûrs + suppression attributs `style` (`inc/svg.php`)
+- [x] Éviter tout glissement vers un firewall, anti-bruteforce, malware scanner ou suite de sécurité lourde
 
 ## Environnement local ✓
 - [x] Diagnostic 404 généralisé : serveur nginx MAMP sans `try_files` WordPress (2026-03-28)

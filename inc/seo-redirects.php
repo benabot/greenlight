@@ -90,7 +90,7 @@ function greenlight_log_404() {
 		array(
 			'url'  => $request_uri,
 			'time' => current_time( 'mysql' ),
-			'ip'   => isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '',
+			'ip'   => wp_privacy_anonymize_ip( isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '' ),
 		)
 	);
 
@@ -116,6 +116,11 @@ function greenlight_handle_add_redirect() {
 	$source      = isset( $_POST['redirect_source'] ) ? sanitize_text_field( wp_unslash( $_POST['redirect_source'] ) ) : '';
 	$destination = isset( $_POST['redirect_destination'] ) ? esc_url_raw( wp_unslash( $_POST['redirect_destination'] ) ) : '';
 	$code        = isset( $_POST['redirect_code'] ) ? (int) $_POST['redirect_code'] : 301;
+
+	// Forcer un chemin relatif (commence par /).
+	if ( '' !== $source && '/' !== $source[0] ) {
+		$source = '/' . $source;
+	}
 
 	if ( '' === $source || '' === $destination ) {
 		wp_safe_redirect( admin_url( 'admin.php?page=greenlight&tab=seo&redirect_error=1' ) );
@@ -194,6 +199,19 @@ function greenlight_handle_import_redirects() {
 	}
 
 	$tmp_file = sanitize_text_field( $_FILES['redirects_csv']['tmp_name'] );
+
+	// Vérifier que le fichier provient bien d'un upload HTTP.
+	if ( ! is_uploaded_file( $tmp_file ) ) {
+		wp_safe_redirect( admin_url( 'admin.php?page=greenlight&tab=seo&redirect_error=1' ) );
+		exit;
+	}
+
+	// Limiter la taille du fichier CSV (256 Ko max).
+	if ( filesize( $tmp_file ) > 256 * 1024 ) {
+		wp_safe_redirect( admin_url( 'admin.php?page=greenlight&tab=seo&redirect_error=1' ) );
+		exit;
+	}
+
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 	$csv_content = file_get_contents( $tmp_file );
 
@@ -208,10 +226,15 @@ function greenlight_handle_import_redirects() {
 		$redirects = array();
 	}
 
-	$lines    = explode( "\n", $csv_content );
-	$imported = 0;
+	$lines       = explode( "\n", $csv_content );
+	$imported    = 0;
+	$max_imports = 500;
 
 	foreach ( $lines as $line ) {
+		if ( $imported >= $max_imports ) {
+			break;
+		}
+
 		$line = trim( $line );
 
 		if ( '' === $line ) {
@@ -227,6 +250,11 @@ function greenlight_handle_import_redirects() {
 		$source      = sanitize_text_field( trim( $parts[0] ) );
 		$destination = esc_url_raw( trim( $parts[1] ) );
 		$code        = isset( $parts[2] ) ? (int) trim( $parts[2] ) : 301;
+
+		// Forcer un chemin relatif pour la source.
+		if ( '' !== $source && '/' !== $source[0] ) {
+			$source = '/' . $source;
+		}
 
 		if ( '' === $source || '' === $destination ) {
 			continue;

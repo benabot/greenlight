@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-04-07
+
+### Added
+- Phase 9A: presets éditoriaux (Minimal, Magazine, Studio, Journal), hero avancé (image/couleur/dégradé/hauteur), navigation sticky + sous-menus CSS-only, variantes archives/cartes/single/footer, réglages de densité visuelle par contexte (home, archives, single, pages).
+- Phase 9B: durcissement sécurité — SVG allowlist (19 éléments sûrs, suppression `foreignObject`/`animate`/`iframe`/`style`), anonymisation IP logs 404, `is_uploaded_file()` + limites de taille sur import JSON/CSV, OPTIMIZE TABLE restreint au préfixe WP, source redirect forcée à commencer par `/`, `wp_delete_file()` sur purge cache.
+- README.md: `Permissions-Policy` Apache + HSTS commenté (nginx + Apache).
+
+### Fixed
+- `inc/admin.php`: closure `$emit_perf_hidden_fields` manquante → fatal error sur l'onglet Performance corrigé.
+- Phase 8 validation: PHPCS zéro erreur sur 30 fichiers PHP, smoke test SEO/Performance/Images OK, responsive 768px et 1280px validé.
+
+### Changed
+- Phase 8: shell admin premium finalisé, onglet Apparence simplifié en hub Customizer, rail latéral supprimé (layout single-column).
+
 ## 2026-03-28
 
 ### Added

@@ -1,0 +1,183 @@
+- generic [ref=e2]:
+  - navigation "Menu principal":
+    - link "Aller au contenu principal" [ref=e3] [cursor=pointer]:
+      - /url: "#wpbody-content"
+    - text:          
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - navigation "Barre d’outils":
+        - menu:
+          - group [ref=e6]:
+            - menuitem "Menu" [ref=e7] [cursor=pointer]:
+              - generic [ref=e8]: 
+              - generic [ref=e9]: Menu
+          - group [ref=e10]:
+            - menuitem "À propos de WordPress" [ref=e11] [cursor=pointer]:
+              - generic [ref=e13]: À propos de WordPress
+          - group [ref=e14]:
+            - menuitem "greenlight" [ref=e15] [cursor=pointer]
+          - group [ref=e16]:
+            - menuitem "0 commentaire en modération" [ref=e17] [cursor=pointer]:
+              - generic [ref=e19]: "0"
+              - generic [ref=e20]: 0 commentaire en modération
+          - group [ref=e21]:
+            - menuitem "Créer" [ref=e22] [cursor=pointer]:
+              - generic [ref=e24]: Créer
+        - menu [ref=e25]:
+          - group [ref=e26]:
+            - menuitem "Bonjour, greenlight_admin" [ref=e27] [cursor=pointer]
+    - main [ref=e28]:
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - heading "Greenlight" [level=1] [ref=e32]
+          - generic [ref=e33]:
+            - generic [ref=e34]: SEO
+            - generic [ref=e35]: Accès admin
+            - link "Personnaliser le thème" [ref=e36] [cursor=pointer]:
+              - /url: http://localhost:8888/greenlight/wp-admin/customize.php
+        - generic [ref=e37]:
+          - navigation "Sections Greenlight" [ref=e38]:
+            - link "01 SEO" [ref=e39] [cursor=pointer]:
+              - /url: http://localhost:8888/greenlight/wp-admin/admin.php?page=greenlight&tab=seo
+              - generic [ref=e40]: "01"
+              - generic [ref=e41]: SEO
+            - link "02 Images" [ref=e42] [cursor=pointer]:
+              - /url: http://localhost:8888/greenlight/wp-admin/admin.php?page=greenlight&tab=images
+              - generic [ref=e43]: "02"
+              - generic [ref=e44]: Images
+            - link "03 Performance" [ref=e45] [cursor=pointer]:
+              - /url: http://localhost:8888/greenlight/wp-admin/admin.php?page=greenlight&tab=performance
+              - generic [ref=e46]: "03"
+              - generic [ref=e47]: Performance
+            - link "04 SVG" [ref=e48] [cursor=pointer]:
+              - /url: http://localhost:8888/greenlight/wp-admin/admin.php?page=greenlight&tab=svg
+              - generic [ref=e49]: "04"
+              - generic [ref=e50]: SVG
+            - link "05 Outils" [ref=e51] [cursor=pointer]:
+              - /url: http://localhost:8888/greenlight/wp-admin/admin.php?page=greenlight&tab=tools
+              - generic [ref=e52]: "05"
+              - generic [ref=e53]: Outils
+          - generic [ref=e54]:
+            - generic [ref=e56]:
+              - paragraph [ref=e57]: SEO
+              - heading "Indexation" [level=2] [ref=e58]
+              - paragraph [ref=e59]: Réglez l’indexation, les métadonnées et les redirections.
+            - generic [ref=e60]:
+              - generic [ref=e61]:
+                - paragraph [ref=e62]: Sitemap
+                - strong [ref=e63]: Actif
+                - generic [ref=e64]: Signal de crawl natif.
+              - generic [ref=e65]:
+                - paragraph [ref=e66]: Fil d’Ariane
+                - strong [ref=e67]: Désactivé
+                - generic [ref=e68]: Maillage interne.
+              - generic [ref=e69]:
+                - paragraph [ref=e70]: Redirections
+                - strong [ref=e71]: "0"
+                - generic [ref=e72]: Règles de secours actives.
+              - generic [ref=e73]:
+                - paragraph [ref=e74]: 404 récents
+                - strong [ref=e75]: "6"
+                - generic [ref=e76]: Points à corriger ou à rediriger.
+            - generic [ref=e78]:
+              - generic [ref=e79]:
+                - generic [ref=e81]:
+                  - paragraph [ref=e82]: Réglages essentiels
+                  - heading "Métadonnées globales" [level=3] [ref=e83]
+                  - paragraph [ref=e84]: Réglages globaux.
+                - generic [ref=e85]:
+                  - generic [ref=e86]: Titre SERP
+                  - textbox "Titre SERP" [ref=e87]
+                  - generic [ref=e88]: Description du site
+                  - textbox "Description du site" [ref=e89]
+                  - generic [ref=e90]: Séparateur
+                  - textbox "Séparateur" [ref=e91]: "-"
+                  - text: Sitemap XML
+                  - generic [ref=e92]:
+                    - checkbox "Activer le sitemap natif" [checked] [ref=e93] [cursor=pointer]
+                    - text: Activer le sitemap natif
+                  - text: Archives auteur
+                  - generic [ref=e94]:
+                    - checkbox "Passer les archives auteur en noindex" [checked] [ref=e95] [cursor=pointer]
+                    - text: Passer les archives auteur en noindex
+                  - text: Archives de tags
+                  - generic [ref=e96]:
+                    - checkbox "Passer les archives de tags en noindex" [checked] [ref=e97] [cursor=pointer]
+                    - text: Passer les archives de tags en noindex
+                  - text: Fil d'Ariane
+                  - generic [ref=e98]:
+                    - checkbox "Afficher le fil d'Ariane" [ref=e99] [cursor=pointer]
+                    - text: Afficher le fil d'Ariane
+                  - paragraph [ref=e100]:
+                    - button "Enregistrer les réglages SEO" [ref=e101] [cursor=pointer]
+              - generic [ref=e102]:
+                - generic [ref=e104]:
+                  - paragraph [ref=e105]: Robots.txt
+                  - heading "Fichier personnalisé" [level=3] [ref=e106]
+                  - paragraph [ref=e107]: Remplace la sortie WordPress.
+                - generic [ref=e108]:
+                  - generic [ref=e109]: Contenu robots.txt
+                  - textbox "Contenu robots.txt" [ref=e110]: "User-agent: * Allow: / Sitemap: http://localhost:8888/greenlight/wp-sitemap.xml"
+                  - paragraph [ref=e111]: Vide = robots.txt par défaut.
+                  - paragraph [ref=e112]:
+                    - button "Enregistrer le robots.txt" [ref=e113] [cursor=pointer]
+              - generic [ref=e114]:
+                - generic [ref=e116]:
+                  - paragraph [ref=e117]: Redirections
+                  - heading "Règles 301 et 302" [level=3] [ref=e118]
+                  - paragraph [ref=e119]: Gardez les URLs propres.
+                - paragraph [ref=e120]: Aucune redirection.
+                - heading "Ajouter une règle" [level=4] [ref=e121]
+                - generic [ref=e122]:
+                  - generic [ref=e123]: URL source
+                  - textbox "URL source" [ref=e124]:
+                    - /placeholder: /ancienne-page
+                  - generic [ref=e125]: URL destination
+                  - textbox "URL destination" [ref=e126]:
+                    - /placeholder: https://example.com/nouvelle-page
+                  - generic [ref=e127]: Code HTTP
+                  - combobox "Code HTTP" [ref=e128] [cursor=pointer]:
+                    - option "301 — Permanent" [selected]
+                    - option "302 — Temporaire"
+                  - paragraph [ref=e129]:
+                    - button "Ajouter" [ref=e130] [cursor=pointer]
+                - heading "Importer un CSV" [level=4] [ref=e131]
+                - paragraph [ref=e132]: "Format : source,destination,code."
+                - generic [ref=e133]:
+                  - button "Choose File" [ref=e134] [cursor=pointer]
+                  - paragraph [ref=e135]:
+                    - button "Importer" [ref=e136] [cursor=pointer]
+              - generic [ref=e137]:
+                - generic [ref=e139]:
+                  - paragraph [ref=e140]: Logs 404
+                  - heading "Erreurs récentes" [level=3] [ref=e141]
+                - table [ref=e142]:
+                  - rowgroup [ref=e143]:
+                    - row "URL Date" [ref=e144]:
+                      - columnheader "URL" [ref=e145]
+                      - columnheader "Date" [ref=e146]
+                  - rowgroup [ref=e147]:
+                    - row "/greenlight/wp-damin 2026-04-07 12:59:28" [ref=e148]:
+                      - cell "/greenlight/wp-damin" [ref=e149]:
+                        - code [ref=e150]: /greenlight/wp-damin
+                      - cell "2026-04-07 12:59:28" [ref=e151]
+                    - row "/greenlight/wp-content/themes/greenlight/style.min.css?ver=1774709324 2026-03-29 00:07:14" [ref=e152]:
+                      - cell "/greenlight/wp-content/themes/greenlight/style.min.css?ver=1774709324" [ref=e153]:
+                        - code [ref=e154]: /greenlight/wp-content/themes/greenlight/style.min.css?ver=1774709324
+                      - cell "2026-03-29 00:07:14" [ref=e155]
+                    - row "/greenlight/style.min.css 2026-03-28 23:55:00" [ref=e156]:
+                      - cell "/greenlight/style.min.css" [ref=e157]:
+                        - code [ref=e158]: /greenlight/style.min.css
+                      - cell "2026-03-28 23:55:00" [ref=e159]
+                    - row "/greenlight/wp-content/themes/greenlight/style.min.css?ver=1774709324 2026-03-28 23:49:39" [ref=e160]:
+                      - cell "/greenlight/wp-content/themes/greenlight/style.min.css?ver=1774709324" [ref=e161]:
+                        - code [ref=e162]: /greenlight/wp-content/themes/greenlight/style.min.css?ver=1774709324
+                      - cell "2026-03-28 23:49:39" [ref=e163]
+                    - row "/greenlight/robots.txt 2026-03-28 19:40:55" [ref=e164]:
+                      - cell "/greenlight/robots.txt" [ref=e165]:
+                        - code [ref=e166]: /greenlight/robots.txt
+                      - cell "2026-03-28 19:40:55" [ref=e167]
+                    - row "/greenlight/robots.txt 2026-03-28 19:40:18" [ref=e168]:
+                      - cell "/greenlight/robots.txt" [ref=e169]:
+                        - code [ref=e170]: /greenlight/robots.txt
+                      - cell "2026-03-28 19:40:18" [ref=e171]

@@ -1,0 +1,460 @@
+- generic [ref=e2]:
+  - navigation "Menu principal":
+    - link "Aller au contenu principal" [ref=e3] [cursor=pointer]:
+      - /url: "#wpbody-content"
+    - link "Aller à la barre d’outils" [ref=e4] [cursor=pointer]:
+      - /url: "#wp-toolbar"
+    - list [ref=e7]:
+      - listitem [ref=e8]:
+        - link "Tableau de bord" [ref=e9] [cursor=pointer]:
+          - /url: index.php
+          - generic [ref=e10]: 
+          - generic [ref=e11]: Tableau de bord
+        - list [ref=e12]:
+          - listitem [ref=e13]:
+            - link "Accueil" [ref=e14] [cursor=pointer]:
+              - /url: index.php
+          - listitem [ref=e15]:
+            - link "Mises à jour" [ref=e16] [cursor=pointer]:
+              - /url: update-core.php
+      - listitem [ref=e17]
+      - listitem [ref=e19]:
+        - link "Articles" [ref=e20] [cursor=pointer]:
+          - /url: edit.php
+          - generic [ref=e21]: 
+          - generic [ref=e22]: Articles
+        - list [ref=e23]:
+          - listitem [ref=e24]:
+            - link "Tous les articles" [ref=e25] [cursor=pointer]:
+              - /url: edit.php
+          - listitem [ref=e26]:
+            - link "Ajouter un article" [ref=e27] [cursor=pointer]:
+              - /url: post-new.php
+          - listitem [ref=e28]:
+            - link "Catégories" [ref=e29] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=category
+          - listitem [ref=e30]:
+            - link "Étiquettes" [ref=e31] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=post_tag
+      - listitem [ref=e32]:
+        - link "Médias" [ref=e33] [cursor=pointer]:
+          - /url: upload.php
+          - generic [ref=e34]: 
+          - generic [ref=e35]: Médias
+        - list [ref=e36]:
+          - listitem [ref=e37]:
+            - link "Médiathèque" [ref=e38] [cursor=pointer]:
+              - /url: upload.php
+          - listitem [ref=e39]:
+            - link "Ajouter un fichier média" [ref=e40] [cursor=pointer]:
+              - /url: media-new.php
+      - listitem [ref=e41]:
+        - link "Pages" [ref=e42] [cursor=pointer]:
+          - /url: edit.php?post_type=page
+          - generic [ref=e43]: 
+          - generic [ref=e44]: Pages
+        - list [ref=e45]:
+          - listitem [ref=e46]:
+            - link "Toutes les pages" [ref=e47] [cursor=pointer]:
+              - /url: edit.php?post_type=page
+          - listitem [ref=e48]:
+            - link "Ajouter une page" [ref=e49] [cursor=pointer]:
+              - /url: post-new.php?post_type=page
+      - listitem [ref=e50]:
+        - link "Commentaires" [ref=e51] [cursor=pointer]:
+          - /url: edit-comments.php
+          - generic [ref=e52]: 
+          - generic [ref=e53]: Commentaires
+      - listitem [ref=e54]
+      - listitem [ref=e56]:
+        - link "Apparence" [ref=e57] [cursor=pointer]:
+          - /url: themes.php
+          - generic [ref=e58]: 
+          - generic [ref=e59]: Apparence
+        - list [ref=e60]:
+          - listitem [ref=e61]:
+            - link "Thèmes" [ref=e62] [cursor=pointer]:
+              - /url: themes.php
+          - listitem [ref=e63]:
+            - link "Design" [ref=e64] [cursor=pointer]:
+              - /url: site-editor.php
+          - listitem [ref=e65]:
+            - link "Personnaliser" [ref=e66] [cursor=pointer]:
+              - /url: customize.php?return=%2Fgreenlight%2Fwp-admin%2Fadmin.php%3Fpage%3Dgreenlight%26tab%3Dperformance
+          - listitem [ref=e67]:
+            - link "Menus" [ref=e68] [cursor=pointer]:
+              - /url: nav-menus.php
+          - listitem [ref=e69]:
+            - link "Theme Check" [ref=e70] [cursor=pointer]:
+              - /url: themes.php?page=themecheck
+          - listitem [ref=e71]:
+            - link "SEO" [ref=e72] [cursor=pointer]:
+              - /url: themes.php?page=greenlight-seo
+          - listitem [ref=e73]:
+            - link "Images" [ref=e74] [cursor=pointer]:
+              - /url: themes.php?page=greenlight-images
+          - listitem [ref=e75]:
+            - link "Éditeur de fichiers des thèmes" [ref=e76] [cursor=pointer]:
+              - /url: theme-editor.php
+      - listitem [ref=e77]:
+        - link "Extensions" [ref=e78] [cursor=pointer]:
+          - /url: plugins.php
+          - generic [ref=e79]: 
+          - generic [ref=e80]: Extensions
+        - list [ref=e81]:
+          - listitem [ref=e82]:
+            - link "Extensions installées" [ref=e83] [cursor=pointer]:
+              - /url: plugins.php
+          - listitem [ref=e84]:
+            - link "Ajouter une extension" [ref=e85] [cursor=pointer]:
+              - /url: plugin-install.php
+          - listitem [ref=e86]:
+            - link "Éditeur de fichiers des extensions" [ref=e87] [cursor=pointer]:
+              - /url: plugin-editor.php
+      - listitem [ref=e88]:
+        - link "Greenlight" [ref=e89] [cursor=pointer]:
+          - /url: admin.php?page=greenlight
+          - generic [ref=e91]: Greenlight
+      - listitem [ref=e92]:
+        - link "Comptes" [ref=e93] [cursor=pointer]:
+          - /url: users.php
+          - generic [ref=e94]: 
+          - generic [ref=e95]: Comptes
+        - list [ref=e96]:
+          - listitem [ref=e97]:
+            - link "Tous les comptes" [ref=e98] [cursor=pointer]:
+              - /url: users.php
+          - listitem [ref=e99]:
+            - link "Ajouter un compte" [ref=e100] [cursor=pointer]:
+              - /url: user-new.php
+          - listitem [ref=e101]:
+            - link "Profil" [ref=e102] [cursor=pointer]:
+              - /url: profile.php
+      - listitem [ref=e103]:
+        - link "Outils" [ref=e104] [cursor=pointer]:
+          - /url: tools.php
+          - generic [ref=e105]: 
+          - generic [ref=e106]: Outils
+        - list [ref=e107]:
+          - listitem [ref=e108]:
+            - link "Outils disponibles" [ref=e109] [cursor=pointer]:
+              - /url: tools.php
+          - listitem [ref=e110]:
+            - link "Importer" [ref=e111] [cursor=pointer]:
+              - /url: import.php
+          - listitem [ref=e112]:
+            - link "Exporter" [ref=e113] [cursor=pointer]:
+              - /url: export.php
+          - listitem [ref=e114]:
+            - link "Santé du site" [ref=e115] [cursor=pointer]:
+              - /url: site-health.php
+          - listitem [ref=e116]:
+            - link "Exporter les données" [ref=e117] [cursor=pointer]:
+              - /url: export-personal-data.php
+          - listitem [ref=e118]:
+            - link "Effacer les données" [ref=e119] [cursor=pointer]:
+              - /url: erase-personal-data.php
+      - listitem [ref=e120]:
+        - link "Réglages" [ref=e121] [cursor=pointer]:
+          - /url: options-general.php
+          - generic [ref=e122]: 
+          - generic [ref=e123]: Réglages
+        - list [ref=e124]:
+          - listitem [ref=e125]:
+            - link "Général" [ref=e126] [cursor=pointer]:
+              - /url: options-general.php
+          - listitem [ref=e127]:
+            - link "Écriture" [ref=e128] [cursor=pointer]:
+              - /url: options-writing.php
+          - listitem [ref=e129]:
+            - link "Lecture" [ref=e130] [cursor=pointer]:
+              - /url: options-reading.php
+          - listitem [ref=e131]:
+            - link "Commentaires" [ref=e132] [cursor=pointer]:
+              - /url: options-discussion.php
+          - listitem [ref=e133]:
+            - link "Médias" [ref=e134] [cursor=pointer]:
+              - /url: options-media.php
+          - listitem [ref=e135]:
+            - link "Permaliens" [ref=e136] [cursor=pointer]:
+              - /url: options-permalink.php
+          - listitem [ref=e137]:
+            - link "Confidentialité" [ref=e138] [cursor=pointer]:
+              - /url: options-privacy.php
+      - listitem [ref=e139]
+      - listitem [ref=e141]:
+        - link "FakerPress" [ref=e142] [cursor=pointer]:
+          - /url: admin.php?page=fakerpress
+          - generic [ref=e144]: FakerPress
+        - list [ref=e145]:
+          - listitem [ref=e146]:
+            - link "Réglages" [ref=e147] [cursor=pointer]:
+              - /url: admin.php?page=fakerpress
+          - listitem [ref=e148]:
+            - link "Attachments" [ref=e149] [cursor=pointer]:
+              - /url: admin.php?page=fakerpress&view=attachments
+          - listitem [ref=e150]:
+            - link "Commentaires" [ref=e151] [cursor=pointer]:
+              - /url: admin.php?page=fakerpress&view=comments
+          - listitem [ref=e152]:
+            - link "Articles" [ref=e153] [cursor=pointer]:
+              - /url: admin.php?page=fakerpress&view=posts
+          - listitem [ref=e154]:
+            - link "Termes" [ref=e155] [cursor=pointer]:
+              - /url: admin.php?page=fakerpress&view=terms
+          - listitem [ref=e156]:
+            - link "Utilisateurs" [ref=e157] [cursor=pointer]:
+              - /url: admin.php?page=fakerpress&view=users
+      - listitem [ref=e158]:
+        - button "Replier le menu principal" [expanded] [ref=e159] [cursor=pointer]:
+          - generic [ref=e161]: Replier le menu
+  - generic [ref=e162]:
+    - generic [ref=e163]:
+      - navigation "Barre d’outils":
+        - menu:
+          - group [ref=e164]:
+            - menuitem "À propos de WordPress" [ref=e165] [cursor=pointer]:
+              - generic [ref=e167]: À propos de WordPress
+          - group [ref=e168]:
+            - menuitem "greenlight" [ref=e169] [cursor=pointer]
+          - group [ref=e170]:
+            - menuitem "0 commentaire en modération" [ref=e171] [cursor=pointer]:
+              - generic [ref=e173]: "0"
+              - generic [ref=e174]: 0 commentaire en modération
+          - group [ref=e175]:
+            - menuitem "Créer" [ref=e176] [cursor=pointer]:
+              - generic [ref=e178]: Créer
+        - menu [ref=e179]:
+          - group [ref=e180]:
+            - menuitem "Bonjour, greenlight_admin" [ref=e181] [cursor=pointer]
+    - main [ref=e182]:
+      - generic [ref=e184]:
+        - generic [ref=e185]:
+          - heading "Greenlight" [level=1] [ref=e186]
+          - generic [ref=e187]:
+            - generic [ref=e188]: Performance
+            - generic [ref=e189]: Accès admin
+            - link "Personnaliser le thème" [ref=e190] [cursor=pointer]:
+              - /url: http://localhost:8888/greenlight/wp-admin/customize.php
+        - generic [ref=e191]:
+          - navigation "Sections Greenlight" [ref=e192]:
+            - link "01 SEO" [ref=e193] [cursor=pointer]:
+              - /url: http://localhost:8888/greenlight/wp-admin/admin.php?page=greenlight&tab=seo
+              - generic [ref=e194]: "01"
+              - generic [ref=e195]: SEO
+            - link "02 Images" [ref=e196] [cursor=pointer]:
+              - /url: http://localhost:8888/greenlight/wp-admin/admin.php?page=greenlight&tab=images
+              - generic [ref=e197]: "02"
+              - generic [ref=e198]: Images
+            - link "03 Performance" [ref=e199] [cursor=pointer]:
+              - /url: http://localhost:8888/greenlight/wp-admin/admin.php?page=greenlight&tab=performance
+              - generic [ref=e200]: "03"
+              - generic [ref=e201]: Performance
+            - link "04 SVG" [ref=e202] [cursor=pointer]:
+              - /url: http://localhost:8888/greenlight/wp-admin/admin.php?page=greenlight&tab=svg
+              - generic [ref=e203]: "04"
+              - generic [ref=e204]: SVG
+            - link "05 Outils" [ref=e205] [cursor=pointer]:
+              - /url: http://localhost:8888/greenlight/wp-admin/admin.php?page=greenlight&tab=tools
+              - generic [ref=e206]: "05"
+              - generic [ref=e207]: Outils
+          - generic [ref=e208]:
+            - generic [ref=e210]:
+              - paragraph [ref=e211]: Performance
+              - heading "Cache et diffusion" [level=2] [ref=e212]
+              - paragraph [ref=e213]: Cache, minification et maintenance.
+            - generic [ref=e216]:
+              - generic [ref=e217]:
+                - generic [ref=e219]:
+                  - paragraph [ref=e220]: Impact actuel
+                  - heading "Vue d’ensemble" [level=3] [ref=e221]
+                  - paragraph [ref=e222]: État du cache et des fichiers servis.
+                - generic [ref=e223]:
+                  - generic [ref=e224]:
+                    - generic [ref=e225]: Cache HTML
+                    - generic [ref=e226]: Actif
+                  - generic [ref=e227]:
+                    - generic [ref=e228]: Diffusion CSS
+                    - generic [ref=e229]: Minifiée
+                  - generic [ref=e230]:
+                    - generic [ref=e231]: Bundle CSS
+                    - generic [ref=e232]: Actif
+                  - generic [ref=e233]:
+                    - generic [ref=e234]: Entretien auto
+                    - generic [ref=e235]: Manuel
+              - generic [ref=e236]:
+                - generic [ref=e238]:
+                  - paragraph [ref=e239]: Diffusion
+                  - heading "Fichiers servis" [level=3] [ref=e240]
+                  - paragraph [ref=e241]: Réduisez le poids servi. Minification, bundle CSS et critical CSS.
+                - text: Minification CSS
+                - generic [ref=e242]:
+                  - checkbox "Servir les fichiers .min.css." [checked] [ref=e243] [cursor=pointer]
+                  - text: Servir les fichiers .min.css.
+                - text: Minification JS
+                - generic [ref=e244]:
+                  - checkbox "Servir les fichiers .min.js." [checked] [ref=e245] [cursor=pointer]
+                  - text: Servir les fichiers .min.js.
+                - text: Bundle CSS
+                - generic [ref=e246]:
+                  - checkbox "Fusionner style.css et les blocs." [checked] [ref=e247] [cursor=pointer]
+                  - text: Fusionner style.css et les blocs.
+                - paragraph [ref=e248]: Bundle genere. (34,4 Ko)
+                - text: Critical CSS
+                - generic [ref=e249]:
+                  - checkbox "Inliner le CSS critique." [ref=e250] [cursor=pointer]
+                  - text: Inliner le CSS critique.
+              - generic [ref=e251]:
+                - generic [ref=e253]:
+                  - paragraph [ref=e254]: Cache HTML
+                  - heading "Pages statiques servies" [level=3] [ref=e255]
+                  - paragraph [ref=e256]: Le cache HTML allège le serveur.
+                - text: Cache page HTML
+                - generic [ref=e257]:
+                  - checkbox "Activer le cache statique HTML pour les visites anonymes." [checked] [ref=e258] [cursor=pointer]
+                  - text: Activer le cache statique HTML pour les visites anonymes.
+                - generic [ref=e259]: Duree de vie du cache
+                - combobox "Duree de vie du cache" [ref=e260] [cursor=pointer]:
+                  - option "1 heure"
+                  - option "6 heures"
+                  - option "12 heures"
+                  - option "24 heures"
+                  - option "1 semaine" [selected]
+                - paragraph [ref=e261]: Adaptez à votre rythme.
+              - generic [ref=e262]:
+                - generic [ref=e264]:
+                  - paragraph [ref=e265]: Rythme
+                  - heading "Connexions et rythme" [level=3] [ref=e266]
+                  - paragraph [ref=e267]: Connexions externes et Heartbeat.
+                - generic [ref=e268]: Domaines externes
+                - textbox "Domaines externes" [ref=e269]:
+                  - /placeholder: https://fonts.googleapis.com
+                - paragraph [ref=e270]: Un domaine par ligne. Détection possible.
+                - generic [ref=e271]: Heartbeat front
+                - combobox "Heartbeat front" [ref=e272] [cursor=pointer]:
+                  - option "Par defaut"
+                  - option "Reduit" [selected]
+                  - option "Coupe"
+                - generic [ref=e273]: Heartbeat admin
+                - combobox "Heartbeat admin" [ref=e274] [cursor=pointer]:
+                  - option "Par defaut" [selected]
+                  - option "Reduit"
+                  - option "Coupe"
+                - generic [ref=e275]: Heartbeat editeur
+                - combobox "Heartbeat editeur" [ref=e276] [cursor=pointer]:
+                  - option "Par defaut" [selected]
+                  - option "Reduit"
+                  - option "Coupe"
+              - generic [ref=e277]:
+                - generic [ref=e279]:
+                  - paragraph [ref=e280]: Maintenance
+                  - heading "Nettoyage et régénération" [level=3] [ref=e281]
+                  - paragraph [ref=e282]: Actions ponctuelles et routines.
+                - generic [ref=e283]:
+                  - button "Supprimer les revisions" [ref=e284] [cursor=pointer]
+                  - button "Supprimer les brouillons auto" [ref=e286] [cursor=pointer]
+                  - button "Vider la corbeille" [ref=e288] [cursor=pointer]
+                  - button "Supprimer les commentaires spam" [ref=e290] [cursor=pointer]
+                  - button "Supprimer les transients expires" [ref=e292] [cursor=pointer]
+                  - button "Optimiser les tables" [ref=e294] [cursor=pointer]
+                - generic [ref=e295]:
+                  - text: Nettoyage auto
+                  - generic [ref=e296]:
+                    - checkbox "Executer un cycle hebdomadaire sur revisions, brouillons, corbeille, spam et transients expires." [ref=e297] [cursor=pointer]
+                    - text: Executer un cycle hebdomadaire sur revisions, brouillons, corbeille, spam et transients expires.
+              - generic [ref=e298]:
+                - generic [ref=e300]:
+                  - paragraph [ref=e301]: Fichiers generes
+                  - heading "Sorties générées" [level=3] [ref=e302]
+                  - paragraph [ref=e303]: Vérifiez avant régénération.
+                - table [ref=e304]:
+                  - rowgroup [ref=e305]:
+                    - row "Fichier Statut Taille" [ref=e306]:
+                      - columnheader "Fichier" [ref=e307]
+                      - columnheader "Statut" [ref=e308]
+                      - columnheader "Taille" [ref=e309]
+                  - rowgroup [ref=e310]:
+                    - row "style.min.css Present (29/03 12:34) 14,7 Ko" [ref=e311]:
+                      - cell "style.min.css" [ref=e312]:
+                        - code [ref=e313]: style.min.css
+                      - cell "Present (29/03 12:34)" [ref=e314]:
+                        - generic [ref=e315]: Present
+                        - text: (29/03 12:34)
+                      - cell "14,7 Ko" [ref=e316]
+                    - row "assets/js/seo-sidebar.min.js Absent —" [ref=e317]:
+                      - cell "assets/js/seo-sidebar.min.js" [ref=e318]:
+                        - code [ref=e319]: assets/js/seo-sidebar.min.js
+                      - cell "Absent" [ref=e320]:
+                        - generic [ref=e321]: Absent
+                      - cell "—" [ref=e322]
+                    - row "blocks/navigation.min.css Present (29/03 12:21) 622,0 o" [ref=e323]:
+                      - cell "blocks/navigation.min.css" [ref=e324]:
+                        - code [ref=e325]: blocks/navigation.min.css
+                      - cell "Present (29/03 12:21)" [ref=e326]:
+                        - generic [ref=e327]: Present
+                        - text: (29/03 12:21)
+                      - cell "622,0 o" [ref=e328]
+                    - row "blocks/image.min.css Present (29/03 12:21) 214,0 o" [ref=e329]:
+                      - cell "blocks/image.min.css" [ref=e330]:
+                        - code [ref=e331]: blocks/image.min.css
+                      - cell "Present (29/03 12:21)" [ref=e332]:
+                        - generic [ref=e333]: Present
+                        - text: (29/03 12:21)
+                      - cell "214,0 o" [ref=e334]
+                    - row "blocks/heading.min.css Present (29/03 12:21) 114,0 o" [ref=e335]:
+                      - cell "blocks/heading.min.css" [ref=e336]:
+                        - code [ref=e337]: blocks/heading.min.css
+                      - cell "Present (29/03 12:21)" [ref=e338]:
+                        - generic [ref=e339]: Present
+                        - text: (29/03 12:21)
+                      - cell "114,0 o" [ref=e340]
+                    - row "blocks/paragraph.min.css Present (29/03 12:21) 228,0 o" [ref=e341]:
+                      - cell "blocks/paragraph.min.css" [ref=e342]:
+                        - code [ref=e343]: blocks/paragraph.min.css
+                      - cell "Present (29/03 12:21)" [ref=e344]:
+                        - generic [ref=e345]: Present
+                        - text: (29/03 12:21)
+                      - cell "228,0 o" [ref=e346]
+                    - row "blocks/separator.min.css Present (29/03 12:21) 174,0 o" [ref=e347]:
+                      - cell "blocks/separator.min.css" [ref=e348]:
+                        - code [ref=e349]: blocks/separator.min.css
+                      - cell "Present (29/03 12:21)" [ref=e350]:
+                        - generic [ref=e351]: Present
+                        - text: (29/03 12:21)
+                      - cell "174,0 o" [ref=e352]
+                    - row "blocks/button.min.css Present (29/03 12:21) 900,0 o" [ref=e353]:
+                      - cell "blocks/button.min.css" [ref=e354]:
+                        - code [ref=e355]: blocks/button.min.css
+                      - cell "Present (29/03 12:21)" [ref=e356]:
+                        - generic [ref=e357]: Present
+                        - text: (29/03 12:21)
+                      - cell "900,0 o" [ref=e358]
+                    - row "blocks/group.min.css Present (29/03 12:21) 340,0 o" [ref=e359]:
+                      - cell "blocks/group.min.css" [ref=e360]:
+                        - code [ref=e361]: blocks/group.min.css
+                      - cell "Present (29/03 12:21)" [ref=e362]:
+                        - generic [ref=e363]: Present
+                        - text: (29/03 12:21)
+                      - cell "340,0 o" [ref=e364]
+                    - row "blocks/query.min.css Present (29/03 12:21) 910,0 o" [ref=e365]:
+                      - cell "blocks/query.min.css" [ref=e366]:
+                        - code [ref=e367]: blocks/query.min.css
+                      - cell "Present (29/03 12:21)" [ref=e368]:
+                        - generic [ref=e369]: Present
+                        - text: (29/03 12:21)
+                      - cell "910,0 o" [ref=e370]
+                - button "Supprimer les sorties minifiees" [ref=e372] [cursor=pointer]
+            - paragraph [ref=e373]:
+              - button "Enregistrer les réglages de performance" [ref=e374] [cursor=pointer]
+            - paragraph [ref=e375]: "nginx détecté : gardez la compression et les headers de cache actifs pour diffuser moins de poids."
+            - generic [ref=e376]:
+              - button "Purger le cache HTML" [ref=e378] [cursor=pointer]
+              - button "Purger le cache HTML" [ref=e380] [cursor=pointer]
+  - contentinfo [ref=e381]:
+    - paragraph [ref=e382]:
+      - generic [ref=e383]:
+        - text: Merci de faire de
+        - link "WordPress" [ref=e384] [cursor=pointer]:
+          - /url: https://fr.wordpress.org/
+        - text: votre outil de création de contenu.
+    - paragraph [ref=e385]: Version 6.9.4

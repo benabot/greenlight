@@ -1,0 +1,251 @@
+- generic [ref=e2]:
+  - navigation "Menu principal":
+    - link "Aller au contenu principal" [ref=e3] [cursor=pointer]:
+      - /url: "#wpbody-content"
+    - text:          
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - navigation "Barre d’outils":
+        - menu:
+          - group [ref=e6]:
+            - menuitem "Menu" [ref=e7] [cursor=pointer]:
+              - generic [ref=e8]: 
+              - generic [ref=e9]: Menu
+          - group [ref=e10]:
+            - menuitem "À propos de WordPress" [ref=e11] [cursor=pointer]:
+              - generic [ref=e13]: À propos de WordPress
+          - group [ref=e14]:
+            - menuitem "greenlight" [ref=e15] [cursor=pointer]
+          - group [ref=e16]:
+            - menuitem "0 commentaire en modération" [ref=e17] [cursor=pointer]:
+              - generic [ref=e19]: "0"
+              - generic [ref=e20]: 0 commentaire en modération
+          - group [ref=e21]:
+            - menuitem "Créer" [ref=e22] [cursor=pointer]:
+              - generic [ref=e24]: Créer
+        - menu [ref=e25]:
+          - group [ref=e26]:
+            - menuitem "Bonjour, greenlight_admin" [ref=e27] [cursor=pointer]
+    - main [ref=e28]:
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - heading "Greenlight" [level=1] [ref=e32]
+          - generic [ref=e33]:
+            - generic [ref=e34]: Performance
+            - generic [ref=e35]: Accès admin
+            - link "Personnaliser le thème" [ref=e36] [cursor=pointer]:
+              - /url: http://localhost:8888/greenlight/wp-admin/customize.php
+        - generic [ref=e37]:
+          - navigation "Sections Greenlight" [ref=e38]:
+            - link "01 SEO" [ref=e39] [cursor=pointer]:
+              - /url: http://localhost:8888/greenlight/wp-admin/admin.php?page=greenlight&tab=seo
+              - generic [ref=e40]: "01"
+              - generic [ref=e41]: SEO
+            - link "02 Images" [ref=e42] [cursor=pointer]:
+              - /url: http://localhost:8888/greenlight/wp-admin/admin.php?page=greenlight&tab=images
+              - generic [ref=e43]: "02"
+              - generic [ref=e44]: Images
+            - link "03 Performance" [ref=e45] [cursor=pointer]:
+              - /url: http://localhost:8888/greenlight/wp-admin/admin.php?page=greenlight&tab=performance
+              - generic [ref=e46]: "03"
+              - generic [ref=e47]: Performance
+            - link "04 SVG" [ref=e48] [cursor=pointer]:
+              - /url: http://localhost:8888/greenlight/wp-admin/admin.php?page=greenlight&tab=svg
+              - generic [ref=e49]: "04"
+              - generic [ref=e50]: SVG
+            - link "05 Outils" [ref=e51] [cursor=pointer]:
+              - /url: http://localhost:8888/greenlight/wp-admin/admin.php?page=greenlight&tab=tools
+              - generic [ref=e52]: "05"
+              - generic [ref=e53]: Outils
+          - generic [ref=e54]:
+            - generic [ref=e56]:
+              - paragraph [ref=e57]: Performance
+              - heading "Cache et diffusion" [level=2] [ref=e58]
+              - paragraph [ref=e59]: Cache, minification et maintenance.
+            - generic [ref=e62]:
+              - generic [ref=e63]:
+                - generic [ref=e65]:
+                  - paragraph [ref=e66]: Impact actuel
+                  - heading "Vue d’ensemble" [level=3] [ref=e67]
+                  - paragraph [ref=e68]: État du cache et des fichiers servis.
+                - generic [ref=e69]:
+                  - generic [ref=e70]:
+                    - generic [ref=e71]: Cache HTML
+                    - generic [ref=e72]: Actif
+                  - generic [ref=e73]:
+                    - generic [ref=e74]: Diffusion CSS
+                    - generic [ref=e75]: Minifiée
+                  - generic [ref=e76]:
+                    - generic [ref=e77]: Bundle CSS
+                    - generic [ref=e78]: Actif
+                  - generic [ref=e79]:
+                    - generic [ref=e80]: Entretien auto
+                    - generic [ref=e81]: Manuel
+              - generic [ref=e82]:
+                - generic [ref=e84]:
+                  - paragraph [ref=e85]: Diffusion
+                  - heading "Fichiers servis" [level=3] [ref=e86]
+                  - paragraph [ref=e87]: Réduisez le poids servi. Minification, bundle CSS et critical CSS.
+                - text: Minification CSS
+                - generic [ref=e88]:
+                  - checkbox "Servir les fichiers .min.css." [checked] [ref=e89] [cursor=pointer]
+                  - text: Servir les fichiers .min.css.
+                - text: Minification JS
+                - generic [ref=e90]:
+                  - checkbox "Servir les fichiers .min.js." [checked] [ref=e91] [cursor=pointer]
+                  - text: Servir les fichiers .min.js.
+                - text: Bundle CSS
+                - generic [ref=e92]:
+                  - checkbox "Fusionner style.css et les blocs." [checked] [ref=e93] [cursor=pointer]
+                  - text: Fusionner style.css et les blocs.
+                - paragraph [ref=e94]: Bundle genere. (34,4 Ko)
+                - text: Critical CSS
+                - generic [ref=e95]:
+                  - checkbox "Inliner le CSS critique." [ref=e96] [cursor=pointer]
+                  - text: Inliner le CSS critique.
+              - generic [ref=e97]:
+                - generic [ref=e99]:
+                  - paragraph [ref=e100]: Cache HTML
+                  - heading "Pages statiques servies" [level=3] [ref=e101]
+                  - paragraph [ref=e102]: Le cache HTML allège le serveur.
+                - text: Cache page HTML
+                - generic [ref=e103]:
+                  - checkbox "Activer le cache statique HTML pour les visites anonymes." [checked] [ref=e104] [cursor=pointer]
+                  - text: Activer le cache statique HTML pour les visites anonymes.
+                - generic [ref=e105]: Duree de vie du cache
+                - combobox "Duree de vie du cache" [ref=e106] [cursor=pointer]:
+                  - option "1 heure"
+                  - option "6 heures"
+                  - option "12 heures"
+                  - option "24 heures"
+                  - option "1 semaine" [selected]
+                - paragraph [ref=e107]: Adaptez à votre rythme.
+              - generic [ref=e108]:
+                - generic [ref=e110]:
+                  - paragraph [ref=e111]: Rythme
+                  - heading "Connexions et rythme" [level=3] [ref=e112]
+                  - paragraph [ref=e113]: Connexions externes et Heartbeat.
+                - generic [ref=e114]: Domaines externes
+                - textbox "Domaines externes" [ref=e115]:
+                  - /placeholder: https://fonts.googleapis.com
+                - paragraph [ref=e116]: Un domaine par ligne. Détection possible.
+                - generic [ref=e117]: Heartbeat front
+                - combobox "Heartbeat front" [ref=e118] [cursor=pointer]:
+                  - option "Par defaut"
+                  - option "Reduit" [selected]
+                  - option "Coupe"
+                - generic [ref=e119]: Heartbeat admin
+                - combobox "Heartbeat admin" [ref=e120] [cursor=pointer]:
+                  - option "Par defaut" [selected]
+                  - option "Reduit"
+                  - option "Coupe"
+                - generic [ref=e121]: Heartbeat editeur
+                - combobox "Heartbeat editeur" [ref=e122] [cursor=pointer]:
+                  - option "Par defaut" [selected]
+                  - option "Reduit"
+                  - option "Coupe"
+              - generic [ref=e123]:
+                - generic [ref=e125]:
+                  - paragraph [ref=e126]: Maintenance
+                  - heading "Nettoyage et régénération" [level=3] [ref=e127]
+                  - paragraph [ref=e128]: Actions ponctuelles et routines.
+                - generic [ref=e129]:
+                  - button "Supprimer les revisions" [ref=e130] [cursor=pointer]
+                  - button "Supprimer les brouillons auto" [ref=e132] [cursor=pointer]
+                  - button "Vider la corbeille" [ref=e134] [cursor=pointer]
+                  - button "Supprimer les commentaires spam" [ref=e136] [cursor=pointer]
+                  - button "Supprimer les transients expires" [ref=e138] [cursor=pointer]
+                  - button "Optimiser les tables" [ref=e140] [cursor=pointer]
+                - generic [ref=e141]:
+                  - text: Nettoyage auto
+                  - generic [ref=e142]:
+                    - checkbox "Executer un cycle hebdomadaire sur revisions, brouillons, corbeille, spam et transients expires." [ref=e143] [cursor=pointer]
+                    - text: Executer un cycle hebdomadaire sur revisions, brouillons, corbeille, spam et transients expires.
+              - generic [ref=e144]:
+                - generic [ref=e146]:
+                  - paragraph [ref=e147]: Fichiers generes
+                  - heading "Sorties générées" [level=3] [ref=e148]
+                  - paragraph [ref=e149]: Vérifiez avant régénération.
+                - table [ref=e150]:
+                  - rowgroup [ref=e151]:
+                    - row "Fichier Statut Taille" [ref=e152]:
+                      - columnheader "Fichier" [ref=e153]
+                      - columnheader "Statut" [ref=e154]
+                      - columnheader "Taille" [ref=e155]
+                  - rowgroup [ref=e156]:
+                    - row "style.min.css Present (29/03 12:34) 14,7 Ko" [ref=e157]:
+                      - cell "style.min.css" [ref=e158]:
+                        - code [ref=e159]: style.min.css
+                      - cell "Present (29/03 12:34)" [ref=e160]:
+                        - generic [ref=e161]: Present
+                        - text: (29/03 12:34)
+                      - cell "14,7 Ko" [ref=e162]
+                    - row "assets/js/seo-sidebar.min.js Absent —" [ref=e163]:
+                      - cell "assets/js/seo-sidebar.min.js" [ref=e164]:
+                        - code [ref=e165]: assets/js/seo-sidebar.min.js
+                      - cell "Absent" [ref=e166]:
+                        - generic [ref=e167]: Absent
+                      - cell "—" [ref=e168]
+                    - row "blocks/navigation.min.css Present (29/03 12:21) 622,0 o" [ref=e169]:
+                      - cell "blocks/navigation.min.css" [ref=e170]:
+                        - code [ref=e171]: blocks/navigation.min.css
+                      - cell "Present (29/03 12:21)" [ref=e172]:
+                        - generic [ref=e173]: Present
+                        - text: (29/03 12:21)
+                      - cell "622,0 o" [ref=e174]
+                    - row "blocks/image.min.css Present (29/03 12:21) 214,0 o" [ref=e175]:
+                      - cell "blocks/image.min.css" [ref=e176]:
+                        - code [ref=e177]: blocks/image.min.css
+                      - cell "Present (29/03 12:21)" [ref=e178]:
+                        - generic [ref=e179]: Present
+                        - text: (29/03 12:21)
+                      - cell "214,0 o" [ref=e180]
+                    - row "blocks/heading.min.css Present (29/03 12:21) 114,0 o" [ref=e181]:
+                      - cell "blocks/heading.min.css" [ref=e182]:
+                        - code [ref=e183]: blocks/heading.min.css
+                      - cell "Present (29/03 12:21)" [ref=e184]:
+                        - generic [ref=e185]: Present
+                        - text: (29/03 12:21)
+                      - cell "114,0 o" [ref=e186]
+                    - row "blocks/paragraph.min.css Present (29/03 12:21) 228,0 o" [ref=e187]:
+                      - cell "blocks/paragraph.min.css" [ref=e188]:
+                        - code [ref=e189]: blocks/paragraph.min.css
+                      - cell "Present (29/03 12:21)" [ref=e190]:
+                        - generic [ref=e191]: Present
+                        - text: (29/03 12:21)
+                      - cell "228,0 o" [ref=e192]
+                    - row "blocks/separator.min.css Present (29/03 12:21) 174,0 o" [ref=e193]:
+                      - cell "blocks/separator.min.css" [ref=e194]:
+                        - code [ref=e195]: blocks/separator.min.css
+                      - cell "Present (29/03 12:21)" [ref=e196]:
+                        - generic [ref=e197]: Present
+                        - text: (29/03 12:21)
+                      - cell "174,0 o" [ref=e198]
+                    - row "blocks/button.min.css Present (29/03 12:21) 900,0 o" [ref=e199]:
+                      - cell "blocks/button.min.css" [ref=e200]:
+                        - code [ref=e201]: blocks/button.min.css
+                      - cell "Present (29/03 12:21)" [ref=e202]:
+                        - generic [ref=e203]: Present
+                        - text: (29/03 12:21)
+                      - cell "900,0 o" [ref=e204]
+                    - row "blocks/group.min.css Present (29/03 12:21) 340,0 o" [ref=e205]:
+                      - cell "blocks/group.min.css" [ref=e206]:
+                        - code [ref=e207]: blocks/group.min.css
+                      - cell "Present (29/03 12:21)" [ref=e208]:
+                        - generic [ref=e209]: Present
+                        - text: (29/03 12:21)
+                      - cell "340,0 o" [ref=e210]
+                    - row "blocks/query.min.css Present (29/03 12:21) 910,0 o" [ref=e211]:
+                      - cell "blocks/query.min.css" [ref=e212]:
+                        - code [ref=e213]: blocks/query.min.css
+                      - cell "Present (29/03 12:21)" [ref=e214]:
+                        - generic [ref=e215]: Present
+                        - text: (29/03 12:21)
+                      - cell "910,0 o" [ref=e216]
+                - button "Supprimer les sorties minifiees" [ref=e218] [cursor=pointer]
+            - paragraph [ref=e219]:
+              - button "Enregistrer les réglages de performance" [ref=e220] [cursor=pointer]
+            - paragraph [ref=e221]: "nginx détecté : gardez la compression et les headers de cache actifs pour diffuser moins de poids."
+            - generic [ref=e222]:
+              - button "Purger le cache HTML" [ref=e224] [cursor=pointer]
+              - button "Purger le cache HTML" [ref=e226] [cursor=pointer]

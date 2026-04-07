@@ -18,12 +18,16 @@ function greenlight_output_prefetch() {
 	$perf    = get_option( 'greenlight_performance_options', array() );
 	$domains = isset( $perf['prefetch_domains'] ) ? trim( $perf['prefetch_domains'] ) : '';
 
-	// Merge manual domains with auto-detected ones.
-	$manual   = array_filter( array_map( 'trim', explode( "\n", $domains ) ) );
-	$detected = get_transient( 'greenlight_detected_domains' );
-	$all      = array_unique( array_merge( $manual, is_array( $detected ) ? $detected : array() ) );
+	$domains = preg_split( '/[\s,]+/', $domains, -1, PREG_SPLIT_NO_EMPTY );
+	$domains = array_filter( array_map( 'greenlight_normalize_prefetch_domain', (array) $domains ) );
+	$domains = array_unique( $domains );
+	$domains = apply_filters( 'greenlight_prefetch_domains', $domains );
 
-	foreach ( $all as $domain ) {
+	if ( ! is_array( $domains ) ) {
+		$domains = array();
+	}
+
+	foreach ( $domains as $domain ) {
 		$domain = esc_url( $domain );
 
 		if ( '' === $domain ) {
@@ -37,69 +41,35 @@ function greenlight_output_prefetch() {
 add_action( 'wp_head', 'greenlight_output_prefetch', 2 );
 
 /**
- * Auto-detects external domains from recent post content.
+ * Normalizes a prefetch domain into an absolute URL.
  *
- * Scheduled via weekly cron.
+ * @param string $domain Domain or URL.
  *
- * @return void
+ * @return string
  */
-function greenlight_detect_external_domains() {
-	$posts = get_posts(
-		array(
-			'post_type'      => 'post',
-			'post_status'    => 'publish',
-			'posts_per_page' => 50,
-			'no_found_rows'  => true,
-			'fields'         => 'ids',
-		)
-	);
+function greenlight_normalize_prefetch_domain( $domain ) {
+	$domain = trim( wp_strip_all_tags( (string) $domain ) );
 
-	$home_host = wp_parse_url( home_url(), PHP_URL_HOST );
-	$domains   = array();
-
-	foreach ( $posts as $post_id ) {
-		$content = get_post_field( 'post_content', $post_id );
-
-		if ( empty( $content ) ) {
-			continue;
-		}
-
-		if ( preg_match_all( '#https?://([^/\s"\'<>]+)#i', $content, $matches ) ) {
-			foreach ( $matches[1] as $host ) {
-				$host = strtolower( $host );
-
-				if ( $host !== $home_host ) {
-					$domains[] = 'https://' . $host;
-				}
-			}
-		}
+	if ( '' === $domain ) {
+		return '';
 	}
 
-	$domains = array_unique( $domains );
-	$domains = array_slice( $domains, 0, 20 );
-
-	set_transient( 'greenlight_detected_domains', $domains, WEEK_IN_SECONDS );
-}
-
-/**
- * Schedules the weekly domain detection cron.
- *
- * @return void
- */
-function greenlight_schedule_domain_detection() {
-	if ( ! wp_next_scheduled( 'greenlight_detect_domains_cron' ) ) {
-		wp_schedule_event( time(), 'weekly', 'greenlight_detect_domains_cron' );
+	if ( false === strpos( $domain, '://' ) ) {
+		$domain = 'https://' . ltrim( $domain, '/' );
 	}
-}
-add_action( 'init', 'greenlight_schedule_domain_detection' );
-add_action( 'greenlight_detect_domains_cron', 'greenlight_detect_external_domains' );
 
-/**
- * Cleans up cron on theme switch.
- *
- * @return void
- */
-function greenlight_clear_domain_detection_cron() {
-	wp_clear_scheduled_hook( 'greenlight_detect_domains_cron' );
+	$parts = wp_parse_url( $domain );
+
+	if ( empty( $parts['host'] ) ) {
+		return '';
+	}
+
+	$scheme = ! empty( $parts['scheme'] ) ? $parts['scheme'] : 'https';
+	$url    = $scheme . '://' . $parts['host'];
+
+	if ( ! empty( $parts['port'] ) ) {
+		$url .= ':' . absint( $parts['port'] );
+	}
+
+	return $url;
 }
-add_action( 'switch_theme', 'greenlight_clear_domain_detection_cron' );

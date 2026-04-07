@@ -98,6 +98,7 @@ assets/build/
 assets/dist/
 public/build/
 style.min.css
+assets/css/greenlight-bundle.css
 assets/css/blocks/*.min.css
 assets/js/*.min.js
 wp-content/cache/greenlight/

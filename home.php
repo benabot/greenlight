@@ -7,12 +7,13 @@
 
 get_header();
 
-$_gl_app           = array_merge(
+$_gl_app            = array_merge(
 	function_exists( 'greenlight_get_appearance_defaults' ) ? greenlight_get_appearance_defaults() : array(),
 	(array) get_option( 'greenlight_appearance_options', array() )
 );
-$_gl_show_thumbs   = ! empty( $_gl_app['show_thumbnails_archive'] );
-$_gl_show_excerpts = ! empty( $_gl_app['show_excerpts_archive'] );
+$_gl_archive_layout = isset( $_gl_app['archive_layout'] ) && 'list' === $_gl_app['archive_layout'] ? 'list' : 'asymmetric';
+$_gl_show_thumbs    = ! empty( $_gl_app['show_thumbnails_archive'] );
+$_gl_show_excerpts  = ! empty( $_gl_app['show_excerpts_archive'] );
 
 global $wp_query;
 
@@ -24,7 +25,7 @@ $home_count    = (int) $wp_query->found_posts;
 
 <section class="archive-intro" aria-labelledby="home-heading">
 	<div class="archive-intro-lead">
-		<?php echo greenlight_carbon_badge(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<?php echo greenlight_carbon_badge( 'top' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<h1 id="home-heading"><?php echo esc_html( $home_title ); ?></h1>
 	</div>
 	<div class="archive-intro-body">
@@ -84,7 +85,7 @@ $home_count    = (int) $wp_query->found_posts;
 	</article>
 
 	<?php if ( have_posts() ) : ?>
-	<ul class="post-list" aria-label="<?php esc_attr_e( 'Articles récents', 'greenlight' ); ?>">
+	<ul class="<?php echo esc_attr( 'list' === $_gl_archive_layout ? 'post-list' : 'post-list post-list--grid' ); ?>" aria-label="<?php esc_attr_e( 'Articles récents', 'greenlight' ); ?>">
 		<?php
 		while ( have_posts() ) :
 			the_post();
