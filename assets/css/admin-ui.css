@@ -105,19 +105,6 @@ body.toplevel_page_greenlight .greenlight-admin-chip--muted {
 	border-color: var(--gl-admin-border);
 }
 
-body.toplevel_page_greenlight .greenlight-admin-layout {
-	display: grid;
-	grid-template-columns: minmax(260px, 300px) minmax(0, 1fr);
-	gap: 24px;
-	align-items: start;
-}
-
-body.toplevel_page_greenlight .greenlight-admin-rail {
-	position: sticky;
-	top: 28px;
-	display: grid;
-	gap: 16px;
-}
 
 body.toplevel_page_greenlight .greenlight-admin-panel {
 	padding: 20px;
@@ -257,17 +244,7 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel {
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel__shell {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(280px, 320px);
-	gap: 22px;
-	align-items: start;
-}
-
-body.toplevel_page_greenlight .greenlight-admin-tab-panel__shell--appearance {
 	grid-template-columns: minmax(0, 1fr);
-}
-
-body.toplevel_page_greenlight .greenlight-admin-tab-panel__column {
-	display: grid;
 	gap: 22px;
 }
 
@@ -691,15 +668,6 @@ body.toplevel_page_greenlight .greenlight-admin-panel--note p {
 }
 
 @media (max-width: 1200px) {
-	body.toplevel_page_greenlight .greenlight-admin-layout {
-		grid-template-columns: 1fr;
-	}
-
-	body.toplevel_page_greenlight .greenlight-admin-rail {
-		position: static;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-
 	body.toplevel_page_greenlight .greenlight-admin-tab-panel__summary {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
@@ -719,10 +687,6 @@ body.toplevel_page_greenlight .greenlight-admin-panel--note p {
 		justify-content: flex-start;
 	}
 
-	body.toplevel_page_greenlight .greenlight-admin-rail {
-		grid-template-columns: 1fr;
-	}
-
 	body.toplevel_page_greenlight .greenlight-admin-tabs {
 		flex-wrap: nowrap;
 		overflow-x: auto;
@@ -733,14 +697,6 @@ body.toplevel_page_greenlight .greenlight-admin-panel--note p {
 	body.toplevel_page_greenlight .greenlight-admin-tabs .nav-tab {
 		white-space: nowrap;
 		min-width: 100px;
-	}
-
-	body.toplevel_page_greenlight .greenlight-admin-tab-panel__shell {
-		grid-template-columns: 1fr;
-	}
-
-	body.toplevel_page_greenlight .greenlight-admin-tab-panel__shell--appearance {
-		grid-template-columns: 1fr;
 	}
 
 	body.toplevel_page_greenlight .greenlight-admin-tab-panel__summary {
