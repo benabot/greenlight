@@ -95,7 +95,11 @@ if ( have_posts() ) :
 		);
 		?>
 		<?php if ( $_gl_preview_mode || $_gl_use_rich_hero ) : ?>
-			<section class="<?php echo esc_attr( $_gl_hero_cls ); ?>"<?php echo '' !== $_gl_hero_style_attr ? ' style="' . esc_attr( $_gl_hero_style_attr ) . '"' : ''; ?><?php if ( $_gl_preview_mode ) : ?> data-greenlight-page-title="<?php echo esc_attr( get_the_title() ); ?>" data-greenlight-page-excerpt="<?php echo esc_attr( has_excerpt() ? get_the_excerpt() : get_bloginfo( 'description' ) ); ?>"<?php endif; ?> <?php echo '' !== $_gl_intro['heading'] ? 'aria-labelledby="hero-heading"' : 'aria-label="' . esc_attr__( 'Hero principal', 'greenlight' ) . '"'; ?><?php echo ( $_gl_preview_mode && ! $_gl_use_rich_hero ) ? ' hidden' : ''; ?>>
+			<section class="<?php echo esc_attr( $_gl_hero_cls ); ?>"<?php echo '' !== $_gl_hero_style_attr ? ' style="' . esc_attr( $_gl_hero_style_attr ) . '"' : ''; ?>
+			<?php
+			if ( $_gl_preview_mode ) :
+				?>
+				data-greenlight-page-title="<?php echo esc_attr( get_the_title() ); ?>" data-greenlight-page-excerpt="<?php echo esc_attr( has_excerpt() ? get_the_excerpt() : get_bloginfo( 'description' ) ); ?>"<?php endif; ?> <?php echo '' !== $_gl_intro['heading'] ? 'aria-labelledby="hero-heading"' : 'aria-label="' . esc_attr__( 'Hero principal', 'greenlight' ) . '"'; ?><?php echo ( $_gl_preview_mode && ! $_gl_use_rich_hero ) ? ' hidden' : ''; ?>>
 				<div class="hero-lead">
 					<?php if ( $_gl_hero_badge ) : ?>
 						<?php echo greenlight_carbon_badge( 'top' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -112,7 +116,11 @@ if ( have_posts() ) :
 			</section>
 		<?php endif; ?>
 		<?php if ( $_gl_preview_mode || ! $_gl_use_rich_hero ) : ?>
-			<section class="page-intro-simple"<?php if ( $_gl_preview_mode ) : ?> data-greenlight-page-title="<?php echo esc_attr( get_the_title() ); ?>" data-greenlight-page-excerpt="<?php echo esc_attr( has_excerpt() ? get_the_excerpt() : get_bloginfo( 'description' ) ); ?>"<?php endif; ?> <?php echo '' !== $_gl_intro['heading'] ? 'aria-labelledby="hero-heading"' : 'aria-label="' . esc_attr__( 'Introduction principale', 'greenlight' ) . '"'; ?><?php echo ( $_gl_preview_mode && $_gl_use_rich_hero ) ? ' hidden' : ''; ?>>
+			<section class="page-intro-simple"
+			<?php
+			if ( $_gl_preview_mode ) :
+				?>
+				data-greenlight-page-title="<?php echo esc_attr( get_the_title() ); ?>" data-greenlight-page-excerpt="<?php echo esc_attr( has_excerpt() ? get_the_excerpt() : get_bloginfo( 'description' ) ); ?>"<?php endif; ?> <?php echo '' !== $_gl_intro['heading'] ? 'aria-labelledby="hero-heading"' : 'aria-label="' . esc_attr__( 'Introduction principale', 'greenlight' ) . '"'; ?><?php echo ( $_gl_preview_mode && $_gl_use_rich_hero ) ? ' hidden' : ''; ?>>
 				<?php if ( $_gl_hero_badge ) : ?>
 					<?php echo greenlight_carbon_badge( 'top' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php endif; ?>

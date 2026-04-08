@@ -9,7 +9,7 @@
 - [x] `header.php` : skip link + `<header>` + `<nav aria-label>` + wp_head() — zéro div wrapper
 - [x] `footer.php` : `<footer>` + wp_footer() — zéro div wrapper
 - [x] `screenshot.png` 1200×900 (Codex, 2026-03-27)
-- [ ] Valider : thème activable, Gutenberg charge theme.json, zéro jQuery côté front
+- [x] Valider : thème activable, Gutenberg charge theme.json, zéro jQuery côté front — smoke test Playwright 2026-04-08 : jQuery absent, `--wp--preset--*` présents, `<main id="main-content">` + skip link OK. Warning : preload hero JPG non consommé (voir Phase 11 potentielle)
 
 ## Phase 2 — Templates PHP (DOM minimal) ✓
 - [x] `front-page.php` : accueil — HTML sémantique pur, sections avec aria-labelledby
@@ -163,7 +163,7 @@ Objectif : passer de EcoIndex B à A. Améliorer la compression, le cache, la mi
   - [x] Bouton purge manuelle dans l'onglet Performance
   - [x] Durée de vie configurable (option admin)
 - [x] **Headers HTTP** : `inc/cache.php` — hook `send_headers` pour `Cache-Control`, `Expires`, `ETag` sur les assets statiques (CSS, JS, images, fonts)
-- [ ] **Compatibilité serveur** : le thème doit fonctionner indifféremment sur nginx et Apache
+- [x] **Compatibilité serveur** : le thème doit fonctionner indifféremment sur nginx et Apache — `.htaccess` fourni, doc nginx + Apache dans README.md (2026-04-08)
   - [x] Cache HTML : logique PHP pure (`ob_start` / fichiers `.html`), pas de dépendance au serveur web
   - [x] Headers HTTP : envoyés via `header()` PHP, fonctionnent sur les deux serveurs
   - [x] Compression : documenter les deux configs recommandées dans `README.md` (nginx gzip/brotli + Apache mod_deflate/mod_headers via `.htaccess`)
@@ -255,7 +255,7 @@ git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cac
 - [x] Responsive 320px → 1920px et front sans JS validés dans Playwright (Codex, 2026-03-28)
 - [x] Theme Check installé, activé et exécuté; warnings WordPress.org attendus sur les fonctions assumées du thème (Codex, 2026-03-28)
 - [x] Theme Check plugin (conformité WordPress.org) - warnings restants consignés et assumés (Codex, 2026-03-28)
-- [ ] PHPCS WordPress Coding Standards
+- [x] PHPCS WordPress Coding Standards — scan complet zéro erreur/warning (2026-04-08)
   - [x] Nettoyage ciblé sur `inc/admin.php` et `inc/seo-fields.php` (Codex, 2026-03-28)
   - [x] PHPCS global du thème sans erreurs ni warnings (Codex, 2026-03-28)
 - [x] Validation W3C HTML sans erreur sur home et archive; seuls des avertissements informatifs restent sur les slashes des void elements (Codex, 2026-03-28)
