@@ -17,23 +17,17 @@ body {
 
 .skip-link {
 	position: absolute;
-	left: -9999px;
-	top: auto;
-	width: 1px;
-	height: 1px;
-	overflow: hidden;
-	z-index: 100;
+	top: -100%;
+	left: 0;
+	z-index: 999;
 	padding: 0.5rem 1rem;
-	background: var(--wp--preset--color--primary, #4c6547);
-	color: #fff;
+	background: var(--wp--preset--color--text, #2f342d);
+	color: var(--wp--preset--color--background, #faf9f4);
+	text-decoration: none;
 }
 
 .skip-link:focus {
-	position: fixed;
 	top: 0;
-	left: 0;
-	width: auto;
-	height: auto;
 }
 
 .site-header {
@@ -53,9 +47,14 @@ body {
 	color: inherit;
 }
 
-.site-nav {
+.site-nav ul {
 	display: flex;
-	gap: var(--wp--preset--spacing--sm, 1rem);
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0 var(--wp--preset--spacing--md, 2rem);
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }
 
 .page-hero {
@@ -71,8 +70,8 @@ h1 {
 	margin: 0 0 var(--wp--preset--spacing--sm, 1rem);
 }
 
-.hero-lead {
+.hero-description {
 	font-size: clamp(1rem, 2vw, 1.25rem);
-	max-width: 65ch;
+	max-width: 44ch;
 	color: var(--wp--preset--color--on-surface-variant, #5c6058);
 }

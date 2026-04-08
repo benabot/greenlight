@@ -9,7 +9,7 @@
 - [x] `header.php` : skip link + `<header>` + `<nav aria-label>` + wp_head() — zéro div wrapper
 - [x] `footer.php` : `<footer>` + wp_footer() — zéro div wrapper
 - [x] `screenshot.png` 1200×900 (Codex, 2026-03-27)
-- [ ] Valider : thème activable, Gutenberg charge theme.json, zéro jQuery côté front
+- [x] Valider : thème activable, Gutenberg charge theme.json, zéro jQuery côté front — smoke test Playwright 2026-04-08 : jQuery absent, `--wp--preset--*` présents, `<main id="main-content">` + skip link OK. Warning : preload hero JPG non consommé (voir Phase 11 potentielle)
 
 ## Phase 2 — Templates PHP (DOM minimal) ✓
 - [x] `front-page.php` : accueil — HTML sémantique pur, sections avec aria-labelledby
@@ -163,7 +163,7 @@ Objectif : passer de EcoIndex B à A. Améliorer la compression, le cache, la mi
   - [x] Bouton purge manuelle dans l'onglet Performance
   - [x] Durée de vie configurable (option admin)
 - [x] **Headers HTTP** : `inc/cache.php` — hook `send_headers` pour `Cache-Control`, `Expires`, `ETag` sur les assets statiques (CSS, JS, images, fonts)
-- [ ] **Compatibilité serveur** : le thème doit fonctionner indifféremment sur nginx et Apache
+- [x] **Compatibilité serveur** : le thème doit fonctionner indifféremment sur nginx et Apache — `.htaccess` fourni, doc nginx + Apache dans README.md (2026-04-08)
   - [x] Cache HTML : logique PHP pure (`ob_start` / fichiers `.html`), pas de dépendance au serveur web
   - [x] Headers HTTP : envoyés via `header()` PHP, fonctionnent sur les deux serveurs
   - [x] Compression : documenter les deux configs recommandées dans `README.md` (nginx gzip/brotli + Apache mod_deflate/mod_headers via `.htaccess`)
@@ -255,7 +255,7 @@ git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cac
 - [x] Responsive 320px → 1920px et front sans JS validés dans Playwright (Codex, 2026-03-28)
 - [x] Theme Check installé, activé et exécuté; warnings WordPress.org attendus sur les fonctions assumées du thème (Codex, 2026-03-28)
 - [x] Theme Check plugin (conformité WordPress.org) - warnings restants consignés et assumés (Codex, 2026-03-28)
-- [ ] PHPCS WordPress Coding Standards
+- [x] PHPCS WordPress Coding Standards — scan complet zéro erreur/warning (2026-04-08)
   - [x] Nettoyage ciblé sur `inc/admin.php` et `inc/seo-fields.php` (Codex, 2026-03-28)
   - [x] PHPCS global du thème sans erreurs ni warnings (Codex, 2026-03-28)
 - [x] Validation W3C HTML sans erreur sur home et archive; seuls des avertissements informatifs restent sur les slashes des void elements (Codex, 2026-03-28)
@@ -324,7 +324,7 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 - [x] Ajouter des réglages de densité visuelle : espacements, rayons, contraste, hauteur de header
 - [x] Ajouter des réglages par contexte : home, archives, single, pages
 - [x] Aligner les patterns Gutenberg sur ces presets pour éviter le CSS manuel
-- [ ] Garder zéro impact front en JS et zéro dépendance externe
+- [x] Garder zéro impact front en JS et zéro dépendance externe — validé Playwright : 0 script externe, 0 CDN, 0 ressource tierce (2026-04-08)
 
 ### Phase 9B — Durcissement sécurité léger
 
@@ -342,6 +342,59 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
   - [x] Log 404 : IP anonymisée via `wp_privacy_anonymize_ip()` (`inc/seo-redirects.php`)
   - [x] SVG sanitizer : passage denylist → allowlist d’éléments sûrs + suppression attributs `style` (`inc/svg.php`)
 - [x] Éviter tout glissement vers un firewall, anti-bruteforce, malware scanner ou suite de sécurité lourde
+
+## Phase 10 — Audit éco-conception front (branche feat/eco2)
+
+> Branche : `feat/eco2` depuis `dev`
+> Objectif : réduire le poids CSS, alléger le DOM, minimiser les requêtes HTTP, garantir un responsive sans breakpoint
+> Audit réalisé le 2026-04-08 — état constaté ci-dessous
+
+### 10A — CSS : réduire le poids de style.css
+
+**Constat :** `style.css` = 1 276 lignes / ~30 KB (objectif Phase 3 : < 200 lignes fonctionnelles). La croissance est due aux systèmes de densité, hero variants, sous-menus CSS-only et mode preview ajoutés en Phases 9A/8.
+
+- [x] **Supprimer `.page-hero::before` vide** (`background: transparent`) — propriété morte supprimée (2026-04-08)
+- [x] **Mutualiser `.page-hero` et `.archive-intro`** — multi-sélecteurs CSS, suppression de la duplication lead/h1/body (2026-04-08)
+- [x] **Variables density** — vérifiées : injectées via `greenlight_output_appearance_variants()` → `wp_head` dans `inc/admin.php`. Pas de zombies, système cohérent (2026-04-08)
+- [x] **`backdrop-filter: blur(16px)`** sur `.site-header--sticky` — conditionné avec `@supports`, rayon réduit à 12px (2026-04-08)
+- [x] **Supprimer les transitions inutiles** — 12 → 7 transitions dans style.css (−5) : supprimées sur `.entry-title a`, `.entry-more`, `.post-navigation a`, `.pagination`, `.footer-nav a` (faible engagement) ; conservées sur `.site-brand`, nav underline, submenu, `.cta-subscribe`, category pill, tag pill, newsletter button (2026-04-08)
+- [x] **Séparer les styles preview-admin** — 69 lignes `.greenlight-preview-*` extraites vers `assets/css/admin-preview.css`, enqueué uniquement en `is_customize_preview()` (2026-04-08)
+- [x] **Sélecteurs redondants** — `.site-header--nav-uppercase .site-nav a { text-transform: uppercase }` supprimé (doublon de la règle de base) (2026-04-08)
+- [x] **critical.css corrigé** — 3 sélecteurs périmés mis à jour : `.skip-link` aligné sur style.css, `.site-nav` → `.site-nav ul`, `.hero-lead` → `.hero-description` (2026-04-08)
+
+### 10B — DOM : alléger les templates
+
+**Constat :** header/footer sont exemplaires (DOM minimal, HTML sémantique pur). Problèmes localisés dans `front-page.php`.
+
+- [x] **`data-greenlight-page-title` et `data-greenlight-page-excerpt`** dans `front-page.php` — conditionnés à `$_gl_preview_mode`, absents pour les visiteurs normaux (2026-04-08)
+- [x] **`<div class="page-content">`** dans `front-page.php` — investigué : conservé, ce wrapper applique la contrainte 65ch + flex-gap sur les blocs Gutenberg via `.page-content` CSS. Suppression impossible sans régression de mise en page (2026-04-08)
+- [x] **Double rendu hero en preview** — validé : en production, une seule section est rendue (if/else PHP). En preview Customizer, `hidden` est un attribut HTML natif (display:none UA stylesheet), zéro JS requis pour l'état initial. Le toggle JS du Customizer ne concerne que l'iframe preview qui a toujours JS. (2026-04-08)
+- [x] **Audit DOM re-vérifié** — Phase 10 ne change aucun élément HTML (attributs + CSS uniquement). Comptages Phase 6C toujours valides. Note ajoutée dans `PROJECT_STATE.md` (2026-04-08)
+
+### 10C — Requêtes HTTP : valider la chaîne de réduction
+
+**Constat :** sans optimisation = 9 requêtes CSS (style.css + 8 blocs). Outils déjà en place mais à valider en production.
+
+- [x] **Bundle CSS documenté** — README.md section "Recommandations production" ajoutée : concaténation (9→1 req), minification, cache HTML, critical CSS (2026-04-08)
+- [x] **Blocs CSS conditionnels vérifiés** — `wp_enqueue_block_style()` avec `path` correct, handles cohérents avec le dequeue bundle dans `inc/concat.php` (2026-04-08)
+- [x] **Chaîne critical CSS vérifiée** — `inc/critical-css.php` : inline + defer `media="print" onload` + noscript fallback ; `critical.css` corrigé (sélecteurs périmés) en 10A (2026-04-08)
+- [x] **Ressources externes vérifiées** — aucun CDN, Google Fonts, ressource externe dans les templates PHP ; prefetch uniquement via domaines explicites admin (`inc/prefetch.php`) (2026-04-08)
+
+### 10D — Responsive : confirmer zéro breakpoint
+
+**Constat :** 0 `@media` dans style.css ✓ — conforme aux contraintes absolues du projet.
+
+- [x] **Confirmer sur tous les fichiers CSS** — 0 `@media` dans style.css, assets/css/blocks/*.css, assets/css/critical.css. Seuls `@supports` autorisés (backdrop-filter). Contrainte absolue respectée à 100% (2026-04-08)
+- [x] **Test visuel 320px → 1920px** — screenshots Playwright validés : 320px (header wrap naturel), 768px (split hero asymétrique visible), 1920px (contentSize centré). Aucune cassure layout (2026-04-08)
+
+### Ordre d'implémentation recommandé
+
+1. **10A.1** — Supprimer règles mortes CSS (pseudo-élément vide, transitions inutiles) — gains immédiats, risque nul
+2. **10A.2** — Déplacer les styles preview-admin hors du front — ~80-100 lignes de moins côté visiteurs
+3. **10B.1** — Supprimer `data-*` preview des templates front — bytes HTML économisés sur chaque page
+4. **10A.3** — Mutualiser `.page-hero` / `.archive-intro` — refactoring CSS ciblé
+5. **10C** — Documenter et valider la chaîne de réduction HTTP en production
+6. **10D** — Tests responsive 320→1920 + audit `@media` sur tous les CSS blocs
 
 ## Environnement local ✓
 - [x] Diagnostic 404 généralisé : serveur nginx MAMP sans `try_files` WordPress (2026-03-28)

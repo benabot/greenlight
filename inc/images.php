@@ -197,9 +197,16 @@ add_filter( 'wp_handle_upload', 'greenlight_generate_webp_on_upload', 20 );
 /**
  * Returns the attachment ID that represents the hero image for the current view.
  *
+ * Only covers views where the hero image is rendered as an <img> element.
+ * Front-page uses a CSS background-image from settings — handled separately.
+ *
  * @return int
  */
 function greenlight_get_hero_image_attachment_id() {
+	if ( is_front_page() ) {
+		return 0;
+	}
+
 	if ( is_singular() ) {
 		return (int) get_post_thumbnail_id( get_queried_object_id() );
 	}
@@ -239,9 +246,25 @@ function greenlight_get_hero_image_data() {
 /**
  * Preloads the hero image when one is available.
  *
+ * Two code paths:
+ * - Front-page: CSS background-image from settings (raw URL, no srcset).
+ * - Singular posts/pages: <img> element with WP srcset/sizes.
+ *
  * @return void
  */
 function greenlight_preload_hero_image() {
+	if ( is_front_page() ) {
+		$app  = get_option( 'greenlight_appearance', array() );
+		$mode = isset( $app['hero_background_mode'] ) ? $app['hero_background_mode'] : 'none';
+		if ( 'image' === $mode && ! empty( $app['hero_background_image'] ) ) {
+			printf(
+				'<link rel="preload" as="image" href="%s">' . "\n",
+				esc_url( $app['hero_background_image'] )
+			);
+		}
+		return;
+	}
+
 	$hero = greenlight_get_hero_image_data();
 
 	if ( empty( $hero['url'] ) ) {

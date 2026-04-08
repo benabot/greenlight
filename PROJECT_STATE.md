@@ -1,12 +1,12 @@
 # PROJECT_STATE.md — Greenlight
 
-> État du projet au 7 avril 2026. Référence rapide pour reprendre le travail en contexte.
+> État du projet au 8 avril 2026. Référence rapide pour reprendre le travail en contexte.
 
 ---
 
 ## Branche active
 
-`feat/admin-ui`
+`feat/eco2` (depuis `dev`)
 
 ## Positionnement produit
 
@@ -18,9 +18,10 @@
 
 | Phase | Statut | Notes |
 |-------|--------|-------|
-| **8 — Admin UI premium** | ✅ Terminé | Shell premium, navigation numérotée, onglets SEO/Performance/Images/SVG/Outils, smoke test validé |
-| **9A — Personnalisation avancée** | ✅ Terminé | Presets, hero avancé, nav CSS-only, densité par contexte |
+| **10 — Audit éco-conception front** | ✅ Terminé | 10A (−85 lignes CSS, admin-preview isolé, multi-sélecteurs), 10B (DOM vérifié), 10C (chaîne HTTP documentée), 10D (0 `@media`, Playwright 320→1920px ✓) |
 | **9B — Durcissement sécurité** | ✅ Terminé | SVG allowlist, IP anonymisée, upload guards, OPTIMIZE scope |
+| **9A — Personnalisation avancée** | ✅ Terminé | Presets, hero avancé, nav CSS-only, densité par contexte |
+| **8 — Admin UI premium** | ✅ Terminé | Shell premium, navigation numérotée, onglets SEO/Performance/Images/SVG/Outils, smoke test validé |
 
 ## Commits réalisés
 
@@ -344,6 +345,11 @@ git checkout -b feat/admin-ui
 - **Config nginx** : `/Applications/MAMP/conf/nginx/nginx.conf` — bloc `/greenlight/` ajouté avec `try_files $uri $uri/ /greenlight/index.php?$args`
 - **Thème** : symlink `/Applications/MAMP/htdocs/greenlight/wp-content/themes/greenlight` → `/Users/benoitabot/Sites/greenlight/greenlight`
 - **Source de vérité** : toujours `/Users/benoitabot/Sites/greenlight/greenlight`
+
+## Audit DOM — Phase 6C (2026-03-28) · Re-vérifié Phase 10 (2026-04-08)
+
+> Phase 10 : seuls des attributs `data-*` et du CSS ont changé — aucun élément HTML ajouté ou supprimé. Comptages ci-dessous toujours valides.
+> `<div class="page-content">` dans `front-page.php` conservé : applique contrainte 65ch + flex-gap sur `the_content()`.
 
 ## Audit DOM — Phase 6C (2026-03-28)
 
