@@ -324,7 +324,7 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 - [x] Ajouter des réglages de densité visuelle : espacements, rayons, contraste, hauteur de header
 - [x] Ajouter des réglages par contexte : home, archives, single, pages
 - [x] Aligner les patterns Gutenberg sur ces presets pour éviter le CSS manuel
-- [ ] Garder zéro impact front en JS et zéro dépendance externe
+- [x] Garder zéro impact front en JS et zéro dépendance externe — validé Playwright : 0 script externe, 0 CDN, 0 ressource tierce (2026-04-08)
 
 ### Phase 9B — Durcissement sécurité léger
 
@@ -357,7 +357,7 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 - [x] **Mutualiser `.page-hero` et `.archive-intro`** — multi-sélecteurs CSS, suppression de la duplication lead/h1/body (2026-04-08)
 - [x] **Variables density** — vérifiées : injectées via `greenlight_output_appearance_variants()` → `wp_head` dans `inc/admin.php`. Pas de zombies, système cohérent (2026-04-08)
 - [x] **`backdrop-filter: blur(16px)`** sur `.site-header--sticky` — conditionné avec `@supports`, rayon réduit à 12px (2026-04-08)
-- [ ] **Supprimer les transitions inutiles** — 12 règles `transition` dans style.css ; conserver uniquement celles perceptibles (`.site-brand`, `.cta-subscribe`, sous-menu) ; supprimer les micro-transitions < 0.1s sur des éléments non survolés
+- [x] **Supprimer les transitions inutiles** — 12 → 7 transitions dans style.css (−5) : supprimées sur `.entry-title a`, `.entry-more`, `.post-navigation a`, `.pagination`, `.footer-nav a` (faible engagement) ; conservées sur `.site-brand`, nav underline, submenu, `.cta-subscribe`, category pill, tag pill, newsletter button (2026-04-08)
 - [x] **Séparer les styles preview-admin** — 69 lignes `.greenlight-preview-*` extraites vers `assets/css/admin-preview.css`, enqueué uniquement en `is_customize_preview()` (2026-04-08)
 - [x] **Sélecteurs redondants** — `.site-header--nav-uppercase .site-nav a { text-transform: uppercase }` supprimé (doublon de la règle de base) (2026-04-08)
 - [x] **critical.css corrigé** — 3 sélecteurs périmés mis à jour : `.skip-link` aligné sur style.css, `.site-nav` → `.site-nav ul`, `.hero-lead` → `.hero-description` (2026-04-08)
