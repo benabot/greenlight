@@ -1,0 +1,76 @@
+/*
+ * Greenlight — Customizer preview styles.
+ *
+ * Chargé uniquement dans l'aperçu du Customizer (is_customize_preview()).
+ * Jamais servi aux visiteurs front.
+ *
+ * @package Greenlight
+ */
+
+.greenlight-preview-stack {
+	display: flex;
+	flex-direction: column;
+	gap: var(--greenlight-section-gap, var(--wp--preset--spacing--xl));
+	width: 100%;
+}
+
+.greenlight-preview-nav {
+	position: sticky;
+	top: var(--wp--preset--spacing--sm);
+	z-index: 2;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--wp--preset--spacing--xs);
+	padding: var(--wp--preset--spacing--xs);
+	margin-block: var(--wp--preset--spacing--sm);
+	border: 1px solid var(--wp--preset--color--border);
+	border-radius: calc(var(--greenlight-pill-radius, 1em) + 0.2em);
+	background: color-mix(in srgb, var(--wp--preset--color--surface) 92%, transparent);
+	backdrop-filter: blur(8px);
+}
+
+.greenlight-preview-nav a {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.55em 0.9em;
+	border-radius: var(--greenlight-pill-radius, 1em);
+	background: var(--wp--preset--color--background);
+	border: 1px solid var(--wp--preset--color--border);
+	color: var(--wp--preset--color--text);
+	text-decoration: none;
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: 600;
+}
+
+.greenlight-preview-nav a:hover,
+.greenlight-preview-nav a:focus-visible {
+	border-color: var(--wp--preset--color--primary);
+	color: var(--wp--preset--color--primary);
+}
+
+.greenlight-preview-section {
+	display: flex;
+	flex-direction: column;
+	gap: var(--wp--preset--spacing--xs);
+}
+
+.greenlight-preview-section[aria-labelledby] {
+	scroll-margin-top: calc(var(--wp--preset--spacing--xl) * 1.5);
+}
+
+.greenlight-preview-variant {
+	display: inline-flex;
+	align-self: flex-start;
+	padding: 0.28em 0.7em;
+	border-radius: 999px;
+	background: var(--wp--preset--color--tertiary);
+	color: var(--wp--preset--color--text);
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: 600;
+	letter-spacing: 0.02em;
+}
+
+.greenlight-preview-footer-sample {
+	border-radius: var(--greenlight-card-radius, 1em);
+	overflow: hidden;
+}
