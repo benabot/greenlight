@@ -136,7 +136,12 @@ body.front-page {
 .site-header--sticky {
 	position: sticky;
 	top: 0;
-	backdrop-filter: blur(16px);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+	.site-header--sticky {
+		backdrop-filter: blur(12px);
+	}
 }
 
 .site-header--layout-stacked {
@@ -345,13 +350,17 @@ body.front-page .site-main {
 	text-transform: uppercase;
 }
 
-/* === Page Hero (front-page) — asymmetric === */
+/* === Asymmetric split layout — hero + archive intro === */
 
-.page-hero {
+.page-hero,
+.archive-intro {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: flex-end;
 	gap: var(--wp--preset--spacing--md) var(--wp--preset--spacing--lg);
+}
+
+.page-hero {
 	padding-block: var(--greenlight-section-gap, var(--wp--preset--spacing--xl));
 	position: relative;
 	isolation: isolate;
@@ -359,7 +368,8 @@ body.front-page .site-main {
 	overflow: clip;
 }
 
-.hero-lead {
+.hero-lead,
+.archive-intro-lead {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
@@ -367,7 +377,8 @@ body.front-page .site-main {
 	flex: 3 1 clamp(280px, 55%, 700px);
 }
 
-.hero-lead h1 {
+.hero-lead h1,
+.archive-intro-lead h1 {
 	font-size: var(--wp--preset--font-size--xx-large);
 	letter-spacing: -0.03em;
 	line-height: 1.1;
@@ -375,7 +386,8 @@ body.front-page .site-main {
 	max-width: var(--greenlight-hero-width, 14ch);
 }
 
-.hero-body {
+.hero-body,
+.archive-intro-body {
 	flex: 2 1 clamp(220px, 35%, 480px);
 	align-self: flex-end;
 }
@@ -473,38 +485,14 @@ body.front-page .site-main {
 	max-width: var(--greenlight-hero-width, 14ch);
 }
 
-/* === Archive intro (home, archive) — asymmetric === */
-
 .archive-intro {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: flex-end;
-	gap: var(--wp--preset--spacing--md) var(--wp--preset--spacing--lg);
 	padding-block: var(--greenlight-section-gap, var(--wp--preset--spacing--lg));
 }
 
-.archive-intro-lead {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: var(--wp--preset--spacing--sm);
-	flex: 3 1 clamp(280px, 55%, 700px);
-}
-
-.archive-intro-lead h1 {
-	font-size: var(--wp--preset--font-size--xx-large);
-	letter-spacing: -0.03em;
-	line-height: 1.1;
-	text-wrap: balance;
-	max-width: var(--greenlight-hero-width, 14ch);
-}
-
 .archive-intro-body {
-	flex: 2 1 clamp(220px, 35%, 480px);
 	display: flex;
 	flex-direction: column;
 	gap: var(--wp--preset--spacing--sm);
-	align-self: flex-end;
 }
 
 .eyebrow {

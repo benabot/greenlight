@@ -353,12 +353,12 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 
 **Constat :** `style.css` = 1 276 lignes / ~30 KB (objectif Phase 3 : < 200 lignes fonctionnelles). La croissance est due aux systèmes de densité, hero variants, sous-menus CSS-only et mode preview ajoutés en Phases 9A/8.
 
-- [ ] **Supprimer `.page-hero::before` vide** (`background: transparent; pointer-events: none; z-index: 0`) — pseudo-élément sans effet, règle morte (`style.css` ~l.396-403)
-- [ ] **Mutualiser `.page-hero` et `.archive-intro`** — structures flex identiques (flex-wrap, align-items: flex-end, gap identiques) → extraire une classe `.layout-split` réutilisable et réduire la duplication
+- [x] **Supprimer `.page-hero::before` vide** (`background: transparent`) — propriété morte supprimée (2026-04-08)
+- [x] **Mutualiser `.page-hero` et `.archive-intro`** — multi-sélecteurs CSS, suppression de la duplication lead/h1/body (2026-04-08)
 - [ ] **Variables density zombies** — les 20 props `--greenlight-*-density-*` sont lues en CSS mais écrites uniquement via PHP (admin) ; vérifier que `inc/customizer.php` ou `inc/admin.php` les injecte bien via `wp_add_inline_style`, sinon supprimer les fallbacks inutiles
-- [ ] **`backdrop-filter: blur(16px)`** sur `.site-header--sticky` — opération GPU coûteuse ; conditionner avec `@supports (backdrop-filter: blur(1px))` et envisager de réduire le rayon (8px suffisent)
+- [x] **`backdrop-filter: blur(16px)`** sur `.site-header--sticky` — conditionné avec `@supports`, rayon réduit à 12px (2026-04-08)
 - [ ] **Supprimer les transitions inutiles** — 12 règles `transition` dans style.css ; conserver uniquement celles perceptibles (`.site-brand`, `.cta-subscribe`, sous-menu) ; supprimer les micro-transitions < 0.1s sur des éléments non survolés
-- [ ] **Séparer les styles preview-admin** — les classes `.greenlight-preview-*`, `.greenlight-preview-stack`, `.greenlight-preview-nav`, `.greenlight-preview-footer-sample` (environ 80-100 lignes) ne servent qu'en mode aperçu admin → les déplacer dans un CSS enqueué uniquement dans l'éditeur (`enqueue_block_editor_assets`) et non côté front
+- [x] **Séparer les styles preview-admin** — 69 lignes `.greenlight-preview-*` extraites vers `assets/css/admin-preview.css`, enqueué uniquement en `is_customize_preview()` (2026-04-08)
 - [ ] **Audit des sélecteurs redondants** — `.site-header--nav-uppercase .site-nav a` + `.site-nav a` définissent `text-transform: uppercase` en double ; idem `.site-header--nav-normal` qui reset vers `none`
 - [ ] **Vérifier critical.css** (78 lignes) — s'assurer qu'il couvre bien le hero, le header et la typographie above-the-fold pour permettre le defer du CSS principal ; sinon compléter
 
@@ -366,7 +366,7 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 
 **Constat :** header/footer sont exemplaires (DOM minimal, HTML sémantique pur). Problèmes localisés dans `front-page.php`.
 
-- [ ] **`data-greenlight-page-title` et `data-greenlight-page-excerpt`** dans `front-page.php` (l.98, 115) — ces attributs `data-*` sont utiles uniquement pour le live preview admin (JS Customizer) ; ne pas les rendre pour les visiteurs front → conditionner leur présence avec `is_customize_preview()` ou `$_gl_preview_mode`
+- [x] **`data-greenlight-page-title` et `data-greenlight-page-excerpt`** dans `front-page.php` — conditionnés à `$_gl_preview_mode`, absents pour les visiteurs normaux (2026-04-08)
 - [ ] **`<div class="page-content">`** dans `front-page.php` (l.130) — wrapper `<div>` inutile si le contenu de page est directement dans `<main>` ; remplacer par un fragment ou supprimer si `the_content()` génère des blocs Gutenberg
 - [ ] **Double rendu hero en preview** — en mode preview, les deux variantes (`.page-hero` et `.page-intro-simple`) sont toutes deux rendues avec `hidden` sur l'une — impact nul en production mais vérifier que le `hidden` est bien supporté sans JS (il l'est via HTML natif)
 - [ ] **Audit DOM : compter les éléments par template** — vérifier que `front-page.php`, `home.php`, `single.php`, `archive.php` restent sous 80 éléments DOM (objectif Phase 6C). Mettre à jour le comptage dans `PROJECT_STATE.md`
