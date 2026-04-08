@@ -18,7 +18,7 @@
 
 | Phase | Statut | Notes |
 |-------|--------|-------|
-| **10 — Audit éco-conception front** | 🔄 En cours | 10A terminé (−85 lignes CSS) ; 10B DOM, 10C HTTP, 10D responsive à venir |
+| **10 — Audit éco-conception front** | 🔄 En cours | 10A+10B terminés (−85 lignes CSS, DOM vérifié) ; 10C HTTP, 10D responsive à venir |
 | **9B — Durcissement sécurité** | ✅ Terminé | SVG allowlist, IP anonymisée, upload guards, OPTIMIZE scope |
 | **9A — Personnalisation avancée** | ✅ Terminé | Presets, hero avancé, nav CSS-only, densité par contexte |
 | **8 — Admin UI premium** | ✅ Terminé | Shell premium, navigation numérotée, onglets SEO/Performance/Images/SVG/Outils, smoke test validé |
@@ -345,6 +345,11 @@ git checkout -b feat/admin-ui
 - **Config nginx** : `/Applications/MAMP/conf/nginx/nginx.conf` — bloc `/greenlight/` ajouté avec `try_files $uri $uri/ /greenlight/index.php?$args`
 - **Thème** : symlink `/Applications/MAMP/htdocs/greenlight/wp-content/themes/greenlight` → `/Users/benoitabot/Sites/greenlight/greenlight`
 - **Source de vérité** : toujours `/Users/benoitabot/Sites/greenlight/greenlight`
+
+## Audit DOM — Phase 6C (2026-03-28) · Re-vérifié Phase 10 (2026-04-08)
+
+> Phase 10 : seuls des attributs `data-*` et du CSS ont changé — aucun élément HTML ajouté ou supprimé. Comptages ci-dessous toujours valides.
+> `<div class="page-content">` dans `front-page.php` conservé : applique contrainte 65ch + flex-gap sur `the_content()`.
 
 ## Audit DOM — Phase 6C (2026-03-28)
 

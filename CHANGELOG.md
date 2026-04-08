@@ -3,6 +3,7 @@
 ## 2026-04-08
 
 ### Added
+- Phase 10B (branche `feat/eco2`): audit DOM — `<div class="page-content">` conservé (CSS actif 65ch/flex-gap), audit comptages re-vérifié (inchangé vs Phase 6C).
 - Phase 10A (branche `feat/eco2`): éco-optimisation CSS front — `style.css` 1 276 → 1 191 lignes (−85).
   - Styles `.greenlight-preview-*` extraits → `assets/css/admin-preview.css`, enqueué uniquement en `is_customize_preview()`
   - `data-greenlight-page-*` dans `front-page.php` conditionnés à `$_gl_preview_mode`
