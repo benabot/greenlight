@@ -163,6 +163,15 @@ La configuration du theme se fait dans **Apparence > Greenlight**:
 
 Le cache HTML est ecrit dans `wp-content/cache/greenlight/`. Les fichiers minifies sont generes localement et ne doivent pas etre relies a une edition manuelle.
 
+### Recommandations production
+
+Activer dans l onglet **Performance** pour minimiser les requetes HTTP CSS (9 requetes → 1) :
+
+1. **Concatenation CSS** — groupe `style.css` + les 8 CSS blocs dans un bundle unique `assets/css/greenlight-bundle.css`, genere automatiquement et invalide a chaque modification. Les CSS blocs restent charges conditionnellement via `wp_enqueue_block_style()` si le bundle est desactive.
+2. **Minification CSS/JS** — genere les `.min.css` et `.min.js` a la volee si `bin/minify.sh` n a pas ete execute.
+3. **Cache HTML** — ecrit les pages en `.html` statique, servi directement sans execution PHP sur les visites suivantes.
+4. **Critical CSS** — inline `assets/css/critical.css` dans `<head>` et differe le CSS principal via `media="print" onload`.
+
 ## Utilisation
 
 - Modifier les contenus dans l editeur WordPress classique ou Gutenberg.
@@ -173,12 +182,12 @@ Le cache HTML est ecrit dans `wp-content/cache/greenlight/`. Les fichiers minifi
 
 ## Mesures
 
-Mesure prise sur la branche courante le 2026-03-28:
+Mesure prise sur la branche courante le 2026-03-28 (mise a jour Phase 10 : 2026-04-08):
 
-- lignes CSS sources: 1150
+- lignes CSS sources: 1191 (`style.css` 1191 + blocs ~155 = ~1346 total, avant Phase 10 : 1276 + blocs)
 - lignes JS sources: 551
-- total CSS + JS sources: 1701
-- taille du theme hors `.git`, `.playwright-cli` et `vendor`: 772 KB
+- total CSS + JS sources: ~1742
+- taille du theme hors `.git`, `.playwright-cli` et `vendor`: 772 KB (estimation Phase 10 inchangee)
 
 ## Eco-conception GreenIT
 

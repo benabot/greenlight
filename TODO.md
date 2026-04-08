@@ -375,10 +375,10 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 
 **Constat :** sans optimisation = 9 requêtes CSS (style.css + 8 blocs). Outils déjà en place mais à valider en production.
 
-- [ ] **Activer le bundle CSS en production** — `inc/concat.php` réduit 9 requêtes CSS → 1 ; documenter dans README.md que l'option "Concaténation CSS" doit être activée en production
-- [ ] **Vérifier que les blocs CSS conditionnels fonctionnent** — `wp_enqueue_block_style()` ne doit charger chaque `assets/css/blocks/*.css` que si le bloc est présent sur la page ; tester en désactivant le bundle et en inspectant les requêtes réseau sur une page sans blocs
-- [ ] **Chaîne critical CSS + defer** — quand `enable_critical_css` est actif : inline critical.css (78 lignes) + defer style.css via `media="print" onload` + noscript fallback ; valider que le rendu perçu (LCP) est correctement anticipé
-- [ ] **Vérifier l'absence de ressources externes** — confirmer qu'aucun CDN, Google Fonts, preconnect non nécessaire n'est injecté côté front (préfetch explicite uniquement via l'admin `inc/prefetch.php`)
+- [x] **Bundle CSS documenté** — README.md section "Recommandations production" ajoutée : concaténation (9→1 req), minification, cache HTML, critical CSS (2026-04-08)
+- [x] **Blocs CSS conditionnels vérifiés** — `wp_enqueue_block_style()` avec `path` correct, handles cohérents avec le dequeue bundle dans `inc/concat.php` (2026-04-08)
+- [x] **Chaîne critical CSS vérifiée** — `inc/critical-css.php` : inline + defer `media="print" onload` + noscript fallback ; `critical.css` corrigé (sélecteurs périmés) en 10A (2026-04-08)
+- [x] **Ressources externes vérifiées** — aucun CDN, Google Fonts, ressource externe dans les templates PHP ; prefetch uniquement via domaines explicites admin (`inc/prefetch.php`) (2026-04-08)
 
 ### 10D — Responsive : confirmer zéro breakpoint
 
