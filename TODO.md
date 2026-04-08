@@ -368,7 +368,7 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 
 - [x] **`data-greenlight-page-title` et `data-greenlight-page-excerpt`** dans `front-page.php` — conditionnés à `$_gl_preview_mode`, absents pour les visiteurs normaux (2026-04-08)
 - [x] **`<div class="page-content">`** dans `front-page.php` — investigué : conservé, ce wrapper applique la contrainte 65ch + flex-gap sur les blocs Gutenberg via `.page-content` CSS. Suppression impossible sans régression de mise en page (2026-04-08)
-- [ ] **Double rendu hero en preview** — en mode preview, les deux variantes (`.page-hero` et `.page-intro-simple`) sont toutes deux rendues avec `hidden` sur l'une — impact nul en production mais vérifier que le `hidden` est bien supporté sans JS (il l'est via HTML natif)
+- [x] **Double rendu hero en preview** — validé : en production, une seule section est rendue (if/else PHP). En preview Customizer, `hidden` est un attribut HTML natif (display:none UA stylesheet), zéro JS requis pour l'état initial. Le toggle JS du Customizer ne concerne que l'iframe preview qui a toujours JS. (2026-04-08)
 - [x] **Audit DOM re-vérifié** — Phase 10 ne change aucun élément HTML (attributs + CSS uniquement). Comptages Phase 6C toujours valides. Note ajoutée dans `PROJECT_STATE.md` (2026-04-08)
 
 ### 10C — Requêtes HTTP : valider la chaîne de réduction
