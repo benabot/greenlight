@@ -3,14 +3,14 @@
 ## 2026-04-08
 
 ### Added
-- Phase 10 (branche `feat/eco2`): audit éco-conception front — 22 tâches documentées dans `TODO.md` réparties en 4 volets : CSS poids (10A), DOM allégé (10B), requêtes HTTP (10C), responsive sans breakpoint (10D).
-
-### Analysis
-- `style.css` : 1 276 lignes / ~30 KB — objectif de réduction ciblé (suppression règles mortes, styles preview-admin hors front, mutualistion layouts).
-- 0 `@media` confirmé dans `style.css` — responsive pur flexbox/clamp conforme aux contraintes absolues.
-- `backdrop-filter: blur(16px)` sur header sticky identifié comme opération GPU coûteuse à conditionner.
-- 20 variables `--greenlight-*-density-*` à vérifier (potentiellement zombies si non injectées par l'admin).
-- Attributs `data-greenlight-*` dans `front-page.php` à restreindre au contexte preview admin.
+- Phase 10A (branche `feat/eco2`): éco-optimisation CSS front — `style.css` 1 276 → 1 191 lignes (−85).
+  - Styles `.greenlight-preview-*` extraits → `assets/css/admin-preview.css`, enqueué uniquement en `is_customize_preview()`
+  - `data-greenlight-page-*` dans `front-page.php` conditionnés à `$_gl_preview_mode`
+  - `.page-hero` / `.archive-intro` mutualisés via multi-sélecteurs (lead, h1, body)
+  - `backdrop-filter: blur(16px)` → `@supports` + rayon 12px
+  - Variables density vérifiées : injectées via `greenlight_output_appearance_variants()`, pas de zombies
+  - Sélecteur `.site-header--nav-uppercase .site-nav a` redondant supprimé
+  - `critical.css` : 3 sélecteurs périmés corrigés (`.skip-link`, `.site-nav ul`, `.hero-description`)
 
 ## 2026-04-07
 
