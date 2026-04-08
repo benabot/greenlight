@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-04-08
+
+### Added
+- Phase 10 (branche `feat/eco2`): audit éco-conception front — 22 tâches documentées dans `TODO.md` réparties en 4 volets : CSS poids (10A), DOM allégé (10B), requêtes HTTP (10C), responsive sans breakpoint (10D).
+
+### Analysis
+- `style.css` : 1 276 lignes / ~30 KB — objectif de réduction ciblé (suppression règles mortes, styles preview-admin hors front, mutualistion layouts).
+- 0 `@media` confirmé dans `style.css` — responsive pur flexbox/clamp conforme aux contraintes absolues.
+- `backdrop-filter: blur(16px)` sur header sticky identifié comme opération GPU coûteuse à conditionner.
+- 20 variables `--greenlight-*-density-*` à vérifier (potentiellement zombies si non injectées par l'admin).
+- Attributs `data-greenlight-*` dans `front-page.php` à restreindre au contexte preview admin.
+
 ## 2026-04-07
 
 ### Added

@@ -343,6 +343,59 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
   - [x] SVG sanitizer : passage denylist → allowlist d’éléments sûrs + suppression attributs `style` (`inc/svg.php`)
 - [x] Éviter tout glissement vers un firewall, anti-bruteforce, malware scanner ou suite de sécurité lourde
 
+## Phase 10 — Audit éco-conception front (branche feat/eco2)
+
+> Branche : `feat/eco2` depuis `dev`
+> Objectif : réduire le poids CSS, alléger le DOM, minimiser les requêtes HTTP, garantir un responsive sans breakpoint
+> Audit réalisé le 2026-04-08 — état constaté ci-dessous
+
+### 10A — CSS : réduire le poids de style.css
+
+**Constat :** `style.css` = 1 276 lignes / ~30 KB (objectif Phase 3 : < 200 lignes fonctionnelles). La croissance est due aux systèmes de densité, hero variants, sous-menus CSS-only et mode preview ajoutés en Phases 9A/8.
+
+- [ ] **Supprimer `.page-hero::before` vide** (`background: transparent; pointer-events: none; z-index: 0`) — pseudo-élément sans effet, règle morte (`style.css` ~l.396-403)
+- [ ] **Mutualiser `.page-hero` et `.archive-intro`** — structures flex identiques (flex-wrap, align-items: flex-end, gap identiques) → extraire une classe `.layout-split` réutilisable et réduire la duplication
+- [ ] **Variables density zombies** — les 20 props `--greenlight-*-density-*` sont lues en CSS mais écrites uniquement via PHP (admin) ; vérifier que `inc/customizer.php` ou `inc/admin.php` les injecte bien via `wp_add_inline_style`, sinon supprimer les fallbacks inutiles
+- [ ] **`backdrop-filter: blur(16px)`** sur `.site-header--sticky` — opération GPU coûteuse ; conditionner avec `@supports (backdrop-filter: blur(1px))` et envisager de réduire le rayon (8px suffisent)
+- [ ] **Supprimer les transitions inutiles** — 12 règles `transition` dans style.css ; conserver uniquement celles perceptibles (`.site-brand`, `.cta-subscribe`, sous-menu) ; supprimer les micro-transitions < 0.1s sur des éléments non survolés
+- [ ] **Séparer les styles preview-admin** — les classes `.greenlight-preview-*`, `.greenlight-preview-stack`, `.greenlight-preview-nav`, `.greenlight-preview-footer-sample` (environ 80-100 lignes) ne servent qu'en mode aperçu admin → les déplacer dans un CSS enqueué uniquement dans l'éditeur (`enqueue_block_editor_assets`) et non côté front
+- [ ] **Audit des sélecteurs redondants** — `.site-header--nav-uppercase .site-nav a` + `.site-nav a` définissent `text-transform: uppercase` en double ; idem `.site-header--nav-normal` qui reset vers `none`
+- [ ] **Vérifier critical.css** (78 lignes) — s'assurer qu'il couvre bien le hero, le header et la typographie above-the-fold pour permettre le defer du CSS principal ; sinon compléter
+
+### 10B — DOM : alléger les templates
+
+**Constat :** header/footer sont exemplaires (DOM minimal, HTML sémantique pur). Problèmes localisés dans `front-page.php`.
+
+- [ ] **`data-greenlight-page-title` et `data-greenlight-page-excerpt`** dans `front-page.php` (l.98, 115) — ces attributs `data-*` sont utiles uniquement pour le live preview admin (JS Customizer) ; ne pas les rendre pour les visiteurs front → conditionner leur présence avec `is_customize_preview()` ou `$_gl_preview_mode`
+- [ ] **`<div class="page-content">`** dans `front-page.php` (l.130) — wrapper `<div>` inutile si le contenu de page est directement dans `<main>` ; remplacer par un fragment ou supprimer si `the_content()` génère des blocs Gutenberg
+- [ ] **Double rendu hero en preview** — en mode preview, les deux variantes (`.page-hero` et `.page-intro-simple`) sont toutes deux rendues avec `hidden` sur l'une — impact nul en production mais vérifier que le `hidden` est bien supporté sans JS (il l'est via HTML natif)
+- [ ] **Audit DOM : compter les éléments par template** — vérifier que `front-page.php`, `home.php`, `single.php`, `archive.php` restent sous 80 éléments DOM (objectif Phase 6C). Mettre à jour le comptage dans `PROJECT_STATE.md`
+
+### 10C — Requêtes HTTP : valider la chaîne de réduction
+
+**Constat :** sans optimisation = 9 requêtes CSS (style.css + 8 blocs). Outils déjà en place mais à valider en production.
+
+- [ ] **Activer le bundle CSS en production** — `inc/concat.php` réduit 9 requêtes CSS → 1 ; documenter dans README.md que l'option "Concaténation CSS" doit être activée en production
+- [ ] **Vérifier que les blocs CSS conditionnels fonctionnent** — `wp_enqueue_block_style()` ne doit charger chaque `assets/css/blocks/*.css` que si le bloc est présent sur la page ; tester en désactivant le bundle et en inspectant les requêtes réseau sur une page sans blocs
+- [ ] **Chaîne critical CSS + defer** — quand `enable_critical_css` est actif : inline critical.css (78 lignes) + defer style.css via `media="print" onload` + noscript fallback ; valider que le rendu perçu (LCP) est correctement anticipé
+- [ ] **Vérifier l'absence de ressources externes** — confirmer qu'aucun CDN, Google Fonts, preconnect non nécessaire n'est injecté côté front (préfetch explicite uniquement via l'admin `inc/prefetch.php`)
+
+### 10D — Responsive : confirmer zéro breakpoint
+
+**Constat :** 0 `@media` dans style.css ✓ — conforme aux contraintes absolues du projet.
+
+- [ ] **Confirmer sur tous les fichiers CSS** — vérifier `assets/css/blocks/*.css` et `assets/css/critical.css` : aucun `@media` pour le layout (les `@media` pour `prefers-reduced-motion` ou `prefers-color-scheme` sont acceptables)
+- [ ] **Test visuel 320px → 1920px** — valider que le layout flexbox + clamp tient sans cassure sur les breakpoints extrêmes, notamment le header 3 zones (branding + nav + CTA) qui `flex-wrap` naturellement
+
+### Ordre d'implémentation recommandé
+
+1. **10A.1** — Supprimer règles mortes CSS (pseudo-élément vide, transitions inutiles) — gains immédiats, risque nul
+2. **10A.2** — Déplacer les styles preview-admin hors du front — ~80-100 lignes de moins côté visiteurs
+3. **10B.1** — Supprimer `data-*` preview des templates front — bytes HTML économisés sur chaque page
+4. **10A.3** — Mutualiser `.page-hero` / `.archive-intro` — refactoring CSS ciblé
+5. **10C** — Documenter et valider la chaîne de réduction HTTP en production
+6. **10D** — Tests responsive 320→1920 + audit `@media` sur tous les CSS blocs
+
 ## Environnement local ✓
 - [x] Diagnostic 404 généralisé : serveur nginx MAMP sans `try_files` WordPress (2026-03-28)
 - [x] Configuration nginx `/Applications/MAMP/conf/nginx/nginx.conf` : bloc `/greenlight/` avec `try_files` + `index` (2026-03-28)

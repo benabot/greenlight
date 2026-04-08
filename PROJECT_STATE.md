@@ -1,12 +1,12 @@
 # PROJECT_STATE.md — Greenlight
 
-> État du projet au 7 avril 2026. Référence rapide pour reprendre le travail en contexte.
+> État du projet au 8 avril 2026. Référence rapide pour reprendre le travail en contexte.
 
 ---
 
 ## Branche active
 
-`feat/admin-ui`
+`feat/eco2` (depuis `dev`)
 
 ## Positionnement produit
 
@@ -18,9 +18,10 @@
 
 | Phase | Statut | Notes |
 |-------|--------|-------|
-| **8 — Admin UI premium** | ✅ Terminé | Shell premium, navigation numérotée, onglets SEO/Performance/Images/SVG/Outils, smoke test validé |
-| **9A — Personnalisation avancée** | ✅ Terminé | Presets, hero avancé, nav CSS-only, densité par contexte |
+| **10 — Audit éco-conception front** | 🔄 En cours | Branche `feat/eco2` — 22 tâches : CSS poids, DOM, HTTP, responsive |
 | **9B — Durcissement sécurité** | ✅ Terminé | SVG allowlist, IP anonymisée, upload guards, OPTIMIZE scope |
+| **9A — Personnalisation avancée** | ✅ Terminé | Presets, hero avancé, nav CSS-only, densité par contexte |
+| **8 — Admin UI premium** | ✅ Terminé | Shell premium, navigation numérotée, onglets SEO/Performance/Images/SVG/Outils, smoke test validé |
 
 ## Commits réalisés
 
