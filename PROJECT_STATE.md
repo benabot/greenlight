@@ -18,7 +18,7 @@
 
 | Phase | Statut | Notes |
 |-------|--------|-------|
-| **10 — Audit éco-conception front** | 🔄 En cours | 10A+10B terminés (−85 lignes CSS, DOM vérifié) ; 10C HTTP, 10D responsive à venir |
+| **10 — Audit éco-conception front** | ✅ Terminé | 10A (−85 lignes CSS, admin-preview isolé, multi-sélecteurs), 10B (DOM vérifié), 10C (chaîne HTTP documentée), 10D (0 `@media`, Playwright 320→1920px ✓) |
 | **9B — Durcissement sécurité** | ✅ Terminé | SVG allowlist, IP anonymisée, upload guards, OPTIMIZE scope |
 | **9A — Personnalisation avancée** | ✅ Terminé | Presets, hero avancé, nav CSS-only, densité par contexte |
 | **8 — Admin UI premium** | ✅ Terminé | Shell premium, navigation numérotée, onglets SEO/Performance/Images/SVG/Outils, smoke test validé |

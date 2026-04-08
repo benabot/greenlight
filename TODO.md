@@ -384,8 +384,8 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 
 **Constat :** 0 `@media` dans style.css ✓ — conforme aux contraintes absolues du projet.
 
-- [ ] **Confirmer sur tous les fichiers CSS** — vérifier `assets/css/blocks/*.css` et `assets/css/critical.css` : aucun `@media` pour le layout (les `@media` pour `prefers-reduced-motion` ou `prefers-color-scheme` sont acceptables)
-- [ ] **Test visuel 320px → 1920px** — valider que le layout flexbox + clamp tient sans cassure sur les breakpoints extrêmes, notamment le header 3 zones (branding + nav + CTA) qui `flex-wrap` naturellement
+- [x] **Confirmer sur tous les fichiers CSS** — 0 `@media` dans style.css, assets/css/blocks/*.css, assets/css/critical.css. Seuls `@supports` autorisés (backdrop-filter). Contrainte absolue respectée à 100% (2026-04-08)
+- [x] **Test visuel 320px → 1920px** — screenshots Playwright validés : 320px (header wrap naturel), 768px (split hero asymétrique visible), 1920px (contentSize centré). Aucune cassure layout (2026-04-08)
 
 ### Ordre d'implémentation recommandé
 

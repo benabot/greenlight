@@ -3,6 +3,8 @@
 ## 2026-04-08
 
 ### Added
+- Phase 10D (branche `feat/eco2`): responsive validé — 0 `@media` confirmé dans tous les CSS (style.css, blocks/*.css, critical.css). Tests Playwright 320px/768px/1920px : aucune cassure layout, flexbox+clamp opérationnel sur toute la plage.
+- Phase 10C (branche `feat/eco2`): chaîne HTTP documentée — `inc/concat.php` bundle 9→1 requête CSS, critical CSS inline + defer pattern, cache HTML, minification PHP fallback. Aucune ressource externe vérifiée.
 - Phase 10B (branche `feat/eco2`): audit DOM — `<div class="page-content">` conservé (CSS actif 65ch/flex-gap), audit comptages re-vérifié (inchangé vs Phase 6C).
 - Phase 10A (branche `feat/eco2`): éco-optimisation CSS front — `style.css` 1 276 → 1 191 lignes (−85).
   - Styles `.greenlight-preview-*` extraits → `assets/css/admin-preview.css`, enqueué uniquement en `is_customize_preview()`
