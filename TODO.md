@@ -355,12 +355,12 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 
 - [x] **Supprimer `.page-hero::before` vide** (`background: transparent`) — propriété morte supprimée (2026-04-08)
 - [x] **Mutualiser `.page-hero` et `.archive-intro`** — multi-sélecteurs CSS, suppression de la duplication lead/h1/body (2026-04-08)
-- [ ] **Variables density zombies** — les 20 props `--greenlight-*-density-*` sont lues en CSS mais écrites uniquement via PHP (admin) ; vérifier que `inc/customizer.php` ou `inc/admin.php` les injecte bien via `wp_add_inline_style`, sinon supprimer les fallbacks inutiles
+- [x] **Variables density** — vérifiées : injectées via `greenlight_output_appearance_variants()` → `wp_head` dans `inc/admin.php`. Pas de zombies, système cohérent (2026-04-08)
 - [x] **`backdrop-filter: blur(16px)`** sur `.site-header--sticky` — conditionné avec `@supports`, rayon réduit à 12px (2026-04-08)
 - [ ] **Supprimer les transitions inutiles** — 12 règles `transition` dans style.css ; conserver uniquement celles perceptibles (`.site-brand`, `.cta-subscribe`, sous-menu) ; supprimer les micro-transitions < 0.1s sur des éléments non survolés
 - [x] **Séparer les styles preview-admin** — 69 lignes `.greenlight-preview-*` extraites vers `assets/css/admin-preview.css`, enqueué uniquement en `is_customize_preview()` (2026-04-08)
-- [ ] **Audit des sélecteurs redondants** — `.site-header--nav-uppercase .site-nav a` + `.site-nav a` définissent `text-transform: uppercase` en double ; idem `.site-header--nav-normal` qui reset vers `none`
-- [ ] **Vérifier critical.css** (78 lignes) — s'assurer qu'il couvre bien le hero, le header et la typographie above-the-fold pour permettre le defer du CSS principal ; sinon compléter
+- [x] **Sélecteurs redondants** — `.site-header--nav-uppercase .site-nav a { text-transform: uppercase }` supprimé (doublon de la règle de base) (2026-04-08)
+- [x] **critical.css corrigé** — 3 sélecteurs périmés mis à jour : `.skip-link` aligné sur style.css, `.site-nav` → `.site-nav ul`, `.hero-lead` → `.hero-description` (2026-04-08)
 
 ### 10B — DOM : alléger les templates
 
