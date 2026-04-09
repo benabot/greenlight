@@ -1,5 +1,21 @@
 # TODO — Greenlight
 
+## feat/eco3 — Fix Header+Hero + Overlay + CTA (2026-04-09) ✓
+- [x] Fix nav transparente dans header+hero — `.site-header-nav` bg/sticky supprimés (`style.css`)
+- [x] Fix overlay pleine couverture — `::before` déplacé sur `<header>`, `.page-hero::before` désactivé dans header
+- [x] Overlay réglable — opacité (0–100%) + direction (full/top/bottom/left/right) via Customizer + custom property CSS
+- [x] Boutons CTA hero — 2 boutons, 3 styles (primary/secondary/tertiary), 3 positions (lead/body/center)
+
+## feat/eco3 — Corrections Customizer & Nav mobile (2026-04-08) ✓
+- [x] Double bouton purge cache supprimé — `inc/admin.php`
+- [x] Subscribe nav / newsletter home corrigé — `home.php` garde `newsletter_enabled` (clé cohérente partout)
+- [x] Couleurs Customizer — transport color settings `postMessage` → `refresh` dans `inc/customizer.php`
+- [x] Bug "texte aligné à droite" — aucun `text-align: right` trouvé, bug absent du code actuel
+- [x] Hero pleine largeur 100vw — déjà implémenté via `"align":"full"` dans `patterns/hero.php`
+- [x] Hero 100vw CSS — `margin-inline: calc(50% - 50vw)` + `padding-inline` sur `.page-hero` (`style.css`)
+- [x] Nav visuellement dans le hero — `margin-block-start` négatif sur `.site-main` + `padding-block-start` compensatoire, variable `--greenlight-header-height`
+- [x] Menu burger CSS-only — `<input>` + `<label>` + SVG, option Customizer `nav_style` (inline/burger)
+
 ## Phase 1 — Squelette du thème ✓
 - [x] Créer le dossier `greenlight/` dans wp-content/themes/
 - [x] `style.css` : header WordPress (Theme Name: Greenlight, Version: 1.0.0, Text Domain: greenlight)

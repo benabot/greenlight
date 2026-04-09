@@ -6,7 +6,7 @@
 
 ## Branche active
 
-`feat/eco2` (depuis `dev`)
+`feat/eco3` (depuis `dev`)
 
 ## Positionnement produit
 
@@ -18,6 +18,8 @@
 
 | Phase | Statut | Notes |
 |-------|--------|-------|
+| **eco3 — Fix Header+Hero + Overlay + CTA** | ✅ Terminé | Nav transparente, overlay pleine couverture sur header, overlay réglable (opacité+direction), boutons CTA hero |
+| **eco3 — Corrections Customizer & Nav mobile** | ✅ Terminé | Bug purge cache dupliqué, newsletter guard, couleurs Customizer, burger CSS-only |
 | **10 — Audit éco-conception front** | ✅ Terminé | 10A (−85 lignes CSS, admin-preview isolé, multi-sélecteurs), 10B (DOM vérifié), 10C (chaîne HTTP documentée), 10D (0 `@media`, Playwright 320→1920px ✓) |
 | **9B — Durcissement sécurité** | ✅ Terminé | SVG allowlist, IP anonymisée, upload guards, OPTIMIZE scope |
 | **9A — Personnalisation avancée** | ✅ Terminé | Presets, hero avancé, nav CSS-only, densité par contexte |

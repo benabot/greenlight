@@ -1,5 +1,37 @@
 # Changelog
 
+## 2026-04-09 (feat/eco3)
+
+### Fixed
+- `.site-header-nav` : suppression du background opaque et du `position: sticky` — la nav est maintenant transparente et en flux normal quand elle est dans le header+hero fusionné.
+- Overlay hero tronqué / décalé à droite : overlay déplacé du `.page-hero::before` vers le `<header>::before` parent — couvre désormais l'intégralité header+hero (nav incluse).
+- `.page-hero::before` désactivé (`display:none`) quand il est enfant de `.site-header--with-hero` pour éviter les doublons d'overlay.
+
+### Added
+- **Overlay réglable** : 2 nouvelles options Customizer (section Hero) — Opacité overlay (0–100%, pas de 5) et Direction overlay (full / haut / bas / gauche / droite).
+- **Overlay dynamique** : `--greenlight-overlay-opacity` custom property injectée en style inline sur `<header>` depuis `front-page.php` ; 5 classes CSS `site-header--overlay-dir-*` mappées sur des gradients directionnels.
+- **Boutons CTA hero** : 2 boutons configurables (texte, URL, style primary/secondary/tertiary, position lead/body/center) dans la section Hero du Customizer. Les boutons ne s'affichent que si texte ET URL sont renseignés.
+
+## 2026-04-08 (feat/eco3)
+
+### Fixed
+- Double bouton "Purger le cache HTML" dans l'onglet Performance de l'admin (`inc/admin.php`).
+- Bouton Subscribe toujours affiché malgré l'option "Afficher la newsletter" décochée — section newsletter de `home.php` gardée par `newsletter_enabled`.
+- Bouton Subscribe visible par défaut sans action utilisateur — default `show_header_cta` passé de `1` à `0` dans `inc/admin.php`.
+- Nav couvrant le hero sur la home — suppression du `margin-block-start` négatif sur `.site-main` et du `padding-block-start` compensatoire sur `.page-hero` ; nav et hero en flux normal.
+- Couleurs du Customizer nécessitant sauvegarde + rechargement pour s'appliquer — transport des color settings changé de `postMessage` à `refresh` dans `inc/customizer.php`.
+- Variable CSS orpheline `--greenlight-header-height` retirée de `:root` dans `style.css`.
+
+### Added
+- Menu burger CSS-only pour la navigation mobile — `<input type="checkbox">` + `<label>` + SVG inline, zéro JS front.
+- Option Customizer "Navigation mobile" (inline / burger) dans la section Navigation (`inc/customizer.php`).
+- Clé `nav_style` ajoutée aux defaults et à la sanitize function (`inc/admin.php`).
+
+### Notes
+- Hero pleine largeur 100vw : déjà implémenté via `"align":"full"` dans `patterns/hero.php` — aucune action requise.
+- Bug "texte aligné à droite sur la home" : aucun `text-align: right` trouvé dans les CSS/templates/theme.json — bug absent du code actuel.
+- Hero pleine largeur CSS : `margin-inline: calc(50% - 50vw)` + `padding-inline: spacing--md` sur `.page-hero` — casse le double padding `<body>` + `<main>`.
+
 ## 2026-04-08
 
 ### Added
