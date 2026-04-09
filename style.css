@@ -198,8 +198,24 @@ body.front-page {
 	gap: var(--wp--preset--spacing--sm);
 	width: 100%;
 	padding-block: var(--wp--preset--spacing--sm);
-	position: relative;
+	position: sticky;
+	top: 0;
 	z-index: 30;
+}
+
+/* En mode hero : pleine largeur (casse le padding-inline du header) + glassmorphism */
+.site-header--with-hero .site-header-nav {
+	margin-inline: calc(-1 * var(--wp--preset--spacing--lg));
+	padding-inline: var(--wp--preset--spacing--lg);
+	width: 100vw;
+	background: color-mix(in srgb, var(--greenlight-header-bg, var(--wp--preset--color--background, #faf9f4)) 20%, transparent);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+	.site-header--with-hero .site-header-nav {
+		background: color-mix(in srgb, var(--greenlight-header-bg, var(--wp--preset--color--background, #faf9f4)) 10%, transparent);
+		backdrop-filter: blur(12px);
+	}
 }
 
 /* === Overlay système — header with hero === */
