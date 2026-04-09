@@ -318,7 +318,7 @@ function greenlight_customize_register( $wp_customize ) {
 		$wp_customize->add_control( greenlight_customize_appearance_setting_id( $field ), $args );
 	};
 
-	$add_color = static function ( $section, $field, $label, $default_value = '', $description = '', $priority = 10, $transport = 'postMessage' ) use ( $wp_customize, $add_setting, $sanitize_color ) {
+	$add_color = static function ( $section, $field, $label, $default_value = '', $description = '', $priority = 10, $transport = 'refresh' ) use ( $wp_customize, $add_setting, $sanitize_color ) {
 		$add_setting( $field, $default_value, $sanitize_color, $transport );
 
 		$args = array(
@@ -381,7 +381,22 @@ function greenlight_customize_register( $wp_customize ) {
 	$priority += 10;
 	$add_select( 'greenlight_appearance_foundations', 'carbon_badge_position', __( 'Emplacement du badge', 'greenlight' ), $carbon_badge_position_choices, $defaults['carbon_badge_position'], '', $priority );
 	$priority += 10;
-	$add_checkbox( 'greenlight_appearance_foundations', 'newsletter_enabled', __( 'Afficher la newsletter', 'greenlight' ), $defaults['newsletter_enabled'], '', $priority );
+	$add_checkbox( 'greenlight_appearance_foundations', 'newsletter_enabled', __( 'Activer la newsletter', 'greenlight' ), $defaults['newsletter_enabled'], '', $priority );
+	$priority += 10;
+	$add_select(
+		'greenlight_appearance_foundations',
+		'newsletter_placement',
+		__( 'Emplacement newsletter', 'greenlight' ),
+		array(
+			'header' => __( 'Header uniquement', 'greenlight' ),
+			'footer' => __( 'Bas de page / article', 'greenlight' ),
+			'both'   => __( 'Header + bas de page', 'greenlight' ),
+			'none'   => __( 'Nulle part', 'greenlight' ),
+		),
+		$defaults['newsletter_placement'],
+		__( 'Où afficher le CTA d\'abonnement.', 'greenlight' ),
+		$priority
+	);
 	$priority += 10;
 	$add_color( 'greenlight_appearance_foundations', 'color_primary', __( 'Couleur primaire', 'greenlight' ), $defaults['color_primary'], '', $priority );
 	$priority += 10;
@@ -404,9 +419,21 @@ function greenlight_customize_register( $wp_customize ) {
 	$add_select( 'greenlight_appearance_navigation', 'header_layout', __( 'Layout header', 'greenlight' ), $header_layout_choices, $defaults['header_layout'], '', 40 );
 	$add_checkbox( 'greenlight_appearance_navigation', 'header_sticky', __( 'Header collant', 'greenlight' ), $defaults['header_sticky'], '', 50 );
 	$add_checkbox( 'greenlight_appearance_navigation', 'show_tagline', __( 'Afficher la description du site', 'greenlight' ), $defaults['show_tagline'], '', 60 );
-	$add_checkbox( 'greenlight_appearance_navigation', 'show_header_cta', __( 'Afficher le bouton d\'abonnement', 'greenlight' ), $defaults['show_header_cta'], '', 70 );
 	$add_select( 'greenlight_appearance_navigation', 'nav_link_case', __( 'Casse menu', 'greenlight' ), $nav_case_choices, $defaults['nav_link_case'], '', 80 );
 	$add_select( 'greenlight_appearance_navigation', 'submenu_style', __( 'Sous-menus', 'greenlight' ), $submenu_choices, $defaults['submenu_style'], '', 90 );
+	$add_select(
+		'greenlight_appearance_navigation',
+		'nav_style',
+		__( 'Navigation mobile', 'greenlight' ),
+		array(
+			'inline' => __( 'Inline (défaut)', 'greenlight' ),
+			'burger' => __( 'Menu burger CSS-only', 'greenlight' ),
+		),
+		$defaults['nav_style'],
+		'',
+		100,
+		'refresh'
+	);
 
 	// Hero.
 	$add_checkbox( 'greenlight_appearance_hero', 'hero_enabled', __( 'Utiliser le hero avancé', 'greenlight' ), $defaults['hero_enabled'], __( 'Désactivé = intro simple.', 'greenlight' ), 10 );
@@ -433,14 +460,90 @@ function greenlight_customize_register( $wp_customize ) {
 		'',
 		120
 	);
+
+	// Overlay opacity.
+	$add_setting( 'hero_overlay_opacity', $defaults['hero_overlay_opacity'], static function ( $v ) { return max( 0, min( 100, absint( $v ) ) ); } );
+	$wp_customize->add_control(
+		greenlight_customize_appearance_setting_id( 'hero_overlay_opacity' ),
+		array(
+			'label'       => __( 'Opacité overlay (%)', 'greenlight' ),
+			'section'     => 'greenlight_appearance_hero',
+			'settings'    => greenlight_customize_appearance_setting_id( 'hero_overlay_opacity' ),
+			'type'        => 'number',
+			'input_attrs' => array( 'min' => 0, 'max' => 100, 'step' => 5 ),
+			'priority'    => 125,
+		)
+	);
+	$add_select(
+		'greenlight_appearance_hero',
+		'hero_overlay_direction',
+		__( 'Direction overlay', 'greenlight' ),
+		array(
+			'full'   => __( 'Pleine couverture', 'greenlight' ),
+			'top'    => __( 'Haut → transparent', 'greenlight' ),
+			'bottom' => __( 'Bas → transparent', 'greenlight' ),
+			'left'   => __( 'Gauche → transparent', 'greenlight' ),
+			'right'  => __( 'Droite → transparent', 'greenlight' ),
+		),
+		$defaults['hero_overlay_direction'],
+		'',
+		126
+	);
+
 	$add_checkbox( 'greenlight_appearance_hero', 'show_hero_badge', __( 'Afficher le badge CO₂ dans le hero', 'greenlight' ), $defaults['show_hero_badge'], '', 130 );
 	$add_textarea( 'greenlight_appearance_hero', 'hero_text', __( 'Texte de secours', 'greenlight' ), $defaults['hero_text'], __( 'Ancien sous-titre conservé pour compatibilité.', 'greenlight' ), 140 );
+
+	// CTA boutons hero.
+	$add_checkbox( 'greenlight_appearance_hero', 'hero_cta_enabled', __( 'Bouton principal', 'greenlight' ), 0, '', 145 );
+	$add_text( 'greenlight_appearance_hero', 'hero_cta_text', __( 'Texte du bouton', 'greenlight' ), '', '', 150 );
+	$add_url( 'greenlight_appearance_hero', 'hero_cta_url', __( 'URL du bouton', 'greenlight' ), '', '', 155 );
+	$add_select(
+		'greenlight_appearance_hero',
+		'hero_cta_style',
+		__( 'Style du bouton', 'greenlight' ),
+		array(
+			'primary'   => __( 'Primaire', 'greenlight' ),
+			'secondary' => __( 'Secondaire', 'greenlight' ),
+			'tertiary'  => __( 'Tertiaire', 'greenlight' ),
+		),
+		'primary',
+		'',
+		160
+	);
+	$add_select(
+		'greenlight_appearance_hero',
+		'hero_cta_position',
+		__( 'Position des boutons', 'greenlight' ),
+		array(
+			'lead'   => __( 'Sous le titre', 'greenlight' ),
+			'body'   => __( 'Zone description', 'greenlight' ),
+			'center' => __( 'Centré pleine largeur', 'greenlight' ),
+		),
+		'lead',
+		'',
+		165
+	);
+	$add_checkbox( 'greenlight_appearance_hero', 'hero_cta2_enabled', __( 'Bouton secondaire', 'greenlight' ), 0, '', 170 );
+	$add_text( 'greenlight_appearance_hero', 'hero_cta2_text', __( 'Texte bouton 2', 'greenlight' ), '', '', 175 );
+	$add_url( 'greenlight_appearance_hero', 'hero_cta2_url', __( 'URL bouton 2', 'greenlight' ), '', '', 180 );
+	$add_select(
+		'greenlight_appearance_hero',
+		'hero_cta2_style',
+		__( 'Style bouton 2', 'greenlight' ),
+		array(
+			'primary'   => __( 'Primaire', 'greenlight' ),
+			'secondary' => __( 'Secondaire', 'greenlight' ),
+			'tertiary'  => __( 'Tertiaire', 'greenlight' ),
+		),
+		'secondary',
+		'',
+		185
+	);
 
 	// Content.
 	$add_checkbox( 'greenlight_appearance_content', 'show_date', __( 'Afficher la date de publication', 'greenlight' ), $defaults['show_date'], '', 10 );
 	$add_checkbox( 'greenlight_appearance_content', 'show_author', __( 'Afficher l’auteur', 'greenlight' ), $defaults['show_author'], '', 20 );
 	$add_checkbox( 'greenlight_appearance_content', 'show_tags', __( 'Afficher les tags', 'greenlight' ), $defaults['show_tags'], '', 30 );
-	$add_checkbox( 'greenlight_appearance_content', 'show_newsletter_single', __( 'Afficher le CTA newsletter', 'greenlight' ), $defaults['show_newsletter_single'], '', 40 );
 	$add_select( 'greenlight_appearance_content', 'archive_layout', __( 'Archives', 'greenlight' ), $archive_layout_choices, $defaults['archive_layout'], '', 50 );
 	$add_select( 'greenlight_appearance_content', 'archive_card_style', __( 'Cartes d’archive', 'greenlight' ), $archive_card_choices, $defaults['archive_card_style'], '', 60 );
 	$add_checkbox( 'greenlight_appearance_content', 'show_excerpts_archive', __( 'Afficher les extraits', 'greenlight' ), $defaults['show_excerpts_archive'], '', 70 );
