@@ -5,40 +5,6 @@
  * @package Greenlight
  */
 
-// Lecture anticipée des options pour passer le style hero au header.
-$_gl_app_early        = array_merge(
-	function_exists( 'greenlight_get_appearance_defaults' ) ? greenlight_get_appearance_defaults() : array(),
-	(array) get_option( 'greenlight_appearance_options', array() )
-);
-$_gl_hero_mode_early  = isset( $_gl_app_early['hero_background_mode'] ) ? $_gl_app_early['hero_background_mode'] : 'none';
-$_gl_hero_style_parts = array();
-
-if ( 'color' === $_gl_hero_mode_early && ! empty( $_gl_app_early['hero_background_color'] ) ) {
-	$color = sanitize_hex_color( $_gl_app_early['hero_background_color'] );
-	if ( $color ) {
-		$_gl_hero_style_parts[] = '--greenlight-hero-background:' . $color;
-	}
-} elseif ( 'gradient' === $_gl_hero_mode_early ) {
-	$gradients = function_exists( 'greenlight_get_hero_gradient_presets' ) ? greenlight_get_hero_gradient_presets() : array();
-	$key       = isset( $_gl_app_early['hero_gradient_preset'] ) ? sanitize_key( (string) $_gl_app_early['hero_gradient_preset'] ) : 'moss';
-	if ( isset( $gradients[ $key ]['value'] ) ) {
-		$_gl_hero_style_parts[] = '--greenlight-hero-background:' . $gradients[ $key ]['value'];
-	}
-} elseif ( 'image' === $_gl_hero_mode_early && ! empty( $_gl_app_early['hero_background_image'] ) ) {
-	$url = esc_url_raw( (string) $_gl_app_early['hero_background_image'] );
-	if ( '' !== $url ) {
-		$_gl_hero_style_parts[] = '--greenlight-hero-background-image:url("' . $url . '")';
-	}
-}
-
-$_gl_overlay_opacity_early          = isset( $_gl_app_early['hero_overlay_opacity'] ) ? absint( $_gl_app_early['hero_overlay_opacity'] ) : 40;
-$_gl_overlay_dir_early              = isset( $_gl_app_early['hero_overlay_direction'] ) && in_array( $_gl_app_early['hero_overlay_direction'], array( 'full', 'top', 'bottom', 'left', 'right' ), true ) ? sanitize_key( $_gl_app_early['hero_overlay_direction'] ) : 'full';
-$_gl_hero_style_parts[]             = '--greenlight-overlay-opacity:' . ( $_gl_overlay_opacity_early / 100 );
-$GLOBALS['_gl_front_hero_style']    = implode( ';', $_gl_hero_style_parts );
-$GLOBALS['_gl_front_hero_bg_mode']  = $_gl_hero_mode_early;
-$GLOBALS['_gl_front_hero_overlay']  = isset( $_gl_app_early['hero_overlay_strength'] ) && in_array( $_gl_app_early['hero_overlay_strength'], array( 'none', 'soft', 'strong' ), true ) ? sanitize_key( $_gl_app_early['hero_overlay_strength'] ) : 'soft';
-$GLOBALS['_gl_front_hero_overlay_dir'] = $_gl_overlay_dir_early;
-
 get_header();
 
 $_gl_app              = array_merge(
@@ -52,8 +18,9 @@ $_gl_hero_style       = isset( $_gl_app['hero_style'] ) && 'centered' === $_gl_a
 $_gl_hero_mode        = isset( $_gl_app['hero_background_mode'] ) && in_array( $_gl_app['hero_background_mode'], array( 'none', 'color', 'gradient', 'image' ), true ) ? $_gl_app['hero_background_mode'] : 'none';
 $_gl_hero_height      = isset( $_gl_app['hero_height_mode'] ) && in_array( $_gl_app['hero_height_mode'], array( 'content', 'tall', 'full' ), true ) ? $_gl_app['hero_height_mode'] : 'content';
 $_gl_hero_overlay     = isset( $_gl_app['hero_overlay_strength'] ) && in_array( $_gl_app['hero_overlay_strength'], array( 'none', 'soft', 'strong' ), true ) ? $_gl_app['hero_overlay_strength'] : 'soft';
+$_gl_hero_overlay_dir = isset( $_gl_app['hero_overlay_direction'] ) && in_array( $_gl_app['hero_overlay_direction'], array( 'full', 'top', 'bottom', 'left', 'right' ), true ) ? sanitize_key( $_gl_app['hero_overlay_direction'] ) : 'full';
 $_gl_hero_text        = isset( $_gl_app['hero_text'] ) ? trim( (string) $_gl_app['hero_text'] ) : '';
-$_gl_hero_cls         = 'page-hero page-hero--' . $_gl_hero_style . ' page-hero--background-' . $_gl_hero_mode . ' page-hero--height-' . $_gl_hero_height . ' page-hero--overlay-' . $_gl_hero_overlay;
+$_gl_hero_cls         = 'page-hero page-hero--' . $_gl_hero_style . ' page-hero--background-' . $_gl_hero_mode . ' page-hero--height-' . $_gl_hero_height . ' page-hero--overlay-' . $_gl_hero_overlay . ' page-hero--overlay-dir-' . $_gl_hero_overlay_dir;
 $_gl_hero_style_attr  = array();
 $_gl_gradient_presets = function_exists( 'greenlight_get_hero_gradient_presets' ) ? greenlight_get_hero_gradient_presets() : array();
 
@@ -74,8 +41,10 @@ if ( 'color' === $_gl_hero_mode && ! empty( $_gl_app['hero_background_color'] ) 
 	}
 }
 
-$_gl_hero_style_attr = implode( ';', $_gl_hero_style_attr );
-$_gl_preview_image   = get_theme_file_uri( 'screenshot.png' );
+$_gl_overlay_opacity   = isset( $_gl_app['hero_overlay_opacity'] ) ? absint( $_gl_app['hero_overlay_opacity'] ) : 40;
+$_gl_hero_style_attr[] = '--greenlight-overlay-opacity:' . ( $_gl_overlay_opacity / 100 );
+$_gl_hero_style_attr   = implode( ';', $_gl_hero_style_attr );
+$_gl_preview_image     = get_theme_file_uri( 'screenshot.png' );
 
 // CTA boutons hero.
 $_gl_cta1_on = ! empty( $_gl_app['hero_cta_enabled'] ) && '' !== trim( $_gl_app['hero_cta_text'] ?? '' ) && '' !== trim( $_gl_app['hero_cta_url'] ?? '' );
@@ -153,6 +122,7 @@ if ( have_posts() ) :
 		?>
 		<?php if ( $_gl_preview_mode || $_gl_use_rich_hero ) : ?>
 			<section class="<?php echo esc_attr( $_gl_hero_cls ); ?>"
+			<?php if ( '' !== $_gl_hero_style_attr ) : ?>style="<?php echo esc_attr( $_gl_hero_style_attr ); ?>"<?php endif; ?>
 			<?php
 			if ( $_gl_preview_mode ) :
 				?>
@@ -198,7 +168,6 @@ if ( have_posts() ) :
 				<?php endif; ?>
 			</section>
 		<?php endif; ?>
-		</header>
 		<main id="main-content" class="site-main">
 		<?php
 		if ( '' !== trim( (string) get_post_field( 'post_content', get_the_ID() ) ) ) :
@@ -210,7 +179,7 @@ if ( have_posts() ) :
 		endif;
 		if ( $_gl_preview_mode ) :
 			?>
-			<nav class="greenlight-preview-nav" aria-label="<?php esc_attr_e( 'Sections de l’aperçu', 'greenlight' ); ?>">
+			<nav class="greenlight-preview-nav" aria-label="<?php esc_attr_e( 'Sections de l\'aperçu', 'greenlight' ); ?>">
 				<a href="#greenlight-preview-hero"><?php esc_html_e( 'Hero', 'greenlight' ); ?></a>
 				<a href="#greenlight-preview-archive-title"><?php esc_html_e( 'Archives', 'greenlight' ); ?></a>
 				<a href="#greenlight-preview-single-title"><?php esc_html_e( 'Article', 'greenlight' ); ?></a>
@@ -219,9 +188,9 @@ if ( have_posts() ) :
 			<div class="greenlight-preview-stack" aria-label="<?php esc_attr_e( 'Échantillons de mise en page', 'greenlight' ); ?>">
 				<section class="greenlight-preview-section" aria-labelledby="greenlight-preview-archive-title">
 					<p class="eyebrow"><?php esc_html_e( 'Aperçu archive', 'greenlight' ); ?></p>
-					<h2 id="greenlight-preview-archive-title"><?php esc_html_e( 'Cartes et listes d’articles', 'greenlight' ); ?></h2>
+					<h2 id="greenlight-preview-archive-title"><?php esc_html_e( 'Cartes et listes d\'articles', 'greenlight' ); ?></h2>
 					<p class="greenlight-preview-variant greenlight-preview-archive-variant"><?php esc_html_e( 'Grille asymétrique · Équilibré', 'greenlight' ); ?></p>
-					<p class="archive-note"><?php esc_html_e( 'Cette zone reflète les réglages d’archives et de cartes.', 'greenlight' ); ?></p>
+					<p class="archive-note"><?php esc_html_e( 'Cette zone reflète les réglages d\'archives et de cartes.', 'greenlight' ); ?></p>
 				</section>
 				<article class="entry entry--featured greenlight-preview-featured">
 					<figure class="entry-media">
@@ -241,7 +210,7 @@ if ( have_posts() ) :
 						<a href="#preview-featured" class="entry-more"><?php esc_html_e( 'Lire', 'greenlight' ); ?></a>
 					</div>
 				</article>
-				<ul class="post-list post-list--grid greenlight-preview-archive-list" aria-label="<?php esc_attr_e( 'Exemples d’articles', 'greenlight' ); ?>">
+				<ul class="post-list post-list--grid greenlight-preview-archive-list" aria-label="<?php esc_attr_e( 'Exemples d\'articles', 'greenlight' ); ?>">
 					<li class="post-item">
 						<article class="entry entry--teaser">
 							<figure class="entry-media">
@@ -257,7 +226,7 @@ if ( have_posts() ) :
 									</p>
 									<h2 class="entry-title"><a href="#preview-one"><?php esc_html_e( 'Carte secondaire', 'greenlight' ); ?></a></h2>
 								</header>
-								<p class="entry-summary"><?php esc_html_e( 'Résumé court pour vérifier l’équilibre des extraits.', 'greenlight' ); ?></p>
+								<p class="entry-summary"><?php esc_html_e( 'Résumé court pour vérifier l\'équilibre des extraits.', 'greenlight' ); ?></p>
 								<a href="#preview-one" class="entry-more"><?php esc_html_e( 'Lire', 'greenlight' ); ?></a>
 							</div>
 						</article>
@@ -305,8 +274,8 @@ if ( have_posts() ) :
 					</figure>
 					<p class="entry-intro"><?php esc_html_e( 'Un court chapô pour vérifier la largeur de lecture et le ton du gabarit article.', 'greenlight' ); ?></p>
 					<section class="entry-content">
-						<p><?php esc_html_e( 'Le texte principal sert d’échantillon pour la largeur de colonne, le rythme vertical et la respiration générale.', 'greenlight' ); ?></p>
-						<blockquote><p><?php esc_html_e( 'Le bon aperçu n’est pas décoratif. Il doit permettre de juger immédiatement le rendu final.', 'greenlight' ); ?></p></blockquote>
+						<p><?php esc_html_e( 'Le texte principal sert d\'échantillon pour la largeur de colonne, le rythme vertical et la respiration générale.', 'greenlight' ); ?></p>
+						<blockquote><p><?php esc_html_e( 'Le bon aperçu n\'est pas décoratif. Il doit permettre de juger immédiatement le rendu final.', 'greenlight' ); ?></p></blockquote>
 						<p><?php esc_html_e( 'Les réglages de densité, de preset et de carte doivent rester visibles ici sans enregistrer.', 'greenlight' ); ?></p>
 					</section>
 					<footer class="entry-footer">
@@ -318,11 +287,11 @@ if ( have_posts() ) :
 				</article>
 				<section id="newsletter" class="newsletter-cta newsletter-cta--centered greenlight-preview-newsletter" aria-labelledby="greenlight-preview-newsletter-heading">
 					<h2 id="greenlight-preview-newsletter-heading"><?php esc_html_e( 'Bloc newsletter', 'greenlight' ); ?></h2>
-					<p><?php esc_html_e( 'Ce bloc reflète l’activation du CTA en bas d’un article.', 'greenlight' ); ?></p>
+					<p><?php esc_html_e( 'Ce bloc reflète l\'activation du CTA en bas d\'un article.', 'greenlight' ); ?></p>
 					<form class="newsletter-form" action="#" method="post">
 						<label for="greenlight-preview-email" class="sr-only"><?php esc_html_e( 'Adresse email', 'greenlight' ); ?></label>
 						<input type="email" id="greenlight-preview-email" placeholder="<?php esc_attr_e( 'prenom@email.com', 'greenlight' ); ?>">
-						<button type="button"><?php esc_html_e( 'S’abonner', 'greenlight' ); ?></button>
+						<button type="button"><?php esc_html_e( 'S\'abonner', 'greenlight' ); ?></button>
 					</form>
 				</section>
 				<section class="greenlight-preview-section" aria-labelledby="greenlight-preview-footer-title">
@@ -362,7 +331,9 @@ else :
 	);
 	?>
 	<?php if ( $_gl_preview_mode || $_gl_use_rich_hero ) : ?>
-		<section class="<?php echo esc_attr( $_gl_hero_cls ); ?>" <?php echo '' !== $_gl_intro['heading'] ? 'aria-labelledby="hero-heading"' : 'aria-label="' . esc_attr__( 'Hero principal', 'greenlight' ) . '"'; ?><?php echo ( $_gl_preview_mode && ! $_gl_use_rich_hero ) ? ' hidden' : ''; ?>>
+		<section class="<?php echo esc_attr( $_gl_hero_cls ); ?>"
+		<?php if ( '' !== $_gl_hero_style_attr ) : ?>style="<?php echo esc_attr( $_gl_hero_style_attr ); ?>"<?php endif; ?>
+		<?php echo '' !== $_gl_intro['heading'] ? 'aria-labelledby="hero-heading"' : 'aria-label="' . esc_attr__( 'Hero principal', 'greenlight' ) . '"'; ?><?php echo ( $_gl_preview_mode && ! $_gl_use_rich_hero ) ? ' hidden' : ''; ?>>
 			<div class="hero-lead">
 				<?php if ( $_gl_hero_badge ) : ?>
 					<?php echo greenlight_carbon_badge( 'top' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -400,9 +371,8 @@ else :
 			<?php endif; ?>
 		</section>
 	<?php endif; ?>
-	</header>
 	<main id="main-content" class="site-main">
-	<?php
+<?php
 endif;
 
 get_footer();

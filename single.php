@@ -6,6 +6,9 @@
  */
 
 get_header();
+?>
+<main id="main-content" class="site-main">
+<?php
 
 $_gl_app             = array_merge(
 	function_exists( 'greenlight_get_appearance_defaults' ) ? greenlight_get_appearance_defaults() : array(),
@@ -14,7 +17,9 @@ $_gl_app             = array_merge(
 $_gl_show_author     = ! empty( $_gl_app['show_author'] );
 $_gl_show_date       = ! empty( $_gl_app['show_date'] );
 $_gl_show_tags       = ! empty( $_gl_app['show_tags'] );
-$_gl_show_newsletter = ! empty( $_gl_app['show_newsletter_single'] );
+$_gl_newsletter_on    = ! empty( $_gl_app['newsletter_enabled'] );
+$_gl_newsletter_place = isset( $_gl_app['newsletter_placement'] ) ? $_gl_app['newsletter_placement'] : 'footer';
+$_gl_show_newsletter  = $_gl_newsletter_on && in_array( $_gl_newsletter_place, array( 'footer', 'both' ), true );
 
 if ( have_posts() ) :
 	while ( have_posts() ) :

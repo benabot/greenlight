@@ -8,7 +8,7 @@
 
 get_header();
 ?>
-
+<main id="main-content" class="site-main">
 <section aria-labelledby="search-heading">
 	<header>
 		<h1 id="search-heading">

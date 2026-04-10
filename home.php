@@ -6,6 +6,9 @@
  */
 
 get_header();
+?>
+<main id="main-content" class="site-main">
+<?php
 
 $_gl_app            = array_merge(
 	function_exists( 'greenlight_get_appearance_defaults' ) ? greenlight_get_appearance_defaults() : array(),
@@ -136,6 +139,11 @@ $home_count    = (int) $wp_query->found_posts;
 
 	<?php the_posts_pagination(); ?>
 
+	<?php
+	$_gl_newsletter_on    = ! empty( $_gl_app['newsletter_enabled'] );
+	$_gl_newsletter_place = isset( $_gl_app['newsletter_placement'] ) ? $_gl_app['newsletter_placement'] : 'footer';
+	if ( $_gl_newsletter_on && in_array( $_gl_newsletter_place, array( 'footer', 'both' ), true ) ) :
+	?>
 	<section id="newsletter" class="newsletter-cta" aria-labelledby="newsletter-heading">
 		<h2 id="newsletter-heading"><?php esc_html_e( 'Restez informé', 'greenlight' ); ?></h2>
 		<p><?php esc_html_e( 'Recevez les prochains articles directement dans votre boîte.', 'greenlight' ); ?></p>
@@ -147,6 +155,7 @@ $home_count    = (int) $wp_query->found_posts;
 			<button type="submit"><?php esc_html_e( "S'abonner", 'greenlight' ); ?></button>
 		</form>
 	</section>
+	<?php endif; ?>
 
 <?php else : ?>
 	<p><?php esc_html_e( 'Aucun contenu trouvé.', 'greenlight' ); ?></p>
