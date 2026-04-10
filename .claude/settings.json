@@ -1,12 +1,13 @@
 {
+  "includeCoAuthoredBy": false,
   "hooks": {
-    "Stop": [
+    "PostToolUse": [
       {
+        "matcher": "Edit|Write",
         "hooks": [
           {
             "type": "command",
-            "command": "echo '{\"continue\":true,\"systemMessage\":\"Before finishing: check if any decisions, context changes, or non-obvious discoveries from this session belong in .omc/MEMORY.md. If yes, update it now.\"}'",
-            "statusMessage": "Checking project memory..."
+            "command": "if [ -f functions.php ] && command -v php >/dev/null 2>&1; then php -l \"$CLAUDE_TOOL_INPUT_FILE\" 2>/dev/null || true; fi"
           }
         ]
       }

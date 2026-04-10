@@ -218,3 +218,5 @@ smoke-*.png
 # Mac / Linux metadata inside theme assets
 # ---------------------------------------------------------------------------
 **/.DS_Store
+_omc_archive/
+.claude/*.backup.*
