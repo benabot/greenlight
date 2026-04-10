@@ -1,5 +1,14 @@
 # TODO — Greenlight
 
+## feat/eco3 — Refactor nav fixe + hero autonome (2026-04-10) ✓
+- [x] Abandon fusion header+hero — nav identique et `position: fixed` sur toutes les pages
+- [x] Hero `<section>` autonome entre `</header>` et `<main>` sur la front-page
+- [x] Chaque template ouvre son propre `<main>` — supprimé de `header.php`
+- [x] Fix hero 100vh — `min-height` + `max-height` (Claude Code avait supprimé `min-height`)
+- [x] Opacité header réglable — Customizer `header_opacity` via `::after` + glassmorphism
+- [x] Suppression `overflow: clip` sur `.site-header`
+- [x] Nettoyage CSS — suppression `.site-header--with-hero`, `.site-header-nav`, overlay header
+
 ## feat/eco3 — Fix Header+Hero + Overlay + CTA (2026-04-09) ✓
 - [x] Fix nav transparente dans header+hero — `.site-header-nav` bg/sticky supprimés (`style.css`)
 - [x] Fix overlay pleine couverture — `::before` déplacé sur `<header>`, `.page-hero::before` désactivé dans header

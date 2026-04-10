@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — Greenlight
 
-> État du projet au 8 avril 2026. Référence rapide pour reprendre le travail en contexte.
+> État du projet au 10 avril 2026. Référence rapide pour reprendre le travail en contexte.
 
 ---
 
@@ -18,6 +18,7 @@
 
 | Phase | Statut | Notes |
 |-------|--------|-------|
+| **eco3 — Refactor nav fixe + hero autonome** | ✅ Terminé | Nav `position: fixed` identique partout, hero `<section>` autonome, `<main>` ouvert par chaque template, hero 100vh corrigé, opacité header Customizer |
 | **eco3 — Fix Header+Hero + Overlay + CTA** | ✅ Terminé | Nav transparente, overlay pleine couverture sur header, overlay réglable (opacité+direction), boutons CTA hero |
 | **eco3 — Corrections Customizer & Nav mobile** | ✅ Terminé | Bug purge cache dupliqué, newsletter guard, couleurs Customizer, burger CSS-only |
 | **10 — Audit éco-conception front** | ✅ Terminé | 10A (−85 lignes CSS, admin-preview isolé, multi-sélecteurs), 10B (DOM vérifié), 10C (chaîne HTTP documentée), 10D (0 `@media`, Playwright 320→1920px ✓) |

@@ -33,3 +33,35 @@
 .wp-block-navigation a[aria-current="page"] {
 	color: var(--wp--preset--color--primary);
 }
+
+/* Menu burger CSS-only — actif uniquement quand l'option Customizer est sur "burger" */
+.nav-toggle { display: none; }
+.nav-burger  { display: none; cursor: pointer; color: var(--wp--preset--color--text); }
+
+@media (max-width: 768px) {
+	header:has(.nav-burger) .site-nav {
+		display: none;
+		flex-direction: column;
+		width: 100%;
+		padding: var(--wp--preset--spacing--sm);
+		background: var(--wp--preset--color--surface);
+	}
+	header:has(.nav-burger) .nav-burger {
+		display: flex;
+		align-items: center;
+	}
+	header:has(.nav-burger) .nav-toggle:checked ~ .site-nav {
+		display: flex;
+	}
+	header:has(.nav-burger) .nav-toggle:checked + .site-branding + .nav-burger svg rect:nth-child(1) {
+		transform: rotate(45deg) translateY(10px);
+		transform-origin: center;
+	}
+	header:has(.nav-burger) .nav-toggle:checked + .site-branding + .nav-burger svg rect:nth-child(2) {
+		opacity: 0;
+	}
+	header:has(.nav-burger) .nav-toggle:checked + .site-branding + .nav-burger svg rect:nth-child(3) {
+		transform: rotate(-45deg) translateY(-10px);
+		transform-origin: center;
+	}
+}

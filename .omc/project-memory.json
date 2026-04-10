@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1775563858761,
+  "lastScanned": 1775755512581,
   "projectRoot": "/Users/benoitabot/Sites/greenlight/greenlight",
   "techStack": {
     "languages": [
@@ -45,14 +45,14 @@
       "path": "assets",
       "purpose": "Static assets",
       "fileCount": 0,
-      "lastAccessed": 1775563858582,
+      "lastAccessed": 1775755512555,
       "keyFiles": []
     },
     "bin": {
       "path": "bin",
       "purpose": "Executable scripts",
       "fileCount": 1,
-      "lastAccessed": 1775563858730,
+      "lastAccessed": 1775755512555,
       "keyFiles": [
         "minify.sh"
       ]
@@ -61,7 +61,7 @@
       "path": "inc",
       "purpose": null,
       "fileCount": 22,
-      "lastAccessed": 1775563858735,
+      "lastAccessed": 1775755512555,
       "keyFiles": [
         "admin.php",
         "cache.php",
@@ -74,7 +74,7 @@
       "path": "patterns",
       "purpose": null,
       "fileCount": 5,
-      "lastAccessed": 1775563858737,
+      "lastAccessed": 1775755512556,
       "keyFiles": [
         "cards.php",
         "contact.php",
@@ -87,7 +87,7 @@
       "path": "vendor",
       "purpose": "Third-party code",
       "fileCount": 1,
-      "lastAccessed": 1775563858741,
+      "lastAccessed": 1775755512556,
       "keyFiles": [
         "autoload.php"
       ]
@@ -96,7 +96,7 @@
       "path": "vendor/bin",
       "purpose": "Executable scripts",
       "fileCount": 2,
-      "lastAccessed": 1775563858759,
+      "lastAccessed": 1775755512558,
       "keyFiles": [
         "phpcbf",
         "phpcs"
@@ -105,81 +105,111 @@
   },
   "hotPaths": [
     {
+      "path": "style.css",
+      "accessCount": 41,
+      "lastAccessed": 1775826974030,
+      "type": "file"
+    },
+    {
       "path": "inc/admin.php",
-      "accessCount": 87,
-      "lastAccessed": 1775596780966,
+      "accessCount": 16,
+      "lastAccessed": 1775809896531,
+      "type": "directory"
+    },
+    {
+      "path": "front-page.php",
+      "accessCount": 11,
+      "lastAccessed": 1775809962303,
       "type": "file"
     },
     {
-      "path": "assets/css/admin-ui.css",
-      "accessCount": 12,
-      "lastAccessed": 1775581221963,
-      "type": "file"
-    },
-    {
-      "path": "inc/seo-redirects.php",
+      "path": "inc/customizer.php",
       "accessCount": 7,
-      "lastAccessed": 1775596766032,
-      "type": "file"
+      "lastAccessed": 1775809991818,
+      "type": "directory"
     },
     {
-      "path": "PROJECT_STATE.md",
+      "path": "header.php",
       "accessCount": 7,
-      "lastAccessed": 1775597036316,
+      "lastAccessed": 1775811122544,
       "type": "file"
     },
     {
-      "path": "inc/svg.php",
-      "accessCount": 6,
-      "lastAccessed": 1775596808956,
+      "path": "assets/css/blocks/navigation.css",
+      "accessCount": 5,
+      "lastAccessed": 1775811122754,
       "type": "file"
     },
     {
       "path": "TODO.md",
-      "accessCount": 6,
-      "lastAccessed": 1775596892604,
-      "type": "file"
-    },
-    {
-      "path": "inc/db-cleanup.php",
       "accessCount": 4,
-      "lastAccessed": 1775596739651,
+      "lastAccessed": 1775808915500,
       "type": "file"
     },
     {
-      "path": "functions.php",
+      "path": "PROJECT_STATE.md",
       "accessCount": 3,
-      "lastAccessed": 1775580492734,
-      "type": "file"
-    },
-    {
-      "path": "inc",
-      "accessCount": 3,
-      "lastAccessed": 1775596600105,
-      "type": "directory"
-    },
-    {
-      "path": "README.md",
-      "accessCount": 3,
-      "lastAccessed": 1775596887365,
+      "lastAccessed": 1775808911928,
       "type": "file"
     },
     {
       "path": "CHANGELOG.md",
       "accessCount": 2,
-      "lastAccessed": 1775596977280,
+      "lastAccessed": 1775756121653,
       "type": "file"
     },
     {
-      "path": "inc/images-bulk.php",
-      "accessCount": 1,
-      "lastAccessed": 1775596561585,
+      "path": "single.php",
+      "accessCount": 2,
+      "lastAccessed": 1775809810485,
       "type": "file"
     },
     {
-      "path": "inc/images.php",
+      "path": "page.php",
+      "accessCount": 2,
+      "lastAccessed": 1775809814113,
+      "type": "file"
+    },
+    {
+      "path": "home.php",
+      "accessCount": 2,
+      "lastAccessed": 1775809817226,
+      "type": "file"
+    },
+    {
+      "path": "archive.php",
+      "accessCount": 2,
+      "lastAccessed": 1775809821384,
+      "type": "file"
+    },
+    {
+      "path": "index.php",
+      "accessCount": 2,
+      "lastAccessed": 1775809824402,
+      "type": "file"
+    },
+    {
+      "path": "404.php",
+      "accessCount": 2,
+      "lastAccessed": 1775809828072,
+      "type": "file"
+    },
+    {
+      "path": "search.php",
+      "accessCount": 2,
+      "lastAccessed": 1775809833534,
+      "type": "file"
+    },
+    {
+      "path": "DESIGN.md",
       "accessCount": 1,
-      "lastAccessed": 1775596562214,
+      "lastAccessed": 1775755635509,
+      "type": "file"
+    },
+    {
+      "path": "footer.php",
+      "accessCount": 1,
+      "lastAccessed": 1775808916138,
       "type": "file"
     }
   ],

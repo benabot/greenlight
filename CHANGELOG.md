@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-04-10 (feat/eco3)
+
+### Changed
+- **Architecture header/hero refactorisée** : abandon de la fusion header+hero dans un seul `<header>`. La nav est maintenant un `<header>` identique et fixe (`position: fixed`) sur toutes les pages. Le hero est une `<section>` autonome entre `</header>` et `<main>`. Plus aucune logique front-page dans `header.php`, plus de `$GLOBALS`.
+- Chaque template (`front-page.php`, `single.php`, `page.php`, `archive.php`, `home.php`, `index.php`, `404.php`, `search.php`) ouvre son propre `<main>` — `header.php` ne l'ouvre plus.
+
+### Fixed
+- Hero `100vh` qui ne faisait pas 100vh — Claude Code avait remplacé `min-height` par `max-height`. Corrigé : `min-height: 100vh` + `max-height: 100vh` (les deux).
+- Header `position: fixed` + `inset-inline: 0` pour une nav fixe hors flux, le hero démarre à `top: 0` viewport.
+- Hero `padding-block-start` inclut `var(--greenlight-header-height, 5rem)` pour repousser le contenu texte sous la nav fixe.
+- Suppression `overflow: clip` sur `.site-header` qui pouvait bloquer les sous-menus.
+
+### Added
+- Opacité du header réglable via Customizer (section Navigation) — `header_opacity` (0–100%, pas de 5). Implémenté via pseudo-element `::after` pour ne pas affecter l'opacité du texte, combiné avec `backdrop-filter: blur(12px)` en glassmorphism.
+
 ## 2026-04-09 (feat/eco3)
 
 ### Fixed

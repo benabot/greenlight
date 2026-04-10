@@ -147,7 +147,7 @@
 		}
 
 		if ( subscribe ) {
-			subscribe.hidden = ! state.show_header_cta || ! state.newsletter_enabled;
+			subscribe.hidden = ! state.newsletter_enabled || ! [ 'header', 'both' ].includes( state.newsletter_placement );
 			subscribe.setAttribute( 'aria-hidden', subscribe.hidden ? 'true' : 'false' );
 		}
 	}
@@ -354,8 +354,8 @@
 		'nav_link_case',
 		'submenu_style',
 		'show_tagline',
-		'show_header_cta',
 		'newsletter_enabled',
+		'newsletter_placement',
 		'carbon_badge_enabled',
 		'carbon_badge_position',
 		'carbon_badge_value',

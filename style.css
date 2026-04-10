@@ -130,7 +130,6 @@ body.front-page {
 	border-radius: var(--greenlight-card-radius, 1em);
 	position: relative;
 	z-index: 20;
-	overflow: clip;
 }
 
 .site-header::after {
@@ -144,8 +143,9 @@ body.front-page {
 }
 
 .site-header--sticky {
-	position: sticky;
+	position: fixed;
 	top: 0;
+	inset-inline: 0;
 }
 
 @supports (backdrop-filter: blur(1px)) {
@@ -336,6 +336,16 @@ body.front-page {
 	padding-block: var(--greenlight-section-gap, var(--wp--preset--spacing--xl));
 }
 
+/* Header fixe : décale le contenu vers le bas sur les pages sans hero */
+body:has(.site-header--sticky) .site-main {
+	padding-block-start: calc(var(--greenlight-header-height, 5rem) + var(--greenlight-section-gap, var(--wp--preset--spacing--xl)));
+}
+
+/* Avec hero : le hero est au-dessus de main, padding normal */
+.page-hero ~ .site-main {
+	padding-block-start: var(--greenlight-section-gap, var(--wp--preset--spacing--xl));
+}
+
 /* === Carbon Badge pill === */
 
 .carbon-badge {
@@ -369,7 +379,6 @@ body.front-page {
 	padding-inline: var(--wp--preset--spacing--md);
 	position: relative;
 	isolation: isolate;
-	border-radius: var(--greenlight-card-radius, 1em);
 	overflow: clip;
 }
 
@@ -440,11 +449,10 @@ body.front-page {
 	align-self: center;
 }
 
-/* Tall et Full : glisse derrière le header sticky, contenu repoussé en dessous */
+/* Tall et Full : header fixe hors flux, le hero démarre à 0 — contenu repoussé sous le header */
 .page-hero--height-tall,
 .page-hero--height-full {
-	margin-block-start: calc(-1 * var(--greenlight-header-height, 4rem));
-	padding-block-start: calc(var(--greenlight-section-gap, var(--wp--preset--spacing--xl)) + var(--greenlight-header-height, 4rem));
+	padding-block-start: calc(var(--greenlight-section-gap, var(--wp--preset--spacing--xl)) + var(--greenlight-header-height, 5rem));
 }
 
 .page-hero--height-tall {
@@ -455,6 +463,8 @@ body.front-page {
 .page-hero--height-full {
 	min-height: 100vh;
 	min-height: 100dvh;
+	max-height: 100vh;
+	max-height: 100dvh;
 }
 
 .page-hero--background-color,
