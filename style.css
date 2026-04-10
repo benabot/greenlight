@@ -440,14 +440,21 @@ body.front-page {
 	align-self: center;
 }
 
+/* Tall et Full : glisse derrière le header sticky, contenu repoussé en dessous */
+.page-hero--height-tall,
+.page-hero--height-full {
+	margin-block-start: calc(-1 * var(--greenlight-header-height, 4rem));
+	padding-block-start: calc(var(--greenlight-section-gap, var(--wp--preset--spacing--xl)) + var(--greenlight-header-height, 4rem));
+}
+
 .page-hero--height-tall {
-	min-height: calc(70vh - var(--greenlight-header-height, 4rem));
-	min-height: calc(70dvh - var(--greenlight-header-height, 4rem));
+	min-height: 70vh;
+	min-height: 70dvh;
 }
 
 .page-hero--height-full {
-	min-height: calc(100vh - var(--greenlight-header-height, 4rem));
-	min-height: calc(100dvh - var(--greenlight-header-height, 4rem));
+	min-height: 100vh;
+	min-height: 100dvh;
 }
 
 .page-hero--background-color,
