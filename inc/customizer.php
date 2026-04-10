@@ -418,6 +418,20 @@ function greenlight_customize_register( $wp_customize ) {
 	$add_color( 'greenlight_appearance_navigation', 'color_header_accent', __( 'Accent header', 'greenlight' ), $defaults['color_header_accent'], '', 30 );
 	$add_select( 'greenlight_appearance_navigation', 'header_layout', __( 'Layout header', 'greenlight' ), $header_layout_choices, $defaults['header_layout'], '', 40 );
 	$add_checkbox( 'greenlight_appearance_navigation', 'header_sticky', __( 'Header collant', 'greenlight' ), $defaults['header_sticky'], '', 50 );
+
+	$add_setting( 'header_opacity', $defaults['header_opacity'], function( $v ) { return max( 0, min( 100, absint( $v ) ) ); } );
+	$wp_customize->add_control(
+		greenlight_customize_appearance_setting_id( 'header_opacity' ),
+		array(
+			'label'       => __( 'Opacité du header (%)', 'greenlight' ),
+			'section'     => 'greenlight_appearance_navigation',
+			'settings'    => greenlight_customize_appearance_setting_id( 'header_opacity' ),
+			'type'        => 'number',
+			'input_attrs' => array( 'min' => 0, 'max' => 100, 'step' => 5 ),
+			'priority'    => 55,
+		)
+	);
+
 	$add_checkbox( 'greenlight_appearance_navigation', 'show_tagline', __( 'Afficher la description du site', 'greenlight' ), $defaults['show_tagline'], '', 60 );
 	$add_select( 'greenlight_appearance_navigation', 'nav_link_case', __( 'Casse menu', 'greenlight' ), $nav_case_choices, $defaults['nav_link_case'], '', 80 );
 	$add_select( 'greenlight_appearance_navigation', 'submenu_style', __( 'Sous-menus', 'greenlight' ), $submenu_choices, $defaults['submenu_style'], '', 90 );

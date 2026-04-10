@@ -179,6 +179,7 @@ function greenlight_get_appearance_defaults() {
 		'color_header_accent'      => '',
 		'header_layout'            => 'inline',
 		'header_sticky'            => 0,
+		'header_opacity'           => 90,
 		'nav_link_case'            => 'normal',
 		'submenu_style'            => 'plain',
 		'show_tagline'             => 0,
@@ -723,6 +724,12 @@ function greenlight_output_appearance_variants() {
 		}
 	}
 
+	// Header opacity — only inject when not fully opaque (saves a CSS variable).
+	$header_opacity = isset( $opts['header_opacity'] ) ? absint( $opts['header_opacity'] ) : 90;
+	if ( 100 !== $header_opacity ) {
+		$css .= '--greenlight-header-opacity:' . number_format( $header_opacity / 100, 2 ) . ';';
+	}
+
 	if ( '' !== $css ) {
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<style id="greenlight-appearance-variants">:root{' . $css . '}</style>' . "\n";
@@ -810,6 +817,7 @@ function greenlight_sanitize_appearance_settings( $input ) {
 			? sanitize_key( $input['header_layout'] )
 			: $defaults['header_layout'],
 		'header_sticky'            => isset( $input['header_sticky'] ) ? 1 : 0,
+		'header_opacity'           => max( 0, min( 100, absint( $input['header_opacity'] ?? $defaults['header_opacity'] ) ) ),
 		'nav_link_case'            => in_array( $input['nav_link_case'] ?? '', array( 'normal', 'uppercase' ), true )
 			? sanitize_key( $input['nav_link_case'] )
 			: $defaults['nav_link_case'],
