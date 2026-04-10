@@ -164,6 +164,7 @@ function greenlight_get_appearance_defaults() {
 		'carbon_badge_value'       => '',
 		'carbon_badge_position'    => 'top',
 		'newsletter_enabled'       => 1,
+		'newsletter_placement'     => 'footer',
 		// Couleurs.
 		'color_primary'            => '',
 		'color_surface'            => '',
@@ -178,10 +179,10 @@ function greenlight_get_appearance_defaults() {
 		'color_header_accent'      => '',
 		'header_layout'            => 'inline',
 		'header_sticky'            => 0,
+		'header_opacity'           => 90,
 		'nav_link_case'            => 'normal',
 		'submenu_style'            => 'plain',
 		'show_tagline'             => 0,
-		'show_header_cta'          => 1,
 		// Hero.
 		'hero_enabled'             => 1,
 		'hero_style'               => 'asymmetric',
@@ -195,13 +196,23 @@ function greenlight_get_appearance_defaults() {
 		'hero_subheading_text'     => '',
 		'hero_height_mode'         => 'content',
 		'hero_overlay_strength'    => 'soft',
+		'hero_overlay_opacity'     => 40,
+		'hero_overlay_direction'   => 'full',
+		'hero_cta_enabled'         => 0,
+		'hero_cta_text'            => '',
+		'hero_cta_url'             => '',
+		'hero_cta_style'           => 'primary',
+		'hero_cta_position'        => 'lead',
+		'hero_cta2_enabled'        => 0,
+		'hero_cta2_text'           => '',
+		'hero_cta2_url'            => '',
+		'hero_cta2_style'          => 'secondary',
 		'show_hero_badge'          => 1,
 		'hero_text'                => '',
 		// Single.
 		'show_date'                => 1,
 		'show_author'              => 1,
 		'show_tags'                => 1,
-		'show_newsletter_single'   => 1,
 		// Archive.
 		'archive_layout'           => 'asymmetric',
 		'archive_card_style'       => 'balanced',
@@ -214,6 +225,8 @@ function greenlight_get_appearance_defaults() {
 		'show_low_emission'        => 1,
 		'custom_copyright'         => '',
 		'show_footer_nav'          => 1,
+		// Navigation mobile.
+		'nav_style'                => 'inline',
 	);
 }
 
@@ -711,6 +724,12 @@ function greenlight_output_appearance_variants() {
 		}
 	}
 
+	// Header opacity — only inject when not fully opaque (saves a CSS variable).
+	$header_opacity = isset( $opts['header_opacity'] ) ? absint( $opts['header_opacity'] ) : 90;
+	if ( 100 !== $header_opacity ) {
+		$css .= '--greenlight-header-opacity:' . number_format( $header_opacity / 100, 2 ) . ';';
+	}
+
 	if ( '' !== $css ) {
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<style id="greenlight-appearance-variants">:root{' . $css . '}</style>' . "\n";
@@ -779,6 +798,9 @@ function greenlight_sanitize_appearance_settings( $input ) {
 			? sanitize_key( (string) $input['carbon_badge_position'] )
 			: $defaults['carbon_badge_position'],
 		'newsletter_enabled'       => isset( $input['newsletter_enabled'] ) ? 1 : 0,
+		'newsletter_placement'     => in_array( $input['newsletter_placement'] ?? '', array( 'header', 'footer', 'both', 'none' ), true )
+			? sanitize_key( $input['newsletter_placement'] )
+			: $defaults['newsletter_placement'],
 		// Couleurs.
 		'color_primary'            => $sanitize_color( $input['color_primary'] ?? '' ),
 		'color_surface'            => $sanitize_color( $input['color_surface'] ?? '' ),
@@ -795,6 +817,7 @@ function greenlight_sanitize_appearance_settings( $input ) {
 			? sanitize_key( $input['header_layout'] )
 			: $defaults['header_layout'],
 		'header_sticky'            => isset( $input['header_sticky'] ) ? 1 : 0,
+		'header_opacity'           => max( 0, min( 100, absint( $input['header_opacity'] ?? $defaults['header_opacity'] ) ) ),
 		'nav_link_case'            => in_array( $input['nav_link_case'] ?? '', array( 'normal', 'uppercase' ), true )
 			? sanitize_key( $input['nav_link_case'] )
 			: $defaults['nav_link_case'],
@@ -802,7 +825,6 @@ function greenlight_sanitize_appearance_settings( $input ) {
 			? sanitize_key( $input['submenu_style'] )
 			: $defaults['submenu_style'],
 		'show_tagline'             => isset( $input['show_tagline'] ) ? 1 : 0,
-		'show_header_cta'          => isset( $input['show_header_cta'] ) ? 1 : 0,
 		// Hero.
 		'hero_enabled'             => isset( $input['hero_enabled'] ) ? 1 : 0,
 		'hero_style'               => in_array( $input['hero_style'] ?? '', array( 'asymmetric', 'centered' ), true )
@@ -830,13 +852,28 @@ function greenlight_sanitize_appearance_settings( $input ) {
 		'hero_overlay_strength'    => in_array( $input['hero_overlay_strength'] ?? '', array( 'none', 'soft', 'strong' ), true )
 			? sanitize_key( $input['hero_overlay_strength'] )
 			: $defaults['hero_overlay_strength'],
+		'hero_overlay_opacity'     => max( 0, min( 100, absint( $input['hero_overlay_opacity'] ?? $defaults['hero_overlay_opacity'] ) ) ),
+		'hero_overlay_direction'   => in_array( $input['hero_overlay_direction'] ?? '', array( 'full', 'top', 'bottom', 'left', 'right' ), true )
+			? sanitize_key( $input['hero_overlay_direction'] )
+			: $defaults['hero_overlay_direction'],
+		'hero_cta_enabled'         => isset( $input['hero_cta_enabled'] ) ? 1 : 0,
+		'hero_cta_text'            => sanitize_text_field( $input['hero_cta_text'] ?? '' ),
+		'hero_cta_url'             => esc_url_raw( $input['hero_cta_url'] ?? '' ),
+		'hero_cta_style'           => in_array( $input['hero_cta_style'] ?? '', array( 'primary', 'secondary', 'tertiary' ), true )
+			? sanitize_key( $input['hero_cta_style'] ) : 'primary',
+		'hero_cta_position'        => in_array( $input['hero_cta_position'] ?? '', array( 'lead', 'body', 'center' ), true )
+			? sanitize_key( $input['hero_cta_position'] ) : 'lead',
+		'hero_cta2_enabled'        => isset( $input['hero_cta2_enabled'] ) ? 1 : 0,
+		'hero_cta2_text'           => sanitize_text_field( $input['hero_cta2_text'] ?? '' ),
+		'hero_cta2_url'            => esc_url_raw( $input['hero_cta2_url'] ?? '' ),
+		'hero_cta2_style'          => in_array( $input['hero_cta2_style'] ?? '', array( 'primary', 'secondary', 'tertiary' ), true )
+			? sanitize_key( $input['hero_cta2_style'] ) : 'secondary',
 		'show_hero_badge'          => isset( $input['show_hero_badge'] ) ? 1 : 0,
 		'hero_text'                => isset( $input['hero_text'] ) ? sanitize_textarea_field( $input['hero_text'] ) : '',
 		// Single.
 		'show_date'                => isset( $input['show_date'] ) ? 1 : 0,
 		'show_author'              => isset( $input['show_author'] ) ? 1 : 0,
 		'show_tags'                => isset( $input['show_tags'] ) ? 1 : 0,
-		'show_newsletter_single'   => isset( $input['show_newsletter_single'] ) ? 1 : 0,
 		// Archive.
 		'archive_layout'           => in_array( $input['archive_layout'] ?? '', array( 'asymmetric', 'list' ), true )
 			? sanitize_key( $input['archive_layout'] )
@@ -857,6 +894,10 @@ function greenlight_sanitize_appearance_settings( $input ) {
 		'show_low_emission'        => isset( $input['show_low_emission'] ) ? 1 : 0,
 		'custom_copyright'         => isset( $input['custom_copyright'] ) ? sanitize_text_field( $input['custom_copyright'] ) : '',
 		'show_footer_nav'          => isset( $input['show_footer_nav'] ) ? 1 : 0,
+		// Navigation mobile.
+		'nav_style'                => in_array( $input['nav_style'] ?? '', array( 'inline', 'burger' ), true )
+			? sanitize_key( $input['nav_style'] )
+			: $defaults['nav_style'],
 	);
 }
 
@@ -2058,11 +2099,6 @@ function greenlight_render_admin_tab_performance() {
 	</form>
 
 		<div class="greenlight-admin-tab-panel__actions">
-			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-						<input type="hidden" name="action" value="greenlight_purge_cache">
-						<?php wp_nonce_field( 'greenlight_purge_cache' ); ?>
-						<button type="submit" class="button button-secondary"><?php esc_html_e( 'Purger le cache HTML', 'greenlight' ); ?></button>
-					</form>
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 						<input type="hidden" name="action" value="greenlight_purge_cache">
 						<?php wp_nonce_field( 'greenlight_purge_cache' ); ?>

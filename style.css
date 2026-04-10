@@ -126,23 +126,34 @@ body.front-page {
 	flex-wrap: wrap;
 	gap: var(--wp--preset--spacing--sm);
 	padding-block: var(--wp--preset--spacing--md);
-	background: var(--greenlight-header-bg, transparent);
 	color: var(--greenlight-header-text, inherit);
 	border-radius: var(--greenlight-card-radius, 1em);
 	position: relative;
 	z-index: 20;
 }
 
+.site-header::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background: var(--greenlight-header-bg, var(--wp--preset--color--background, #faf9f4));
+	opacity: var(--greenlight-header-opacity, 1);
+	border-radius: inherit;
+}
+
 .site-header--sticky {
-	position: sticky;
+	position: fixed;
 	top: 0;
+	inset-inline: 0;
 }
 
 @supports (backdrop-filter: blur(1px)) {
-	.site-header--sticky {
+	.site-header--sticky::after {
 		backdrop-filter: blur(12px);
 	}
 }
+
 
 .site-header--layout-stacked {
 	flex-direction: column;
@@ -325,9 +336,14 @@ body.front-page {
 	padding-block: var(--greenlight-section-gap, var(--wp--preset--spacing--xl));
 }
 
-body.home .site-main,
-body.front-page .site-main {
-	padding-block-start: 0;
+/* Header fixe : décale le contenu vers le bas sur les pages sans hero */
+body:has(.site-header--sticky) .site-main {
+	padding-block-start: calc(var(--greenlight-header-height, 5rem) + var(--greenlight-section-gap, var(--wp--preset--spacing--xl)));
+}
+
+/* Avec hero : le hero est au-dessus de main, padding normal */
+.page-hero ~ .site-main {
+	padding-block-start: var(--greenlight-section-gap, var(--wp--preset--spacing--xl));
 }
 
 /* === Carbon Badge pill === */
@@ -357,10 +373,12 @@ body.front-page .site-main {
 }
 
 .page-hero {
+	/* Pleine largeur : casse le padding-inline de <main> ET le padding body de theme.json */
+	margin-inline: calc(50% - 50vw);
 	padding-block: var(--greenlight-section-gap, var(--wp--preset--spacing--xl));
+	padding-inline: var(--wp--preset--spacing--md);
 	position: relative;
 	isolation: isolate;
-	border-radius: var(--greenlight-card-radius, 1em);
 	overflow: clip;
 }
 
@@ -431,12 +449,22 @@ body.front-page .site-main {
 	align-self: center;
 }
 
+/* Tall et Full : header fixe hors flux, le hero démarre à 0 — contenu repoussé sous le header */
+.page-hero--height-tall,
+.page-hero--height-full {
+	padding-block-start: calc(var(--greenlight-section-gap, var(--wp--preset--spacing--xl)) + var(--greenlight-header-height, 5rem));
+}
+
 .page-hero--height-tall {
 	min-height: 70vh;
+	min-height: 70dvh;
 }
 
 .page-hero--height-full {
 	min-height: 100vh;
+	min-height: 100dvh;
+	max-height: 100vh;
+	max-height: 100dvh;
 }
 
 .page-hero--background-color,
@@ -457,12 +485,28 @@ body.front-page .site-main {
 	color: color-mix(in srgb, var(--wp--preset--color--surface-alt) 82%, transparent);
 }
 
-.page-hero--overlay-soft::before {
-	background: linear-gradient(180deg, rgba(47, 52, 45, 0.08), rgba(47, 52, 45, 0.18));
+.page-hero--overlay-none::before {
+	display: none;
 }
 
-.page-hero--overlay-strong::before {
-	background: linear-gradient(180deg, rgba(47, 52, 45, 0.18), rgba(47, 52, 45, 0.38));
+.page-hero--overlay-dir-full::before {
+	background: rgba(47, 52, 45, var(--greenlight-overlay-opacity, 0.18));
+}
+
+.page-hero--overlay-dir-top::before {
+	background: linear-gradient(to bottom, rgba(47, 52, 45, var(--greenlight-overlay-opacity, 0.18)), transparent);
+}
+
+.page-hero--overlay-dir-bottom::before {
+	background: linear-gradient(to top, rgba(47, 52, 45, var(--greenlight-overlay-opacity, 0.18)), transparent);
+}
+
+.page-hero--overlay-dir-left::before {
+	background: linear-gradient(to right, rgba(47, 52, 45, var(--greenlight-overlay-opacity, 0.18)), transparent);
+}
+
+.page-hero--overlay-dir-right::before {
+	background: linear-gradient(to left, rgba(47, 52, 45, var(--greenlight-overlay-opacity, 0.18)), transparent);
 }
 
 .page-intro-simple {
@@ -1183,4 +1227,54 @@ body.front-page .site-main {
 :focus-visible {
 	outline: 2px solid var(--wp--preset--color--primary);
 	outline-offset: 2px;
+}
+
+/* === Hero CTA buttons === */
+
+.hero-cta-group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--wp--preset--spacing--sm);
+	margin-block-start: var(--wp--preset--spacing--md);
+}
+
+.page-hero .hero-cta-group--center {
+	flex-basis: 100%;
+	justify-content: center;
+}
+
+.hero-cta {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.65em 1.5em;
+	border-radius: var(--greenlight-button-radius, 0.375rem);
+	font-size: var(--wp--preset--font-size--base, var(--wp--preset--font-size--medium));
+	font-weight: 600;
+	text-decoration: none;
+	letter-spacing: 0.02em;
+	transition: opacity 0.15s ease;
+}
+
+.hero-cta:hover,
+.hero-cta:focus-visible {
+	opacity: 0.88;
+}
+
+.hero-cta--primary {
+	background: linear-gradient(135deg, var(--wp--preset--color--primary), var(--wp--preset--color--primary-dim));
+	color: var(--wp--preset--color--surface-alt);
+}
+
+.hero-cta--secondary {
+	background: var(--wp--preset--color--surface-alt, #e0e3df);
+	color: var(--wp--preset--color--text);
+}
+
+.hero-cta--tertiary {
+	background: transparent;
+	color: inherit;
+	text-decoration: underline;
+	text-decoration-color: var(--wp--preset--color--primary);
+	text-underline-offset: 0.2em;
+	padding-inline: 0.5em;
 }

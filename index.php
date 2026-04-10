@@ -6,6 +6,9 @@
  */
 
 get_header();
+?>
+<main id="main-content" class="site-main">
+<?php
 
 global $wp_query;
 

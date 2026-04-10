@@ -7,7 +7,7 @@
 
 get_header();
 ?>
-
+<main id="main-content" class="site-main">
 <section aria-labelledby="error-heading">
 	<h1 id="error-heading"><?php esc_html_e( 'Page introuvable', 'greenlight' ); ?></h1>
 	<p><?php esc_html_e( 'La page que vous cherchez n\'existe pas ou a été déplacée.', 'greenlight' ); ?></p>
