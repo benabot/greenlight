@@ -23,7 +23,7 @@ if ( false !== strpos( $contents, '<label for="nav-toggle"' ) ) {
 	$failures[] = 'Header still uses a label tied to nav-toggle.';
 }
 
-if ( false === strpos( $contents, '<details class="site-nav-disclosure">' ) ) {
+if ( false === strpos( $contents, '<details class="site-nav-disclosure site-nav-disclosure--mobile">' ) ) {
 	$failures[] = 'Header does not contain a native details disclosure for the mobile menu.';
 }
 
@@ -31,8 +31,8 @@ if ( false === strpos( $contents, '<summary class="nav-burger">' ) ) {
 	$failures[] = 'Header does not contain a summary control for the mobile menu.';
 }
 
-if ( false === strpos( $contents, '<nav class="site-nav"' ) ) {
-	$failures[] = 'Header does not contain the navigation landmark inside the mobile disclosure.';
+if ( false === strpos( $contents, "<?php \$greenlight_render_primary_nav( 'site-nav--mobile' ); ?>" ) ) {
+	$failures[] = 'Header does not contain the mobile navigation landmark inside the disclosure.';
 }
 
 if ( ! empty( $failures ) ) {

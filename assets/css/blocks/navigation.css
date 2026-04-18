@@ -39,6 +39,10 @@
 	min-width: 0;
 }
 
+.site-nav-disclosure--mobile {
+	display: none;
+}
+
 .site-nav-disclosure > summary {
 	display: none;
 	list-style: none;
@@ -52,10 +56,6 @@
 
 .site-nav-disclosure > summary::marker {
 	content: '';
-}
-
-.site-nav-disclosure:not([open]) > .site-nav {
-	display: block;
 }
 
 .nav-burger {
@@ -79,19 +79,24 @@
 }
 
 @media (max-width: 768px) {
-	.site-nav-disclosure {
-		width: 100%;
-	}
-
-	.site-nav-disclosure > summary {
-		display: inline-flex;
-	}
-
-	.site-nav-disclosure:not([open]) > .site-nav {
+	.site-header--nav-style-burger .site-nav--desktop {
 		display: none;
 	}
 
-	.site-nav-disclosure[open] > .site-nav {
+	.site-nav-disclosure--mobile {
+		display: block;
+		width: 100%;
+	}
+
+	.site-nav-disclosure--mobile > summary {
+		display: inline-flex;
+	}
+
+	.site-nav-disclosure--mobile:not([open]) > .site-nav--mobile {
+		display: none;
+	}
+
+	.site-nav-disclosure--mobile[open] > .site-nav--mobile {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
@@ -99,27 +104,27 @@
 		background: var(--wp--preset--color--surface);
 	}
 
-	.site-nav-disclosure[open] > summary svg rect:nth-child(1) {
+	.site-nav-disclosure--mobile[open] > summary svg rect:nth-child(1) {
 		transform: rotate(45deg) translateY(10px);
 	}
 
-	.site-nav-disclosure[open] > summary svg rect:nth-child(2) {
+	.site-nav-disclosure--mobile[open] > summary svg rect:nth-child(2) {
 		opacity: 0;
 	}
 
-	.site-nav-disclosure[open] > summary svg rect:nth-child(3) {
+	.site-nav-disclosure--mobile[open] > summary svg rect:nth-child(3) {
 		transform: rotate(-45deg) translateY(-10px);
 	}
 
-	.site-nav-disclosure > .site-nav ul,
-	.site-nav-disclosure > .site-nav .sub-menu {
+	.site-nav-disclosure--mobile > .site-nav--mobile ul,
+	.site-nav-disclosure--mobile > .site-nav--mobile .sub-menu {
 		flex-direction: column;
 		align-items: flex-start;
 		gap: var(--wp--preset--spacing--xs);
 		width: 100%;
 	}
 
-	.site-nav-disclosure > .site-nav .sub-menu {
+	.site-nav-disclosure--mobile > .site-nav--mobile .sub-menu {
 		position: static;
 		min-width: 0;
 		margin-block-start: 0.25rem;

@@ -26,39 +26,14 @@ $_gl_nav_case         = isset( $_gl_app_h['nav_link_case'] ) && 'uppercase' === 
 $_gl_submenu_style    = isset( $_gl_app_h['submenu_style'] ) && 'surface' === $_gl_app_h['submenu_style'] ? 'surface' : 'plain';
 $_gl_show_tagline     = ! empty( $_gl_app_h['show_tagline'] );
 $_gl_nav_style        = isset( $_gl_app_h['nav_style'] ) && 'burger' === $_gl_app_h['nav_style'] ? 'burger' : 'inline';
-?>
-<header class="site-header site-header--layout-<?php echo esc_attr( $_gl_header_layout ); ?> site-header--nav-<?php echo esc_attr( $_gl_nav_case ); ?> site-header--submenu-<?php echo esc_attr( $_gl_submenu_style ); ?><?php echo $_gl_header_sticky ? ' site-header--sticky' : ''; ?>">
-	<div class="site-branding">
-		<a class="site-brand" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></a>
-		<?php if ( $_gl_show_tagline && get_bloginfo( 'description' ) ) : ?>
-		<p class="site-tagline"><?php echo esc_html( get_bloginfo( 'description' ) ); ?></p>
-		<?php endif; ?>
-	</div>
-	<?php if ( 'burger' === $_gl_nav_style ) : ?>
-	<details class="site-nav-disclosure">
-		<summary class="nav-burger">
-			<span class="sr-only"><?php esc_html_e( 'Ouvrir le menu principal', 'greenlight' ); ?></span>
-			<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-				<rect y="4" width="24" height="2" fill="currentColor"/>
-				<rect y="11" width="24" height="2" fill="currentColor"/>
-				<rect y="18" width="24" height="2" fill="currentColor"/>
-			</svg>
-		</summary>
-		<nav class="site-nav" aria-label="<?php esc_attr_e( 'Navigation principale', 'greenlight' ); ?>">
-			<?php
-			wp_nav_menu(
-				array(
-					'theme_location' => 'primary',
-					'container'      => false,
-					'items_wrap'     => '<ul>%3$s</ul>',
-					'fallback_cb'    => false,
-				)
-			);
-			?>
-		</nav>
-	</details>
-	<?php else : ?>
-	<nav class="site-nav" aria-label="<?php esc_attr_e( 'Navigation principale', 'greenlight' ); ?>">
+$greenlight_render_primary_nav = static function ( $extra_class = '' ) {
+	$nav_class = 'site-nav';
+
+	if ( '' !== $extra_class ) {
+		$nav_class .= ' ' . trim( $extra_class );
+	}
+	?>
+	<nav class="<?php echo esc_attr( $nav_class ); ?>" aria-label="<?php esc_attr_e( 'Navigation principale', 'greenlight' ); ?>">
 		<?php
 		wp_nav_menu(
 			array(
@@ -70,5 +45,30 @@ $_gl_nav_style        = isset( $_gl_app_h['nav_style'] ) && 'burger' === $_gl_ap
 		);
 		?>
 	</nav>
+	<?php
+};
+?>
+<header class="site-header site-header--layout-<?php echo esc_attr( $_gl_header_layout ); ?> site-header--nav-<?php echo esc_attr( $_gl_nav_case ); ?> site-header--submenu-<?php echo esc_attr( $_gl_submenu_style ); ?> site-header--nav-style-<?php echo esc_attr( $_gl_nav_style ); ?><?php echo $_gl_header_sticky ? ' site-header--sticky' : ''; ?>">
+	<div class="site-branding">
+		<a class="site-brand" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></a>
+		<?php if ( $_gl_show_tagline && get_bloginfo( 'description' ) ) : ?>
+		<p class="site-tagline"><?php echo esc_html( get_bloginfo( 'description' ) ); ?></p>
+		<?php endif; ?>
+	</div>
+	<?php if ( 'burger' === $_gl_nav_style ) : ?>
+	<?php $greenlight_render_primary_nav( 'site-nav--desktop' ); ?>
+	<details class="site-nav-disclosure site-nav-disclosure--mobile">
+		<summary class="nav-burger">
+			<span class="sr-only"><?php esc_html_e( 'Ouvrir le menu principal', 'greenlight' ); ?></span>
+			<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+				<rect y="4" width="24" height="2" fill="currentColor"/>
+				<rect y="11" width="24" height="2" fill="currentColor"/>
+				<rect y="18" width="24" height="2" fill="currentColor"/>
+			</svg>
+		</summary>
+		<?php $greenlight_render_primary_nav( 'site-nav--mobile' ); ?>
+	</details>
+	<?php else : ?>
+	<?php $greenlight_render_primary_nav(); ?>
 	<?php endif; ?>
 </header>
