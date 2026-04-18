@@ -4,6 +4,8 @@ Greenlight est un theme WordPress hybride, sobre et ecoresponsable, pense pour r
 
 Le theme s inscrit dans une logique GreenIT: DOM leger, peu de code, peu de poids, peu de scripts, responsive simple a maintenir, et front-end original sans complexite inutile.
 
+> Statut au 2026-04-18 : preproduction avancee. Le theme n est pas pret pour une mise en production sans remediations sur les formulaires publics, l accessibilite mobile et l admin Performance.
+
 ## Objectif
 
 Le theme vise un socle technique simple et durable:

@@ -8,6 +8,12 @@
 
 `feat/eco3` (depuis `dev`)
 
+## Note d’état
+
+- audit production du 2026-04-18 : verdict NO-GO prod
+- remédiation P0/P1 ouverte
+- statut révisé : préprod avancée
+
 ## Positionnement produit
 
 - Greenlight remplace une partie importante de Yoast Premium et WP Rocket pour un site éditorial sobre.
@@ -21,7 +27,7 @@
 | **eco3 — Refactor nav fixe + hero autonome** | ✅ Terminé | Nav `position: fixed` identique partout, hero `<section>` autonome, `<main>` ouvert par chaque template, hero 100vh corrigé, opacité header Customizer |
 | **eco3 — Fix Header+Hero + Overlay + CTA** | ✅ Terminé | Nav transparente, overlay pleine couverture sur header, overlay réglable (opacité+direction), boutons CTA hero |
 | **eco3 — Corrections Customizer & Nav mobile** | ✅ Terminé | Bug purge cache dupliqué, newsletter guard, couleurs Customizer, burger CSS-only |
-| **10 — Audit éco-conception front** | ✅ Terminé | 10A (−85 lignes CSS, admin-preview isolé, multi-sélecteurs), 10B (DOM vérifié), 10C (chaîne HTTP documentée), 10D (0 `@media`, Playwright 320→1920px ✓) |
+| **10 — Audit éco-conception front** | ✅ Terminé | 10A (−85 lignes CSS, admin-preview isolé, multi-sélecteurs), 10B (DOM vérifié), 10C (chaîne HTTP documentée), 10D (audit à reprendre : des `@media` existent hors du front principal) |
 | **9B — Durcissement sécurité** | ✅ Terminé | SVG allowlist, IP anonymisée, upload guards, OPTIMIZE scope |
 | **9A — Personnalisation avancée** | ✅ Terminé | Presets, hero avancé, nav CSS-only, densité par contexte |
 | **8 — Admin UI premium** | ✅ Terminé | Shell premium, navigation numérotée, onglets SEO/Performance/Images/SVG/Outils, smoke test validé |

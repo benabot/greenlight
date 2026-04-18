@@ -1,5 +1,84 @@
 # TODO — Greenlight
 
+## Remédiation audit production — 2026-04-18
+
+### P0 — bloque la prod
+
+- [ ] Implémenter ou retirer les formulaires publics non branchés (newsletter home/single + contact pattern)
+  Fichier principal : `home.php`, `single.php`, `patterns/contact.php`
+  Issue réelle : les formulaires publics existent dans le front mais ne prouvent aucun traitement fonctionnel côté serveur
+  Critère de validation : aucun formulaire public non branché ne reste visible en production
+
+- [ ] Ajouter handlers `admin_post` / `admin_post_nopriv` si les formulaires sont conservés
+  Fichier principal : `functions.php`
+  Issue réelle : aucun handler public n’est actuellement relié aux actions `greenlight_newsletter` et `greenlight_contact`
+  Critère de validation : chaque action publique soumise retourne un flux WordPress valide pour visiteur connecté et non connecté
+
+- [ ] Ajouter retours utilisateur accessibles : succès, erreur, validation, anti-spam, consentement
+  Fichier principal : `home.php`, `single.php`, `patterns/contact.php`
+  Issue réelle : aucun message de succès/erreur, aucune stratégie anti-spam, aucun consentement explicite
+  Critère de validation : parcours clavier complet avec retours lisibles, erreurs liées aux champs et protection minimale anti-spam
+
+- [ ] Corriger l’onglet Performance : supprimer toute imbrication de `<form>`
+  Fichier principal : `inc/admin.php`
+  Issue réelle : l’onglet Performance imbrique plusieurs formulaires dans un formulaire global, markup invalide et sauvegarde fragile
+  Critère de validation : HTML admin valide avec un seul niveau de formulaire par action
+
+- [ ] Corriger la navigation burger mobile pour accessibilité clavier et lecteur d’écran
+  Fichier principal : `header.php`, `assets/css/blocks/navigation.css`
+  Issue réelle : le contrôle burger repose sur un checkbox masqué non focusable et un label visuel
+  Critère de validation : ouverture/fermeture au clavier, état annoncé, navigation exploitable sans souris
+
+- [ ] Corriger le CTA header pour qu’il ne pointe jamais vers `#newsletter` si la cible n’existe pas
+  Fichier principal : `header.php`
+  Issue réelle : le CTA peut être rendu sur des vues sans section `#newsletter`
+  Critère de validation : aucun lien d’ancre cassé depuis le header
+
+### P1 — majeur avant ouverture large
+
+- [ ] Décider ce qui doit sortir du thème vers un plugin compagnon (SEO avancé, redirections, cache, DB cleanup, heartbeat, bulk images, minify/concat)
+  Fichier principal : `functions.php`
+  Issue réelle : le thème embarque un périmètre produit plus large que celui d’un thème de présentation
+  Critère de validation : périmètre thème/plugin explicité et stabilisé dans l’architecture
+
+- [ ] Unifier la langue source du thème (front + admin + libellés système)
+  Fichier principal : `header.php`, `footer.php`, `home.php`, `single.php`, `archive.php`, `functions.php`
+  Issue réelle : mélange français/anglais dans le front et certains libellés système
+  Critère de validation : une langue source cohérente sur le front et l’admin
+
+- [ ] Corriger l’outil import/export pour inclure les redirections, ou réduire sa promesse
+  Fichier principal : `inc/admin.php`
+  Issue réelle : l’export/import des réglages ne couvre pas toutes les données gérées par l’admin
+  Critère de validation : périmètre d’export exact, aligné avec le wording de l’outil
+
+- [ ] Supprimer ou finaliser le mécanisme de preview mort
+  Fichier principal : `front-page.php`
+  Issue réelle : le front page appelle un mécanisme de preview qui n’est pas démontré dans le thème actuel
+  Critère de validation : plus aucun appel vers une preview fantôme, ou flux preview complet et documenté
+
+- [ ] Réconcilier `phpcs` réel avec la doc qui annonce zéro erreur
+  Fichier principal : `PROJECT_STATE.md`, `TODO.md`
+  Issue réelle : la doc annonce un état qualité plus propre que le code actuel
+  Critère de validation : documentation et état réel de `phpcs` alignés
+
+- [ ] Revoir les contrastes insuffisants sur les textes secondaires et captions
+  Fichier principal : `style.css`, `assets/css/blocks/image.css`
+  Issue réelle : plusieurs textes secondaires reposent sur une opacité qui dégrade le contraste réel
+  Critère de validation : contrastes AA tenus sur les petits textes informatifs
+
+- [ ] Vérifier les formulaires publics contre le cache HTML et les nonces
+  Fichier principal : `inc/cache.php`
+  Issue réelle : les formulaires publics doivent rester fiables avec cache HTML actif
+  Critère de validation : soumission valide avec cache activé, sans nonce périmé servi aux visiteurs
+
+### P2 — à corriger pour aligner le produit et la doc
+
+- [ ] Corriger les claims inexacts dans README / PROJECT_STATE / TODO (zéro `@media`, zéro div, PHPCS zéro, etc.)
+- [ ] Corriger les détails de finition restants (`Theme URI`, sélecteurs morts, styles orphelins)
+- [ ] Réduire la logique runtime de génération d’assets en faveur d’un build de déploiement
+- [ ] Ajouter des smoke tests ciblés : nav mobile, sauvegarde admin performance, formulaires publics, CTA header, export/import
+- [ ] Requalifier le statut du thème : préprod solide, pas prod-ready
+
 ## feat/eco3 — Refactor nav fixe + hero autonome (2026-04-10) ✓
 - [x] Abandon fusion header+hero — nav identique et `position: fixed` sur toutes les pages
 - [x] Hero `<section>` autonome entre `</header>` et `<main>` sur la front-page
