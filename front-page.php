@@ -256,7 +256,7 @@ if ( have_posts() ) :
 					<p class="eyebrow"><?php esc_html_e( 'Aperçu article', 'greenlight' ); ?></p>
 					<h2 id="greenlight-preview-single-title"><?php esc_html_e( 'Article et footer', 'greenlight' ); ?></h2>
 					<p class="greenlight-preview-variant greenlight-preview-single-variant"><?php esc_html_e( 'Éditorial', 'greenlight' ); ?></p>
-					<p class="archive-note"><?php esc_html_e( 'Cette zone reflète le gabarit article, les tags et la newsletter.', 'greenlight' ); ?></p>
+					<p class="archive-note"><?php esc_html_e( 'Cette zone reflète le gabarit article, les tags et la hiérarchie de lecture.', 'greenlight' ); ?></p>
 				</section>
 				<article class="entry entry--single greenlight-preview-single">
 					<header class="entry-header">
@@ -285,15 +285,6 @@ if ( have_posts() ) :
 						</ul>
 					</footer>
 				</article>
-				<section id="newsletter" class="newsletter-cta newsletter-cta--centered greenlight-preview-newsletter" aria-labelledby="greenlight-preview-newsletter-heading">
-					<h2 id="greenlight-preview-newsletter-heading"><?php esc_html_e( 'Bloc newsletter', 'greenlight' ); ?></h2>
-					<p><?php esc_html_e( 'Ce bloc reflète l\'activation du CTA en bas d\'un article.', 'greenlight' ); ?></p>
-					<form class="newsletter-form" action="#" method="post">
-						<label for="greenlight-preview-email" class="sr-only"><?php esc_html_e( 'Adresse email', 'greenlight' ); ?></label>
-						<input type="email" id="greenlight-preview-email" placeholder="<?php esc_attr_e( 'prenom@email.com', 'greenlight' ); ?>">
-						<button type="button"><?php esc_html_e( 'S\'abonner', 'greenlight' ); ?></button>
-					</form>
-				</section>
 				<section class="greenlight-preview-section" aria-labelledby="greenlight-preview-footer-title">
 					<p class="eyebrow"><?php esc_html_e( 'Aperçu footer', 'greenlight' ); ?></p>
 					<h2 id="greenlight-preview-footer-title"><?php esc_html_e( 'Footer et mentions', 'greenlight' ); ?></h2>

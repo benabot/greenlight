@@ -441,7 +441,7 @@ function greenlight_customize_register( $wp_customize ) {
 		__( 'Navigation mobile', 'greenlight' ),
 		array(
 			'inline' => __( 'Inline (défaut)', 'greenlight' ),
-			'burger' => __( 'Menu burger CSS-only', 'greenlight' ),
+			'burger' => __( 'Menu burger natif', 'greenlight' ),
 		),
 		$defaults['nav_style'],
 		'',

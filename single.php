@@ -17,9 +17,6 @@ $_gl_app             = array_merge(
 $_gl_show_author     = ! empty( $_gl_app['show_author'] );
 $_gl_show_date       = ! empty( $_gl_app['show_date'] );
 $_gl_show_tags       = ! empty( $_gl_app['show_tags'] );
-$_gl_newsletter_on    = ! empty( $_gl_app['newsletter_enabled'] );
-$_gl_newsletter_place = isset( $_gl_app['newsletter_placement'] ) ? $_gl_app['newsletter_placement'] : 'footer';
-$_gl_show_newsletter  = $_gl_newsletter_on && in_array( $_gl_newsletter_place, array( 'footer', 'both' ), true );
 
 if ( have_posts() ) :
 	while ( have_posts() ) :
@@ -109,20 +106,6 @@ if ( have_posts() ) :
 			)
 		);
 		?>
-
-		<?php if ( $_gl_show_newsletter ) : ?>
-		<section id="newsletter" class="newsletter-cta newsletter-cta--centered" aria-labelledby="newsletter-single-heading">
-			<h2 id="newsletter-single-heading"><?php esc_html_e( 'Vous avez aimé cet article ?', 'greenlight' ); ?></h2>
-			<p><?php esc_html_e( 'Recevez les prochains directement dans votre boîte.', 'greenlight' ); ?></p>
-			<form class="newsletter-form" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
-				<input type="hidden" name="action" value="greenlight_newsletter">
-				<?php wp_nonce_field( 'greenlight_newsletter', 'greenlight_newsletter_nonce' ); ?>
-				<label for="newsletter-email-single" class="sr-only"><?php esc_html_e( 'Adresse email', 'greenlight' ); ?></label>
-				<input type="email" id="newsletter-email-single" name="email" placeholder="<?php esc_attr_e( 'votre@email.com', 'greenlight' ); ?>" required>
-				<button type="submit"><?php esc_html_e( "S'abonner", 'greenlight' ); ?></button>
-			</form>
-		</section>
-		<?php endif; ?>
 
 		<?php
 		if ( comments_open() || get_comments_number() ) :

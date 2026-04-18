@@ -139,24 +139,6 @@ $home_count    = (int) $wp_query->found_posts;
 
 	<?php the_posts_pagination(); ?>
 
-	<?php
-	$_gl_newsletter_on    = ! empty( $_gl_app['newsletter_enabled'] );
-	$_gl_newsletter_place = isset( $_gl_app['newsletter_placement'] ) ? $_gl_app['newsletter_placement'] : 'footer';
-	if ( $_gl_newsletter_on && in_array( $_gl_newsletter_place, array( 'footer', 'both' ), true ) ) :
-	?>
-	<section id="newsletter" class="newsletter-cta" aria-labelledby="newsletter-heading">
-		<h2 id="newsletter-heading"><?php esc_html_e( 'Restez informé', 'greenlight' ); ?></h2>
-		<p><?php esc_html_e( 'Recevez les prochains articles directement dans votre boîte.', 'greenlight' ); ?></p>
-		<form class="newsletter-form" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
-			<input type="hidden" name="action" value="greenlight_newsletter">
-			<?php wp_nonce_field( 'greenlight_newsletter', 'greenlight_newsletter_nonce' ); ?>
-			<label for="newsletter-email-home" class="sr-only"><?php esc_html_e( 'Adresse email', 'greenlight' ); ?></label>
-			<input type="email" id="newsletter-email-home" name="email" placeholder="<?php esc_attr_e( 'votre@email.com', 'greenlight' ); ?>" required>
-			<button type="submit"><?php esc_html_e( "S'abonner", 'greenlight' ); ?></button>
-		</form>
-	</section>
-	<?php endif; ?>
-
 <?php else : ?>
 	<p><?php esc_html_e( 'Aucun contenu trouvé.', 'greenlight' ); ?></p>
 <?php endif; ?>

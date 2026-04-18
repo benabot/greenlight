@@ -4,7 +4,7 @@
 
 ### P0 — bloque la prod
 
-- [ ] Implémenter ou retirer les formulaires publics non branchés (newsletter home/single + contact pattern)
+- [x] Implémenter ou retirer les formulaires publics non branchés (newsletter home/single + contact pattern)
   Fichier principal : `home.php`, `single.php`, `patterns/contact.php`
   Issue réelle : les formulaires publics existent dans le front mais ne prouvent aucun traitement fonctionnel côté serveur
   Critère de validation : aucun formulaire public non branché ne reste visible en production
@@ -19,17 +19,17 @@
   Issue réelle : aucun message de succès/erreur, aucune stratégie anti-spam, aucun consentement explicite
   Critère de validation : parcours clavier complet avec retours lisibles, erreurs liées aux champs et protection minimale anti-spam
 
-- [ ] Corriger l’onglet Performance : supprimer toute imbrication de `<form>`
+- [x] Corriger l’onglet Performance : supprimer toute imbrication de `<form>`
   Fichier principal : `inc/admin.php`
   Issue réelle : l’onglet Performance imbrique plusieurs formulaires dans un formulaire global, markup invalide et sauvegarde fragile
   Critère de validation : HTML admin valide avec un seul niveau de formulaire par action
 
-- [ ] Corriger la navigation burger mobile pour accessibilité clavier et lecteur d’écran
+- [x] Corriger la navigation burger mobile pour accessibilité clavier et lecteur d’écran
   Fichier principal : `header.php`, `assets/css/blocks/navigation.css`
   Issue réelle : le contrôle burger repose sur un checkbox masqué non focusable et un label visuel
-  Critère de validation : ouverture/fermeture au clavier, état annoncé, navigation exploitable sans souris
+  Critère de validation : ouverture/fermeture au clavier, état annoncé, navigation exploitable sans souris (commentaire : c'est débile de faire ça il n'y a pas de souris sur téléphone)
 
-- [ ] Corriger le CTA header pour qu’il ne pointe jamais vers `#newsletter` si la cible n’existe pas
+- [x] Corriger le CTA header pour qu’il ne pointe jamais vers `#newsletter` si la cible n’existe pas
   Fichier principal : `header.php`
   Issue réelle : le CTA peut être rendu sur des vues sans section `#newsletter`
   Critère de validation : aucun lien d’ancre cassé depuis le header

@@ -25,15 +25,9 @@ $_gl_header_sticky    = ! empty( $_gl_app_h['header_sticky'] );
 $_gl_nav_case         = isset( $_gl_app_h['nav_link_case'] ) && 'uppercase' === $_gl_app_h['nav_link_case'] ? 'uppercase' : 'normal';
 $_gl_submenu_style    = isset( $_gl_app_h['submenu_style'] ) && 'surface' === $_gl_app_h['submenu_style'] ? 'surface' : 'plain';
 $_gl_show_tagline     = ! empty( $_gl_app_h['show_tagline'] );
-$_gl_newsletter_on    = ! empty( $_gl_app_h['newsletter_enabled'] );
-$_gl_newsletter_place = isset( $_gl_app_h['newsletter_placement'] ) ? $_gl_app_h['newsletter_placement'] : 'footer';
-$_gl_show_cta         = $_gl_newsletter_on && in_array( $_gl_newsletter_place, array( 'header', 'both' ), true );
 $_gl_nav_style        = isset( $_gl_app_h['nav_style'] ) && 'burger' === $_gl_app_h['nav_style'] ? 'burger' : 'inline';
 ?>
 <header class="site-header site-header--layout-<?php echo esc_attr( $_gl_header_layout ); ?> site-header--nav-<?php echo esc_attr( $_gl_nav_case ); ?> site-header--submenu-<?php echo esc_attr( $_gl_submenu_style ); ?><?php echo $_gl_header_sticky ? ' site-header--sticky' : ''; ?>">
-	<?php if ( 'burger' === $_gl_nav_style ) : ?>
-	<input type="checkbox" id="nav-toggle" class="nav-toggle sr-only" aria-hidden="true">
-	<?php endif; ?>
 	<div class="site-branding">
 		<a class="site-brand" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></a>
 		<?php if ( $_gl_show_tagline && get_bloginfo( 'description' ) ) : ?>
@@ -41,14 +35,29 @@ $_gl_nav_style        = isset( $_gl_app_h['nav_style'] ) && 'burger' === $_gl_ap
 		<?php endif; ?>
 	</div>
 	<?php if ( 'burger' === $_gl_nav_style ) : ?>
-	<label for="nav-toggle" class="nav-burger" aria-label="<?php esc_attr_e( 'Menu', 'greenlight' ); ?>">
-		<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-			<rect y="4"  width="24" height="2" fill="currentColor"/>
-			<rect y="11" width="24" height="2" fill="currentColor"/>
-			<rect y="18" width="24" height="2" fill="currentColor"/>
-		</svg>
-	</label>
-	<?php endif; ?>
+	<details class="site-nav-disclosure">
+		<summary class="nav-burger">
+			<span class="sr-only"><?php esc_html_e( 'Ouvrir le menu principal', 'greenlight' ); ?></span>
+			<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+				<rect y="4" width="24" height="2" fill="currentColor"/>
+				<rect y="11" width="24" height="2" fill="currentColor"/>
+				<rect y="18" width="24" height="2" fill="currentColor"/>
+			</svg>
+		</summary>
+		<nav class="site-nav" aria-label="<?php esc_attr_e( 'Navigation principale', 'greenlight' ); ?>">
+			<?php
+			wp_nav_menu(
+				array(
+					'theme_location' => 'primary',
+					'container'      => false,
+					'items_wrap'     => '<ul>%3$s</ul>',
+					'fallback_cb'    => false,
+				)
+			);
+			?>
+		</nav>
+	</details>
+	<?php else : ?>
 	<nav class="site-nav" aria-label="<?php esc_attr_e( 'Navigation principale', 'greenlight' ); ?>">
 		<?php
 		wp_nav_menu(
@@ -61,7 +70,5 @@ $_gl_nav_style        = isset( $_gl_app_h['nav_style'] ) && 'burger' === $_gl_ap
 		);
 		?>
 	</nav>
-	<?php if ( $_gl_show_cta ) : ?>
-	<a href="#newsletter" class="cta-subscribe"><?php esc_html_e( 'Subscribe', 'greenlight' ); ?></a>
 	<?php endif; ?>
 </header>
