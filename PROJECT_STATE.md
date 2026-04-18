@@ -273,8 +273,8 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 ## Phase 6C — Décisions techniques (2026-03-28)
 
 ### Minification
-- **Approche** : CLI (`bin/minify.sh`) génère les `.min.css`/`.min.js` en dev + fallback PHP (`inc/minify.php`) à la volée si `.min` absent
-- **Raison** : pas de build npm, pas de dépendance externe, CLI rapide en dev, fallback sécurise la prod
+- **Approche** : build explicite via `bin/minify.sh` pour produire `.min.css`, `.min.js` et `greenlight-bundle.css`; le front sert les fichiers préconstruits s’ils existent, sinon la source
+- **Raison** : pas de build npm, pas de dépendance externe, CLI rapide en dev/deploiement, zéro écriture disque sur les visites front
 
 ### Cache
 - **Périmètre** : headers HTTP (`Cache-Control`, `Expires`, `ETag`) + page cache HTML statique (`wp-content/cache/greenlight/`)
@@ -323,8 +323,8 @@ git checkout -b feat/admin-ui
 
 | Fichier | Rôle |
 |---------|------|
-| `bin/minify.sh` | CLI PHP — génère `.min.css`/`.min.js` ; préserve le header WP `/* ... */` |
-| `inc/minify.php` | Fallback lazy-generation sur disque + transient 24h ; `greenlight_ensure_min_file()`, `greenlight_clear_min_files()` |
+| `bin/minify.sh` | CLI PHP — génère `.min.css`, `.min.js` et `greenlight-bundle.css` pour le déploiement |
+| `inc/minify.php` | Helpers de nettoyage des sorties buildées ; `greenlight_clear_min_files()` |
 | `inc/cache.php` | Page cache HTML statique (`wp-content/cache/greenlight/`), headers `Cache-Control + Expires + ETag`, purge auto |
 | `inc/svg.php` | Upload SVG conditionnel, sanitisation `DOMDocument` (scripts, `on*`, xlink externes), fix MIME check |
 | `inc/customizer.php` | Customizer natif de l’apparence — Hero, Navigation, Footer, couleurs et variantes de rendu |

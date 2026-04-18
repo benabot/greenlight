@@ -10,102 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Generates the concatenated CSS bundle file.
- *
- * @return bool True on success.
- */
-function greenlight_generate_bundle() {
-	$theme_dir   = get_stylesheet_directory();
-	$bundle_path = $theme_dir . '/assets/css/greenlight-bundle.css';
-
-	$files = array( $theme_dir . '/style.css' );
-
-	$block_files = glob( $theme_dir . '/assets/css/blocks/*.css' );
-
-	if ( $block_files ) {
-		foreach ( $block_files as $file ) {
-			// Skip .min.css files.
-			if ( preg_match( '/\.min\.css$/', $file ) ) {
-				continue;
-			}
-			$files[] = $file;
-		}
-	}
-
-	$css = '';
-
-	foreach ( $files as $file ) {
-		if ( ! file_exists( $file ) ) {
-			continue;
-		}
-
-		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		$content = file_get_contents( $file );
-
-		if ( false !== $content ) {
-			$css .= '/* ' . basename( $file ) . " */\n" . $content . "\n\n";
-		}
-	}
-
-	if ( '' === $css ) {
-		return false;
-	}
-
-	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
-	return false !== file_put_contents( $bundle_path, $css );
-}
-
-/**
- * Returns the latest modification time among CSS sources used in the bundle.
- *
- * @return int
- */
-function greenlight_get_bundle_source_mtime() {
-	$theme_dir = get_stylesheet_directory();
-	$files     = array( $theme_dir . '/style.css' );
-	$max_mtime = 0;
-
-	$block_files = glob( $theme_dir . '/assets/css/blocks/*.css' );
-
-	if ( $block_files ) {
-		foreach ( $block_files as $file ) {
-			if ( preg_match( '/\.min\.css$/', $file ) ) {
-				continue;
-			}
-
-			$files[] = $file;
-		}
-	}
-
-	foreach ( $files as $file ) {
-		if ( file_exists( $file ) ) {
-			$file_mtime = (int) filemtime( $file );
-
-			if ( $file_mtime > $max_mtime ) {
-				$max_mtime = $file_mtime;
-			}
-		}
-	}
-
-	return $max_mtime;
-}
-
-/**
- * Invalidates the bundle when performance options change.
- *
- * @return void
- */
-function greenlight_invalidate_bundle() {
-	$bundle_path = get_stylesheet_directory() . '/assets/css/greenlight-bundle.css';
-
-	if ( file_exists( $bundle_path ) ) {
-		wp_delete_file( $bundle_path );
-	}
-}
-add_action( 'update_option_greenlight_performance_options', 'greenlight_invalidate_bundle' );
-add_action( 'switch_theme', 'greenlight_invalidate_bundle' );
-
-/**
  * Enqueues the concatenated bundle instead of individual styles if enabled.
  *
  * @return void
@@ -119,13 +23,6 @@ function greenlight_maybe_enqueue_bundle() {
 
 	$theme_dir    = get_stylesheet_directory();
 	$bundle_path  = $theme_dir . '/assets/css/greenlight-bundle.css';
-	$bundle_mtime = file_exists( $bundle_path ) ? (int) filemtime( $bundle_path ) : 0;
-	$source_mtime = greenlight_get_bundle_source_mtime();
-
-	// Auto-generate if missing or stale.
-	if ( ! file_exists( $bundle_path ) || $bundle_mtime < $source_mtime ) {
-		greenlight_generate_bundle();
-	}
 
 	if ( ! file_exists( $bundle_path ) ) {
 		return;

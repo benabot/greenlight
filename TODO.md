@@ -75,8 +75,8 @@
 
 - [x] Corriger les claims inexacts dans README / PROJECT_STATE / TODO (zéro `@media`, zéro div, PHPCS zéro, etc.)
 - [x] Corriger les détails de finition restants (`Theme URI`, sélecteurs morts, styles orphelins)
-- [ ] Réduire la logique runtime de génération d’assets en faveur d’un build de déploiement
-- [ ] Ajouter des smoke tests ciblés : nav mobile, sauvegarde admin performance, formulaires publics, CTA header, export/import
+- [x] Réduire la logique runtime de génération d’assets en faveur d’un build de déploiement
+- [x] Ajouter des smoke tests ciblés : nav mobile, sauvegarde admin performance, formulaires publics, CTA header, export/import
 - [x] Requalifier le statut du thème : préprod solide, pas prod-ready
 
 ## feat/eco3 — Refactor nav fixe + hero autonome (2026-04-10) ✓
@@ -257,7 +257,7 @@ Objectif : regrouper tous les réglages du thème dans une page admin top-level 
 Objectif : passer de EcoIndex B à A. Améliorer la compression, le cache, la minification et réduire les requêtes.
 
 - [x] **Minification CLI** : script `bin/minify.sh` — minifie `style.css` → `style.min.css`, chaque `assets/css/blocks/*.css` → `*.min.css`, `assets/js/seo-sidebar.js` → `seo-sidebar.min.js` (sed/awk ou PHP CLI, pas de dépendance npm)
-- [x] **Minification fallback PHP** : `inc/minify.php` — si le `.min` n'existe pas, minification à la volée via `str_replace` (suppression commentaires, whitespace, newlines) + cache transient du résultat
+- [x] **Build de déploiement** : `bin/minify.sh` génère aussi `assets/css/greenlight-bundle.css` ; plus aucune génération lazy côté visiteurs
 - [x] **Enqueue conditionnel** : `functions.php` — charger `.min.css`/`.min.js` si le fichier existe ET que l'option minification est active, sinon fallback sur le fichier source
 - [x] **Page cache HTML** : `inc/cache.php`
   - [x] `ob_start()` dans `template_redirect`, écriture du buffer dans `wp-content/cache/greenlight/` en `.html`
@@ -343,7 +343,7 @@ git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cac
 - [x] **Prefetch DNS / Preconnect** : textarea domaines explicites dans l'admin, injection `<link rel="dns-prefetch/preconnect">` uniquement pour les domaines saisis manuellement, sans auto-détection du contenu (`inc/prefetch.php`)
 - [x] **Database cleanup** : supprimer révisions, brouillons auto, corbeille, spam, transients expirés, optimiser tables — boutons individuels + cron hebdomadaire (`inc/db-cleanup.php`)
 - [x] **Heartbeat control** : admin/éditeur/front séparément — désactiver ou réduire l'intervalle (15s→120s) (`inc/heartbeat.php`)
-- [x] **Concaténation CSS** : bundle unique `greenlight-bundle.css` généré lazy, réduit les requêtes HTTP de ~10 à 1-2, invalidation auto (`inc/concat.php`)
+- [x] **Concaténation CSS** : bundle unique `greenlight-bundle.css` servi seulement s’il a été préconstruit, sinon retour aux feuilles individuelles (`inc/concat.php`)
 
 ### 6D-IMG — Images avancées
 

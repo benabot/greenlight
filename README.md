@@ -169,8 +169,8 @@ Le cache HTML est ecrit dans `wp-content/cache/greenlight/`. Les fichiers minifi
 
 Activer dans l onglet **Performance** pour minimiser les requetes HTTP CSS (9 requetes → 1) :
 
-1. **Concatenation CSS** — groupe `style.css` + les 8 CSS blocs dans un bundle unique `assets/css/greenlight-bundle.css`, genere automatiquement et invalide a chaque modification. Les CSS blocs restent charges conditionnellement via `wp_enqueue_block_style()` si le bundle est desactive.
-2. **Minification CSS/JS** — genere les `.min.css` et `.min.js` a la volee si `bin/minify.sh` n a pas ete execute.
+1. **Concatenation CSS** — groupe `style.css` + les 8 CSS blocs dans un bundle unique `assets/css/greenlight-bundle.css`, construit au deploiement via `bin/minify.sh`. Les CSS blocs restent charges conditionnellement via `wp_enqueue_block_style()` si le bundle est absent ou desactive.
+2. **Minification CSS/JS** — produit `style.min.css`, les `*.min.css` de blocs et `seo-sidebar.min.js` pendant le build. Le front sert la source si les fichiers minifies ne sont pas presents.
 3. **Cache HTML** — ecrit les pages en `.html` statique, servi directement sans execution PHP sur les visites suivantes.
 4. **Critical CSS** — inline `assets/css/critical.css` dans `<head>` et differe le CSS principal via `media="print" onload`.
 
@@ -226,7 +226,7 @@ Mesure prise sur la branche courante le 2026-03-28 (mise a jour Phase 10 : 2026-
 
 Le theme fonctionne sans configuration serveur specifique pour le HTML dynamique: le cache HTML et les headers de page sont geres en PHP pur. En revanche, les fichiers statiques (`style.css`, `.min.css`, `.js`, images, uploads) passent par le serveur web et ont besoin d'un bloc explicite pour obtenir `Cache-Control` / `Expires`.
 
-Le cache HTML est ecrit dans `wp-content/cache/greenlight/`. Les fichiers minifies (`style.min.css`, `assets/css/blocks/*.min.css`, `assets/js/*.min.js`) sont generes localement via `bin/minify.sh` ou a la volee et ne sont pas destines a etre versionnes.
+Le cache HTML est ecrit dans `wp-content/cache/greenlight/`. Les fichiers minifies (`style.min.css`, `assets/css/blocks/*.min.css`, `assets/js/*.min.js`) et le bundle CSS (`assets/css/greenlight-bundle.css`) sont produits via `bin/minify.sh` dans le flux de build/deploiement et ne sont pas destines a etre versionnes.
 
 ### nginx
 

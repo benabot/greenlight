@@ -230,11 +230,16 @@ function greenlight_enqueue_seo_sidebar() {
 		return;
 	}
 
-	$script_path = get_theme_file_path( 'assets/js/seo-sidebar.js' );
+	$perf        = get_option( 'greenlight_performance_options', array() );
+	$use_min     = ! empty( $perf['enable_js_min'] );
+	$script_file = ( $use_min && file_exists( get_theme_file_path( 'assets/js/seo-sidebar.min.js' ) ) )
+		? 'assets/js/seo-sidebar.min.js'
+		: 'assets/js/seo-sidebar.js';
+	$script_path = get_theme_file_path( $script_file );
 
 	wp_enqueue_script(
 		'greenlight-seo-sidebar',
-		get_theme_file_uri( 'assets/js/seo-sidebar.js' ),
+		get_theme_file_uri( $script_file ),
 		array(
 			'wp-block-editor',
 			'wp-components',

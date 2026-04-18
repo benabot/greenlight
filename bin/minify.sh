@@ -74,6 +74,22 @@ file_put_contents($dst, trim($c) . "\n");
     printf '  ✓ %s (%s bytes)\n' "$(basename "$dst")" "$(wc -c < "$dst" | tr -d ' ')"
 }
 
+generate_css_bundle() {
+    local dst="$THEME_DIR/assets/css/greenlight-bundle.css"
+    : > "$dst"
+
+    cat "$THEME_DIR/style.min.css" >> "$dst"
+    printf '\n' >> "$dst"
+
+    for f in "$THEME_DIR/assets/css/blocks/"*.min.css; do
+        [[ -f "$f" ]] || continue
+        cat "$f" >> "$dst"
+        printf '\n' >> "$dst"
+    done
+
+    printf '  ✓ %s (%s bytes)\n' "$(basename "$dst")" "$(wc -c < "$dst" | tr -d ' ')"
+}
+
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
@@ -91,6 +107,9 @@ if [[ "$MODE" != "--js-only" ]]; then
         [[ "$f" == *.min.css ]] && continue
         minify_css "$f"
     done
+
+    printf '\nCSS — bundle\n'
+    generate_css_bundle
 fi
 
 if [[ "$MODE" != "--css-only" ]]; then

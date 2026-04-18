@@ -1794,7 +1794,7 @@ function greenlight_render_admin_tab_performance() {
 		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Cache purge avec succes.', 'greenlight' ) . '</p></div>';
 	}
 	if ( isset( $_GET['regen'] ) && '1' === $_GET['regen'] ) {
-		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Fichiers minifies supprimes: ils seront regeneres au prochain chargement.', 'greenlight' ) . '</p></div>';
+		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Sorties buildées supprimées. Relancez le build de déploiement pour les recréer.', 'greenlight' ) . '</p></div>';
 	}
 	// phpcs:enable
 	?>
@@ -1802,7 +1802,7 @@ function greenlight_render_admin_tab_performance() {
 		<div>
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Performance', 'greenlight' ); ?></p>
 			<h2><?php esc_html_e( 'Cache et diffusion', 'greenlight' ); ?></h2>
-			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Cache, minification et maintenance.', 'greenlight' ); ?></p>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Cache, assets prébuildés et maintenance.', 'greenlight' ); ?></p>
 		</div>
 	</div>
 
@@ -1841,7 +1841,7 @@ function greenlight_render_admin_tab_performance() {
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Diffusion', 'greenlight' ); ?></p>
 						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Fichiers servis', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Réduisez le poids servi. Minification, bundle CSS et critical CSS.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Servez des assets préconstruits au déploiement. Minification, bundle CSS et critical CSS.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="options.php">
@@ -1853,7 +1853,7 @@ function greenlight_render_admin_tab_performance() {
 							<td>
 								<label for="gl-css-min">
 									<input id="gl-css-min" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[enable_css_min]" type="checkbox" value="1" <?php checked( (int) $options['enable_css_min'], 1 ); ?>>
-									<?php esc_html_e( 'Servir les fichiers .min.css.', 'greenlight' ); ?>
+									<?php esc_html_e( 'Servir les fichiers .min.css s’ils sont présents.', 'greenlight' ); ?>
 								</label>
 							</td>
 						</tr>
@@ -1862,7 +1862,7 @@ function greenlight_render_admin_tab_performance() {
 							<td>
 								<label for="gl-js-min">
 									<input id="gl-js-min" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[enable_js_min]" type="checkbox" value="1" <?php checked( (int) $options['enable_js_min'], 1 ); ?>>
-									<?php esc_html_e( 'Servir les fichiers .min.js.', 'greenlight' ); ?>
+									<?php esc_html_e( 'Servir les fichiers .min.js s’ils sont présents.', 'greenlight' ); ?>
 								</label>
 							</td>
 						</tr>
@@ -1871,10 +1871,12 @@ function greenlight_render_admin_tab_performance() {
 							<td>
 								<label for="gl-concat">
 									<input id="gl-concat" name="<?php echo esc_attr( GREENLIGHT_PERF_OPTION_KEY ); ?>[enable_concat]" type="checkbox" value="1" <?php checked( ! empty( $options['enable_concat'] ), true ); ?>>
-									<?php esc_html_e( 'Fusionner style.css et les blocs.', 'greenlight' ); ?>
+									<?php esc_html_e( 'Servir le bundle CSS préconstruit.', 'greenlight' ); ?>
 								</label>
 								<?php if ( $bundle_exists ) : ?>
-									<p class="description"><?php esc_html_e( 'Bundle genere.', 'greenlight' ); ?> (<?php echo esc_html( size_format( (int) filesize( $bundle_path ), 1 ) ); ?>)</p>
+									<p class="description"><?php esc_html_e( 'Bundle détecté.', 'greenlight' ); ?> (<?php echo esc_html( size_format( (int) filesize( $bundle_path ), 1 ) ); ?>)</p>
+								<?php else : ?>
+									<p class="description"><?php esc_html_e( 'Générez le bundle avant déploiement via bin/minify.sh.', 'greenlight' ); ?></p>
 								<?php endif; ?>
 							</td>
 						</tr>
@@ -2055,7 +2057,7 @@ function greenlight_render_admin_tab_performance() {
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Fichiers generes', 'greenlight' ); ?></p>
 						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Sorties générées', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Vérifiez avant régénération.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Vérifiez les sorties issues du build avant déploiement.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<table class="widefat striped">
@@ -2094,7 +2096,7 @@ function greenlight_render_admin_tab_performance() {
 					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 						<input type="hidden" name="action" value="greenlight_regen_min">
 						<?php wp_nonce_field( 'greenlight_regen_min' ); ?>
-						<button type="submit" class="button button-secondary"><?php esc_html_e( 'Supprimer les sorties minifiees', 'greenlight' ); ?></button>
+						<button type="submit" class="button button-secondary"><?php esc_html_e( 'Supprimer les sorties buildées', 'greenlight' ); ?></button>
 					</form>
 				</div>
 			</section>
@@ -2334,7 +2336,7 @@ function greenlight_handle_import() {
 add_action( 'admin_post_greenlight_import', 'greenlight_handle_import' );
 
 /**
- * Supprime les fichiers .min générés pour forcer la régénération lazy au prochain chargement.
+ * Supprime les sorties buildées pour permettre une reconstruction au déploiement.
  *
  * @return void
  */
@@ -2347,9 +2349,6 @@ function greenlight_handle_regen_min() {
 
 	if ( function_exists( 'greenlight_clear_min_files' ) ) {
 		greenlight_clear_min_files();
-	}
-	if ( function_exists( 'greenlight_clear_minify_transients' ) ) {
-		greenlight_clear_minify_transients();
 	}
 
 	wp_safe_redirect( admin_url( 'admin.php?page=greenlight&tab=performance&regen=1' ) );
