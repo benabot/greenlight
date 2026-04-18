@@ -336,7 +336,7 @@ git checkout -b feat/admin-ui
 | `color_background`, `color_tertiary`, `color_border`, `color_on_surface_variant` | `''` | Apparence > Global |
 | `show_tagline` | `0` | Apparence > Header |
 | `show_hero_badge`, `hero_text` | `1`, `''` | Apparence > Hero |
-| `show_date`, `show_author`, `show_tags`, `show_newsletter_single` | `1` | Apparence > Single |
+| `show_date`, `show_author`, `show_tags` | `1` | Apparence > Single |
 | `show_excerpts_archive`, `show_thumbnails_archive` | `1` | Apparence > Archive |
 | `show_low_emission`, `custom_copyright`, `show_footer_nav` | `1`, `''`, `1` | Apparence > Footer |
 
@@ -379,7 +379,6 @@ Deux métriques distinctes :
 | `<a>` site-brand | 1 |
 | `<nav>` principale | 1 |
 | Menu 3 items (WP) : `<ul>` + 3×`<li>` + 3×`<a>` | 7 |
-| `<a>` cta-subscribe | 1 |
 | `<main>` | 1 |
 | `<footer>` | 1 |
 | `<p>` copyright | 1 |
@@ -394,14 +393,13 @@ Config typique retenue (footer nav actif, tagline off, low-emission off) : **22 
 |----------|-------------------|-------------------------------|--------|
 | `front-page.php` | 5 | ~29 | ✅ |
 | `page.php` | 4 | ~35 (+blocs WP) | ✅ |
-| `single.php` (sans newsletter, 3 tags) | 25 | ~57 | ✅ |
-| `single.php` (avec newsletter, 3 tags) | 34 | ~66 | ✅ |
+| `single.php` (3 tags) | 25 | ~57 | ✅ |
 | `404.php` | 3 | ~26 | ✅ |
 | `search.php` (aucun résultat) | 4 | ~27 | ✅ |
 | `search.php` (5 résultats) | 4 + 3×5=19 | ~47 | ✅ |
 | `archive.php` / `home.php` (1 featured + 3 grid) | 34 | ~68 | ✅ |
 | `archive.php` / `home.php` (1 featured + 5 grid) | 34 + 2×14=62 | ~96 | ⚠️ scalable |
-| `home.php` + newsletter (1 featured + 5 grid) | 71 | ~105 | ⚠️ scalable |
+| `home.php` (1 featured + 5 grid) | 62 | ~96 | ⚠️ scalable |
 
 ### Détail single.php (cas le plus riche)
 
@@ -421,9 +419,6 @@ article                                    1
     ul.entry-tags                          1
       li + a × 3                           6
     nav[post-nav] (WP)                     ~4
-[section#newsletter]                       1
-  h2 + p + form                            3
-  input[hidden] + label + input + button   4
 ```
 
 ### Note sur archive/home

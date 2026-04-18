@@ -163,8 +163,6 @@ function greenlight_get_appearance_defaults() {
 		'carbon_badge_enabled'     => 1,
 		'carbon_badge_value'       => '',
 		'carbon_badge_position'    => 'top',
-		'newsletter_enabled'       => 1,
-		'newsletter_placement'     => 'footer',
 		// Couleurs.
 		'color_primary'            => '',
 		'color_surface'            => '',
@@ -797,10 +795,6 @@ function greenlight_sanitize_appearance_settings( $input ) {
 		'carbon_badge_position'    => isset( $input['carbon_badge_position'] ) && isset( $positions[ sanitize_key( (string) $input['carbon_badge_position'] ) ] )
 			? sanitize_key( (string) $input['carbon_badge_position'] )
 			: $defaults['carbon_badge_position'],
-		'newsletter_enabled'       => isset( $input['newsletter_enabled'] ) ? 1 : 0,
-		'newsletter_placement'     => in_array( $input['newsletter_placement'] ?? '', array( 'header', 'footer', 'both', 'none' ), true )
-			? sanitize_key( $input['newsletter_placement'] )
-			: $defaults['newsletter_placement'],
 		// Couleurs.
 		'color_primary'            => $sanitize_color( $input['color_primary'] ?? '' ),
 		'color_surface'            => $sanitize_color( $input['color_surface'] ?? '' ),

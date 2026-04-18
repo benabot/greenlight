@@ -381,23 +381,6 @@ function greenlight_customize_register( $wp_customize ) {
 	$priority += 10;
 	$add_select( 'greenlight_appearance_foundations', 'carbon_badge_position', __( 'Emplacement du badge', 'greenlight' ), $carbon_badge_position_choices, $defaults['carbon_badge_position'], '', $priority );
 	$priority += 10;
-	$add_checkbox( 'greenlight_appearance_foundations', 'newsletter_enabled', __( 'Activer la newsletter', 'greenlight' ), $defaults['newsletter_enabled'], '', $priority );
-	$priority += 10;
-	$add_select(
-		'greenlight_appearance_foundations',
-		'newsletter_placement',
-		__( 'Emplacement newsletter', 'greenlight' ),
-		array(
-			'header' => __( 'Header uniquement', 'greenlight' ),
-			'footer' => __( 'Bas de page / article', 'greenlight' ),
-			'both'   => __( 'Header + bas de page', 'greenlight' ),
-			'none'   => __( 'Nulle part', 'greenlight' ),
-		),
-		$defaults['newsletter_placement'],
-		__( 'Où afficher le CTA d\'abonnement.', 'greenlight' ),
-		$priority
-	);
-	$priority += 10;
 	$add_color( 'greenlight_appearance_foundations', 'color_primary', __( 'Couleur primaire', 'greenlight' ), $defaults['color_primary'], '', $priority );
 	$priority += 10;
 	$add_color( 'greenlight_appearance_foundations', 'color_background', __( 'Fond de page', 'greenlight' ), $defaults['color_background'], '', $priority );

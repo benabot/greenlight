@@ -96,7 +96,7 @@
 
 ## feat/eco3 — Corrections Customizer & Nav mobile (2026-04-08) ✓
 - [x] Double bouton purge cache supprimé — `inc/admin.php`
-- [x] Subscribe nav / newsletter home corrigé — `home.php` garde `newsletter_enabled` (clé cohérente partout)
+- [x] Subscribe nav / CTA header corrigé — aucun reliquat de formulaire ou de CTA newsletter mort conservé côté front
 - [x] Couleurs Customizer — transport color settings `postMessage` → `refresh` dans `inc/customizer.php`
 - [x] Bug "texte aligné à droite" — aucun `text-align: right` trouvé, bug absent du code actuel
 - [x] Hero pleine largeur 100vw — déjà implémenté via `"align":"full"` dans `patterns/hero.php`
@@ -201,8 +201,8 @@ Objectif : aligner le rendu front sur l'esthétique "Organic Minimalism" des maq
 - [x] **Header** : `header.php` — site-title à gauche, nav centrée, CTA Subscribe à droite (flex, `justify-content: space-between`, pas de div wrapper)
 - [x] **Hero (front-page)** : `front-page.php` + pattern `hero.php` — titre surdimensionné (xx-large, letter-spacing -0.03em) aligné gauche, paragraphe descriptif aligné droite (asymétrie volontaire), Carbon Badge pill en haut
 - [x] **Carbon Badge** : composant PHP `greenlight_carbon_badge()` — calcul simplifié (DOM count + poids estimé page) affiché en pill `tertiary-container`, surcharge manuelle possible via option admin
-- [x] **Index/home** : `home.php` + `index.php` — premier article en layout 50/50 (image + texte via flex), articles suivants en alternance image gauche/droite, section newsletter CTA en bas (surface background)
-- [x] **Single** : `single.php` — catégorie en pill + CO2 badge, titre large (xx-large), meta auteur + date en flex space-between, image hero pleine largeur, contenu 65ch, blockquote avec bordure gauche primary + italique, tags en pills, section newsletter en bas
+- [x] **Index/home** : `home.php` + `index.php` — premier article en layout 50/50 (image + texte via flex), articles suivants en alternance image gauche/droite
+- [x] **Single** : `single.php` — catégorie en pill + CO2 badge, titre large (xx-large), meta auteur + date en flex space-between, image hero pleine largeur, contenu 65ch, blockquote avec bordure gauche primary + italique, tags en pills
 - [x] **Archive** : `archive.php` — titre éditorial large, lead text, grille asymétrique (premier article large, suivants en 2 colonnes flex), pagination stylisée
 - [x] **Footer** : `footer.php` — copyright + liens secondaires (flex wrap) + mention "Low Emission Mode" à droite, surface background
 - [x] **Surfaces & profondeur** : CSS — pas de bordures 1px, différenciation par chromatic shifts (surfaces), ombres "Whisper Shadow" (`0 20px 40px rgba(47, 52, 45, 0.04)`) uniquement sur éléments flottants
@@ -292,7 +292,7 @@ Objectif : passer de EcoIndex B à A. Améliorer la compression, le cache, la mi
 | `header.php` | A | Layout flex 3 zones |
 | `footer.php` | A | Layout flex copyright + nav + low emission |
 | `front-page.php` | A | Hero asymétrique + Carbon Badge |
-| `home.php` | A | Layout alternance + newsletter CTA |
+| `home.php` | A | Layout alternance éditorial |
 | `single.php` | A | Pills catégorie, meta flex, blockquote |
 | `archive.php` | A | Grille asymétrique, pagination |
 | `patterns/*.php` | A | Alignement nouvelle palette |
@@ -461,7 +461,7 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 - [x] **Mutualiser `.page-hero` et `.archive-intro`** — multi-sélecteurs CSS, suppression de la duplication lead/h1/body (2026-04-08)
 - [x] **Variables density** — vérifiées : injectées via `greenlight_output_appearance_variants()` → `wp_head` dans `inc/admin.php`. Pas de zombies, système cohérent (2026-04-08)
 - [x] **`backdrop-filter: blur(16px)`** sur `.site-header--sticky` — conditionné avec `@supports`, rayon réduit à 12px (2026-04-08)
-- [x] **Supprimer les transitions inutiles** — 12 → 7 transitions dans style.css (−5) : supprimées sur `.entry-title a`, `.entry-more`, `.post-navigation a`, `.pagination`, `.footer-nav a` (faible engagement) ; conservées sur `.site-brand`, nav underline, submenu, `.cta-subscribe`, category pill, tag pill, newsletter button (2026-04-08)
+- [x] **Supprimer les transitions inutiles** — 12 → 7 transitions dans style.css (−5) : supprimées sur `.entry-title a`, `.entry-more`, `.post-navigation a`, `.pagination`, `.footer-nav a` (faible engagement) ; reliquats CTA/newsletter morts retirés ensuite le 2026-04-18
 - [x] **Séparer les styles preview-admin** — 69 lignes `.greenlight-preview-*` extraites vers `assets/css/admin-preview.css` lors de l’itération du 2026-04-08 ; mécanisme retiré du front le 2026-04-18
 - [x] **Sélecteurs redondants** — `.site-header--nav-uppercase .site-nav a { text-transform: uppercase }` supprimé (doublon de la règle de base) (2026-04-08)
 - [x] **critical.css corrigé** — 3 sélecteurs périmés mis à jour : `.skip-link` aligné sur style.css, `.site-nav` → `.site-nav ul`, `.hero-lead` → `.hero-description` (2026-04-08)

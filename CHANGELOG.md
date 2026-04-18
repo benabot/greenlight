@@ -31,7 +31,7 @@
 
 ### Fixed
 - Double bouton "Purger le cache HTML" dans l'onglet Performance de l'admin (`inc/admin.php`).
-- Bouton Subscribe toujours affiché malgré l'option "Afficher la newsletter" décochée — section newsletter de `home.php` gardée par `newsletter_enabled`.
+- Reliquat newsletter/Subscribe retiré ensuite du thème : plus de CTA public ni de réglage zombie associé côté front.
 - Bouton Subscribe visible par défaut sans action utilisateur — default `show_header_cta` passé de `1` à `0` dans `inc/admin.php`.
 - Nav couvrant le hero sur la home — suppression du `margin-block-start` négatif sur `.site-main` et du `padding-block-start` compensatoire sur `.page-hero` ; nav et hero en flux normal.
 - Couleurs du Customizer nécessitant sauvegarde + rechargement pour s'appliquer — transport des color settings changé de `postMessage` à `refresh` dans `inc/customizer.php`.
