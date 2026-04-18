@@ -9,15 +9,15 @@
   Issue réelle : les formulaires publics existent dans le front mais ne prouvent aucun traitement fonctionnel côté serveur
   Critère de validation : aucun formulaire public non branché ne reste visible en production
 
-- [ ] Ajouter handlers `admin_post` / `admin_post_nopriv` si les formulaires sont conservés
+- [x] Ajouter handlers `admin_post` / `admin_post_nopriv` si les formulaires sont conservés
   Fichier principal : `functions.php`
-  Issue réelle : aucun handler public n’est actuellement relié aux actions `greenlight_newsletter` et `greenlight_contact`
-  Critère de validation : chaque action publique soumise retourne un flux WordPress valide pour visiteur connecté et non connecté
+  Issue réelle : sans objet après retrait des formulaires publics non branchés du front
+  Critère de validation : aucun flux public fictif ne reste exposé
 
-- [ ] Ajouter retours utilisateur accessibles : succès, erreur, validation, anti-spam, consentement
+- [x] Ajouter retours utilisateur accessibles : succès, erreur, validation, anti-spam, consentement
   Fichier principal : `home.php`, `single.php`, `patterns/contact.php`
-  Issue réelle : aucun message de succès/erreur, aucune stratégie anti-spam, aucun consentement explicite
-  Critère de validation : parcours clavier complet avec retours lisibles, erreurs liées aux champs et protection minimale anti-spam
+  Issue réelle : sans objet après retrait des formulaires publics non branchés du front
+  Critère de validation : aucun formulaire public natif ne promet un traitement inexistant
 
 - [x] Corriger l’onglet Performance : supprimer toute imbrication de `<form>`
   Fichier principal : `inc/admin.php`
@@ -27,7 +27,7 @@
 - [x] Corriger la navigation burger mobile pour accessibilité clavier et lecteur d’écran
   Fichier principal : `header.php`, `assets/css/blocks/navigation.css`
   Issue réelle : le contrôle burger repose sur un checkbox masqué non focusable et un label visuel
-  Critère de validation : ouverture/fermeture au clavier, état annoncé, navigation exploitable sans souris (commentaire : c'est débile de faire ça il n'y a pas de souris sur téléphone)
+  Critère de validation : ouverture/fermeture au clavier, état annoncé, navigation exploitable sans souris
 
 - [x] Corriger le CTA header pour qu’il ne pointe jamais vers `#newsletter` si la cible n’existe pas
   Fichier principal : `header.php`
@@ -36,10 +36,10 @@
 
 ### P1 — majeur avant ouverture large
 
-- [ ] Décider ce qui doit sortir du thème vers un plugin compagnon (SEO avancé, redirections, cache, DB cleanup, heartbeat, bulk images, minify/concat)
+- [x] Décider ce qui doit sortir du thème vers un plugin compagnon (SEO avancé, redirections, cache, DB cleanup, heartbeat, bulk images, minify/concat)
   Fichier principal : `functions.php`
-  Issue réelle : le thème embarque un périmètre produit plus large que celui d’un thème de présentation
-  Critère de validation : périmètre thème/plugin explicité et stabilisé dans l’architecture
+  Issue réelle : décision prise côté produit le 2026-04-18 : périmètre conservé dans le thème avant ouverture plus large
+  Critère de validation : arbitrage explicite dans le plan et cohérent avec l’état du repo
 
 - [ ] Unifier la langue source du thème (front + admin + libellés système)
   Fichier principal : `header.php`, `footer.php`, `home.php`, `single.php`, `archive.php`, `functions.php`

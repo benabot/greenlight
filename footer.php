@@ -22,7 +22,7 @@ $_gl_badge    = greenlight_carbon_badge( 'footer' );
 		<?php else : ?>
 			&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?>
 			<strong><?php echo esc_html( strtoupper( get_bloginfo( 'name' ) ) ); ?></strong>.
-			<?php esc_html_e( 'DESIGNED FOR PERMANENCE.', 'greenlight' ); ?>
+			<?php esc_html_e( 'CONÇU POUR DURER.', 'greenlight' ); ?>
 		<?php endif; ?>
 		<?php if ( '' !== $_gl_badge ) : ?>
 			<span class="footer-copy__badge"><?php echo $_gl_badge; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
@@ -43,7 +43,7 @@ $_gl_badge    = greenlight_carbon_badge( 'footer' );
 	</nav>
 	<?php endif; ?>
 	<?php if ( $_gl_low_em ) : ?>
-	<p class="footer-emission"><?php esc_html_e( '☘ LOW EMISSION MODE', 'greenlight' ); ?></p>
+	<p class="footer-emission"><?php esc_html_e( '☘ MODE BASSE ÉMISSION', 'greenlight' ); ?></p>
 	<?php endif; ?>
 </footer>
 <?php wp_footer(); ?>

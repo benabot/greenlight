@@ -289,7 +289,7 @@
 				var copyStrong = document.createElement( 'strong' );
 				copyStrong.textContent = ( config.siteTitle || '' ).toUpperCase() + '.';
 				copy.appendChild( copyStrong );
-				copy.appendChild( document.createTextNode( ' DESIGNED FOR PERMANENCE.' ) );
+				copy.appendChild( document.createTextNode( ' CONÇU POUR DURER.' ) );
 
 				if ( copyBadge ) {
 					copy.appendChild( copyBadge );

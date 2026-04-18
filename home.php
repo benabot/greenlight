@@ -83,7 +83,7 @@ $home_count    = (int) $wp_query->found_posts;
 			<?php if ( $_gl_show_excerpts ) : ?>
 				<p class="entry-summary"><?php echo esc_html( wp_trim_words( get_the_excerpt(), 36, '…' ) ); ?></p>
 			<?php endif; ?>
-			<a href="<?php the_permalink(); ?>" class="entry-more"><?php esc_html_e( 'Read Manifesto →', 'greenlight' ); ?></a>
+			<a href="<?php the_permalink(); ?>" class="entry-more"><?php esc_html_e( 'Lire l’article →', 'greenlight' ); ?></a>
 		</div>
 	</article>
 
@@ -129,7 +129,7 @@ $home_count    = (int) $wp_query->found_posts;
 						<?php if ( $_gl_show_excerpts ) : ?>
 							<p class="entry-summary"><?php echo esc_html( wp_trim_words( get_the_excerpt(), 20, '…' ) ); ?></p>
 						<?php endif; ?>
-						<a href="<?php the_permalink(); ?>" class="entry-more"><?php esc_html_e( 'Read Manifesto →', 'greenlight' ); ?></a>
+						<a href="<?php the_permalink(); ?>" class="entry-more"><?php esc_html_e( 'Lire l’article →', 'greenlight' ); ?></a>
 					</div>
 				</article>
 			</li>

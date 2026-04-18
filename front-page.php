@@ -296,7 +296,7 @@ if ( have_posts() ) :
 						<span class="greenlight-preview-footer-text">
 							&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?>
 							<strong><?php echo esc_html( strtoupper( get_bloginfo( 'name' ) ) ); ?></strong>.
-							<?php esc_html_e( 'DESIGNED FOR PERMANENCE.', 'greenlight' ); ?>
+							<?php esc_html_e( 'CONÇU POUR DURER.', 'greenlight' ); ?>
 						</span>
 						<span class="footer-copy__badge"><?php echo greenlight_carbon_badge( 'footer' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</p>
@@ -307,7 +307,7 @@ if ( have_posts() ) :
 							<li><a href="#preview-footer-3"><?php esc_html_e( 'Contact', 'greenlight' ); ?></a></li>
 						</ul>
 					</nav>
-					<p class="footer-emission"><?php esc_html_e( '☘ LOW EMISSION MODE', 'greenlight' ); ?></p>
+					<p class="footer-emission"><?php esc_html_e( '☘ MODE BASSE ÉMISSION', 'greenlight' ); ?></p>
 				</div>
 			</div>
 			<?php

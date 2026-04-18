@@ -2077,7 +2077,7 @@ function greenlight_render_admin_tab_performance() {
 							<?php
 							$exists       = file_exists( $path );
 							$status_class = $exists ? 'greenlight-admin-state greenlight-admin-state--ok' : 'greenlight-admin-state greenlight-admin-state--off';
-							$status_label = $exists ? __( 'Present', 'greenlight' ) : __( 'Absent', 'greenlight' );
+							$status_label = $exists ? __( 'Présent', 'greenlight' ) : __( 'Absent', 'greenlight' );
 							$size_label   = $exists ? size_format( (int) filesize( $path ), 1 ) : '—';
 							$mtime_markup = '';
 

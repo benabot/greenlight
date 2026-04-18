@@ -72,8 +72,8 @@ function greenlight_setup() {
 	// Register navigation menus.
 	register_nav_menus(
 		array(
-			'primary' => __( 'Primary Navigation', 'greenlight' ),
-			'footer'  => __( 'Footer Navigation', 'greenlight' ),
+			'primary' => __( 'Navigation principale', 'greenlight' ),
+			'footer'  => __( 'Navigation secondaire', 'greenlight' ),
 		)
 	);
 }

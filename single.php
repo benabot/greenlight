@@ -41,7 +41,7 @@ if ( have_posts() ) :
 					<?php endif; ?>
 					<?php if ( $_gl_show_date ) : ?>
 					<span class="entry-date">
-						<?php esc_html_e( 'PUBLISHED', 'greenlight' ); ?>
+						<?php esc_html_e( 'Publié', 'greenlight' ); ?>
 						<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date( 'F j, Y' ) ); ?></time>
 					</span>
 					<?php endif; ?>
