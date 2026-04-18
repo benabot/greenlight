@@ -10,6 +10,54 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Sanitizes the redirects settings payload before saving it as an option.
+ *
+ * @param mixed $input Raw redirects payload.
+ * @return array<int, array<string, int|string>>
+ */
+function greenlight_sanitize_redirects_settings( $input ) {
+	if ( ! is_array( $input ) ) {
+		return array();
+	}
+
+	$sanitized = array();
+
+	foreach ( $input as $rule ) {
+		if ( ! is_array( $rule ) ) {
+			continue;
+		}
+
+		$source      = isset( $rule['source'] ) ? sanitize_text_field( (string) $rule['source'] ) : '';
+		$destination = isset( $rule['destination'] ) ? esc_url_raw( (string) $rule['destination'] ) : '';
+		$code        = isset( $rule['code'] ) ? (int) $rule['code'] : 301;
+		$hits        = isset( $rule['hits'] ) ? max( 0, (int) $rule['hits'] ) : 0;
+		$created_at  = isset( $rule['created_at'] ) ? sanitize_text_field( (string) $rule['created_at'] ) : current_time( 'mysql' );
+
+		if ( '' !== $source && '/' !== $source[0] ) {
+			$source = '/' . $source;
+		}
+
+		if ( '' === $source || '' === $destination ) {
+			continue;
+		}
+
+		if ( ! in_array( $code, array( 301, 302 ), true ) ) {
+			$code = 301;
+		}
+
+		$sanitized[] = array(
+			'source'      => $source,
+			'destination' => $destination,
+			'code'        => $code,
+			'hits'        => $hits,
+			'created_at'  => '' !== $created_at ? $created_at : current_time( 'mysql' ),
+		);
+	}
+
+	return $sanitized;
+}
+
+/**
  * Handles redirect rules on template_redirect.
  *
  * @return void
@@ -145,7 +193,7 @@ function greenlight_handle_add_redirect() {
 		'created_at'  => current_time( 'mysql' ),
 	);
 
-	update_option( 'greenlight_redirects', $redirects, false );
+	update_option( 'greenlight_redirects', greenlight_sanitize_redirects_settings( $redirects ), false );
 
 	wp_safe_redirect( admin_url( 'admin.php?page=greenlight&tab=seo&redirect_added=1' ) );
 	exit;
@@ -275,7 +323,7 @@ function greenlight_handle_import_redirects() {
 		++$imported;
 	}
 
-	update_option( 'greenlight_redirects', $redirects, false );
+	update_option( 'greenlight_redirects', greenlight_sanitize_redirects_settings( $redirects ), false );
 
 	wp_safe_redirect( admin_url( 'admin.php?page=greenlight&tab=seo&redirects_imported=' . $imported ) );
 	exit;

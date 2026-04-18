@@ -26,7 +26,7 @@
 |-------|--------|-------|
 | **eco3 — Refactor nav fixe + hero autonome** | ✅ Terminé | Nav `position: fixed` identique partout, hero `<section>` autonome, `<main>` ouvert par chaque template, hero 100vh corrigé, opacité header Customizer |
 | **eco3 — Fix Header+Hero + Overlay + CTA** | ✅ Terminé | Nav transparente, overlay pleine couverture sur header, overlay réglable (opacité+direction), boutons CTA hero |
-| **eco3 — Corrections Customizer & Nav mobile** | ✅ Terminé | Bug purge cache dupliqué, newsletter guard, couleurs Customizer, burger CSS-only |
+| **eco3 — Corrections Customizer & Nav mobile** | ✅ Terminé | Bug purge cache dupliqué, newsletter guard, couleurs Customizer, burger natif sans JS front |
 | **10 — Audit éco-conception front** | ✅ Terminé | 10A (−85 lignes CSS, admin-preview isolé, multi-sélecteurs), 10B (DOM vérifié), 10C (chaîne HTTP documentée), 10D (audit à reprendre : des `@media` existent hors du front principal) |
 | **9B — Durcissement sécurité** | ✅ Terminé | SVG allowlist, IP anonymisée, upload guards, OPTIMIZE scope |
 | **9A — Personnalisation avancée** | ✅ Terminé | Presets, hero avancé, nav CSS-only, densité par contexte |
@@ -98,7 +98,7 @@ Auto-enregistrés via headers PHP (WP 6.0+), catégorie `greenlight` enregistré
 |---------|------|-------------|
 | `patterns/hero.php` | `greenlight/hero` | Group pleine largeur, bg surface, h1 xx-large letter-spacing -0.03em, description large, 2 boutons (primary + outline) |
 | `patterns/cards.php` | `greenlight/cards` | Group wide + h2 + core/columns 3 colonnes, chaque colonne = group is-style-card |
-| `patterns/contact.php` | `greenlight/contact` | Group wide bg surface + h2 centré + formulaire HTML natif (admin-post.php + nonce WP) |
+| `patterns/contact.php` | `greenlight/contact` | Group wide bg surface + h2 centré + contenu de contact sans faux formulaire public |
 | `patterns/header.php` | `greenlight/header` | Group full flex space-between : core/site-title bold -0.02em + core/navigation |
 | `patterns/footer.php` | `greenlight/footer` | Group full flex bg surface : copyright dynamique + core/navigation secondaire |
 
@@ -228,7 +228,7 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 ### Phase 7 — Avancement actuel
 
 - [x] PHPCS ciblé validé sur `inc/admin.php` et `inc/seo-fields.php`
-- [x] PHPCS global du thème sans erreurs ni warnings
+- [x] PHPCS ciblé validé sur `inc/admin.php` et `inc/seo-fields.php`; état global historique à revalider dans un environnement avec WordPress Coding Standards installés
 - [x] Runtime admin corrigé: `inc/heartbeat.php` ne déclenche plus `get_current_screen()` hors contexte compatible, ce qui supprime le 502 sur `wp-admin/`
 - [x] Smoke-test navigateur: home, archive et login admin validés dans Playwright sur `http://localhost:8888/greenlight/`
 - [x] Lighthouse validé: perf 100, a11y 95, SEO 100, best practices 100
@@ -249,7 +249,7 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 - [x] Onglets SEO, Performance, Images, SVG, Outils refondus
 - [x] Apparence simplifié en hub vers le Customizer (rail latéral supprimé)
 - [x] Fatal error `$emit_perf_hidden_fields` corrigé (closure manquante)
-- [x] PHPCS zéro erreur sur 30 fichiers PHP modifiés
+- [x] Nettoyage PHPCS réalisé sur les fichiers modifiés de la phase; résultat local à revalider avec WordPress Coding Standards disponibles
 - [x] Smoke test navigateur : SEO ✓ Performance ✓ Images ✓
 - [x] Responsive 768px et 1280px validés, zéro erreur JS console
 

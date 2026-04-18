@@ -846,7 +846,6 @@ body:has(.site-header--sticky) .site-main {
 	font-size: var(--wp--preset--font-size--small);
 	font-style: italic;
 	color: var(--wp--preset--color--on-surface-variant);
-	opacity: 0.6;
 	margin-top: 0.5em;
 }
 

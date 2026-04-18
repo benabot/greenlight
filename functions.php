@@ -102,16 +102,6 @@ function greenlight_enqueue() {
 		filemtime( get_stylesheet_directory() . '/' . $style_file )
 	);
 
-	// Styles preview Customizer — uniquement dans l'aperçu admin, jamais côté visiteurs.
-	if ( is_customize_preview() ) {
-		wp_enqueue_style(
-			'greenlight-admin-preview',
-			get_stylesheet_directory_uri() . '/assets/css/admin-preview.css',
-			array( 'greenlight-style' ),
-			filemtime( get_stylesheet_directory() . '/assets/css/admin-preview.css' )
-		);
-	}
-
 	// Remove jQuery on the front end — zero JS policy.
 	wp_deregister_script( 'jquery' );
 }

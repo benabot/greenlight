@@ -2196,7 +2196,7 @@ function greenlight_render_admin_tab_tools() {
 		<div>
 			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Outils', 'greenlight' ); ?></p>
 			<h2><?php esc_html_e( 'Import / export', 'greenlight' ); ?></h2>
-			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Exportez et importez les réglages sans toucher au contenu.', 'greenlight' ); ?></p>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Exportez et importez les réglages et redirections sans toucher au contenu.', 'greenlight' ); ?></p>
 		</div>
 	</div>
 
@@ -2207,7 +2207,7 @@ function greenlight_render_admin_tab_tools() {
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Export', 'greenlight' ); ?></p>
 						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Exporter le JSON', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Réglages Greenlight.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Réglages et redirections Greenlight.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
@@ -2222,7 +2222,7 @@ function greenlight_render_admin_tab_tools() {
 					<div>
 						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Import', 'greenlight' ); ?></p>
 						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Restaurer un JSON', 'greenlight' ); ?></h3>
-						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Snapshot Greenlight.', 'greenlight' ); ?></p>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Réglages et redirections Greenlight.', 'greenlight' ); ?></p>
 					</div>
 				</div>
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data">
@@ -2262,6 +2262,7 @@ function greenlight_handle_export() {
 		'images'                    => get_option( GREENLIGHT_IMAGES_OPTION_KEY, array() ),
 		'performance'               => get_option( GREENLIGHT_PERF_OPTION_KEY, array() ),
 		'appearance'                => get_option( GREENLIGHT_APPEARANCE_OPTION_KEY, array() ),
+		'redirects'                  => get_option( 'greenlight_redirects', array() ),
 		'svg'                       => get_option( GREENLIGHT_SVG_OPTION_KEY, array() ),
 	);
 
@@ -2323,6 +2324,7 @@ function greenlight_handle_import() {
 		'images'      => array( GREENLIGHT_IMAGES_OPTION_KEY, 'greenlight_sanitize_images_settings' ),
 		'performance' => array( GREENLIGHT_PERF_OPTION_KEY, 'greenlight_sanitize_performance_settings' ),
 		'appearance'  => array( GREENLIGHT_APPEARANCE_OPTION_KEY, 'greenlight_sanitize_appearance_settings' ),
+		'redirects'   => array( 'greenlight_redirects', 'greenlight_sanitize_redirects_settings' ),
 		'svg'         => array( GREENLIGHT_SVG_OPTION_KEY, 'greenlight_sanitize_svg_settings' ),
 	);
 

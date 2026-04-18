@@ -41,35 +41,35 @@
   Issue réelle : décision prise côté produit le 2026-04-18 : périmètre conservé dans le thème avant ouverture plus large
   Critère de validation : arbitrage explicite dans le plan et cohérent avec l’état du repo
 
-- [ ] Unifier la langue source du thème (front + admin + libellés système)
+- [x] Unifier la langue source du thème (front + admin + libellés système)
   Fichier principal : `header.php`, `footer.php`, `home.php`, `single.php`, `archive.php`, `functions.php`
   Issue réelle : mélange français/anglais dans le front et certains libellés système
   Critère de validation : une langue source cohérente sur le front et l’admin
 
-- [ ] Corriger l’outil import/export pour inclure les redirections, ou réduire sa promesse
+- [x] Corriger l’outil import/export pour inclure les redirections, ou réduire sa promesse
   Fichier principal : `inc/admin.php`
   Issue réelle : l’export/import des réglages ne couvre pas toutes les données gérées par l’admin
   Critère de validation : périmètre d’export exact, aligné avec le wording de l’outil
 
-- [ ] Supprimer ou finaliser le mécanisme de preview mort
+- [x] Supprimer ou finaliser le mécanisme de preview mort
   Fichier principal : `front-page.php`
   Issue réelle : le front page appelle un mécanisme de preview qui n’est pas démontré dans le thème actuel
   Critère de validation : plus aucun appel vers une preview fantôme, ou flux preview complet et documenté
 
-- [ ] Réconcilier `phpcs` réel avec la doc qui annonce zéro erreur
+- [x] Réconcilier `phpcs` réel avec la doc qui annonce zéro erreur
   Fichier principal : `PROJECT_STATE.md`, `TODO.md`
   Issue réelle : la doc annonce un état qualité plus propre que le code actuel
   Critère de validation : documentation et état réel de `phpcs` alignés
 
-- [ ] Revoir les contrastes insuffisants sur les textes secondaires et captions
+- [x] Revoir les contrastes insuffisants sur les textes secondaires et captions
   Fichier principal : `style.css`, `assets/css/blocks/image.css`
   Issue réelle : plusieurs textes secondaires reposent sur une opacité qui dégrade le contraste réel
   Critère de validation : contrastes AA tenus sur les petits textes informatifs
 
-- [ ] Vérifier les formulaires publics contre le cache HTML et les nonces
+- [x] Vérifier les formulaires publics contre le cache HTML et les nonces
   Fichier principal : `inc/cache.php`
-  Issue réelle : les formulaires publics doivent rester fiables avec cache HTML actif
-  Critère de validation : soumission valide avec cache activé, sans nonce périmé servi aux visiteurs
+  Issue réelle : sans objet après retrait des formulaires publics natifs du front
+  Critère de validation : aucun nonce public périmé ne peut être servi par le cache HTML du thème
 
 ### P2 — à corriger pour aligner le produit et la doc
 
@@ -359,9 +359,9 @@ git add -A && git commit -m "Phase 6C/C: Éco-optimisation — minification, cac
 - [x] Responsive 320px → 1920px et front sans JS validés dans Playwright (Codex, 2026-03-28)
 - [x] Theme Check installé, activé et exécuté; warnings WordPress.org attendus sur les fonctions assumées du thème (Codex, 2026-03-28)
 - [x] Theme Check plugin (conformité WordPress.org) - warnings restants consignés et assumés (Codex, 2026-03-28)
-- [x] PHPCS WordPress Coding Standards — scan complet zéro erreur/warning (2026-04-08)
+- [x] PHPCS WordPress Coding Standards — nettoyage ciblé réalisé; scan global à revalider dans un environnement équipé de WPCS (2026-04-08, note révisée le 2026-04-18)
   - [x] Nettoyage ciblé sur `inc/admin.php` et `inc/seo-fields.php` (Codex, 2026-03-28)
-  - [x] PHPCS global du thème sans erreurs ni warnings (Codex, 2026-03-28)
+  - [x] État global historiquement annoncé comme propre, mais à revalider localement avec WordPress Coding Standards installés (note 2026-04-18)
 - [x] Validation W3C HTML sans erreur sur home et archive; seuls des avertissements informatifs restent sur les slashes des void elements (Codex, 2026-03-28)
 - [x] Vérification accessibilité proxy VoiceOver via Playwright: landmarks, skip link, focus clavier, arbre a11y cohérents (Codex, 2026-03-28)
 - [x] Test VoiceOver macOS natif non requis pour cette phase (décidé par le projet; proxy Playwright déjà validé) (Codex, 2026-03-28)
@@ -408,7 +408,7 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 - [x] Aucun changement de logique métier
 - [x] Aucune régression sur les formulaires `options.php`, `admin-post.php` et `admin-ajax.php`
 - [x] Aucun changement du rendu front
-- [x] PHPCS et `php -l` sur les fichiers PHP modifiés — zéro erreur
+- [x] `php -l` validé sur les fichiers PHP modifiés; résultat PHPCS à revalider localement avec WordPress Coding Standards installés
 - [x] Smoke test navigateur sur `SEO`, `Performance`, `Images` — OK, fix fatal `$emit_perf_hidden_fields` appliqué
 
 ## Phase 9 — Valeur produit sans alourdir
@@ -462,7 +462,7 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 - [x] **Variables density** — vérifiées : injectées via `greenlight_output_appearance_variants()` → `wp_head` dans `inc/admin.php`. Pas de zombies, système cohérent (2026-04-08)
 - [x] **`backdrop-filter: blur(16px)`** sur `.site-header--sticky` — conditionné avec `@supports`, rayon réduit à 12px (2026-04-08)
 - [x] **Supprimer les transitions inutiles** — 12 → 7 transitions dans style.css (−5) : supprimées sur `.entry-title a`, `.entry-more`, `.post-navigation a`, `.pagination`, `.footer-nav a` (faible engagement) ; conservées sur `.site-brand`, nav underline, submenu, `.cta-subscribe`, category pill, tag pill, newsletter button (2026-04-08)
-- [x] **Séparer les styles preview-admin** — 69 lignes `.greenlight-preview-*` extraites vers `assets/css/admin-preview.css`, enqueué uniquement en `is_customize_preview()` (2026-04-08)
+- [x] **Séparer les styles preview-admin** — 69 lignes `.greenlight-preview-*` extraites vers `assets/css/admin-preview.css` lors de l’itération du 2026-04-08 ; mécanisme retiré du front le 2026-04-18
 - [x] **Sélecteurs redondants** — `.site-header--nav-uppercase .site-nav a { text-transform: uppercase }` supprimé (doublon de la règle de base) (2026-04-08)
 - [x] **critical.css corrigé** — 3 sélecteurs périmés mis à jour : `.skip-link` aligné sur style.css, `.site-nav` → `.site-nav ul`, `.hero-lead` → `.hero-description` (2026-04-08)
 
@@ -470,7 +470,7 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 
 **Constat :** header/footer sont exemplaires (DOM minimal, HTML sémantique pur). Problèmes localisés dans `front-page.php`.
 
-- [x] **`data-greenlight-page-title` et `data-greenlight-page-excerpt`** dans `front-page.php` — conditionnés à `$_gl_preview_mode`, absents pour les visiteurs normaux (2026-04-08)
+- [x] **`data-greenlight-page-title` et `data-greenlight-page-excerpt`** dans `front-page.php` — historique 2026-04-08 ; mécanisme de preview fantôme retiré du front le 2026-04-18
 - [x] **`<div class="page-content">`** dans `front-page.php` — investigué : conservé, ce wrapper applique la contrainte 65ch + flex-gap sur les blocs Gutenberg via `.page-content` CSS. Suppression impossible sans régression de mise en page (2026-04-08)
 - [x] **Double rendu hero en preview** — validé : en production, une seule section est rendue (if/else PHP). En preview Customizer, `hidden` est un attribut HTML natif (display:none UA stylesheet), zéro JS requis pour l'état initial. Le toggle JS du Customizer ne concerne que l'iframe preview qui a toujours JS. (2026-04-08)
 - [x] **Audit DOM re-vérifié** — Phase 10 ne change aucun élément HTML (attributs + CSS uniquement). Comptages Phase 6C toujours valides. Note ajoutée dans `PROJECT_STATE.md` (2026-04-08)
