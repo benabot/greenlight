@@ -29,7 +29,7 @@
 | **eco3 — Corrections Customizer & Nav mobile** | ✅ Terminé | Bug purge cache dupliqué, newsletter guard, couleurs Customizer, burger natif sans JS front |
 | **10 — Audit éco-conception front** | ✅ Terminé | 10A (−85 lignes CSS, admin-preview isolé, multi-sélecteurs), 10B (DOM vérifié), 10C (chaîne HTTP documentée), 10D (audit à reprendre : des `@media` existent hors du front principal) |
 | **9B — Durcissement sécurité** | ✅ Terminé | SVG allowlist, IP anonymisée, upload guards, OPTIMIZE scope |
-| **9A — Personnalisation avancée** | ✅ Terminé | Presets, hero avancé, nav CSS-only, densité par contexte |
+| **9A — Personnalisation avancée** | ✅ Terminé | Presets, hero avancé, nav sans JS front, densité par contexte |
 | **8 — Admin UI premium** | ✅ Terminé | Shell premium, navigation numérotée, onglets SEO/Performance/Images/SVG/Outils, smoke test validé |
 
 ## Commits réalisés
@@ -37,7 +37,7 @@
 | Hash | Phase | Description |
 |------|-------|-------------|
 | `755382c` | Phase 1 | Squelette du thème — style.css, theme.json, functions.php, templates de base |
-| `928e025` | Phase 2 | Templates PHP — DOM sémantique minimal, zéro div, aria-labelledby |
+| `928e025` | Phase 2 | Templates PHP — DOM sémantique minimal, wrappers limités et aria-labelledby |
 | `c1ba006` | Phase 3 | CSS éco-conçu — block styles conditionnels, Green Precision aesthetic |
 | `43801df` | Phase 4 | Patterns Gutenberg — hero, cards, contact, header, footer + catégorie Greenlight |
 | `44bde7b` | Phase 7 | Fix breadcrumbs and Composer tooling |
@@ -200,9 +200,9 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 - [x] Zéro jQuery (`wp_deregister_script('jquery')` côté front)
 - [x] Zéro dépendance externe (CDN, polyfill, librairie)
 - [x] Quasi-zéro JS front (seul `seo-sidebar.js` côté éditeur)
-- [x] DOM minimal — zéro `<div>` wrapper non sémantique
+- [x] DOM minimal — wrappers limités aux besoins de structure et de layout
 - [x] CSS minimal — design system dans theme.json, styles blocs conditionnels
-- [x] Responsive sans `@media` — flexbox + clamp() uniquement
+- [x] Responsive majoritairement fluide — `clamp()`, flexbox et `@media` limitées aux bascules utiles
 - [x] i18n — toutes chaînes dans `__()` / `_e()` / `esc_html_e()` avec text domain `greenlight`
 - [x] Sécurité — `esc_*()` sur toute sortie PHP
 - [x] Emoji WordPress désactivés côté front via `greenlight_disable_emojis()` (Codex, 2026-03-27)
@@ -214,7 +214,7 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 | Phase | Statut | Notes |
 |-------|--------|-------|
 | **9B — Durcissement sécurité** | ✅ Terminé | SVG allowlist, IP anonymisée, upload guards, OPTIMIZE scope |
-| **9A — Personnalisation avancée** | ✅ Terminé | Presets, hero avancé, nav CSS-only, densité par contexte |
+| **9A — Personnalisation avancée** | ✅ Terminé | Presets, hero avancé, nav sans JS front, densité par contexte |
 | **8 — Admin UI premium** | ✅ Terminé | Shell premium, navigation numérotée, onglets, smoke test validé |
 | **7 — Tests** | ✅ Terminé | Lighthouse, Theme Check, PHPCS global, W3C, responsive 320→1920px, JS-off |
 | **6C/C — Éco-optimisation** | ✅ Terminé | bin/minify.sh, inc/minify.php, inc/cache.php, inc/svg.php |
@@ -257,7 +257,7 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 
 - [x] Presets éditoriaux (Minimal, Magazine, Studio, Journal)
 - [x] Hero avancé : image/couleur/dégradé, titre, sous-titre, hauteur, mode simple
-- [x] Navigation avancée : couleurs, sticky, sous-menus CSS-only
+- [x] Navigation avancée : couleurs, sticky, sous-menus sans JS front
 - [x] Variantes archives, cartes, single et footer
 - [x] Densité visuelle par contexte (home, archives, single, pages)
 - [x] SVG allowlist (19 éléments sûrs) + suppression `foreignObject`/`animate`/`style`
@@ -288,8 +288,8 @@ Font family : `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', A
 - **Raison** : préserver la compatibilité éditeur Gutenberg, optimiser tout le reste
 
 ### Admin
-- **Structure** : page top-level "Greenlight" avec 6 onglets CSS-only (SEO, Images, Performance, Apparence, SVG, Outils)
-- **Outils** : Import/Export JSON de tous les réglages (`greenlight_handle_export`, `greenlight_handle_import`)
+- **Structure** : page top-level "Greenlight" avec 6 onglets sans JS dédié (SEO, Images, Performance, Apparence, SVG, Outils)
+- **Outils** : Import/Export JSON des réglages et redirections (`greenlight_handle_export`, `greenlight_handle_import`)
 - **Apparence** : hub léger vers le Customizer WordPress natif — Global, Header, Hero, Single, Archive, Footer, avec aperçu live
 - **Performance** : tableau statut fichiers `.min`, détection serveur (nginx/Apache), bouton régénération
 - **Prefetch** : uniquement les domaines explicites saisis dans l'admin; plus de détection automatique des URLs externes ni de cron associé

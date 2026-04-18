@@ -73,11 +73,11 @@
 
 ### P2 — à corriger pour aligner le produit et la doc
 
-- [ ] Corriger les claims inexacts dans README / PROJECT_STATE / TODO (zéro `@media`, zéro div, PHPCS zéro, etc.)
-- [ ] Corriger les détails de finition restants (`Theme URI`, sélecteurs morts, styles orphelins)
+- [x] Corriger les claims inexacts dans README / PROJECT_STATE / TODO (zéro `@media`, zéro div, PHPCS zéro, etc.)
+- [x] Corriger les détails de finition restants (`Theme URI`, sélecteurs morts, styles orphelins)
 - [ ] Réduire la logique runtime de génération d’assets en faveur d’un build de déploiement
 - [ ] Ajouter des smoke tests ciblés : nav mobile, sauvegarde admin performance, formulaires publics, CTA header, export/import
-- [ ] Requalifier le statut du thème : préprod solide, pas prod-ready
+- [x] Requalifier le statut du thème : préprod solide, pas prod-ready
 
 ## feat/eco3 — Refactor nav fixe + hero autonome (2026-04-10) ✓
 - [x] Abandon fusion header+hero — nav identique et `position: fixed` sur toutes les pages
@@ -102,7 +102,7 @@
 - [x] Hero pleine largeur 100vw — déjà implémenté via `"align":"full"` dans `patterns/hero.php`
 - [x] Hero 100vw CSS — `margin-inline: calc(50% - 50vw)` + `padding-inline` sur `.page-hero` (`style.css`)
 - [x] Nav visuellement dans le hero — `margin-block-start` négatif sur `.site-main` + `padding-block-start` compensatoire, variable `--greenlight-header-height`
-- [x] Menu burger CSS-only — `<input>` + `<label>` + SVG, option Customizer `nav_style` (inline/burger)
+- [x] Menu burger natif sans JS front — contrôle mobile basé sur `<details>/<summary>`, option Customizer `nav_style` conservée (inline/burger)
 
 ## Phase 1 — Squelette du thème ✓
 - [x] Créer le dossier `greenlight/` dans wp-content/themes/
@@ -110,14 +110,14 @@
 - [x] `theme.json` v3 : design system complet (couleurs, typo system-ui fluid, spacing clamp, layout, block settings, custom:false)
 - [x] `functions.php` : add_theme_support (title-tag, post-thumbnails, html5, responsive-embeds, editor-styles, wp-block-styles, align-wide), deregister jQuery côté front, enqueue style.css
 - [x] `index.php` : template fallback minimal (DOM léger)
-- [x] `header.php` : skip link + `<header>` + `<nav aria-label>` + wp_head() — zéro div wrapper
-- [x] `footer.php` : `<footer>` + wp_footer() — zéro div wrapper
+- [x] `header.php` : skip link + `<header>` + `<nav aria-label>` + wp_head() — wrappers limités aux besoins de structure
+- [x] `footer.php` : `<footer>` + wp_footer() — wrappers limités et cohérents avec le markup WordPress
 - [x] `screenshot.png` 1200×900 (Codex, 2026-03-27)
 - [x] Valider : thème activable, Gutenberg charge theme.json, zéro jQuery côté front — smoke test Playwright 2026-04-08 : jQuery absent, `--wp--preset--*` présents, `<main id="main-content">` + skip link OK. Warning : preload hero JPG non consommé (voir Phase 11 potentielle)
 
 ## Phase 2 — Templates PHP (DOM minimal) ✓
 - [x] `front-page.php` : accueil — HTML sémantique pur, sections avec aria-labelledby
-- [x] `single.php` : article — `<article>` + `<header>` + `<footer>` article, zéro div
+- [x] `single.php` : article — `<article>` + `<header>` + `<footer>` article, wrappers limités au contenu éditorial
 - [x] `page.php` : page standard
 - [x] `archive.php` : liste articles avec pagination native
 - [x] `search.php` : résultats, meta robots noindex
@@ -129,7 +129,7 @@
 - [x] `style.css` : reset Josh Comeau + styles globaux minimaux (uniquement ce que theme.json ne gère pas)
 - [x] `assets/css/blocks/` : styles par bloc (navigation, image, heading, paragraph, separator, button, group, query)
 - [x] Enqueue conditionnel via `wp_enqueue_block_style()` dans functions.php
-- [x] Layout responsive : flexbox + clamp() uniquement, zéro @media pour le layout
+- [x] Layout responsive : flexbox + clamp() dominants, `@media` réservées aux bascules utiles comme la nav mobile
 - [x] Focus visible sur tous les interactifs
 - [x] `.sr-only`, `.skip-link`
 - [x] Audit : 155 lignes blocks + ~97 lignes fonctionnelles dans style.css — objectif < 200 ✓
@@ -137,7 +137,7 @@
 ## Phase 4 — Patterns Gutenberg ✓
 - [x] `patterns/hero.php` : titre xx-large + description + deux CTA (primary + outline)
 - [x] `patterns/cards.php` : grille 3 colonnes core/columns avec style "card" (border-left primary)
-- [x] `patterns/contact.php` : section contact avec formulaire HTML natif + nonce
+- [x] `patterns/contact.php` : section contact éditoriale sans faux formulaire public branché
 - [x] `patterns/header.php` : core/site-title + core/navigation (flex, space-between)
 - [x] `patterns/footer.php` : copyright dynamique + core/navigation secondaire
 - [x] Catégorie "Greenlight" enregistrée via register_block_pattern_category()
@@ -181,7 +181,7 @@
 
 ## Phase 6B — Mise en forme minimale
 - [x] `nav`, `header`, `main`, `section`, `article`, `p`, `ul`, `footer` : HTML sémantique minimal et DOM sans wrappers superflus (Codex, 2026-03-27)
-- [x] Responsive sans breakpoints : flexbox, `clamp()`, dimensionnement intrinsèque et conventions CSS modernes (Codex, 2026-03-27)
+- [x] Responsive majoritairement fluide : flexbox, `clamp()`, dimensionnement intrinsèque et breakpoints limités aux cas utiles (Codex, 2026-03-27)
 - [x] Mise en forme sobre : typographie, espacements, bordures et surfaces via tokens du thème (Codex, 2026-03-27)
 - [x] Blocs Gutenberg : rendu visuel minimaliste prêt à être édité sans surcharge (Codex, 2026-03-27)
 - [x] Référence de structure : s’inspirer de `html_responsive_images.html` et `wordpress_responsive_images.php` pour le preload hero, les images responsives et la hiérarchie de layout (Codex, 2026-03-27)
@@ -215,7 +215,7 @@ Objectif : aligner le rendu front sur l'esthétique "Organic Minimalism" des maq
 
 Objectif : regrouper tous les réglages du thème dans une page admin top-level unique avec onglets, tout en gardant temporairement les anciennes sous-pages.
 
-- [x] **`inc/admin.php`** : `add_menu_page( 'Greenlight', 'Greenlight', 'manage_options', 'greenlight', ... )` — page principale avec navigation par onglets CSS-only
+- [x] **`inc/admin.php`** : `add_menu_page( 'Greenlight', 'Greenlight', 'manage_options', 'greenlight', ... )` — page principale avec navigation admin sans JS dédié
 - [x] **Icône menu** : SVG inline feuille verte encodée en base64
 - [x] **Onglet SEO** : reprend `inc/seo-settings.php`, même `option_group`
 - [x] **Onglet Images** : reprend `inc/images-settings.php`, même `option_group`
@@ -423,7 +423,7 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 - [x] Ajouter des presets éditoriaux complets (`Minimal`, `Magazine`, `Studio`, `Journal`)
 - [x] 9A.1 — Étendre le hero : image, couleur, dégradé, titre/sous-titre, hauteur (`content`, `70vh`, `100vh`) + mode simple
 - [x] Badge CO₂ : valeur manuelle, lien EcoIndex et placement `haut de page` / `footer`
-- [x] 9A.2 — Étendre la navigation : couleurs, sticky, layout, sous-menus CSS-only
+- [x] 9A.2 — Étendre la navigation : couleurs, sticky, layout, sous-menus sans JS front
 - [x] Ajouter des variantes pilotables pour archives, cartes, single et footer
 - [x] Ajouter des réglages de densité visuelle : espacements, rayons, contraste, hauteur de header
 - [x] Ajouter des réglages par contexte : home, archives, single, pages
@@ -455,7 +455,7 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 
 ### 10A — CSS : réduire le poids de style.css
 
-**Constat :** `style.css` = 1 276 lignes / ~30 KB (objectif Phase 3 : < 200 lignes fonctionnelles). La croissance est due aux systèmes de densité, hero variants, sous-menus CSS-only et mode preview ajoutés en Phases 9A/8.
+**Constat :** `style.css` = 1 276 lignes / ~30 KB (objectif Phase 3 : < 200 lignes fonctionnelles). La croissance est due aux systèmes de densité, hero variants, navigation sans JS front et mode preview ajoutés en Phases 9A/8.
 
 - [x] **Supprimer `.page-hero::before` vide** (`background: transparent`) — propriété morte supprimée (2026-04-08)
 - [x] **Mutualiser `.page-hero` et `.archive-intro`** — multi-sélecteurs CSS, suppression de la duplication lead/h1/body (2026-04-08)
@@ -472,7 +472,7 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 
 - [x] **`data-greenlight-page-title` et `data-greenlight-page-excerpt`** dans `front-page.php` — historique 2026-04-08 ; mécanisme de preview fantôme retiré du front le 2026-04-18
 - [x] **`<div class="page-content">`** dans `front-page.php` — investigué : conservé, ce wrapper applique la contrainte 65ch + flex-gap sur les blocs Gutenberg via `.page-content` CSS. Suppression impossible sans régression de mise en page (2026-04-08)
-- [x] **Double rendu hero en preview** — validé : en production, une seule section est rendue (if/else PHP). En preview Customizer, `hidden` est un attribut HTML natif (display:none UA stylesheet), zéro JS requis pour l'état initial. Le toggle JS du Customizer ne concerne que l'iframe preview qui a toujours JS. (2026-04-08)
+- [x] **Double rendu hero en preview** — constat historique du 2026-04-08 ; point devenu obsolète après retrait du mécanisme de preview fantôme le 2026-04-18
 - [x] **Audit DOM re-vérifié** — Phase 10 ne change aucun élément HTML (attributs + CSS uniquement). Comptages Phase 6C toujours valides. Note ajoutée dans `PROJECT_STATE.md` (2026-04-08)
 
 ### 10C — Requêtes HTTP : valider la chaîne de réduction
@@ -484,11 +484,11 @@ Objectif : transformer l'interface admin Greenlight en control center premium, p
 - [x] **Chaîne critical CSS vérifiée** — `inc/critical-css.php` : inline + defer `media="print" onload` + noscript fallback ; `critical.css` corrigé (sélecteurs périmés) en 10A (2026-04-08)
 - [x] **Ressources externes vérifiées** — aucun CDN, Google Fonts, ressource externe dans les templates PHP ; prefetch uniquement via domaines explicites admin (`inc/prefetch.php`) (2026-04-08)
 
-### 10D — Responsive : confirmer zéro breakpoint
+### 10D — Responsive : confirmer les breakpoints réellement nécessaires
 
-**Constat :** 0 `@media` dans style.css ✓ — conforme aux contraintes absolues du projet.
+**Constat :** le front principal reste majoritairement fluide, mais des `@media` existent désormais pour la nav mobile et l’admin.
 
-- [x] **Confirmer sur tous les fichiers CSS** — 0 `@media` dans style.css, assets/css/blocks/*.css, assets/css/critical.css. Seuls `@supports` autorisés (backdrop-filter). Contrainte absolue respectée à 100% (2026-04-08)
+- [x] **Cartographier les `@media` réels** — `style.css` et `critical.css` restent sans `@media`, mais `assets/css/blocks/navigation.css` et `assets/css/admin-ui.css` en utilisent pour les bascules utiles ; claim global corrigé le 2026-04-18
 - [x] **Test visuel 320px → 1920px** — screenshots Playwright validés : 320px (header wrap naturel), 768px (split hero asymétrique visible), 1920px (contentSize centré). Aucune cassure layout (2026-04-08)
 
 ### Ordre d'implémentation recommandé
