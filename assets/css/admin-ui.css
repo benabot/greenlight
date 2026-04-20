@@ -333,6 +333,11 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel__card--soft {
 	background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(242, 239, 230, 0.9));
 }
 
+body.toplevel_page_greenlight .greenlight-admin-tab-panel__card--warning {
+	border-color: rgba(140, 78, 70, 0.18);
+	background: linear-gradient(180deg, rgba(255, 251, 249, 0.92), rgba(247, 240, 235, 0.94));
+}
+
 body.toplevel_page_greenlight .greenlight-admin-tab-panel__card-head {
 	display: flex;
 	justify-content: space-between;
@@ -459,6 +464,17 @@ body.toplevel_page_greenlight .greenlight-admin-tab-panel__actions {
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel__actions form {
 	margin: 0;
+}
+
+body.toplevel_page_greenlight .greenlight-admin-tab-panel__confirm {
+	margin: 18px 0 0;
+}
+
+body.toplevel_page_greenlight .greenlight-admin-tab-panel__confirm label {
+	display: inline-flex;
+	align-items: flex-start;
+	gap: 10px;
+	font-weight: 600;
 }
 
 body.toplevel_page_greenlight .greenlight-admin-tab-panel > form + h2,

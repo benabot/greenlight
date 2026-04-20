@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-04-20 (fix/ui-mobile-1)
+
+### Fixed
+- Header mobile recomposé autour d un masthead stable : branding et burger sur la ligne haute, disclosure mobile rendu sous le header au lieu de casser la composition dans le hero.
+- Shell admin réaligné avec un onglet **Apparence** réel, servant de hub vers le Customizer et exposant un reset visuel limité aux seules options d apparence.
+
+### Added
+- Action admin `greenlight_reset_appearance` avec nonce, contrôle de capacité et confirmation explicite avant restauration du style d origine.
+- Smoke tests `tests/appearance-reset-smoke.php` et `tests/mobile-header-masthead-smoke.php`.
+- Audit ciblé `docs/audit-prod-ui-mobile-1.md`.
+
+### Changed
+- README et TODO mis à jour pour refléter le point d entrée Apparence réel et le statut encore non prod-ready sans validation front finale.
+
 ## 2026-04-10 (feat/eco3)
 
 ### Changed

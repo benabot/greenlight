@@ -1057,6 +1057,35 @@ function greenlight_handle_purge_cache() {
 add_action( 'admin_post_greenlight_purge_cache', 'greenlight_handle_purge_cache' );
 
 /**
+ * Restores the visual appearance options to the theme defaults.
+ *
+ * @return void
+ */
+function greenlight_handle_reset_appearance() {
+	check_admin_referer( 'greenlight_reset_appearance' );
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_die( esc_html__( 'Permission refusée.', 'greenlight' ) );
+	}
+
+	$redirect_url = admin_url( 'admin.php?page=greenlight&tab=appearance' );
+
+	if ( empty( $_POST['greenlight_confirm_reset_appearance'] ) ) {
+		wp_safe_redirect( $redirect_url . '&appearance_reset=confirm' );
+		exit;
+	}
+
+	update_option(
+		GREENLIGHT_APPEARANCE_OPTION_KEY,
+		greenlight_sanitize_appearance_settings( greenlight_get_appearance_defaults() )
+	);
+
+	wp_safe_redirect( $redirect_url . '&appearance_reset=success' );
+	exit;
+}
+add_action( 'admin_post_greenlight_reset_appearance', 'greenlight_handle_reset_appearance' );
+
+/**
  * Main page render.
  */
 
@@ -1074,6 +1103,7 @@ function greenlight_render_admin_page() {
 		'seo'         => __( 'SEO', 'greenlight' ),
 		'images'      => __( 'Images', 'greenlight' ),
 		'performance' => __( 'Performance', 'greenlight' ),
+		'appearance'  => __( 'Apparence', 'greenlight' ),
 		'svg'         => __( 'SVG', 'greenlight' ),
 		'tools'       => __( 'Outils', 'greenlight' ),
 	);
@@ -1087,8 +1117,9 @@ function greenlight_render_admin_page() {
 		'seo'         => '01',
 		'images'      => '02',
 		'performance' => '03',
-		'svg'         => '04',
-		'tools'       => '05',
+		'appearance'  => '04',
+		'svg'         => '05',
+		'tools'       => '06',
 	);
 	?>
 	<div class="wrap greenlight-admin-shell">
@@ -1125,6 +1156,9 @@ function greenlight_render_admin_page() {
 						break;
 					case 'performance':
 						greenlight_render_admin_tab_performance();
+						break;
+					case 'appearance':
+						greenlight_render_admin_tab_appearance();
 						break;
 					case 'svg':
 						greenlight_render_admin_tab_svg();
@@ -1709,6 +1743,115 @@ function greenlight_render_admin_tab_images() {
 		}
 	}() );
 	</script>
+	<?php
+}
+
+/**
+ * Renders the Appearance tab as a lightweight hub and safe reset point.
+ *
+ * @return void
+ */
+function greenlight_render_admin_tab_appearance() {
+	$options             = array_merge( greenlight_get_appearance_defaults(), (array) get_option( GREENLIGHT_APPEARANCE_OPTION_KEY, array() ) );
+	$presets             = greenlight_get_appearance_presets();
+	$densities           = greenlight_get_density_choices();
+	$current_preset_key  = isset( $options['theme_preset'] ) ? sanitize_key( (string) $options['theme_preset'] ) : 'editorial';
+	$current_density_key = isset( $options['density_scale'] ) ? sanitize_key( (string) $options['density_scale'] ) : 'balanced';
+	$current_preset      = isset( $presets[ $current_preset_key ]['label'] ) ? $presets[ $current_preset_key ]['label'] : __( 'Éditorial', 'greenlight' );
+	$current_density     = isset( $densities[ $current_density_key ] ) ? $densities[ $current_density_key ] : __( 'Équilibré', 'greenlight' );
+	$nav_style_label     = ( isset( $options['nav_style'] ) && 'burger' === $options['nav_style'] ) ? __( 'Burger mobile', 'greenlight' ) : __( 'Navigation inline', 'greenlight' );
+	$hero_state_label    = ! empty( $options['hero_enabled'] ) ? __( 'Hero avancé actif', 'greenlight' ) : __( 'Intro simple', 'greenlight' );
+	$header_state_label  = ! empty( $options['header_sticky'] ) ? __( 'Header collant', 'greenlight' ) : __( 'Header non collant', 'greenlight' );
+
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended
+	$reset_status = isset( $_GET['appearance_reset'] ) ? sanitize_key( $_GET['appearance_reset'] ) : '';
+	// phpcs:enable
+
+	if ( 'success' === $reset_status ) {
+		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Apparence restaurée sur les réglages visuels d’origine du thème.', 'greenlight' ) . '</p></div>';
+	} elseif ( 'confirm' === $reset_status ) {
+		echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__( 'Cochez la confirmation avant de réinitialiser l’apparence.', 'greenlight' ) . '</p></div>';
+	}
+	?>
+	<div class="greenlight-admin-tab-panel__intro">
+		<div>
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Apparence', 'greenlight' ); ?></p>
+			<h2><?php esc_html_e( 'Pilotage visuel', 'greenlight' ); ?></h2>
+			<p class="greenlight-admin-tab-panel__lead"><?php esc_html_e( 'Les réglages visuels du thème vivent dans le Customizer. Cet onglet sert de point d’entrée clair et permet de revenir au style d’origine sans toucher au SEO, au cache, aux images ou aux redirections.', 'greenlight' ); ?></p>
+		</div>
+	</div>
+
+	<div class="greenlight-admin-tab-panel__summary">
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Preset', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( $current_preset ); ?></strong>
+			<span><?php esc_html_e( 'Direction visuelle active.', 'greenlight' ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Densité', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( $current_density ); ?></strong>
+			<span><?php esc_html_e( 'Rythme global du front.', 'greenlight' ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Navigation', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( $nav_style_label ); ?></strong>
+			<span><?php echo esc_html( $header_state_label ); ?></span>
+		</div>
+		<div class="greenlight-admin-summary-card">
+			<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Hero', 'greenlight' ); ?></p>
+			<strong><?php echo esc_html( $hero_state_label ); ?></strong>
+			<span><?php esc_html_e( 'Section d’ouverture actuellement servie.', 'greenlight' ); ?></span>
+		</div>
+	</div>
+
+	<div class="greenlight-admin-tab-panel__shell greenlight-admin-tab-panel__shell--appearance">
+		<div class="greenlight-admin-tab-panel__column">
+			<section class="greenlight-admin-tab-panel__card">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Customizer', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Modifier l’apparence', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Les couleurs, presets, variantes de header, hero, contenus et footer restent pilotés dans le Customizer natif de WordPress.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<div class="greenlight-admin-tab-panel__actions">
+					<a href="<?php echo esc_url( greenlight_get_customizer_url() ); ?>" class="button button-primary"><?php esc_html_e( 'Ouvrir le Customizer', 'greenlight' ); ?></a>
+					<a href="<?php echo esc_url( greenlight_get_customizer_url( 'greenlight_appearance_navigation' ) ); ?>" class="button button-secondary"><?php esc_html_e( 'Header et navigation', 'greenlight' ); ?></a>
+					<a href="<?php echo esc_url( greenlight_get_customizer_url( 'greenlight_appearance_hero' ) ); ?>" class="button button-secondary"><?php esc_html_e( 'Hero', 'greenlight' ); ?></a>
+					<a href="<?php echo esc_url( greenlight_get_customizer_url( 'greenlight_appearance_content' ) ); ?>" class="button button-secondary"><?php esc_html_e( 'Contenus', 'greenlight' ); ?></a>
+					<a href="<?php echo esc_url( greenlight_get_customizer_url( 'greenlight_appearance_footer' ) ); ?>" class="button button-secondary"><?php esc_html_e( 'Footer', 'greenlight' ); ?></a>
+				</div>
+			</section>
+
+			<section class="greenlight-admin-tab-panel__card greenlight-admin-tab-panel__card--warning">
+				<div class="greenlight-admin-tab-panel__card-head">
+					<div>
+						<p class="greenlight-admin-tab-panel__eyebrow"><?php esc_html_e( 'Reset visuel', 'greenlight' ); ?></p>
+						<h3 class="greenlight-admin-tab-panel__card-title"><?php esc_html_e( 'Restaurer le style d’origine', 'greenlight' ); ?></h3>
+						<p class="greenlight-admin-tab-panel__card-note"><?php esc_html_e( 'Cette action remet uniquement les options visuelles Greenlight à leurs valeurs d’origine. Elle ne touche pas au SEO, aux redirections, au cache, aux images, aux outils ou aux SVG.', 'greenlight' ); ?></p>
+					</div>
+				</div>
+				<ul class="greenlight-admin-tab-panel__list">
+					<li><?php esc_html_e( 'Réinitialise les couleurs, presets, densités, header, hero, navigation, variantes de contenu et footer.', 'greenlight' ); ?></li>
+					<li><?php esc_html_e( 'Conserve les réglages non visuels et le contenu éditorial.', 'greenlight' ); ?></li>
+					<li><?php esc_html_e( 'Utilisez cette action si le front a dérivé et que vous voulez revenir à la base Greenlight.', 'greenlight' ); ?></li>
+				</ul>
+				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+					<input type="hidden" name="action" value="greenlight_reset_appearance">
+					<?php wp_nonce_field( 'greenlight_reset_appearance' ); ?>
+					<p class="greenlight-admin-tab-panel__confirm">
+						<label for="greenlight-confirm-reset-appearance">
+							<input id="greenlight-confirm-reset-appearance" name="greenlight_confirm_reset_appearance" type="checkbox" value="1">
+							<?php esc_html_e( 'Je confirme la restauration des réglages visuels d’origine.', 'greenlight' ); ?>
+						</label>
+					</p>
+					<div class="greenlight-admin-tab-panel__actions">
+						<button type="submit" class="button button-secondary"><?php esc_html_e( 'Réinitialiser l’apparence', 'greenlight' ); ?></button>
+					</div>
+				</form>
+			</section>
+		</div>
+	</div>
 	<?php
 }
 

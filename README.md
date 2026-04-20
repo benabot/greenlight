@@ -159,11 +159,12 @@ La configuration du theme se fait dans **Apparence > Greenlight**:
 - **SEO** : titre global, description globale, separator, sitemap, noindex archives;
 - **Images** : WebP, qualite, suppression des tailles inutiles;
 - **Performance** : minification, cache HTML, prefetch DNS / preconnect manuel, nettoyage du head;
-- **Apparence** : hero, single, archive, footer, surfaces et espacements;
+- **Apparence** : hub vers le Customizer natif pour presets, header, hero, contenus et footer, avec action de reset visuel limitee aux options d apparence;
 - **SVG** : sanitisation et validation des imports;
 - **Outils** : import/export JSON des reglages et redirections.
 
 Le cache HTML est ecrit dans `wp-content/cache/greenlight/`. Les fichiers minifies sont generes localement et ne doivent pas etre relies a une edition manuelle.
+Le reset visuel restaure uniquement `greenlight_appearance_options` et ne touche ni au SEO, ni aux redirections, ni au cache, ni aux images.
 
 ### Recommandations production
 
