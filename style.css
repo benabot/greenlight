@@ -345,6 +345,24 @@ body.front-page {
 	padding-block: var(--greenlight-section-gap, var(--wp--preset--spacing--xl));
 }
 
+body:has(.site-header--sticky) {
+	--greenlight-header-height: 5rem;
+}
+
+body:has(.site-header--sticky.site-header--with-tagline) {
+	--greenlight-header-height: 6rem;
+}
+
+@media (max-width: 768px) {
+	body:has(.site-header--sticky.site-header--with-tagline) {
+		--greenlight-header-height: 6.25rem;
+	}
+
+	body:has(.site-header--sticky.site-header--nav-style-burger.site-header--with-tagline) {
+		--greenlight-header-height: 6.75rem;
+	}
+}
+
 /* Header fixe : décale le contenu vers le bas sur les pages sans hero */
 body:has(.site-header--sticky) .site-main {
 	padding-block-start: calc(var(--greenlight-header-height, 5rem) + var(--greenlight-section-gap, var(--wp--preset--spacing--xl)));
@@ -389,6 +407,10 @@ body:has(.site-header--sticky) .site-main {
 	position: relative;
 	isolation: isolate;
 	overflow: clip;
+}
+
+body:has(.site-header--sticky.site-header--with-tagline) .page-hero {
+	padding-block-start: calc(var(--greenlight-section-gap, var(--wp--preset--spacing--xl)) + var(--greenlight-header-height, 5rem));
 }
 
 .hero-lead,

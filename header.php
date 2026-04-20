@@ -26,6 +26,8 @@ $_gl_nav_case         = isset( $_gl_app_h['nav_link_case'] ) && 'uppercase' === 
 $_gl_submenu_style    = isset( $_gl_app_h['submenu_style'] ) && 'surface' === $_gl_app_h['submenu_style'] ? 'surface' : 'plain';
 $_gl_show_tagline     = ! empty( $_gl_app_h['show_tagline'] );
 $_gl_nav_style        = isset( $_gl_app_h['nav_style'] ) && 'burger' === $_gl_app_h['nav_style'] ? 'burger' : 'inline';
+$_gl_tagline_text     = $_gl_show_tagline ? trim( (string) get_bloginfo( 'description' ) ) : '';
+$_gl_has_tagline      = '' !== $_gl_tagline_text;
 $greenlight_render_primary_nav = static function ( $extra_class = '' ) {
 	$nav_class = 'site-nav';
 
@@ -48,12 +50,12 @@ $greenlight_render_primary_nav = static function ( $extra_class = '' ) {
 	<?php
 };
 ?>
-<header class="site-header site-header--layout-<?php echo esc_attr( $_gl_header_layout ); ?> site-header--nav-<?php echo esc_attr( $_gl_nav_case ); ?> site-header--submenu-<?php echo esc_attr( $_gl_submenu_style ); ?> site-header--nav-style-<?php echo esc_attr( $_gl_nav_style ); ?><?php echo $_gl_header_sticky ? ' site-header--sticky' : ''; ?>">
+<header class="site-header site-header--layout-<?php echo esc_attr( $_gl_header_layout ); ?> site-header--nav-<?php echo esc_attr( $_gl_nav_case ); ?> site-header--submenu-<?php echo esc_attr( $_gl_submenu_style ); ?> site-header--nav-style-<?php echo esc_attr( $_gl_nav_style ); ?><?php echo $_gl_header_sticky ? ' site-header--sticky' : ''; ?><?php echo $_gl_has_tagline ? ' site-header--with-tagline' : ''; ?>">
 	<div class="site-header__masthead">
 		<div class="site-branding">
 			<a class="site-brand" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></a>
-			<?php if ( $_gl_show_tagline && get_bloginfo( 'description' ) ) : ?>
-			<p class="site-tagline"><?php echo esc_html( get_bloginfo( 'description' ) ); ?></p>
+			<?php if ( $_gl_has_tagline ) : ?>
+			<p class="site-tagline"><?php echo esc_html( $_gl_tagline_text ); ?></p>
 			<?php endif; ?>
 		</div>
 		<?php if ( 'burger' === $_gl_nav_style ) : ?>
