@@ -311,6 +311,23 @@ body.front-page {
 	z-index: 40;
 }
 
+.site-nav .sub-menu .menu-item-has-children > .sub-menu {
+	inset-block-start: -0.6rem;
+	inset-inline-start: calc(100% + 0.4rem);
+}
+
+.site-nav > ul > li:last-child > .sub-menu,
+.site-nav > ul > li:nth-last-child(2) > .sub-menu {
+	inset-inline-start: auto;
+	inset-inline-end: 0;
+}
+
+.site-nav > ul > li:last-child > .sub-menu .menu-item-has-children > .sub-menu,
+.site-nav > ul > li:nth-last-child(2) > .sub-menu .menu-item-has-children > .sub-menu {
+	inset-inline-start: auto;
+	inset-inline-end: calc(100% + 0.4rem);
+}
+
 .site-nav .menu-item-has-children:hover > .sub-menu,
 .site-nav .menu-item-has-children:focus-within > .sub-menu {
 	opacity: 1;
