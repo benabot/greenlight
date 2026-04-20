@@ -49,25 +49,29 @@ $greenlight_render_primary_nav = static function ( $extra_class = '' ) {
 };
 ?>
 <header class="site-header site-header--layout-<?php echo esc_attr( $_gl_header_layout ); ?> site-header--nav-<?php echo esc_attr( $_gl_nav_case ); ?> site-header--submenu-<?php echo esc_attr( $_gl_submenu_style ); ?> site-header--nav-style-<?php echo esc_attr( $_gl_nav_style ); ?><?php echo $_gl_header_sticky ? ' site-header--sticky' : ''; ?>">
-	<div class="site-branding">
-		<a class="site-brand" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></a>
-		<?php if ( $_gl_show_tagline && get_bloginfo( 'description' ) ) : ?>
-		<p class="site-tagline"><?php echo esc_html( get_bloginfo( 'description' ) ); ?></p>
+	<div class="site-header__masthead">
+		<div class="site-branding">
+			<a class="site-brand" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></a>
+			<?php if ( $_gl_show_tagline && get_bloginfo( 'description' ) ) : ?>
+			<p class="site-tagline"><?php echo esc_html( get_bloginfo( 'description' ) ); ?></p>
+			<?php endif; ?>
+		</div>
+		<?php if ( 'burger' === $_gl_nav_style ) : ?>
+		<details class="site-nav-disclosure site-nav-disclosure--mobile">
+			<summary class="nav-burger">
+				<span class="sr-only"><?php esc_html_e( 'Menu principal', 'greenlight' ); ?></span>
+				<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+					<rect y="4" width="24" height="2" fill="currentColor"/>
+					<rect y="11" width="24" height="2" fill="currentColor"/>
+					<rect y="18" width="24" height="2" fill="currentColor"/>
+				</svg>
+			</summary>
+			<?php $greenlight_render_primary_nav( 'site-nav--mobile' ); ?>
+		</details>
 		<?php endif; ?>
 	</div>
 	<?php if ( 'burger' === $_gl_nav_style ) : ?>
 	<?php $greenlight_render_primary_nav( 'site-nav--desktop' ); ?>
-	<details class="site-nav-disclosure site-nav-disclosure--mobile">
-		<summary class="nav-burger">
-			<span class="sr-only"><?php esc_html_e( 'Ouvrir le menu principal', 'greenlight' ); ?></span>
-			<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-				<rect y="4" width="24" height="2" fill="currentColor"/>
-				<rect y="11" width="24" height="2" fill="currentColor"/>
-				<rect y="18" width="24" height="2" fill="currentColor"/>
-			</svg>
-		</summary>
-		<?php $greenlight_render_primary_nav( 'site-nav--mobile' ); ?>
-	</details>
 	<?php else : ?>
 	<?php $greenlight_render_primary_nav(); ?>
 	<?php endif; ?>

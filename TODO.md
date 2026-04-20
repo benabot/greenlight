@@ -1,5 +1,58 @@
 # TODO — Greenlight
 
+## Remédiation production + mobile — fix/ui-mobile-1
+
+### P0 — bloque la prod
+
+- [ ] Terminer une validation front réelle sur l’instance WordPress cible
+  Fichiers principaux : `header.php`, `style.css`, `assets/css/blocks/navigation.css`
+  Problème : la structure et les smoke tests sont corrigés, mais il manque encore une preuve visuelle reproductible sur home, archive, single et page avec header sticky et menu mobile
+  Critère de validation : captures ou recette manuelle validées en mobile étroit, mobile standard, tablette et desktop
+
+- [x] Stabiliser la composition du header mobile et du burger
+  Fichiers principaux : `header.php`, `style.css`, `assets/css/blocks/navigation.css`
+  Problème : le disclosure mobile occupait toute la largeur et cassait l’alignement logo / slogan / burger dans le hero
+  Critère de validation : branding et burger sur une ligne stable, panneau mobile sous le header, navigation clavier intacte
+
+- [x] Restaurer un point d’entrée admin cohérent pour l’apparence et le reset visuel
+  Fichiers principaux : `inc/admin.php`, `assets/css/admin-ui.css`
+  Problème : le shell admin pointait vers `tab=appearance` sans onglet réel et aucun reset sûr du rendu d’origine n’était exposé
+  Critère de validation : onglet Apparence visible, accès au Customizer, reset limité à `greenlight_appearance_options`, nonce et confirmation explicite
+
+### P1 — majeur avant ouverture large
+
+- [ ] Requalifier le verdict prod après validation réelle du front
+  Fichiers principaux : `docs/audit-prod-ui-mobile-1.md`, `README.md`
+  Problème : les correctifs branchés réduisent les régressions visibles mais ne suffisent pas encore à prouver une ouverture large sans recette front finale
+  Critère de validation : verdict documenté à partir d’une validation front complète et non d’un simple audit statique
+
+- [ ] Vérifier les combinaisons d’options visuelles à risque
+  Fichiers principaux : `header.php`, `front-page.php`, `inc/customizer.php`
+  Problème : certaines combinaisons restent peu qualifiées (`header_sticky` + tagline longue + `nav_style=burger` + hero image)
+  Critère de validation : aucun chevauchement ni rupture sur les cas extrêmes réalistes
+
+- [ ] Revoir le périmètre admin Greenlight avant ouverture large
+  Fichiers principaux : `inc/admin.php`, `README.md`
+  Problème : le thème embarque toujours un périmètre large côté SEO / images / performance / outils
+  Critère de validation : positionnement produit explicite et assumé avant diffusion plus large
+
+### P2 — alignement / finition
+
+- [x] Ajouter des smoke tests ciblés pour le reset visuel et le masthead mobile
+  Fichiers principaux : `tests/appearance-reset-smoke.php`, `tests/mobile-header-masthead-smoke.php`
+  Problème : les nouveaux points sensibles n’étaient pas couverts par les tests statiques existants
+  Critère de validation : les deux smoke tests passent sur la branche
+
+- [x] Mettre à jour la doc de configuration pour exposer l’onglet Apparence comme hub + reset
+  Fichiers principaux : `README.md`, `CHANGELOG.md`
+  Problème : la doc ne décrivait pas clairement le nouveau point d’entrée d’apparence
+  Critère de validation : README et changelog alignés avec le shell admin réel
+
+- [ ] Nettoyer les libellés encore trompeurs sur le contact et l’historique
+  Fichiers principaux : `patterns/contact.php`, documentation projet
+  Problème : certains libellés hérités évoquent encore un formulaire ou une structure qui n’existe plus telle quelle
+  Critère de validation : plus aucun wording ambigu dans le front ou les docs projet
+
 ## Remédiation audit production — 2026-04-18
 
 ### P0 — bloque la prod

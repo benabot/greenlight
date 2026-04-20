@@ -132,6 +132,14 @@ body.front-page {
 	z-index: 20;
 }
 
+.site-header__masthead {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: var(--wp--preset--spacing--sm);
+	min-width: 0;
+}
+
 .site-header::after {
 	content: '';
 	position: absolute;
@@ -176,7 +184,7 @@ body.front-page {
 	display: flex;
 	flex-direction: column;
 	gap: 0.3rem;
-	min-width: min(100%, 16rem);
+	min-width: 0;
 }
 
 .site-brand {
@@ -199,6 +207,26 @@ body.front-page {
 	font-size: var(--wp--preset--font-size--small);
 	line-height: 1.4;
 	max-width: 26ch;
+}
+
+@media (max-width: 768px) {
+	.site-header--nav-style-burger {
+		align-items: flex-start;
+	}
+
+	.site-header--nav-style-burger .site-header__masthead {
+		width: 100%;
+	}
+
+	.site-header--nav-style-burger .site-branding {
+		flex: 1 1 auto;
+		max-width: calc(100% - 4.25rem);
+		padding-inline-end: var(--wp--preset--spacing--xs);
+	}
+
+	.site-header--nav-style-burger .site-tagline {
+		max-width: 24ch;
+	}
 }
 
 .site-nav {
