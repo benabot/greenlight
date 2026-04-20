@@ -4,7 +4,7 @@ Greenlight est un theme WordPress hybride, sobre et ecoresponsable, pense pour r
 
 Le theme s inscrit dans une logique GreenIT: DOM leger, peu de code, peu de poids, peu de scripts, responsive simple a maintenir, et front-end original sans complexite inutile.
 
-> Statut au 2026-04-18 : preprod solide, pas prod-ready. Le theme reste en preproduction avancee et demande encore un nettoyage des claims, des finitions et des verifications avant mise en production.
+> Statut au 2026-04-21 : GO prod avec reserves. Le front a ete requalifie en runtime reel, mais le theme garde un perimetre large et demande encore une vigilance produit et editoriale avant diffusion plus large.
 
 ## Objectif
 
@@ -165,6 +165,23 @@ La configuration du theme se fait dans **Apparence > Greenlight**:
 
 Le cache HTML est ecrit dans `wp-content/cache/greenlight/`. Les fichiers minifies sont generes localement et ne doivent pas etre relies a une edition manuelle.
 Le reset visuel restaure uniquement `greenlight_appearance_options` et ne touche ni au SEO, ni aux redirections, ni au cache, ni aux images.
+
+## Validation locale fiable
+
+Dans l environnement local actuel, la source de verite pour la recette Greenlight n est pas `wp-cli` Homebrew.
+
+- Utiliser le front HTTP reel servi par l instance locale pour valider le rendu.
+- Utiliser l admin HTTP reel pour valider les actions de reglages, de reset et les redirects de confirmation.
+- Utiliser le PHP MAMP (`/Applications/MAMP/bin/php/php8.2.26/bin/php`) pour lire ou muter les options WordPress quand une verification CLI est necessaire.
+- Considerer `wp-cli` Homebrew comme non fiable tant que son acces DB local n est pas corrige dans cet environnement.
+
+En pratique :
+
+- recette front : `curl` + navigateur reel / headless sur `http://localhost:8888/greenlight/`
+- recette admin : HTTP reel sur `wp-admin`
+- verification runtime ponctuelle : bootstrap WordPress via le PHP MAMP
+
+Ne pas utiliser `wp-cli` Homebrew comme source de verite pour conclure qu un reset, une purge de cache ou une mutation d options a echoue, tant que l environnement local reste incoherent.
 
 ### Recommandations production
 

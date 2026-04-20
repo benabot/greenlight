@@ -3,9 +3,9 @@
  * Title: Section contact
  * Slug: greenlight/contact
  * Categories: greenlight
- * Keywords: contact, formulaire, message
+ * Keywords: contact, email, message
  * Block Types: core/group
- * Description: Section contact avec titre et formulaire HTML natif.
+ * Description: Section contact editoriale avec message et adresse email.
  *
  * @package Greenlight
  */
@@ -28,11 +28,11 @@ if ( is_email( $greenlight_contact_email ) ) {
 	<!-- /wp:heading -->
 
 	<!-- wp:paragraph {"align":"center","fontSize":"medium"} -->
-	<p class="has-text-align-center has-medium-font-size"><?php echo esc_html_x( 'Une question ? Envoyez-nous un message, nous répondons sous 24h.', 'Pattern placeholder', 'greenlight' ); ?></p>
+	<p class="has-text-align-center has-medium-font-size"><?php echo esc_html_x( 'Une question de projet ou de maintenance ? Publiez ici votre canal de contact principal.', 'Pattern placeholder', 'greenlight' ); ?></p>
 	<!-- /wp:paragraph -->
 
 	<!-- wp:paragraph {"align":"center"} -->
-	<p class="has-text-align-center"><?php echo esc_html_x( 'Le thème ne fournit pas de formulaire public natif. Utilisez une adresse de contact dédiée ou un plugin de formulaire si un traitement serveur est requis.', 'Pattern note', 'greenlight' ); ?></p>
+	<p class="has-text-align-center"><?php echo esc_html_x( 'Le thème ne fournit pas de formulaire public natif. Utilisez une adresse dédiée ou un plugin de formulaire si un traitement serveur est requis.', 'Pattern note', 'greenlight' ); ?></p>
 	<!-- /wp:paragraph -->
 
 	<?php if ( '' !== $greenlight_contact_href && '' !== $greenlight_contact_label ) : ?>

@@ -41,10 +41,10 @@
   Problème : `front-page.php` considérait `#` comme une URL valide et pouvait afficher des boutons sans destination réelle
   Critère de validation : le template refuse `#`, smoke test dédié au vert, et la home régénérée n’affiche plus de CTA mort
 
-- [ ] Vérifier les combinaisons d’options visuelles à risque
-  Fichiers principaux : `header.php`, `front-page.php`, `inc/customizer.php`
-  Problème : certaines combinaisons restent peu qualifiées (`header_sticky` + tagline longue + `nav_style=burger` + hero image + sous-menus)
-  Critère de validation : aucun chevauchement ni rupture sur les cas extrêmes réalistes
+- [x] Vérifier les combinaisons d’options visuelles à risque
+  Fichiers principaux : `header.php`, `style.css`, `front-page.php`
+  Problème : la recette extrême a confirmé une vraie casse sur `header_sticky` + tagline longue, puis a requalifié les cas `burger`, `hero image`, `overlay`, `100vh` et profondeur 2
+  Critère de validation : aucun chevauchement ni rupture confirmé sur les cas extrêmes réalistes après correction de l’offset sticky
 
 - [ ] Revoir le périmètre admin Greenlight avant ouverture large
   Fichiers principaux : `inc/admin.php`, `README.md`
@@ -63,10 +63,20 @@
   Problème : la doc ne décrivait pas clairement le nouveau point d’entrée d’apparence
   Critère de validation : README et changelog alignés avec le shell admin réel
 
-- [ ] Nettoyer les libellés encore trompeurs sur le contact et l’historique
+- [x] Nettoyer les libellés encore trompeurs sur le contact et l’historique
   Fichiers principaux : `patterns/contact.php`, documentation projet
-  Problème : certains libellés hérités évoquent encore un formulaire ou une structure qui n’existe plus telle quelle
-  Critère de validation : plus aucun wording ambigu dans le front ou les docs projet
+  Problème : certains libellés hérités évoquaient encore un formulaire ou une structure qui n’existe plus telle quelle
+  Critère de validation : le pattern contact et la doc ne promettent plus de formulaire public natif ni de statut surfait
+
+- [x] Rejouer une recette desktop sur un vrai menu profond éditorial
+  Fichiers principaux : `style.css`, `header.php`
+  Problème : les sous-menus desktop profonds n’étaient pas encore qualifiés sur desktop réel et un débordement viewport restait possible
+  Critère de validation : hover, focus et lisibilité qualifiés sur `front-page` et sur une vue sans hero ; sous-menus depth 2 contenus dans le viewport
+
+- [x] Documenter la procédure locale de validation comme standard d équipe
+  Fichiers principaux : `README.md`, `docs/audit-prod-ui-mobile-1.md`
+  Problème : la méthode fiable HTTP réel + PHP MAMP restait implicite et laissait encore la place à de faux diagnostics via `wp-cli` Homebrew
+  Critère de validation : procédure locale courte, explicite et réutilisable par un autre intervenant sans ambiguïté
 
 ## Remédiation audit production — 2026-04-18
 

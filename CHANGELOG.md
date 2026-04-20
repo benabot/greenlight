@@ -1,5 +1,28 @@
 # Changelog
 
+## 2026-04-21 (final/reserves-cleanup-1)
+
+### Fixed
+- Sous-menus desktop profonds : les derniers items du menu principal se réalignent désormais vers l interieur du viewport, et le niveau 2 s ouvre a cote du parent au lieu de deborder a droite sur desktop standard.
+- Pattern contact et wording de doc nettoyes pour ne plus laisser croire a un formulaire public natif ou a un statut plus mature que le code.
+
+### Added
+- Smoke test `tests/desktop-submenu-depth-smoke.php`.
+
+### Changed
+- README et audit local explicitent maintenant la methode de validation fiable : HTTP reel + admin HTTP + PHP MAMP, pas `wp-cli` Homebrew dans cet environnement.
+
+## 2026-04-20 (qa/extreme-appearance-combos)
+
+### Fixed
+- Header sticky avec tagline longue : ajout d un état `site-header--with-tagline` et d un offset sticky plus haut pour éviter que le contenu des vues avec et sans hero remonte sous le header sur mobile.
+
+### Added
+- Smoke test `tests/sticky-tagline-offset-smoke.php` pour verrouiller le cas `sticky + tagline visible`, y compris la variante burger mobile.
+
+### Changed
+- Audit `docs/audit-prod-ui-mobile-1.md` enrichi avec une qualification runtime des combinaisons extrêmes d apparence et un verdict maintenu en `GO prod avec réserves`.
+
 ## 2026-04-20 (fix/runtime-validation-1)
 
 ### Fixed
