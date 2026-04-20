@@ -35,6 +35,14 @@ if ( false === strpos( $contents, "Réinitialiser l’apparence" ) ) {
 	$failures[] = 'Appearance reset button label is missing.';
 }
 
+if ( false === strpos( $contents, '$defaults = greenlight_get_appearance_defaults();' ) ) {
+	$failures[] = 'Appearance reset does not capture the raw defaults before updating the option.';
+}
+
+if ( false !== strpos( $contents, 'greenlight_sanitize_appearance_settings( greenlight_get_appearance_defaults() )' ) ) {
+	$failures[] = 'Appearance reset still re-sanitizes defaults and can flip checkbox values back to 1.';
+}
+
 if ( ! empty( $failures ) ) {
 	fwrite( STDERR, "Appearance reset smoke test failed:\n" . implode( "\n", $failures ) . "\n" );
 	exit( 1 );

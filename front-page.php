@@ -45,8 +45,14 @@ $_gl_hero_style_attr[] = '--greenlight-overlay-opacity:' . ( $_gl_overlay_opacit
 $_gl_hero_style_attr   = implode( ';', $_gl_hero_style_attr );
 
 // CTA boutons hero.
-$_gl_cta1_on = ! empty( $_gl_app['hero_cta_enabled'] ) && '' !== trim( $_gl_app['hero_cta_text'] ?? '' ) && '' !== trim( $_gl_app['hero_cta_url'] ?? '' );
-$_gl_cta2_on = ! empty( $_gl_app['hero_cta2_enabled'] ) && '' !== trim( $_gl_app['hero_cta2_text'] ?? '' ) && '' !== trim( $_gl_app['hero_cta2_url'] ?? '' );
+$_gl_has_real_hero_url = static function ( $url ) {
+	$url = trim( (string) $url );
+
+	return '' !== $url && '#' !== $url;
+};
+
+$_gl_cta1_on = ! empty( $_gl_app['hero_cta_enabled'] ) && '' !== trim( $_gl_app['hero_cta_text'] ?? '' ) && $_gl_has_real_hero_url( $_gl_app['hero_cta_url'] ?? '' );
+$_gl_cta2_on = ! empty( $_gl_app['hero_cta2_enabled'] ) && '' !== trim( $_gl_app['hero_cta2_text'] ?? '' ) && $_gl_has_real_hero_url( $_gl_app['hero_cta2_url'] ?? '' );
 $_gl_cta_pos = isset( $_gl_app['hero_cta_position'] ) && in_array( $_gl_app['hero_cta_position'], array( 'lead', 'body', 'center' ), true ) ? $_gl_app['hero_cta_position'] : 'lead';
 $_gl_has_cta = $_gl_cta1_on || $_gl_cta2_on;
 

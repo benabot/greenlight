@@ -1,5 +1,32 @@
 # Changelog
 
+## 2026-04-20 (fix/runtime-validation-1)
+
+### Fixed
+- Cache HTML Greenlight désormais purgé quand les options d apparence changent, ce qui évite de servir un front anonyme obsolète après un reset visuel ou une mutation runtime du thème.
+- Reset visuel corrigé : les defaults ne repassent plus par une sanitize qui retransformait certains booléens `0` en `1`.
+- Validation runtime locale finalisée : home, archive, single, page, search et 404 requalifiées après purge réelle ; les CTA hero morts ne sont plus servis ; le sticky offset reste correct sur une vue sans hero avec CSS minifié.
+
+### Added
+- Smoke tests `tests/appearance-cache-purge-smoke.php` et `tests/appearance-checkbox-sanitize-smoke.php`.
+
+### Changed
+- Audit `docs/audit-prod-ui-mobile-1.md` mis à jour avec une section de validation runtime locale et un verdict révisé en `GO prod avec réserves`.
+
+## 2026-04-20 (qa/front-prod-readiness-1)
+
+### Fixed
+- Panneau mobile du burger ancré sous le bouton, sans recomprimer le branding ni écraser le slogan quand le menu est ouvert.
+- Bundle CSS de déploiement réaligné avec le source courant pour que le header mobile et le masthead servis en front correspondent réellement au code de la branche.
+- Minification CSS durcie : le build préserve désormais `body:has(.site-header--sticky) .site-main`, ce qui rétablit l offset des vues sans hero sous le header sticky.
+- `front-page.php` ne rend plus de CTA hero si l URL vaut simplement `#`.
+
+### Added
+- Smoke tests `tests/sticky-header-offset-minify-smoke.php` et `tests/front-page-hero-cta-smoke.php`.
+
+### Changed
+- Audit `docs/audit-prod-ui-mobile-1.md` enrichi avec une validation front réelle, les limites de preuve restantes et un verdict maintenu en `NO-GO prod`.
+
 ## 2026-04-20 (fix/ui-mobile-1)
 
 ### Fixed

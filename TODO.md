@@ -4,31 +4,46 @@
 
 ### P0 — bloque la prod
 
-- [ ] Terminer une validation front réelle sur l’instance WordPress cible
-  Fichiers principaux : `header.php`, `style.css`, `assets/css/blocks/navigation.css`
-  Problème : la structure et les smoke tests sont corrigés, mais il manque encore une preuve visuelle reproductible sur home, archive, single et page avec header sticky et menu mobile
-  Critère de validation : captures ou recette manuelle validées en mobile étroit, mobile standard, tablette et desktop
+- [x] Terminer une validation front réelle sur l’instance WordPress cible
+  Fichiers principaux : `header.php`, `style.css`, `assets/css/blocks/navigation.css`, `front-page.php`, `inc/cache.php`
+  Problème : la recette devait encore prouver le rendu runtime réel après purge du cache HTML local
+  Critère de validation : home / archive / single / page / search / 404 revalidées en runtime, CTA hero morts absents, offset sticky confirmé avec build minifié
 
 - [x] Stabiliser la composition du header mobile et du burger
   Fichiers principaux : `header.php`, `style.css`, `assets/css/blocks/navigation.css`
   Problème : le disclosure mobile occupait toute la largeur et cassait l’alignement logo / slogan / burger dans le hero
   Critère de validation : branding et burger sur une ligne stable, panneau mobile sous le header, navigation clavier intacte
 
+- [x] Réaligner le bundle CSS de déploiement sur le front réellement servi
+  Fichiers principaux : `bin/minify.sh`, `style.min.css`, `assets/css/blocks/navigation.min.css`, `assets/css/greenlight-bundle.css`
+  Problème : le front chargeait un bundle obsolète, puis la minification cassait `body:has(.site-header--sticky) .site-main`, ce qui faisait remonter les vues sans hero sous le header sticky
+  Critère de validation : burger mobile correct en session fraîche, offset sticky intact sur 404/page/search, smoke test de minification au vert
+
 - [x] Restaurer un point d’entrée admin cohérent pour l’apparence et le reset visuel
   Fichiers principaux : `inc/admin.php`, `assets/css/admin-ui.css`
   Problème : le shell admin pointait vers `tab=appearance` sans onglet réel et aucun reset sûr du rendu d’origine n’était exposé
   Critère de validation : onglet Apparence visible, accès au Customizer, reset limité à `greenlight_appearance_options`, nonce et confirmation explicite
 
+- [x] Valider le reset visuel en runtime admin/front
+  Fichiers principaux : `inc/admin.php`, `inc/cache.php`
+  Problème : le reset visuel n’était prouvé que par smoke tests, sans démonstration admin/front ni purge cohérente du cache HTML
+  Critère de validation : mutation visuelle observable, reset via admin réel, retour aux defaults constaté sur le front anonyme, options non visuelles inchangées
+
 ### P1 — majeur avant ouverture large
 
-- [ ] Requalifier le verdict prod après validation réelle du front
-  Fichiers principaux : `docs/audit-prod-ui-mobile-1.md`, `README.md`
-  Problème : les correctifs branchés réduisent les régressions visibles mais ne suffisent pas encore à prouver une ouverture large sans recette front finale
-  Critère de validation : verdict documenté à partir d’une validation front complète et non d’un simple audit statique
+- [x] Requalifier le verdict prod après validation réelle du front
+  Fichiers principaux : `docs/audit-prod-ui-mobile-1.md`
+  Problème : le verdict restait bloqué en `NO-GO` alors que les principaux faux négatifs runtime venaient du cache HTML et du mauvais runtime CLI local
+  Critère de validation : verdict documenté à partir d’une validation front complète et d’un reset visuel runtime réellement prouvé
+
+- [x] Empêcher les CTA hero de rendre un lien mort bare hash
+  Fichiers principaux : `front-page.php`, `tests/front-page-hero-cta-smoke.php`
+  Problème : `front-page.php` considérait `#` comme une URL valide et pouvait afficher des boutons sans destination réelle
+  Critère de validation : le template refuse `#`, smoke test dédié au vert, et la home régénérée n’affiche plus de CTA mort
 
 - [ ] Vérifier les combinaisons d’options visuelles à risque
   Fichiers principaux : `header.php`, `front-page.php`, `inc/customizer.php`
-  Problème : certaines combinaisons restent peu qualifiées (`header_sticky` + tagline longue + `nav_style=burger` + hero image)
+  Problème : certaines combinaisons restent peu qualifiées (`header_sticky` + tagline longue + `nav_style=burger` + hero image + sous-menus)
   Critère de validation : aucun chevauchement ni rupture sur les cas extrêmes réalistes
 
 - [ ] Revoir le périmètre admin Greenlight avant ouverture large

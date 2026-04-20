@@ -39,8 +39,9 @@ if (preg_match("/^(\\/\\*[\\s\\S]*?\\*\\/\\s*)/", $c, $m)) {
 $c = preg_replace("/\\/\\*[\\s\\S]*?\\*\\//", "", $c);
 // Collapse whitespace / newlines
 $c = preg_replace("/\\s+/", " ", $c);
-// Supprimer espaces autour des caractères structurels
-$c = preg_replace("/\\s*([:;,{}()\\[\\]]|!important)\\s*/", "$1", $c);
+// Supprimer espaces autour des caractères structurels sans casser
+// les sélecteurs descendants qui suivent une pseudo-classe fonctionnelle.
+$c = preg_replace("/\\s*([:;,{}\\[\\]]|!important)\\s*/", "$1", $c);
 // ;} → }
 $c = preg_replace("/;}/", "}", $c);
 

@@ -201,6 +201,18 @@ add_action( 'delete_post', 'greenlight_purge_cache_on_content_change' );
 add_action( 'switch_theme', 'greenlight_purge_page_cache' );
 
 /**
+ * Purges the HTML cache when appearance settings change.
+ *
+ * @return void
+ */
+function greenlight_purge_cache_on_appearance_change() {
+	greenlight_purge_page_cache();
+}
+add_action( 'update_option_' . GREENLIGHT_APPEARANCE_OPTION_KEY, 'greenlight_purge_cache_on_appearance_change', 10, 0 );
+add_action( 'add_option_' . GREENLIGHT_APPEARANCE_OPTION_KEY, 'greenlight_purge_cache_on_appearance_change', 10, 0 );
+add_action( 'delete_option_' . GREENLIGHT_APPEARANCE_OPTION_KEY, 'greenlight_purge_cache_on_appearance_change', 10, 0 );
+
+/**
  * Headers HTTP.
  */
 

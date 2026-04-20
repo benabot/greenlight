@@ -770,6 +770,10 @@ function greenlight_sanitize_appearance_settings( $input ) {
 		return $color ? $color : '';
 	};
 
+	$sanitize_flag = static function ( $key ) use ( $input ) {
+		return ! empty( $input[ $key ] ) ? 1 : 0;
+	};
+
 	return array(
 		'theme_preset'             => isset( $input['theme_preset'] ) && isset( $presets[ sanitize_key( (string) $input['theme_preset'] ) ] )
 			? sanitize_key( (string) $input['theme_preset'] )
@@ -790,7 +794,7 @@ function greenlight_sanitize_appearance_settings( $input ) {
 			? sanitize_key( (string) $input['page_density_scale'] )
 			: $defaults['page_density_scale'],
 		// Global.
-		'carbon_badge_enabled'     => isset( $input['carbon_badge_enabled'] ) ? 1 : 0,
+		'carbon_badge_enabled'     => $sanitize_flag( 'carbon_badge_enabled' ),
 		'carbon_badge_value'       => $badge_value,
 		'carbon_badge_position'    => isset( $input['carbon_badge_position'] ) && isset( $positions[ sanitize_key( (string) $input['carbon_badge_position'] ) ] )
 			? sanitize_key( (string) $input['carbon_badge_position'] )
@@ -810,7 +814,7 @@ function greenlight_sanitize_appearance_settings( $input ) {
 		'header_layout'            => in_array( $input['header_layout'] ?? '', array( 'inline', 'split', 'stacked' ), true )
 			? sanitize_key( $input['header_layout'] )
 			: $defaults['header_layout'],
-		'header_sticky'            => isset( $input['header_sticky'] ) ? 1 : 0,
+		'header_sticky'            => $sanitize_flag( 'header_sticky' ),
 		'header_opacity'           => max( 0, min( 100, absint( $input['header_opacity'] ?? $defaults['header_opacity'] ) ) ),
 		'nav_link_case'            => in_array( $input['nav_link_case'] ?? '', array( 'normal', 'uppercase' ), true )
 			? sanitize_key( $input['nav_link_case'] )
@@ -818,9 +822,9 @@ function greenlight_sanitize_appearance_settings( $input ) {
 		'submenu_style'            => in_array( $input['submenu_style'] ?? '', array( 'plain', 'surface' ), true )
 			? sanitize_key( $input['submenu_style'] )
 			: $defaults['submenu_style'],
-		'show_tagline'             => isset( $input['show_tagline'] ) ? 1 : 0,
+		'show_tagline'             => $sanitize_flag( 'show_tagline' ),
 		// Hero.
-		'hero_enabled'             => isset( $input['hero_enabled'] ) ? 1 : 0,
+		'hero_enabled'             => $sanitize_flag( 'hero_enabled' ),
 		'hero_style'               => in_array( $input['hero_style'] ?? '', array( 'asymmetric', 'centered' ), true )
 			? sanitize_key( $input['hero_style'] )
 			: $defaults['hero_style'],
@@ -850,24 +854,24 @@ function greenlight_sanitize_appearance_settings( $input ) {
 		'hero_overlay_direction'   => in_array( $input['hero_overlay_direction'] ?? '', array( 'full', 'top', 'bottom', 'left', 'right' ), true )
 			? sanitize_key( $input['hero_overlay_direction'] )
 			: $defaults['hero_overlay_direction'],
-		'hero_cta_enabled'         => isset( $input['hero_cta_enabled'] ) ? 1 : 0,
+		'hero_cta_enabled'         => $sanitize_flag( 'hero_cta_enabled' ),
 		'hero_cta_text'            => sanitize_text_field( $input['hero_cta_text'] ?? '' ),
 		'hero_cta_url'             => esc_url_raw( $input['hero_cta_url'] ?? '' ),
 		'hero_cta_style'           => in_array( $input['hero_cta_style'] ?? '', array( 'primary', 'secondary', 'tertiary' ), true )
 			? sanitize_key( $input['hero_cta_style'] ) : 'primary',
 		'hero_cta_position'        => in_array( $input['hero_cta_position'] ?? '', array( 'lead', 'body', 'center' ), true )
 			? sanitize_key( $input['hero_cta_position'] ) : 'lead',
-		'hero_cta2_enabled'        => isset( $input['hero_cta2_enabled'] ) ? 1 : 0,
+		'hero_cta2_enabled'        => $sanitize_flag( 'hero_cta2_enabled' ),
 		'hero_cta2_text'           => sanitize_text_field( $input['hero_cta2_text'] ?? '' ),
 		'hero_cta2_url'            => esc_url_raw( $input['hero_cta2_url'] ?? '' ),
 		'hero_cta2_style'          => in_array( $input['hero_cta2_style'] ?? '', array( 'primary', 'secondary', 'tertiary' ), true )
 			? sanitize_key( $input['hero_cta2_style'] ) : 'secondary',
-		'show_hero_badge'          => isset( $input['show_hero_badge'] ) ? 1 : 0,
+		'show_hero_badge'          => $sanitize_flag( 'show_hero_badge' ),
 		'hero_text'                => isset( $input['hero_text'] ) ? sanitize_textarea_field( $input['hero_text'] ) : '',
 		// Single.
-		'show_date'                => isset( $input['show_date'] ) ? 1 : 0,
-		'show_author'              => isset( $input['show_author'] ) ? 1 : 0,
-		'show_tags'                => isset( $input['show_tags'] ) ? 1 : 0,
+		'show_date'                => $sanitize_flag( 'show_date' ),
+		'show_author'              => $sanitize_flag( 'show_author' ),
+		'show_tags'                => $sanitize_flag( 'show_tags' ),
 		// Archive.
 		'archive_layout'           => in_array( $input['archive_layout'] ?? '', array( 'asymmetric', 'list' ), true )
 			? sanitize_key( $input['archive_layout'] )
@@ -875,8 +879,8 @@ function greenlight_sanitize_appearance_settings( $input ) {
 		'archive_card_style'       => isset( $input['archive_card_style'] ) && isset( $archive_card_styles[ sanitize_key( (string) $input['archive_card_style'] ) ] )
 			? sanitize_key( (string) $input['archive_card_style'] )
 			: $defaults['archive_card_style'],
-		'show_excerpts_archive'    => isset( $input['show_excerpts_archive'] ) ? 1 : 0,
-		'show_thumbnails_archive'  => isset( $input['show_thumbnails_archive'] ) ? 1 : 0,
+		'show_excerpts_archive'    => $sanitize_flag( 'show_excerpts_archive' ),
+		'show_thumbnails_archive'  => $sanitize_flag( 'show_thumbnails_archive' ),
 		'single_layout'            => isset( $input['single_layout'] ) && isset( $single_layouts[ sanitize_key( (string) $input['single_layout'] ) ] )
 			? sanitize_key( (string) $input['single_layout'] )
 			: $defaults['single_layout'],
@@ -885,9 +889,9 @@ function greenlight_sanitize_appearance_settings( $input ) {
 		'footer_layout'            => isset( $input['footer_layout'] ) && isset( $footer_layouts[ sanitize_key( (string) $input['footer_layout'] ) ] )
 			? sanitize_key( (string) $input['footer_layout'] )
 			: $defaults['footer_layout'],
-		'show_low_emission'        => isset( $input['show_low_emission'] ) ? 1 : 0,
+		'show_low_emission'        => $sanitize_flag( 'show_low_emission' ),
 		'custom_copyright'         => isset( $input['custom_copyright'] ) ? sanitize_text_field( $input['custom_copyright'] ) : '',
-		'show_footer_nav'          => isset( $input['show_footer_nav'] ) ? 1 : 0,
+		'show_footer_nav'          => $sanitize_flag( 'show_footer_nav' ),
 		// Navigation mobile.
 		'nav_style'                => in_array( $input['nav_style'] ?? '', array( 'inline', 'burger' ), true )
 			? sanitize_key( $input['nav_style'] )
@@ -1075,10 +1079,14 @@ function greenlight_handle_reset_appearance() {
 		exit;
 	}
 
+	$defaults = greenlight_get_appearance_defaults();
+
 	update_option(
 		GREENLIGHT_APPEARANCE_OPTION_KEY,
-		greenlight_sanitize_appearance_settings( greenlight_get_appearance_defaults() )
+		$defaults
 	);
+
+	update_option( 'greenlight_carbon_badge_value', $defaults['carbon_badge_value'] );
 
 	wp_safe_redirect( $redirect_url . '&appearance_reset=success' );
 	exit;
